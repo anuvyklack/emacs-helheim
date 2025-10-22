@@ -1,5 +1,10 @@
 ;;; helheim-keybindings.el -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;; Commentary:
+;;
+;; The idea of this file is to store all keybindings in one place. It relies on
+;; `featurep' and enables keybindings conditionally, so you should `require' it
+;; last.
+;;
 ;;; Code:
 (elpaca imenu-list)
 
