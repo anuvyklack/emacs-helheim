@@ -1,6 +1,8 @@
 ;;; helheim-dired.el -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;; Code:
+(require 'dash)
+
 ;;; Keybindings
 
 ;; It’s best to avoid using capital letters to not interference with default
@@ -38,7 +40,8 @@
             "p" '("change permissions" . dired-do-chmod)
             "o" '("change owner"       . dired-do-chown)
             "g" '("change group"       . dired-do-chgrp)
-            "t" '("update timestamp"   . dired-do-touch))
+            "t" '("update timestamp"   . dired-do-touch)
+            "i" '("add ID" . helheim-dired-do-add-id))
 
     "p"   'dired-copy-paste-do-paste
     "y"   (define-keymap
@@ -304,6 +307,50 @@
 (helheim-dired-convert-to-global-minor-mode dired-hide-details-mode)
 (helheim-dired-convert-to-global-minor-mode dired-omit-mode)
 (helheim-dired-convert-to-global-minor-mode dired-filter-group-mode)
+
+;;;; Prepend file name with ID
+;; Adopted from the Denote package by Protesilaos Stavrou also known as Prot.
+
+(defconst helheim-dired-id-format "%Y%m%dT%H%M%S")
+(defconst helheim-dired-id-regexp "\\([0-9]\\{8\\}\\)\\(T[0-9]\\{6\\}\\)")
+
+(defun helheim-dired-do-add-id ()
+  "Prepend marked files names with timestamp based ID.
+If file already has ID — do nothing."
+  (declare (interactive-only t))
+  (interactive nil dired-mode)
+  (dolist (file (dired-get-marked-files))
+    (unless (helheim-dired-file-id file)
+      (let* ((filename (file-name-nondirectory file))
+             (id (helheim-dired-generate-file-id file))
+             (newname (format "%s--%s" id filename)))
+        (rename-file file newname))))
+  (dired-revert))
+
+(defun helheim-dired--file-creation-time (filepath)
+  "Return the FILE creation time using the `stat' from coreutils."
+  (-> (format "stat --format=%%w %s" (shell-quote-argument filepath))
+      (shell-command-to-string)
+      (string-trim)
+      (parse-time-string)
+      (encode-time)))
+
+(defun helheim-dired--file-modification-time (filepath)
+  (file-attribute-modification-time (file-attributes filepath)))
+
+(defun helheim-dired-file-id (filepath)
+  "Return FILE's ID if it has one."
+  (let ((filename (file-name-nondirectory filepath)))
+    (if (string-match (concat "\\`" helheim-dired-id-regexp) filename)
+        (match-string-no-properties 0 filename))))
+
+(defun helheim-dired-generate-file-id (filepath)
+  "Return ID based on FILE creation time."
+  (let* ((created (helheim-dired--file-creation-time filepath))
+         (modified (file-attribute-modification-time (file-attributes filepath)))
+         (time (if (time-less-p created modified)
+                   created modified)))
+    (format-time-string helheim-dired-id-format time)))
 
 (provide 'helheim-dired)
 ;;; helheim-dired.el ends here

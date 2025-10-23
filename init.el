@@ -121,6 +121,27 @@
 
 ;;;;; dired
 
+;; My custom version.
+(define-advice helheim-dired-do-add-id (:override () custom-version)
+  "Add timestamp based ID in front of the files name, unless it's already there."
+  (dolist (file (dired-get-marked-files))
+    (unless (helheim-dired-file-id file)
+      (let ((filename (file-name-nondirectory file)))
+        (cond
+         ;; Files from Reddit app on android. They have timestamp in their name,
+         ;; like this: RDT_20220820_0858002573777192519160821.jpg
+         ((string-match "^RDT_\\([0-9]\\{8\\}\\)_\\([0-9]\\{6\\}\\)" filename)
+          (let* ((date (match-string-no-properties 1 filename))
+                 (time (match-string-no-properties 2 filename))
+                 (extension (file-name-extension file))
+                 (newname (format "%sT%s.%s" date time extension)))
+            (rename-file file newname)))
+         (t
+          (let* ((id (helheim-dired-generate-file-id file))
+                 (newname (format "%s--%s" id filename)))
+            (rename-file file newname)))))))
+  (dired-revert))
+
 ;;;;;;  Extra highlighting
 
 ;; (use-package dired-rainbow
