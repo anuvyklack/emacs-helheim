@@ -56,5 +56,22 @@
   "a" 'xref-find-apropos
   "i" 'imenu)
 
+;; <F1>
+(helix-keymap-set help-map
+  "F" 'describe-face
+  "M" 'describe-keymap
+  "s" 'helpful-symbol
+  ;; Rebind `b' key from `describe-bindings' to prefix with more binding
+  ;; related commands.
+  "b" (cons "bindings"
+            (define-keymap
+              "b" 'describe-bindings
+              "B" 'embark-bindings ; alternative for `describe-bindings'
+              "i" 'which-key-show-minor-mode-keymap
+              "m" 'which-key-show-major-mode
+              "t" 'which-key-show-top-level
+              "f" 'which-key-show-full-keymap
+              "k" 'which-key-show-keymap)))
+
 (provide 'helheim-keybindings)
 ;;; helheim-keybindings.el ends here

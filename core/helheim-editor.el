@@ -193,6 +193,43 @@
 
 (setq custom-buffer-done-kill t)
 
+;;;; Help
+
+;; Enhance `apropos' and related functions to perform more extensive searches
+(setq apropos-do-all t)
+
+(use-package help
+  :custom
+  (help-enable-autoload nil)
+  (help-enable-completion-autoload nil)
+  (help-enable-symbol-autoload nil)
+  (help-window-select t) ; Focus new help windows when opened
+  :config
+  (add-hook 'help-mode-hook #'helheim-disable-hl-line-mode)
+  (helix-keymap-set help-map
+    "h"   nil   ; unbind `view-hello-file'
+    "C-c" nil)) ; unbind `describe-copying'
+
+(use-package helpful
+  :ensure t
+  :defer t
+  :bind (([remap describe-function] . helpful-callable)
+         ([remap describe-variable] . helpful-variable)
+         ([remap describe-command] . helpful-command)
+         ([remap describe-key] . helpful-key)
+         ([remap describe-symbol] . helpful-symbol))
+  :config
+  (add-hook 'helpful-mode-hook #'helheim-disable-hl-line-mode)
+  ;; (add-hook 'helpful-mode-hook #'outline-minor-mode)
+
+  ;; Open links to functions, variables and symbols in helpful buffer in the
+  ;; same window.
+  (add-to-list 'display-buffer-alist
+               '((derived-mode . helpful-mode)
+                 (display-buffer-reuse-mode-window display-buffer-pop-up-window)
+                 (mode . helpful-mode)
+                 (body-function . select-window))))
+
 ;;;; Minibuffer
 
 ;; Allow opening new minibuffers from inside existing minibuffers.

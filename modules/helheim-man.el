@@ -5,10 +5,11 @@
 
 (helix-set-initial-state 'Man-mode 'normal)
 
-;; You can also enable `outline-minor-mode' in a Man buffer, so the keys
+;; User may also enable `outline-minor-mode' in a Man buffer, so the keys
 ;; should possibly not interfere with it.
 (with-eval-after-load 'man
   (helix-inhibit-insert-state Man-mode-map)
+
   (helix-keymap-set Man-mode-map :state 'normal
     "] ]"   'Man-next-manpage
     "[ ["   'Man-previous-manpage
@@ -16,9 +17,9 @@
     "z l"   'Man-previous-manpage ; right
     "z j"   'Man-next-section     ; up
     "z k"   'Man-previous-section ; down
-    "z /"   'Man-goto-section     ; Relative to sections thats why on "z" layer.
+    "z /"   'Man-goto-section     ; Related to sections — that’s why on ‘z’ layer.
     "g r"   'Man-follow-manual-reference ; go to reference
-    "C-w r" 'Man-update-manpage)) ; Standard chord for revert.
+    "C-w r" 'Man-update-manpage)) ; Hel's chord for revert.
 
 (provide 'helheim-man)
 ;;; helheim-man.el ends here

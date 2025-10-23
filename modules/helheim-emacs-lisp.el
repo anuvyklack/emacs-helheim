@@ -6,9 +6,12 @@
 ;;; Keybindings
 
 (helix-keymap-set emacs-lisp-mode-map :state 'normal
+  ;; Vim uses `K' but it is occupied in Helix. `M' is near `K' and free.
+  "M"       'helpful-at-point
   "g d"     '("Find definition" . +elisp-find-definitions)
   "C-w g d" '("Find definition other window" . +elisp-find-definitions-other-window))
 
+;; <leader> e
 (helix-keymap-set emacs-lisp-mode-map
   "C-c e" (cons "eval elisp"
                 (define-keymap
@@ -20,6 +23,9 @@
                   ;; "m" 'macrostep-expand
                   "m" 'emacs-lisp-macroexpand
                   "p" 'pp-macroexpand-last-sexp)))
+
+(helix-keymap-set lisp-data-mode-map :state 'normal
+  "M" 'helpful-at-point)
 
 ;;; Config
 
