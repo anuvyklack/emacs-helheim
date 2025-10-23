@@ -2,15 +2,15 @@
 ;;; Code:
 (require 'dash)
 
-(defmacro +theme-set-faces (theme &rest specs)
+(defun +theme-set-faces (theme &rest specs)
   "For THEME configure FACE with SPECS.
 
 \(fn THEME &rest (FACE . SPECS))"
   (declare (indent 1))
-  `(apply #'custom-theme-set-faces ,theme
-          (mapcar (-lambda ((face . spec))
-                    `(,face ((t ,spec))))
-                  (list ,@specs))))
+  (apply #'custom-theme-set-faces theme
+         (-map (-lambda ((face . spec))
+                 `(,face ((t ,spec))))
+               specs)))
 
 (defun +original-value (symbol)
   "Return the original value for SYMBOL, if any."
