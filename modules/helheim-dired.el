@@ -296,27 +296,10 @@
 
 (defmacro helheim-dired-convert-to-global-minor-mode (mode)
   (declare (debug t))
-  (let* ((name (symbol-name mode))
-         (func (when (string-match "dired-\\(.*\\)-mode" name)
-                 (make-symbol (format "+dired-global-%s-mode"
-                                      (match-string 1 name))))))
-    (cl-assert func)
-    `(progn
-       (defun ,func (&optional arg)
-         ,(format "Toggle `%s' globally." mode)
-         (interactive (list (if current-prefix-arg
-                                (prefix-numeric-value current-prefix-arg)
-                              'toggle)))
-         (if (cond ((eq arg 'toggle) (not ,mode))
-                   ((and (numberp arg) (< arg 1)) nil)
-                   (t t))
-             (progn
-               (,mode +1)
-               (add-hook 'dired-mode-hook #',mode))
-           (,mode -1)
-           (remove-hook 'dired-mode-hook #',mode)))
-       (with-eval-after-load 'dired
-         (define-key dired-mode-map [remap ,mode] #',func)))))
+  `(define-advice ,mode (:after (&rest _) helheim)
+     (if ,mode
+         (add-hook 'dired-mode-hook #',mode)
+       (remove-hook 'dired-mode-hook #',mode))))
 
 (helheim-dired-convert-to-global-minor-mode dired-hide-details-mode)
 (helheim-dired-convert-to-global-minor-mode dired-omit-mode)
