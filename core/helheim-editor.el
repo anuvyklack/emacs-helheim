@@ -296,8 +296,6 @@ the unwritable tidbits."
 ;; (setq initial-major-mode 'fundamental-mode
 ;;       initial-scratch-message nil)
 
-;; (substitute-command-keys initial-scratch-message)
-
 ;;;; Files
 
 ;; ;; Resolve symlinks when opening files, so that any operations are conducted

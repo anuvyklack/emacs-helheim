@@ -91,6 +91,9 @@ already an edit-indirect buffer active overlapping any portion of region, an
         (funcall mode)
         (setq list-buffers-directory name)
         (eval `(setq-local ,@vars) t)
+        (setq-local header-line-format
+                    (substitute-command-keys
+                     "Commit with \\[edit-indirect-commit], abort with \\[edit-indirect-abort]"))
         (beginning-of-buffer)
         (switch-to-buffer buffer)))))
 
