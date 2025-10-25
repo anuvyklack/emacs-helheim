@@ -69,6 +69,7 @@
 (require 'helheim-emacs-lisp)
 
 (require 'helheim-dired)
+;; (require 'helheim-ibuffer)
 (require 'helheim-outline)
 (require 'helheim-tab-bar)
 (require 'helheim-xref)
@@ -170,6 +171,15 @@
 ;;     (dired-rainbow-define vc "#0074d9" ("git" "gitignore" "gitattributes" "gitmodules"))
 ;;     (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*")
 ;;     ))
+
+;;;;; ibuffer
+;;;;; project
+
+(setopt project-vc-extra-root-markers '(".projectile" ".project")
+        project-buffers-viewer #'project-list-buffers-ibuffer
+        project-kill-buffers-display-buffer-list t
+        ;; project-mode-line t
+        )
 
 ;;;; Keybindings
 
