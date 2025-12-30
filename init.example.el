@@ -108,6 +108,7 @@
 (require 'helheim-embark)  ; Context-aware action menus
 (require 'helheim-ibuffer) ; Buffers menu
 (require 'helheim-outline) ; See "Outline Mode" in Emacs manual
+(require 'helheim-notmuch) ; Notmuch email client
 (require 'helheim-tab-bar) ; Each tab represents a set of windows, as in Vim
 (require 'helheim-whisper) ; Speech to text conversion
 ; (require 'helheim-vterm) ; Terminal emulator. Requires shell-side configuration!

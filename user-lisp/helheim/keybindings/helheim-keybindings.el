@@ -77,6 +77,12 @@
               "R" 'query-replace-regexp))
   "v" (cons "version control" (helheim-leader-prefix-map "v")))
 
+;;; Button
+
+(hel-keymap-set button-buffer-map
+  "C-j" 'forward-button
+  "C-k" 'backward-button)
+
 ;;; Customize
 
 (setup cus-edit

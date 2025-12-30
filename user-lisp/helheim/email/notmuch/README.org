@@ -1,0 +1,213 @@
+* helheim-notmuch
+
+Configuration and keybindings for Notmuch email indexer.
+
+** Configuration
+
+Notmuch is an indexer — it doesn't pull emails from the server (hence the name).
+You need a provider: [[https://isync.sourceforge.io/][mbsync]] or [[https://www.offlineimap.org/][offlineimap]] are universal ones. I use Gmail, so
+here I provide instructions on how to configure Notmuch with [[https://github.com/gauteh/lieer][lieer]] —
+a synchronizer specifically designed for Gmail.
+
+*** Install Notmuch and dependencies
+**** Fedora
+#+begin_src sh
+sudo dnf install notmuch notmuch-devel emacs-notmuch
+#+end_src
+
+Lieer dependencies:
+#+begin_src sh
+sudo dnf install python3-google-api-client python3-google-auth-oauthlib python3-notmuch2
+#+end_src
+
+*** Setup Notmuch
+
+Create the notmuch config file at =~/.config/notmuch/default/config=. Here =default=
+is the profile name. This configuration sets your root mail folder to =~/.mail=.
+
+#+begin_src conf
+[database]
+path=.mail
+
+[user]
+name=John Smith
+primary_email=john_smith@gmail.com
+other_email=john_smith@outlook.com
+
+[new]
+# Mark all new messages with a temporary “new” tag. These messages will then be
+# processed in the Notmuch post-new hook.
+tags=new
+ignore=/.*[.](json|lock|bak)$/
+
+[search]
+exclude_tags=spam
+#+end_src
+
+Run ~notmuch~ to create database.
+
+*** Setup Lieer
+
+Clone the [[https://github.com/gauteh/lieer][Lieer repository]], and execute ~pip install .~ in its root.
+
+Make a directory for the lieer storage and state files (local repository). This
+assumes your root mail folder is =~/.mail= and that this folder is already exist
+and set up with ~notmuch~.
+
+#+begin_src sh
+$ mkdir ~/.mail/account.gmail
+#+end_src
+
+The executable is called ~gmi~ and it should always be run from the local mail
+repository unless otherwise specified.
+
+#+begin_src sh
+$ cd ~/.mail/account.gmail
+$ gmi init john_smith@gmail.com
+#+end_src
+
+~gmi init~ will open your browser and request limited access to your email. The
+access token will be stored in =~/.mail/account.gmail/.credentials.gmailieer.json=
+
+*** Notmuch hooks
+**** pre-new
+
+=pre-new= hook is invoked by the ~notmuch new~ command before scanning or importing
+new messages into the database. If this hook exits with a non-zero status,
+notmuch will abort further processing.
+
+- =~/.config/notmuch/default/hooks/pre-new=
+
+#+begin_src bash
+#!/bin/bash
+
+cd ~/.mail/account.gmail/ && gmi sync
+#+end_src
+
+**** post-new
+
+=post-new= hook is invoked by the ~notmuch new~ command after new messages have been
+imported into the database and initial tags have been applied.
+
+- =~/.config/notmuch/default/hooks/post-new=
+
+#+begin_src bash
+#!/bin/bash
+
+# Remove "new" tag from sent messages.
+notmuch tag -new -- tag:sent
+
+# Replace "new" tag with "inbox" and "unread" tags.
+notmuch tag +inbox +unread -new -- tag:new
+#+end_src
+
+*** Initial tagging
+
+The described configuration uses the =new= tag approach for new messages from
+the [[https://notmuchmail.org/initial_tagging/][manual]]. All new messages are marked with temporary =new= tag, which than
+in processed in =post-new= hook.
+
+*** Sending email
+
+~helheim-notmuch~ module configures Emacs to send mails via ~msmtp~. The account
+is picked based on the =From= header.
+
+**** msmtp
+
+For sending emails you need ~msmtp~ — an external SMTP client.
+
+Since version 1.8.6 ~msmtp~ supports the XDG spec. Place your config at
+=$XDG_CONFIG_HOME/msmtp/config= (i.e. =~/.config/msmtp/config=).
+
+#+begin_src conf
+# Default settings
+defaults
+auth             on
+tls              on
+tls_starttls     on
+# The path is actually in $XDG_STATE_HOME, the standard location for log files,
+# but msmtp does not expand environment variables, so it must be specified
+# literally.
+logfile          ~/.local/state/msmtp/msmtp.log
+
+# Gmail account
+account          gmail
+host             smtp.gmail.com
+port             587
+from             john_smith@gmail.com
+user             john_smith@gmail.com
+passwordeval     secret-tool lookup host smtp.gmail.com user john_smith@gmail.com
+
+# Set default account
+account default : gmail
+#+end_src
+
+~passwordeval~ runs a ~secret-tool~ command to fetch the password at send time, so
+it is never stored in plain text.
+
+You also need to ensure that log directory exists:
+#+begin_src sh
+mkdir -p $XDG_STATE_HOME/msmtp
+#+end_src
+
+**** Password
+***** Gmail App Password
+
+Gmail does not accept your regular account password over SMTP. You must create
+a dedicated /App Password/:
+
+1. Go to https://myaccount.google.com/apppasswords
+2. Generate the 16-character password — you will enter it once in the next step
+
+***** Store password
+
+On Linux store the App Password via ~secret-tool~ (don't forget to use your actual
+gmail address):
+#+begin_src sh
+secret-tool store --label="Gmail SMTP" host smtp.gmail.com user john_smith@gmail.com
+#+end_src
+
+On Fedora with GNOME, for example, you will be prompted to enter the App
+Password, which is then will be stored in the GNOME Keyring and automatically
+unlocked at login.
+
+**** Verify
+
+Test the SMTP connection (no email sent):
+#+begin_src sh
+msmtp --serverinfo --host=smtp.gmail.com --port=587 --tls --tls-starttls
+#+end_src
+
+Send an email and check the log if anything goes wrong:
+#+begin_src sh
+cat $XDG_STATE_HOME/msmtp/msmtp.log
+#+end_src
+
+**** Emacs configuration
+
+** Enable module
+#+begin_src emacs-lisp
+(require 'helheim-notmuch)
+#+end_src
+
+** Usage
+*** Open =text/html= mime part in external browser
+
+Use =v= or =.v= in a Notmuch show buffer. If you get a file not found error,
+then on Linux you need to create =~/.mailcap= and copy into it the line from
+=/etc/mailcap= that starts with =text/html;=, with =copiousoutput= stripped.
+
+Typically, it would be something like this:
+#+begin_src conf
+text/html; /usr/bin/xdg-open %s
+#+end_src
+
+Stripping =copiousoutput= prevents temporary files from being deleted from =/tmp=.
+This is usually not a problem, since modern Linux distributions manage =/tmp=
+automatically. For example, Fedora removes files not accessed for 10 days via
+=systemd-tmpfiles-clean.service=.
+
+*** Forward vs Resend
+
+Use forwarding to share information with others; use resending to fix delivery
+issues or resend to the original recipient.
