@@ -5,7 +5,7 @@
 (require 'dash)
 (require 's)
 
-;;;; Customize color themes
+;;; Customize color themes
 ;;
 ;; Just load the theme you want with `load-theme' function. Thats all. You may
 ;; use it interactively: press ":" (Hel) or "M-x" (Emacs) and type `load-theme'.
@@ -38,7 +38,7 @@ Alist of the form:
 ;; TODO: write docstring
 (defun helheim-theme-set-faces (theme &rest specs)
   "Set FACE for THEME.
-See `modules/color-themes/helheim-modus-themes.el' for examples how to use
+See `helheim/color-themes/helheim-modus-themes.el' for examples how to use
 this function. (Place cursor somewhere inside path and press \"gf\" to let
 Emacs magic happen.)
 
@@ -55,7 +55,7 @@ Emacs magic happen.)
   (when (memq theme custom-enabled-themes)
     (enable-theme theme)))
 
-;;;; Save minibuffer history between sessions
+;;; Save minibuffer history between sessions
 
 (defun helheim-savehist-unpropertize-variables-h ()
   "Remove text properties from `kill-ring' to reduce savehist cache size."
@@ -77,7 +77,7 @@ the unwritable tidbits."
   ;; unserializable registers in the current session!
   (setq-local register-alist (-filter #'savehist-printable register-alist)))
 
-;;;; Tree-sitter
+;;; Tree-sitter
 
 ;;;###autoload
 (defun helheim-install-missing-treesit-grammars ()
@@ -87,7 +87,7 @@ the unwritable tidbits."
            unless (treesit-language-available-p lang)
            do (treesit-install-language-grammar lang)))
 
-;;;; LSP
+;;; LSP
 
 (defun helheim-lsp ()
   (cond ((featurep 'helheim-eglot)
@@ -98,7 +98,7 @@ the unwritable tidbits."
         ((featurep 'helheim-lsp-mode)
          (lsp-deferred))))
 
-;;;; Utils
+;;; Utils
 
 (defun +original-value (symbol)
   "Return the original value for SYMBOL, if any."

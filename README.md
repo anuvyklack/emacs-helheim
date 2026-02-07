@@ -115,7 +115,7 @@ All folders in `user-lisp/` directory are automatically added to the `load-path`
 
 You can also invoke `prepare-user-lisp` command manually to rescan `user-lisp/` for content added after startup. With `universal-argument` — `M-u : prepare-user-lisp` — files will be recompiled and `.user-lisp-autoloads.el` file with autoload cookies will be rebuild.
 
-`require` only the modules you need in `init.el`.
+`require` only the modules you need in your `init.el`.
 
 > [!NOTE]  
 > This is an Emacs 31 feature backported to Helheim.

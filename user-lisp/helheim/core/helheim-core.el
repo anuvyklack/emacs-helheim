@@ -1,5 +1,4 @@
 ;;; helheim-core.el -*- lexical-binding: t; no-byte-compile: t; -*-
-;;; Commentary:
 ;;; Customization
 
 (defgroup helheim nil
@@ -179,8 +178,8 @@ The predicate is passed as argument to `buffer-match-p', which see."
   :custom
   (global-hl-line-sticky-flag . 'window) ;; Emacs 31
   ;; I want current line highlighting only in special modes that are in Hel
-  ;; motion state, and disable it when region is active. In text editing modes
-  ;; it interferes with Hel selections.
+  ;; motion state, and temporary disable it when region is active. In text
+  ;; editing modes disable it, because it interferes with Hel selections.
   (global-hl-line-buffers . `(and (or (derived-mode . special-mode)
                                       ;; For `define-compilation-mode'
                                       (derived-mode . compilation-mode)
@@ -321,6 +320,7 @@ Use `delete-trailing-whitespace' command."
 
 ;;;;; Smooth scrolling
 
+;; `hel-scrolling' is based on `pixel-scroll' and uses its settings
 (leaf pixel-scroll
   :custom
   ;; The duration of smooth scrolling.
@@ -522,8 +522,8 @@ Use `delete-trailing-whitespace' command."
 
 ;;; Emacs built-in packages
 
-;; This setting forces Emacs to save bookmarks immediately after each change.
-;; Benefit: you never lose bookmarks if Emacs crashes.
+;; This setting forces Emacs to save bookmarks immediately after each change,
+;; to make you never lose bookmarks if Emacs crashes.
 (setq bookmark-save-flag 1)
 
 (setq custom-buffer-done-kill t)

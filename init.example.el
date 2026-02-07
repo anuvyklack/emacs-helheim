@@ -111,7 +111,7 @@
 
 ;;; Org mode
 
-;; Following variables must be set before `helheim-org' is loaded!
+;; Following variables must be set before `org' is loaded!
 (setopt org-directory (expand-file-name "~/notes/")
         ;; Which modules to load.
         ;; Place cursor on variable and press "M" to see all possible values.

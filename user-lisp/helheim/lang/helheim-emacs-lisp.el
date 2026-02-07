@@ -10,7 +10,7 @@
     "C-c e"   '("eval" . helheim-elisp-eval-map)) ; <localleader>
   (hel-keymap-set keymap :state 'normal
     ", e"     '("eval" . helheim-elisp-eval-map) ; <leader>
-    "K"       'helpful-at-point ;; like in Vim
+    "K"       'helpful-at-point ;; after Vim
     "M"       'helpful-at-point
     "g d"     '("Find definition" . helheim-elisp-find-definitions)
     "C-w g d" '("Find definition other window" . helheim-elisp-find-definitions-other-window)))
