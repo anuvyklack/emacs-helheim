@@ -110,6 +110,22 @@ the unwritable tidbits."
         (ignore-errors
           (eval (car orig-val-expr))))))
 
+(defun +buffer-file-name (&optional buffer)
+  "Return the file name of a file-visiting buffer, the directory of a Dired
+buffer, or nil otherwise.
+
+No argument or nil as argument means use the current buffer."
+  (with-current-buffer (or buffer (current-buffer))
+    (or (buffer-file-name)
+        ;; Dired buffer
+        (if-let ((directory (pcase (bound-and-true-p dired-directory)
+                              ((and (pred stringp) dir) dir)
+                              (`(,dir . ,_) dir))))
+            (expand-file-name directory))
+        ;; Indirect buffer
+        (if (buffer-base-buffer)
+            list-buffers-directory))))
+
 ;;; .
 (provide 'helheim-lib)
 ;;; helheim-lib.el ends here
