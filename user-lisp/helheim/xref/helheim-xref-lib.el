@@ -1,23 +1,10 @@
-;;; -*- lexical-binding: t -*-
-;;; Commentary:
-;;
-;; Make Xref try all backends untill first one succeed.
-;; See help for `helheim-xref-find-definitions' command.
-;;
-;;; Code:
+;;; helheim-xref-lib.el -*- lexical-binding: t -*-
+;;; Make Xref try all backends untill first one succeed
 
-(require 'dash)
+(eval-when-compile
+  (require 'dash)
+  (require 'helheim-lib))
 (require 'xref)
-
-(defun helheim-hook-values (hook)
-  "Return list with all local and global elements of the HOOK.
-HOOK should be a symbol."
-  (if (local-variable-p hook)
-      (append (->> (buffer-local-value hook (current-buffer))
-                   (delq t))
-              (default-value hook))
-    ;; else
-    (ensure-list (symbol-value hook))))
 
 (defun helheim-xref--create-fetcher (kind)
   "Create a fetcher function for xref KIND.
@@ -27,7 +14,7 @@ finds an identifier at point. Signals a user-error if no backend succeeds.
 
 KIND should be a symbol like 'definitions or 'references, which will be
 used to construct the backend method name."
-  (or (cl-dolist (func (helheim-hook-values 'xref-backend-functions))
+  (or (cl-dolist (func (+hook-values 'xref-backend-functions))
         (if-let* ((backend (funcall func))
                   (identifier (xref-backend-identifier-at-point backend))
                   (method (intern (format "xref-backend-%s" kind)))
@@ -86,3 +73,7 @@ Reed help for `helheim-xref-find-definitions' for the differences from
   (xref--show-defs (helheim-xref--create-fetcher 'definitions)
                    'frame)
   (setq disable-point-adjustment t))
+
+;;; .
+(provide 'helheim-xref '(lib))
+;;; helheim-xref-lib.el ends here

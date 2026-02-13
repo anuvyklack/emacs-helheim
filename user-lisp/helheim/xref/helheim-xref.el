@@ -34,13 +34,13 @@
   :after xref
   :global-minor-mode nerd-icons-xref-mode)
 
-;;; Make Xref try all backends untill first one succeed
-
+;; Make Xref try all backends untill first one succeed
 (hel-keymap-global-set
   "<remap> <xref-find-references>"  #'helheim-xref-find-references
   "<remap> <xref-find-definitions>" #'helheim-xref-find-definitions
   "<remap> <xref-find-definitions-other-window>" #'helheim-xref-find-definitions-other-window
   "<remap> <xref-find-definitions-other-frame>" #'helheim-xref-find-definitions-other-frame)
 
+;;; .
 (provide 'helheim-xref)
 ;;; helheim-xref.el ends here

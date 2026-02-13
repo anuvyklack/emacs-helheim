@@ -2,5 +2,19 @@
 
 Xref is an Emacs *go-to definition* and *show references* framework.
 
-This module hacks Xref to try all registered backends in sequence until the
-first one succeeds, and adds [[https://github.com/jacktasia/dumb-jump][Dumb Jump]] as a universal fallback backend.
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-xref)
+#+end_src
+
+** Hacks
+
+- Hack Xref to try all registered backends in sequence until the first
+  one succeeds.
+- Add [[https://github.com/jacktasia/dumb-jump][Dumb Jump]] as a universal fallback backend.
+
+** Usage
+
+- =g d= — go to definition
+- =C-w g d= — open definition in another window
+- =g D= — find references

@@ -110,6 +110,16 @@ the unwritable tidbits."
         (ignore-errors
           (eval (car orig-val-expr))))))
 
+(defun +hook-values (hook)
+  "Return list with all local and global elements of the HOOK.
+HOOK should be a symbol."
+  (if (local-variable-p hook)
+      (append (->> (buffer-local-value hook (current-buffer))
+                   (delq t))
+              (default-value hook))
+    ;; else
+    (ensure-list (symbol-value hook))))
+
 (defun +buffer-file-name (&optional buffer)
   "Return the file name of a file-visiting buffer, the directory of a Dired
 buffer, or nil otherwise.
