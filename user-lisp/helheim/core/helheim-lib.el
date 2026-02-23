@@ -58,15 +58,14 @@ Emacs magic happen.)
 ;;; Save minibuffer history between sessions
 
 (defun helheim-savehist-unpropertize-variables-h ()
-  "Remove text properties from `kill-ring' to reduce savehist cache size."
+  "Remove text properties from tracked variables to reduce savehist cache size."
   (setq kill-ring (->> kill-ring
                        (-filter #'stringp)
                        (-map #'substring-no-properties)))
-  (setq register-alist (-map (-lambda ((reg . item))
-                               (if (stringp item)
-                                   (cons reg (substring-no-properties item))
-                                 (cons reg item)))
-                             register-alist)))
+  ;; modify in place
+  (-each register-alist (-lambda ((cons-cell &as _register . val))
+                          (when (stringp val)
+                            (setcdr cons-cell (substring-no-properties val))))))
 
 (defun helheim-savehist-remove-unprintable-registers-h ()
   "Remove unwriteable registers (e.g. containing window configurations).
