@@ -56,6 +56,8 @@
               "l" 'locate
               "r" '("Recent files" . recentf-open)
               "w" 'write-file))
+  "l" (cons "LSP" (or (keymap-lookup mode-specific-map "l")
+                      (make-sparse-keymap)))
   "o" (cons "open"
             (hel-keymap-set (or (keymap-lookup mode-specific-map "o")
                                 (make-sparse-keymap))

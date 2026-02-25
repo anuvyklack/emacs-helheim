@@ -7,9 +7,9 @@
   "C-?" 'consult-line-multi) ; "C-S-/"
 
 (hel-keymap-global-set :state 'normal
-  "g i" 'consult-imenu
+  "g o" 'consult-imenu
   "g I" 'consult-imenu-multi
-  "g o" 'consult-outline
+  "g O" 'consult-outline
   "g m" 'consult-mark
   "g M" 'consult-global-mark
   "g e" 'consult-compile-error

@@ -85,11 +85,10 @@
 
 ;;; Other modules
 
-(require 'helheim-tab-bar)  ; Each tab represents a set of windows, as in Vim.
-(require 'helheim-xref)     ; Go to defenition framework
+(require 'helheim-tab-bar)  ; Each tab represents a set of windows, as in Vim
 (require 'helheim-ibuffer)  ; Buffers menu
 (require 'helheim-dired)    ; File-manager
-(require 'helheim-outline-mode) ; See "Outline Mode" in Emacs manual.
+(require 'helheim-outline-mode) ; See "Outline Mode" in Emacs manual
 
 ;;; Search and completion
 
@@ -98,6 +97,11 @@
 (require 'helheim-consult)  ; A set of search commands with preview
 (require 'helheim-deadgrep) ; Interface to Ripgrep
 (require 'helheim-embark)   ; Context-aware action menus
+
+;;; IDE
+
+(require 'helheim-xref)     ; Go to definition framework
+(require 'helheim-eglot)    ; Built-in LSP client
 
 ;;; Major modes
 

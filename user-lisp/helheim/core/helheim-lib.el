@@ -87,6 +87,17 @@ the unwritable tidbits."
            unless (treesit-language-available-p lang)
            do (treesit-install-language-grammar lang)))
 
+;;;; LSP
+
+(defun helheim-lsp ()
+  (cond ((featurep 'helheim-eglot)
+         (when (require 'eglot nil t)
+           (if (eglot--lookup-mode major-mode)
+               (eglot-ensure)
+             (eglot--message "No language server found for %s" major-mode))))
+        ((featurep 'helheim-lsp-mode)
+         (lsp-deferred))))
+
 ;;;; Utils
 
 (defun +original-value (symbol)

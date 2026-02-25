@@ -833,6 +833,7 @@ Use `delete-trailing-whitespace' command."
 ;;;; Eldoc
 
 (blackout 'eldoc-mode)
+(setopt eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly)
 
 ;;;; image-mode
 
@@ -852,19 +853,20 @@ Use `delete-trailing-whitespace' command."
 
 ;;;; project.el
 
-(setq project-vc-extra-root-markers '(".project")
-      project-vc-merge-submodules nil
-      project-kill-buffers-display-buffer-list t
-      ;; project-mode-line t
-      )
-
-(setq project-switch-commands '((project-dired "Dired")
-                                (project-find-file "Find file")
-                                ;; (project-find-regexp "Find regexp")
-                                (project-find-dir "Find directory")
-                                (project-vc-dir "VC-Dir")
-                                (project-eshell "Eshell")
-                                (project-any-command "Other")))
+(use-package project
+  :ensure t ;; latest project.el is needed for eglot
+  :custom
+  (project-vc-extra-root-markers '(".project"))
+  (project-vc-merge-submodules nil)
+  (project-kill-buffers-display-buffer-list t)
+  ;; (project-mode-line t)
+  (project-switch-commands '((project-dired "Dired")
+                             (project-find-file "Find file")
+                             ;; (project-find-regexp "Find regexp")
+                             (project-find-dir "Find directory")
+                             (project-vc-dir "VC-Dir")
+                             (project-eshell "Eshell")
+                             (project-any-command "Other"))))
 
 ;;;; Version Control
 
