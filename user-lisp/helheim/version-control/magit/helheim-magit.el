@@ -35,7 +35,7 @@
   ;; estate, so free it up.
   (add-hook 'magit-popup-mode-hook #'hide-mode-line-mode)
   ;;
-  (load "helheim-magit-keys"))
+  (load "helheim-magit-keys" nil t))
 
 (leaf git-modes :straight t)
 

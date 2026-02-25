@@ -13,7 +13,7 @@
   ;; :hook
   ;; (deadgrep-mode-hook . next-error-follow-minor-mode)
   :defer-config
-  (load "helheim-deadgrep-keys"))
+  (load "helheim-deadgrep-keys" nil t))
 
 (add-hook 'deadgrep-mode-hook
           (defun helheim-deadgrep-mode-h ()

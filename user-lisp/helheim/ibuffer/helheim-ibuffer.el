@@ -44,8 +44,8 @@
   :hook
   (ibuffer-mode-hook . ibuffer-auto-mode) ; Automatically update Ibuffer.
   :defer-config
-  (load "helheim-ibuffer-lib")
-  (load "helheim-ibuffer-keys")
+  (load "helheim-ibuffer-lib" nil t)
+  (load "helheim-ibuffer-keys" nil t)
   ;;
   (require 'mule-util)
   (setopt ibuffer-eliding-string (truncate-string-ellipsis))

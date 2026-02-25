@@ -45,8 +45,8 @@
   (dired-mode-hook . dired-omit-mode)
   :defer-config
   (put 'dired-jump 'repeat-map nil)
-  (load "helheim-dired-lib")
-  (load "helheim-dired-keys"))
+  (load "helheim-dired-lib" nil t)
+  (load "helheim-dired-keys" nil t))
 
 (leaf wdired
   :custom
