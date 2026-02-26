@@ -7,7 +7,7 @@
 ;; Place cursor before the character and press “ga” to see information about it.
 ;; Press "<F1> k ga" to find out which command is bound to "ga".
 
-(setq use-default-font-for-symbols t)
+(setopt use-default-font-for-symbols t)
 (let* ((font "Cascadia Code")
        (spec (font-spec :family font :size 13.0 :weight 'normal)))
   (set-face-font 'default spec)
@@ -60,9 +60,9 @@
 
 ;; ;; In case you use VPN. Also Emacs populates `url-proxy-services' variable
 ;; ;; from: `https_proxy', `socks_proxy', `no_proxy' environment variables.
-;; (setq url-proxy-services '(("socks" . "127.0.0.1:10808")
-;;                            ("https" . "127.0.0.1:10809"))
-;;       gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+;; (setopt url-proxy-services '(("socks" . "127.0.0.1:10808")
+;;                              ("https" . "127.0.0.1:10809"))
+;;         gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
 (when (< emacs-major-version 31)
   (load-file (expand-file-name "prepare-user-lisp.el" user-lisp-directory))
