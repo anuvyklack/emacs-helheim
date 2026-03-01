@@ -36,12 +36,8 @@
 
 (use-package markdown-mode
   :ensure t
+  :defer t
   :mode ("README\\.md\\'" . gfm-mode) ;; Github Flavored Markdown
-  :hook
-  (markdown-mode-hook . (lambda ()
-                          (setq tab-width 2
-                                visual-fill-column-width (+ fill-column 10))
-                          (+word-wrap-mode +1)))
   :custom
   ;; Command to convert plain text to HTML
   (markdown-command '("pandoc" "--from=markdown" "--to=html5"))
@@ -50,6 +46,9 @@
   (markdown-fontify-code-blocks-natively t)
   (markdown-gfm-additional-languages '("sh"))
   (markdown-gfm-uppercase-checkbox t)
+  :hook
+  (markdown-mode-hook . helheim-markdown-mode-h)
+  (markdown-mode-hook . +word-wrap-mode)
   :config
   (setq markdown-open-command (pcase system-type
                                 ('gnu/linux "xdg-open")
@@ -66,6 +65,10 @@
                 "<script id='MathJax-script' async src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>"
                 "<script src='https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/highlight.min.js'></script>"
                 "<script>document.addEventListener('DOMContentLoaded', () => { document.body.classList.add('markdown-body'); document.querySelectorAll('pre[lang] > code').forEach((code) => { code.classList.add(code.parentElement.lang); }); document.querySelectorAll('pre > code').forEach((code) => { hljs.highlightBlock(code); }); });</script>")))
+
+(defun helheim-markdown-mode-h ()
+  (setq tab-width 2
+        visual-fill-column-width (+ fill-column 10)))
 
 ;;; .
 (provide 'helheim-markdown)
