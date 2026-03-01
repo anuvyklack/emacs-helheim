@@ -69,7 +69,12 @@
 
 (defun helheim-markdown-mode-h ()
   (setq tab-width 2
-        visual-fill-column-width (+ fill-column 10)))
+        visual-fill-column-width (+ fill-column 10))
+  (push '(?` :insert (lambda ()
+                       (if (hel-linewise-selection-p)
+                           '("```\n" . "\n```")
+                         '("`" . "`"))))
+        hel-surround-alist))
 
 ;;; .
 (provide 'helheim-markdown)
