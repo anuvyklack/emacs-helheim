@@ -5,8 +5,9 @@
   "Improved `keyboard-quit'."
   (interactive)
   (let ((inhibit-quit t))
-    (cond ((minibuffer-window-active-p (minibuffer-window))
+    (cond ((< 0 (minibuffer-depth))
            (abort-recursive-edit))
           ;; don't abort macros
-          ((or defining-kbd-macro executing-kbd-macro) nil)
-          (t (keyboard-quit)))))
+          ((not (or defining-kbd-macro
+                    executing-kbd-macro))
+           (keyboard-quit)))))
