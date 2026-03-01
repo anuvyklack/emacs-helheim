@@ -20,7 +20,8 @@
     "C-<down>" 'markdown-outline-next-same-level
     ;; "<return>" 'markdown-toggle-markup-hiding
     "M-<up>"   'markdown-move-up
-    "M-<down>" 'markdown-move-down))
+    "M-<down>" 'markdown-move-down
+    "z ,"   'markdown-insert-gfm-code-block))
 
 ;;; Config
 
