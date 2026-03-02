@@ -110,9 +110,25 @@
 
 ;; <F1>
 (hel-keymap-set help-map
-  "F" 'describe-face
-  "M" 'describe-keymap
-  "s" 'helpful-symbol
+  ;; Unclatter help-map to make `whick-key' useable.
+  "<f1>" nil "C-h" nil "?" nil "<help>" nil ; `help-for-help'
+  "C-e"  nil ; `view-external-packages' — irrelevant or outdated information
+  "C-o"  nil ; `describe-distribution'
+  "C-q"  nil ; `help-quick-toggle' — irrelevant to us
+  "C-w"  nil ; `describe-no-warranty'
+  "R"    nil ; `info-display-manual' — move to "RET"
+  "C-n"  nil ; `view-emacs-news' — duplicated on "n"
+  ;;
+  "m"   'describe-mode
+  "C-d" 'view-emacs-debugging
+  "F"   'describe-face
+  "M"   'describe-keymap
+  "o"   'describe-syntax ;; swap "s" and "o"
+  "s"   'helpful-symbol
+  "S"   'info-lookup-symbol
+  "RET" 'info-display-manual ;; originally `view-order-manuals'
+  "d"   'apropos-documentation
+  "l"   'view-lossage
   ;; Rebind `b' key from `describe-bindings' to prefix with more binding
   ;; related commands.
   "b" (cons "bindings"

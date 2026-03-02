@@ -17,6 +17,8 @@
   "_"     nil  ; `isearch-forward-symbol'
   "."     nil  ; `isearch-forward-symbol-at-point'
   "M-."   nil) ; `isearch-forward-thing-at-point'
+(hel-keymap-set help-map
+  "C-s"   nil) ; `search-forward-help-for-help'
 
 ;; After deleting "M-." from `search-map' there remain an empty keymap:
 ;; `(27 keymap)' which blocks access to "g" and "m" keys from `hel-leader'.
