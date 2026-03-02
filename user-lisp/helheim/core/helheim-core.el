@@ -179,6 +179,23 @@ The predicate is passed as argument to `buffer-match-p', which see."
   ;; the buffer is narrowed, and where you are, exactly.
   (display-line-numbers-widen t))
 
+;;;; Fill-Column indicator
+
+(add-hook 'prog-mode-hook 'helheim-show-fill-column-indicator)
+
+(defun helheim-show-trailing-whitespace ()
+  "Highlight trailing whitespaces with `trailing-whitespace' face.
+Use `delete-trailing-whitespace' command."
+  (setq-local show-trailing-whitespace t))
+
+;; TODO: report this
+;; BUG: In `display-fill-column-indicator-mode': two strings are compared with
+;;   `eq' instead of `equal' and result is always nil.
+(defun helheim-show-fill-column-indicator ()
+  "Display `fill-column' indicator."
+  (setq-local display-fill-column-indicator t
+              display-fill-column-indicator-character ?\u2502))
+
 ;;;; Fringes
 
 ;; Disable visual indicators in the fringe for buffer boundaries and empty lines.
@@ -369,19 +386,6 @@ The predicate is passed as argument to `buffer-match-p', which see."
       comment-multi-line t)
 
 (add-hook 'prog-mode-hook 'helheim-show-trailing-whitespace)
-(add-hook 'prog-mode-hook 'helheim-show-fill-column-indicator)
-
-(defun helheim-show-trailing-whitespace ()
-  "Highlight trailing whitespaces with `trailing-whitespace' face.
-Use `delete-trailing-whitespace' command."
-  (setq-local show-trailing-whitespace t))
-
-;; TODO: report BUG in `display-fill-column-indicator-mode': 2 strings
-;;   are compared with `eq' instead of `equal' and result is always nil.
-(defun helheim-show-fill-column-indicator ()
-  "Display `fill-column' indicator."
-  (setq-local display-fill-column-indicator t
-              display-fill-column-indicator-character ?\u2502))
 
 ;;;; Tree-sitter
 
