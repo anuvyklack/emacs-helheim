@@ -8,8 +8,10 @@
 ;;
 ;;; Keybindings
 
-(hel-keymap-global-set :state 'normal
-  "C-c l RET" 'eglot)
+(hel-keymap-set mode-specific-map
+  "l" (cons "LSP" (hel-keymap-set (or (keymap-lookup mode-specific-map "l")
+                                      (make-sparse-keymap))
+                    "RET" 'eglot)))
 
 (with-eval-after-load 'eglot
   (hel-keymap-set eglot-mode-map :state 'normal
@@ -20,24 +22,26 @@
     "g D"       '("Declaration" . eglot-find-declaration)
     "g t"       '("Type definition" . eglot-find-typeDefinition)
     "g i"       '("Implementations" . eglot-find-implementation)
-    ;;
-    "C-c l RET" '("LSP reconnect" . eglot-reconnect)
-    "C-c l Q"   '("LSP shutdown" . eglot-shutdown)
     "<f2>"      'eglot-rename
-    "C-c l r"   '("Rename" . eglot-rename)
-    "C-c l f"   '("Format" . eglot-format)
-    "C-c l ="   '("Format" . eglot-format)
-    "C-c l a"   '("Code actions" . eglot-code-actions)
-    "C-c l o"   '("Organize imports" . eglot-code-action-organize-imports)
-    "C-c l q"   '("Quickfix" . eglot-code-action-quickfix)
-    "C-c l e"   '("Refactor Extract" . eglot-code-action-extract)
-    "C-c l i"   '("Rewrite Inline" . eglot-code-action-inline)
-    "C-c l R"   '("Refactor Rewrite" eglot-code-action-rewrite)
-    "C-c l t"   '("Type hierarchy" . eglot-show-type-hierarchy)
-    "C-c l c"   '("Call hierarchy" . eglot-show-call-hierarchy)
     ;;
     "C-c t h"   'eglot-inlay-hints-mode
-    "C-c t s"   'eglot-semantic-tokens-mode))
+    "C-c t s"   'eglot-semantic-tokens-mode
+    ;;
+    "C-c l" (cons "LSP"
+                  (define-keymap
+                    "RET" '("LSP reconnect" . eglot-reconnect)
+                    "Q"   '("LSP shutdown" . eglot-shutdown)
+                    "r"   '("Rename" . eglot-rename)
+                    "f"   '("Format" . eglot-format)
+                    "="   '("Format" . eglot-format)
+                    "a"   '("Code actions" . eglot-code-actions)
+                    "o"   '("Organize imports" . eglot-code-action-organize-imports)
+                    "q"   '("Quickfix" . eglot-code-action-quickfix)
+                    "e"   '("Refactor Extract" . eglot-code-action-extract)
+                    "i"   '("Rewrite Inline" . eglot-code-action-inline)
+                    "R"   '("Refactor Rewrite" eglot-code-action-rewrite)
+                    "t"   '("Type hierarchy" . eglot-show-type-hierarchy)
+                    "c"   '("Call hierarchy" . eglot-show-call-hierarchy)))))
 
 (with-eval-after-load 'flymake
   (hel-keymap-set flymake-mode-map :state 'normal
