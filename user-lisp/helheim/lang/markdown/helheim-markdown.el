@@ -70,11 +70,14 @@
 (defun helheim-markdown-mode-h ()
   (setq tab-width 2
         visual-fill-column-width (+ fill-column 10))
-  (push '(?` :insert (lambda ()
-                       (if (hel-linewise-selection-p)
-                           '("```\n" . "\n```")
-                         '("`" . "`"))))
-        hel-surround-alist))
+  (unless (assq ?` hel-surround-alist)
+    (push '(?` :insert (lambda ()
+                         ;; If selection is linewise enclose it in tripple
+                         ;; backticks otherwise in sinlge one.
+                         (if (hel-linewise-selection-p)
+                             '("```\n" . "\n```")
+                           '("`" . "`"))))
+          hel-surround-alist)))
 
 ;;; .
 (provide 'helheim-markdown)
