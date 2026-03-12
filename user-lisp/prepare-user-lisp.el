@@ -80,7 +80,7 @@ unconditionally."
                         (byte-recompile-file file force 0))))))
         (if force
             (funcall comp)
-          (add-hook 'elpaca-after-init-hook comp)))
+          (add-hook 'after-init-hook comp 95)))
       (loaddefs-generate dirs autoload-file nil nil nil force))
     (when (file-exists-p autoload-file)
       (load autoload-file nil t))))

@@ -36,7 +36,7 @@
 ;;; Config
 
 (use-package hel-paredit
-  :ensure paredit
+  :straight paredit
   :hook
   (emacs-lisp-mode-hook . hel-paredit-mode)
   (lisp-data-mode-hook .  hel-paredit-mode))
@@ -56,7 +56,7 @@
                (body-function . select-window)))
 
 (use-package elisp-demos
-  :ensure t
+  :straight t
   :after helpful
   :config
   (advice-add 'describe-function-1 :after #'elisp-demos-advice-describe-function-1)
@@ -64,7 +64,7 @@
 
 ;; Extra highlighting
 (use-package highlight-defined
-  :ensure t
+  :straight t
   ;; :custom (highlight-defined-face-use-itself . t)
   :hook
   (emacs-lisp-mode-hook . highlight-defined-mode)
@@ -76,7 +76,7 @@
 ;; `elisp-refs-special'
 ;; `elisp-refs-variable'
 (use-package elisp-refs
-  :ensure t
+  :straight t
   :config
   (hel-keymap-set elisp-refs-mode-map
     "C-j" 'elisp-refs-next-match
@@ -96,7 +96,7 @@
 
 ;;;; Go to definition
 
-(elpaca elisp-def)
+(use-package elisp-def :straight t :defer t)
 
 (defun helheim-elisp-find-definitions ()
   "Try `elisp-def', on fail try other xref backends."

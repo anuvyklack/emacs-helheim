@@ -16,15 +16,35 @@
   :type 'string
   :group 'helheim)
 
+;;; straight.el package manager
+
+(setopt straight-check-for-modifications '(check-on-save find-when-checking)
+        ;; Prepend name with space to hide straight buffer in Ibuffer.
+        straight-process-buffer " *straight-process*")
+
+(defvar bootstrap-version)
+(let ((bootstrap-file (expand-file-name "straight/repos/straight.el/bootstrap.el"
+                                        (or (bound-and-true-p straight-base-dir)
+                                            user-emacs-directory)))
+      (bootstrap-version 7)
+      (url "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer (url-retrieve-synchronously url t t)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil t))
+
 ;;; Dependencies
 
-(use-package dash :ensure t)
-(use-package s :ensure t)
-(use-package blackout :ensure t)
-(elpaca pcre2el)
-(elpaca wgrep)
+(use-package dash :straight t)
+(use-package s :straight t)
+(use-package blackout :straight t)
+(use-package pcre2el :straight t :defer t)
+(use-package wgrep :straight t :defer t)
 
-(elpaca avy
+(use-package avy
+  :straight t
+  :config
   (setq avy-keys (number-sequence ?a ?z) ;; Any lower-case letter a-z.
         avy-style 'at-full
         avy-all-windows nil
@@ -33,16 +53,12 @@
         ;; the unpredictability of this (when enabled) makes it a poor default
         avy-single-candidate-jump t))
 
-(use-package hel
-  :ensure (hel :host github :repo "anuvyklack/hel" :files (:defaults "**"))
-  :config
-  (hel-mode))
-
-(elpaca-wait)
+(leaf hel
+  :straight (hel :host github :repo "anuvyklack/hel" :files (:defaults "**"))
+  :global-minor-mode hel-mode)
 
 (use-package transient
-  :ensure t
-  :defer t
+  :straight t
   :custom
   (transient-common-command-prefix "SPC")
   ;; Pop up transient windows at the bottom of the current window instead of
@@ -58,8 +74,7 @@
   (keymap-set transient-map "<escape>" #'transient-quit-one))
 
 (use-package nerd-icons
-  :ensure t
-  :defer t
+  :straight t
   :custom
   (nerd-icons-scale-factor 0.95)
   :config
@@ -70,10 +85,10 @@
            do (setf (alist-get mode nerd-icons-mode-icon-alist)
                     icon-spec)))
 
-;; `helheim-word-wrap' dependencies. It is autoloaded, and Elpaca processes its
-;; queue in `after-init-hook', so we have to install them before that point.
-(elpaca adaptive-wrap)
-(elpaca visual-fill-column)
+;; `helheim-word-wrap' dependencies, which file is autoloaded, so we install
+;; its dependences out of it.
+(use-package adaptive-wrap :straight t :defer t)
+(use-package visual-fill-column :straight t :defer t)
 
 (require 'helheim-lib)
 
@@ -306,8 +321,8 @@ Use `delete-trailing-whitespace' command."
 ;;;;; Scrolling with mouse wheel and touchpad
 
 (use-package ultra-scroll
-  :ensure (ultra-scroll :host github :repo "jdtsmith/ultra-scroll")
-  :hook (elpaca-after-init-hook . ultra-scroll-mode)
+  :straight (ultra-scroll :host github :repo "jdtsmith/ultra-scroll")
+  :hook (after-init-hook . ultra-scroll-mode)
   :custom
   (mouse-wheel-tilt-scroll t) ; Scroll horizontally with mouse side wheel.
   (mouse-wheel-progressive-speed nil))
@@ -377,7 +392,7 @@ Use `delete-trailing-whitespace' command."
         )
 
 (use-package rainbow-delimiters
-  :ensure t
+  :straight t
   :hook prog-mode-hook conf-mode-hook) ; text-mode-hook
 
 ;;;; Prog-mode
@@ -467,8 +482,8 @@ Use `delete-trailing-whitespace' command."
 ;;;; Editing files with very long lines
 
 (use-package so-long
-  :ensure t
-  :hook (elpaca-after-init-hook . global-so-long-mode)
+  :straight t
+  :hook (after-init-hook . global-so-long-mode)
   :config
   ;; Don't disable syntax highlighting and line numbers, or make the buffer
   ;; read-only, in `so-long-minor-mode', so we can have a basic editing
@@ -516,7 +531,7 @@ Use `delete-trailing-whitespace' command."
     "C-c" nil)) ; unbind `describe-copying'
 
 (use-package helpful
-  :ensure t
+  :straight t
   :defer t
   :bind (([remap describe-function] . helpful-callable)
          ([remap describe-variable] . helpful-variable)
@@ -552,6 +567,7 @@ Use `delete-trailing-whitespace' command."
 ;;;;; Save minibuffer history between sessions
 
 (use-package savehist
+  :demand t
   :custom
   (history-length 300)
   (savehist-additional-variables '(kill-ring
@@ -858,7 +874,7 @@ Use `delete-trailing-whitespace' command."
 ;;;; project.el
 
 (use-package project
-  :ensure t ;; latest project.el is needed for eglot
+  :straight (project :type built-in)
   :custom
   (project-vc-extra-root-markers '(".project"))
   (project-vc-merge-submodules nil)
@@ -893,7 +909,7 @@ Use `delete-trailing-whitespace' command."
 ;;;; Which-Key
 
 (use-package which-key
-  :hook (elpaca-after-init-hook . which-key-mode)
+  :hook (after-init-hook . which-key-mode)
   :custom
   (which-key-lighter nil)
   (which-key-idle-delay 1.5)

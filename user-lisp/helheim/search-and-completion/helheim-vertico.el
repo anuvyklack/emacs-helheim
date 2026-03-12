@@ -48,7 +48,7 @@
 ;;; Config
 
 (use-package vertico
-  :ensure t
+  :straight t
   :custom
   (vertico-resize 'grow-only) ; Grow and shrink the Vertico minibuffer
   (vertico-count 15) ; How many candidates to show
@@ -76,12 +76,12 @@
   (keymap-set vertico-directory-map "C-h" 'vertico-directory-up))
 
 (use-package marginalia
-  :ensure t
+  :straight t
   :config
   (marginalia-mode))
 
 (use-package nerd-icons-completion
-  :ensure t
+  :straight t
   :after marginalia
   :custom
   ;; Icons make no sense when they are all the same and only add distraction.”
@@ -92,7 +92,7 @@
   (nerd-icons-completion-mode))
 
 (use-package orderless
-  :ensure t
+  :straight t
   :custom
   (completion-styles '(orderless basic))
   (completion-category-defaults nil)

@@ -55,7 +55,7 @@
 ;;; Config
 
 (use-package corfu
-  :ensure t
+  :straight t
   :custom
   (corfu-auto t)
   (corfu-auto-delay 0.24)
@@ -77,7 +77,7 @@
   (tab-first-completion 'word)
   ;; Disable Ispell completion function. As an alternative try `cape-dict'.
   (text-mode-ispell-word-completion nil)
-  :hook (elpaca-after-init-hook . global-corfu-mode))
+  :hook (after-init-hook . global-corfu-mode))
 
 (use-package corfu-history
   :hook (global-corfu-mode-hook . corfu-history-mode)
@@ -90,13 +90,13 @@
   (corfu-popupinfo-delay '(0.5 . 0.5)))
 
 (use-package nerd-icons-corfu
-  :ensure t
+  :straight t
   :after corfu
   :config
   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
 (use-package cape
-  :ensure t
+  :straight t
   :config
   ;; Add to the global default value of `completion-at-point-functions'
   ;; which is used by `completion-at-point'.

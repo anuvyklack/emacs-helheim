@@ -62,7 +62,7 @@
 ;;; Config
 
 (use-package outli
-  :ensure (outli :host github :repo "jdtsmith/outli")
+  :straight (outli :host github :repo "jdtsmith/outli")
   :blackout outline-mode
   :blackout outline-minor-mode
   :hook (emacs-lisp-mode-hook . outli-mode)

@@ -17,10 +17,10 @@
 
 ;;; Config
 
-(elpaca 'embark-consult)
+(use-package embark-consult :straight t :defer t)
 
 (use-package embark
-  :ensure t
+  :straight t
   :defer t
   :custom
   (which-key-use-C-h-commands nil)

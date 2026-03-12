@@ -59,4 +59,4 @@ If you want Flymake diagnostics to be shown only in sideline:
 ** Warning
 
 DO NOT try to update Eglot with ~eglot-upgrade-eglot~ function. It will try to do
-it via =package.el= package manager, but Helheim disables it since uses Elpaca.
+it via =package.el= package manager, but Helheim disables it since uses straight.el.

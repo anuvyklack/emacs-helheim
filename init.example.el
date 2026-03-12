@@ -68,7 +68,6 @@
   (load-file (expand-file-name "prepare-user-lisp.el" user-lisp-directory))
   (prepare-user-lisp))
 
-(require 'helheim-elpaca)
 (require 'helheim-core)
 
 ;;; Color theme
@@ -81,7 +80,7 @@
 ;; touches to spruce up org-mode elements that some users switch to it from
 ;; their usual dark doom or modus themes when working on org-mode projects.
 ;;   You may try it with ": load-theme" then type "leuven".
-(use-package leuven-theme :ensure t)
+(use-package leuven-theme :straight t)
 
 ;;; Other modules
 

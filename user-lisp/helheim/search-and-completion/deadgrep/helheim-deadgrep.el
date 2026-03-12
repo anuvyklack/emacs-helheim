@@ -9,7 +9,7 @@
   "s" 'deadgrep)
 
 (use-package deadgrep
-  :ensure t
+  :straight t
   :defer t
   ;; :hook
   ;; (deadgrep-mode-hook . next-error-follow-minor-mode)

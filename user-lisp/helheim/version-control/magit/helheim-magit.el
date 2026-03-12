@@ -18,7 +18,7 @@
 ;;; Config
 
 (use-package magit
-  :ensure t
+  :straight t
   :defer t
   :custom
   (magit-refresh-verbose debug-on-error)
@@ -38,7 +38,7 @@
   ;;
   (load "helheim-magit-keys"))
 
-(elpaca git-modes)
+(use-package git-modes :straight t :defer t)
 
 ;;;; project.el: replace VC-dir with Magit
 

@@ -14,7 +14,7 @@
 
 ;; ;; Requires Emacs 31
 ;; (use-package modus-themes
-;;   :ensure t
+;;   :straight t
 ;;   :custom
 ;;   ;; (modus-themes-to-toggle '(modus-operandi modus-vivendi))
 ;;   ;; (modus-themes-to-rotate modus-themes-items)

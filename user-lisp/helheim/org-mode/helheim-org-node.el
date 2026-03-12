@@ -75,14 +75,14 @@
 ;;; Code
 
 (use-package org-mem
-  :ensure t
+  :straight t
   :custom (org-mem-do-sync-with-org-id t)
-  :hook   (elpaca-after-init-hook . org-mem-updater-mode)
+  :hook   (after-init-hook . org-mem-updater-mode)
   :config (unless org-mem-watch-dirs
             (setq org-mem-watch-dirs (list org-directory))))
 
 (use-package org-node
-  :ensure t
+  :straight t
   :custom
   (org-node-prefer-with-heading t)
   (org-node-creation-fn #'org-node-new-file)
@@ -93,7 +93,7 @@
   (org-node-affixation-fn 'helheim-org-node-append-tags)
   (org-node-filter-fn 'helheim-org-node-filter-p)
   :hook
-  (elpaca-after-init-hook . org-node-cache-mode)
+  (after-init-hook . org-node-cache-mode)
   :config
   ;; We have this information in ID.
   (remove-hook 'org-node-creation-hook #'org-node-ensure-crtime-property)
@@ -123,7 +123,7 @@
 
 ;; (use-package org-node-seq
 ;;   :after org-node
-;;   :hook (elpaca-after-init-hook . org-node-seq-mode)
+;;   :hook (after-init-hook . org-node-seq-mode)
 ;;   :config
 ;;   (setopt org-node-seq-defs
 ;;           (list
@@ -141,7 +141,7 @@
   (org-node-backlink-do-drawers t)
   (org-node-backlink-drawer-formatter 'helheim-org-node-backlink-format)
   :hook
-  (elpaca-after-init-hook . org-node-backlink-mode))
+  (after-init-hook . org-node-backlink-mode))
 
 (defun helheim-org-node-backlink-format (id desc &optional _time)
   "Format as list item: \"- [[id:ID][Node title]]\".

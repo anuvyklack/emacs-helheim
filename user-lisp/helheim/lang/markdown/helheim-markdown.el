@@ -28,7 +28,7 @@
 ;; Required by `markdown-mode', or it will install it via package.el
 ;; if it isn't present when you call `markdown-edit-code-block'.
 (use-package edit-indirect
-  :ensure t
+  :straight t
   :defer t
   :config
   (hel-keymap-set edit-indirect-mode-map :state 'normal
@@ -36,7 +36,7 @@
     "Z Q" 'edit-indirect-abort))
 
 (use-package markdown-mode
-  :ensure t
+  :straight t
   :defer t
   :mode ("README\\.md\\'" . gfm-mode) ;; Github Flavored Markdown
   :custom

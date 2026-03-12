@@ -3,10 +3,10 @@
 ;;; Code:
 (require 'dash)
 
-(elpaca casual)
+(use-package casual :straight t :defer t)
 
 ;; (use-package async
-;;   :ensure t
+;;   :straight t
 ;;   :after dired
 ;;   :blackout dired-async-mode
 ;;   (dired-async-mode)) ; Do dired actions asynchronously.
@@ -56,12 +56,12 @@
   )
 
 (use-package diredfl
-  :ensure t
+  :straight t
   :after dired
   :config (diredfl-global-mode))
 
 (use-package nerd-icons-dired
-  :ensure t
+  :straight t
   :blackout t
   :hook
   (dired-mode-hook . nerd-icons-dired-mode)
@@ -69,19 +69,19 @@
   (advice-add 'wdired-change-to-wdired-mode :before (lambda () (nerd-icons-dired-mode -1)))
   (advice-add 'wdired-change-to-dired-mode  :after  (lambda () (nerd-icons-dired-mode +1))))
 
-(elpaca dired-narrow)
-(elpaca dired-subtree)
+(use-package dired-narrow :straight t :defer t)
+(use-package dired-subtree :straight t :defer t)
 
 (use-package dired-copy-paste
-  :ensure (dired-copy-paste :host github :repo "jsilve24/dired-copy-paste")
+  :straight (dired-copy-paste :host github :repo "jsilve24/dired-copy-paste")
   :commands (dired-copy-paste-do-copy
              dired-copy-paste-do-cut
              dired-copy-paste-do-paste))
 
-(elpaca fd-dired)
+(use-package fd-dired :straight t :defer t)
 
 (use-package dired-filter
-  :ensure t
+  :straight t
   :after dired
   :custom
   (dired-filter-verbose nil)

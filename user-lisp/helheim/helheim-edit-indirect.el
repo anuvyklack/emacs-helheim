@@ -32,7 +32,7 @@
 ;;; Code:
 (require 'hel-core)
 
-(elpaca edit-indirect)
+(use-package edit-indirect :straight t :defer t)
 
 ;;; Keybindings
 

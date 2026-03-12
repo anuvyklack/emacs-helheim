@@ -47,7 +47,7 @@
 ;;; Config
 
 (use-package diff-hl
-  :ensure t
+  :straight t
   :commands (diff-hl-stage-current-hunk
              diff-hl-revert-hunk
              diff-hl-next-hunk
@@ -57,7 +57,7 @@
   (diff-hl-show-hunk-function 'diff-hl-show-hunk-inline)
   (diff-hl-show-hunk-inline-smart-lines nil)
   :hook
-  (elpaca-after-init-hook . global-diff-hl-mode)
+  (after-init-hook . global-diff-hl-mode)
   (dired-mode-hook . diff-hl-dired-mode)
   (magit-post-refresh-hook . diff-hl-magit-post-refresh)
   ;; (dired-mode-hook . diff-hl-dired-mode-unless-remote)

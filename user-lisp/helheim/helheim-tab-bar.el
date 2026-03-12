@@ -45,7 +45,7 @@
 ;;; Config
 
 (use-package tab-bar
-  :hook (elpaca-after-init-hook . tab-bar-mode)
+  :hook (after-init-hook . tab-bar-mode)
   :custom
   (tab-bar-format '(tab-bar-format-history
                     tab-bar-format-tabs-groups

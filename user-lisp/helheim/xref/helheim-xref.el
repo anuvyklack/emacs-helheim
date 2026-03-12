@@ -3,7 +3,7 @@
 ;;; Code:
 
 (use-package xref
-  ;; :ensure t
+  ;; :straight t
   :defer t
   :custom
   (xref-search-program 'ripgrep) ; or 'ugrep
@@ -24,14 +24,14 @@
                  (body-function . select-window))))
 
 (use-package dumb-jump
-  :ensure t
+  :straight t
   :after xref
   :config
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
   (remove-hook 'xref-backend-functions #'etags--xref-backend))
 
 (use-package nerd-icons-xref
-  :ensure t
+  :straight t
   :after xref
   :config (nerd-icons-xref-mode))
 

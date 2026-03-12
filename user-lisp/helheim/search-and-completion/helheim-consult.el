@@ -44,7 +44,7 @@
 ;;; Config
 
 (use-package consult
-  :ensure t
+  :straight t
   :defer t
   :custom
   (consult-narrow-key "<")

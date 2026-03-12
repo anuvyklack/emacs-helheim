@@ -64,15 +64,16 @@
 (require 'helheim-markdown)
 
 (use-package flymake
-  :ensure t
+  :straight (flymake :type built-in)
   :hook (prog-mode-hook . flymake-mode)
   :custom
   (flymake-mode-line-lighter nil))
 
-(elpaca jsonrpc)
+;; (use-package jsonrpc
+;;   :straight (jsonrpc :type built-in))
 
 (use-package eglot
-  :ensure t
+  :straight (eglot :type built-in)
   :defer t
   :hook (eglot-managed-mode-hook . hel-update-active-keymaps)
   :custom
@@ -92,20 +93,20 @@
     (cl-callf plist-put eglot-events-buffer-config :size 0)))
 
 (use-package eldoc-box
-  :ensure t
+  :straight t
   :defer t
   :custom
   (eldoc-box-self-insert-command-list '(self-insert-command)))
 
 (use-package consult-eglot
-  :ensure t
+  :straight t
   :after eglot
   :config
   (hel-keymap-set eglot-mode-map
     "<remap> <xref-find-apropos>" 'consult-eglot-symbols))
 
 (use-package sideline
-  :ensure t
+  :straight t
   :blackout t
   :hook (flymake-mode-hook . sideline-mode)
   :custom
@@ -114,7 +115,7 @@
   (sideline-display-backend-name t))
 
 (use-package sideline-flymake
-  :ensure t
+  :straight t
   :after sideline
   :custom
   (sideline-flymake-display-mode 'line) ;; 'line or 'point
@@ -122,7 +123,7 @@
   (add-to-list 'sideline-backends-right 'sideline-flymake))
 
 (use-package sideline-eglot
-  :ensure t
+  :straight t
   :after sideline
   :custom
   (sideline-eglot-code-actions-prefix "󰌵 ") ;; 💡   󰌵 󱠂 󱠃
@@ -130,7 +131,7 @@
   (add-to-list 'sideline-backends-right 'sideline-eglot))
 
 (use-package breadcrumb
-  :ensure t
+  :straight t
   :hook ((c-mode-hook
           c++-mode-hook
           c-ts-mode-hook
