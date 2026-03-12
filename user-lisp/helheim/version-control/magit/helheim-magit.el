@@ -17,16 +17,15 @@
 
 ;;; Config
 
-(use-package magit
+(leaf magit
   :straight t
-  :defer t
   :custom
-  (magit-refresh-verbose debug-on-error)
-  (magit-diff-refine-hunk t) ;; show granular diffs in selected hunk
-  ;; (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
-  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
-  (magit-bury-buffer-function #'magit-restore-window-configuration)
-  :config
+  (magit-refresh-verbose . debug-on-error)
+  (magit-diff-refine-hunk . t) ;; show granular diffs in selected hunk
+  ;; (magit-display-buffer-function . #'magit-display-buffer-fullframe-status-v1)
+  (magit-display-buffer-function . #'magit-display-buffer-same-window-except-diff-v1)
+  (magit-bury-buffer-function . #'magit-restore-window-configuration)
+  :defer-config
   (magit-auto-revert-mode)
   ;;
   ;; Turn ref links into clickable buttons.
@@ -38,7 +37,7 @@
   ;;
   (load "helheim-magit-keys"))
 
-(use-package git-modes :straight t :defer t)
+(leaf git-modes :straight t)
 
 ;;;; project.el: replace VC-dir with Magit
 

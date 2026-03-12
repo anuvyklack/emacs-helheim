@@ -17,15 +17,14 @@
 
 ;;; Config
 
-(use-package embark-consult :straight t :defer t)
+(leaf embark-consult :straight t)
 
-(use-package embark
+(leaf embark
   :straight t
-  :defer t
   :custom
-  (which-key-use-C-h-commands nil)
-  (prefix-help-command 'embark-prefix-help-command)
-  :config
+  (which-key-use-C-h-commands . nil)
+  (prefix-help-command . 'embark-prefix-help-command)
+  :defer-config
   (require 'embark-consult)
   ;; Hide the modeline of the Embark live/completions buffers.
   (add-to-list 'display-buffer-alist

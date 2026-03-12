@@ -36,48 +36,62 @@
 
 ;;; Dependencies
 
-(use-package dash :straight t)
-(use-package s :straight t)
-(use-package blackout :straight t)
-(use-package pcre2el :straight t :defer t)
-(use-package wgrep :straight t :defer t)
+(progn
+  (straight-use-package 'leaf)
+  (straight-use-package 'leaf-keywords)
+  (require 'leaf)
+  (require 'leaf-keywords)
+  ;; leaf.el provides both `:config' and `:defer-config' keywords. However, if
+  ;; a keyword from `leaf-defer-keywords' appears in a declaration, `:config'
+  ;; is treated as `:defer-config'. I consider implicit behavior harmful, so
+  ;; disable it to keep full manual control over what is deferred.
+  (setopt leaf-defer-keywords nil)
+  (setopt leaf-expand-minimally t)
+  (leaf-keywords-init))
 
-(use-package avy
+(leaf dash     :straight t :require t)
+(leaf s        :straight t :require t)
+(leaf blackout :straight t :require t)
+(leaf pcre2el  :straight t)
+(leaf wgrep    :straight t)
+
+(leaf avy
   :straight t
   :config
-  (setq avy-keys (number-sequence ?a ?z) ;; Any lower-case letter a-z.
-        avy-style 'at-full
-        avy-all-windows nil
-        avy-all-windows-alt t
-        avy-background t
-        ;; the unpredictability of this (when enabled) makes it a poor default
-        avy-single-candidate-jump t))
+  (setopt avy-keys (number-sequence ?a ?z) ;; Any lower-case letter a-z.
+          avy-style 'at-full
+          avy-all-windows nil
+          avy-all-windows-alt t
+          avy-background t
+          ;; the unpredictability of this (when enabled) makes it a poor default
+          avy-single-candidate-jump t))
 
 (leaf hel
   :straight (hel :host github :repo "anuvyklack/hel" :files (:defaults "**"))
   :global-minor-mode hel-mode)
 
-(use-package transient
+(leaf transient
   :straight t
-  :custom
-  (transient-common-command-prefix "SPC")
-  ;; Pop up transient windows at the bottom of the current window instead of
-  ;; entire frame. This is more ergonomic for users with large displays or many
-  ;; splits.
-  (transient-display-buffer-action '(display-buffer-below-selected
-                                     (dedicated . t)
-                                     (inhibit-same-window . t)))
-  (transient-show-during-minibuffer-read t)
-  ;; (transient-default-level 5)
   :config
+  (setopt transient-common-command-prefix "SPC"
+          ;; Pop up transient windows at the bottom of the current window
+          ;; instead of entire frame. This is more ergonomic for users with
+          ;; large displays or many splits.
+          transient-display-buffer-action '(display-buffer-below-selected
+                                            (dedicated . t)
+                                            (inhibit-same-window . t))
+          transient-show-during-minibuffer-read t
+          ;; transient-default-level 5
+          )
+  :defer-config
   ;; Close transient menus with ESC.
   (keymap-set transient-map "<escape>" #'transient-quit-one))
 
-(use-package nerd-icons
+(leaf nerd-icons
   :straight t
   :custom
-  (nerd-icons-scale-factor 0.95)
-  :config
+  (nerd-icons-scale-factor . 0.95)
+  :defer-config
   ;; Add some icons
   (cl-loop for (mode . icon-spec)
            in '((fundamental-mode nerd-icons-faicon "nf-fa-file_o" :face nerd-icons-dsilver)
@@ -87,8 +101,8 @@
 
 ;; `helheim-word-wrap' dependencies, which file is autoloaded, so we install
 ;; its dependences out of it.
-(use-package adaptive-wrap :straight t :defer t)
-(use-package visual-fill-column :straight t :defer t)
+(leaf adaptive-wrap :straight t)
+(leaf visual-fill-column :straight t)
 
 (require 'helheim-lib)
 
@@ -160,39 +174,39 @@ The predicate is passed as argument to `buffer-match-p', which see."
         (funcall orig-fun)
       (global-hl-line-unhighlight))))
 
-(use-package hl-line
-  :config (global-hl-line-mode)
+(leaf hl-line
+  :global-minor-mode global-hl-line-mode
   :custom
-  (global-hl-line-sticky-flag 'window) ;; Emacs 31
+  (global-hl-line-sticky-flag . 'window) ;; Emacs 31
   ;; I want current line highlighting only in special modes that are in Hel
   ;; motion state, and disable it when region is active. In text editing modes
   ;; it interferes with Hel selections.
-  (global-hl-line-buffers `(and (or (derived-mode . special-mode)
-                                    ;; For `define-compilation-mode'
-                                    (derived-mode . compilation-mode)
-                                    ;; Follow major modes doesn't inherit
-                                    ;; from `special-mode'.
-                                    (major-mode . dired-mode))
-                                ;; According to my measures, compiled lambda
-                                ;; is two times faster.
-                                ,(native-compile
-                                  '(lambda (buffer)
-                                     (with-current-buffer buffer
-                                       (and (eq hel-state 'motion)
-                                            (not (use-region-p)))))))))
+  (global-hl-line-buffers . `(and (or (derived-mode . special-mode)
+                                      ;; For `define-compilation-mode'
+                                      (derived-mode . compilation-mode)
+                                      ;; Follow major modes doesn't inherit
+                                      ;; from `special-mode'.
+                                      (major-mode . dired-mode))
+                                  ;; According to my measures, compiled lambda
+                                  ;; is two times faster.
+                                  ,(native-compile
+                                    '(lambda (buffer)
+                                       (with-current-buffer buffer
+                                         (and (eq hel-state 'motion)
+                                              (not (use-region-p)))))))))
 
 ;;;; Display line numbers
 
-(use-package display-line-numbers
+(leaf display-line-numbers
   :hook prog-mode-hook conf-mode-hook text-mode-hook
   :custom
-  (display-line-numbers-width 3)
-  (display-line-numbers-type t)
-  (display-line-numbers-width-start t)
-  (display-line-numbers-grow-only t)
+  (display-line-numbers-width . 3)
+  (display-line-numbers-type . t)
+  (display-line-numbers-width-start . t)
+  (display-line-numbers-grow-only . t)
   ;; Show absolute line numbers for narrowed regions to make it easier to tell
   ;; the buffer is narrowed, and where you are, exactly.
-  (display-line-numbers-widen t))
+  (display-line-numbers-widen . t))
 
 ;;;; Fill-Column indicator
 
@@ -307,25 +321,25 @@ Use `delete-trailing-whitespace' command."
 
 ;;;;; Smooth scrolling
 
-(use-package pixel-scroll
+(leaf pixel-scroll
   :custom
   ;; The duration of smooth scrolling.
-  (pixel-scroll-precision-interpolation-total-time 0.3)
-  (pixel-scroll-precision-large-scroll-height 20.0)
+  (pixel-scroll-precision-interpolation-total-time . 0.3)
+  (pixel-scroll-precision-large-scroll-height . 20.0)
   ;; Enable smooth scrolling with PageDown and PageUp keys
-  (pixel-scroll-precision-interpolate-page t)
+  (pixel-scroll-precision-interpolate-page . t)
   :bind
   ([remap scroll-up-command] . pixel-scroll-interpolate-down)
   ([remap scroll-down-command] . pixel-scroll-interpolate-up))
 
 ;;;;; Scrolling with mouse wheel and touchpad
 
-(use-package ultra-scroll
+(leaf ultra-scroll
   :straight (ultra-scroll :host github :repo "jdtsmith/ultra-scroll")
   :hook (after-init-hook . ultra-scroll-mode)
   :custom
-  (mouse-wheel-tilt-scroll t) ; Scroll horizontally with mouse side wheel.
-  (mouse-wheel-progressive-speed nil))
+  (mouse-wheel-tilt-scroll . t) ; Scroll horizontally with mouse side wheel.
+  (mouse-wheel-progressive-speed . nil))
 
 ;;; Text editing
 ;;;; Misc
@@ -391,7 +405,7 @@ Use `delete-trailing-whitespace' command."
         ;; show-paren-when-point-in-periphery t
         )
 
-(use-package rainbow-delimiters
+(leaf rainbow-delimiters
   :straight t
   :hook prog-mode-hook conf-mode-hook) ; text-mode-hook
 
@@ -459,12 +473,11 @@ Use `delete-trailing-whitespace' command."
         (zig        "https://github.com/tree-sitter-grammars/tree-sitter-zig"
                     "v1.1.2")))
 
-(use-package treesit
+(leaf treesit
   :when (treesit-available-p)
-  :defer t
   :hook (emacs-startup-hook . helheim-install-missing-treesit-grammars)
   :custom
-  (treesit-font-lock-level 4)
+  (treesit-font-lock-level . 4)
   :mode
   ;; Emacs provides this setting in yaml-ts-mode.el, but it only works after
   ;; the package is loaded, defeating autoloading. So, we duplicate it here.
@@ -481,8 +494,9 @@ Use `delete-trailing-whitespace' command."
 
 ;;;; Editing files with very long lines
 
-(use-package so-long
+(leaf so-long
   :straight t
+  :require t
   :hook (after-init-hook . global-so-long-mode)
   :config
   ;; Don't disable syntax highlighting and line numbers, or make the buffer
@@ -519,20 +533,19 @@ Use `delete-trailing-whitespace' command."
 ;; Enhance `apropos' and related functions to perform more extensive searches
 (setq apropos-do-all t)
 
-(use-package help
+(leaf help
   :custom
-  (help-enable-autoload nil)
-  (help-enable-completion-autoload nil)
-  (help-enable-symbol-autoload nil)
-  (help-window-select t) ; Focus new help windows on open.
-  :config
+  (help-enable-autoload . nil)
+  (help-enable-completion-autoload . nil)
+  (help-enable-symbol-autoload . nil)
+  (help-window-select . t) ; Focus new help windows on open.
+  :defer-config
   (hel-keymap-set help-map
     "h"   nil   ; unbind `view-hello-file'
     "C-c" nil)) ; unbind `describe-copying'
 
-(use-package helpful
+(leaf helpful
   :straight t
-  :defer t
   :bind (([remap describe-function] . helpful-callable)
          ([remap describe-variable] . helpful-variable)
          ([remap describe-command] . helpful-command)
@@ -566,20 +579,20 @@ Use `delete-trailing-whitespace' command."
 
 ;;;;; Save minibuffer history between sessions
 
-(use-package savehist
-  :demand t
+(leaf savehist
+  :require t
+  :global-minor-mode savehist-mode
   :custom
-  (history-length 300)
-  (savehist-additional-variables '(kill-ring
-                                   mark-ring
-                                   global-mark-ring
-                                   register-alist
-                                   search-ring
-                                   regexp-search-ring))
-  :hook (after-init-hook . savehist-mode)
-  :config
-  (add-hook 'savehist-save-hook 'helheim-savehist-unpropertize-variables-h)
-  (add-hook 'savehist-save-hook 'helheim-savehist-remove-unprintable-registers-h))
+  (history-length . 300)
+  (savehist-additional-variables . '(kill-ring
+                                     mark-ring
+                                     global-mark-ring
+                                     register-alist
+                                     search-ring
+                                     regexp-search-ring))
+  :hook
+  (savehist-save-hook . helheim-savehist-unpropertize-variables-h)
+  (savehist-save-hook . helheim-savehist-remove-unprintable-registers-h))
 
 ;;;; Buffers
 
@@ -708,46 +721,45 @@ Use `delete-trailing-whitespace' command."
 ;; Automatically revert the buffer when its visited file changes on disk.
 ;; Auto Revert will not revert a buffer if it has unsaved changes, or if
 ;; its file on disk is deleted or renamed.
-(use-package autorevert
-  :hook (after-init-hook . global-auto-revert-mode)
+(leaf autorevert
+  :global-minor-mode global-auto-revert-mode
   :custom
-  (auto-revert-stop-on-user-input nil)
-  (auto-revert-verbose t) ; let us know when it happens
-  (auto-revert-use-notify nil)
-  (auto-revert-stop-on-user-input nil)
+  (auto-revert-stop-on-user-input . nil)
+  (auto-revert-verbose . t) ; let us know when it happens
+  (auto-revert-use-notify . nil)
+  (auto-revert-stop-on-user-input . nil)
   ;; Only prompts for confirmation when buffer is unsaved.
-  (revert-without-query (list "."))
-  (global-auto-revert-non-file-buffers t) ; e.g, Dired
-  (global-auto-revert-ignore-modes '(ibuffer-mode ; has its own `ibuffer-auto-mode'
-                                     Buffer-menu-mode)))
+  (revert-without-query . '("."))
+  (global-auto-revert-non-file-buffers . t) ; e.g, Dired
+  (global-auto-revert-ignore-modes . '(ibuffer-mode ; has its own `ibuffer-auto-mode'
+                                       Buffer-menu-mode)))
 
 ;;;;; Keep track of recently opened files and places in them
-(require 'xdg)
 
 ;; Keep track of opened files.
-(use-package recentf
-  :hook (after-init-hook . (lambda ()
-                             (let ((inhibit-message t))
-                               (recentf-mode 1))))
-  :custom
-  (recentf-max-saved-items 300) ; default is 20
+(leaf recentf
+  :hook
+  (after-init-hook . (lambda ()
+                       (let ((inhibit-message t))
+                         (recentf-mode 1))))
+  (kill-emacs-hook . recentf-cleanup)
   :config
-  ;; Auto clean up recent files only in long-running daemon sessions, else
-  ;; do it on quiting Emacs.
-  (setopt recentf-auto-cleanup (if (daemonp) 300))
-  (add-hook 'kill-emacs-hook #'recentf-cleanup)
-
+  (setopt recentf-max-saved-items 300 ; default is 20
+          ;; Auto clean up recent files only in long-running daemon sessions,
+          ;; else do it on quiting Emacs.
+          recentf-auto-cleanup (if (daemonp) 300))
+  :defer-config
   ;; Don't remember files in runtime folders.
+  (require 'xdg)
   (add-to-list 'recentf-exclude (concat "^" (regexp-quote (or (xdg-runtime-dir)
                                                               "/run"))))
-
   ;; PERF: Text properties inflate the size of recentf's files, and there is no
   ;;   reason to persist them (must be first in `recentf-filename-handlers'!)
   (add-to-list 'recentf-filename-handlers #'substring-no-properties))
 
 ;; Save the last location within a file upon reopening.
-(use-package saveplace
-  :custom (save-place-limit 600)
+(leaf saveplace
+  :custom (save-place-limit . 600)
   :hook (after-init-hook . save-place-mode)
   ;; :config
   ;; (setq save-place-file (expand-file-name "saveplace" user-emacs-directory))
@@ -794,19 +806,21 @@ Use `delete-trailing-whitespace' command."
 
 ;;;;; hippie-expand
 
-(use-package hippie-exp
-  :custom
-  (hippie-expand-try-functions-list '( try-expand-dabbrev
-                                       try-expand-dabbrev-all-buffers
-                                       try-expand-dabbrev-from-kill
-                                       try-complete-file-name-partially
-                                       try-complete-file-name
-                                       try-expand-all-abbrevs
-                                       try-expand-list
-                                       try-expand-line
-                                       try-complete-lisp-symbol-partially
-                                       try-complete-lisp-symbol))
-  :bind ([remap dabbrev-expand] . hippie-expand))
+(leaf hippie-exp
+  :config
+  (keymap-global-set "<remap> <dabbrev-expand>" 'hippie-expand)
+  :defer-config
+  (setopt hippie-expand-try-functions-list
+          '( try-expand-dabbrev
+             try-expand-dabbrev-all-buffers
+             try-expand-dabbrev-from-kill
+             try-complete-file-name-partially
+             try-complete-file-name
+             try-expand-all-abbrevs
+             try-expand-list
+             try-expand-line
+             try-complete-lisp-symbol-partially
+             try-complete-lisp-symbol)))
 
 ;;;; Comint (general command interpreter in a window)
 
@@ -824,8 +838,9 @@ Use `delete-trailing-whitespace' command."
 
 ;; Automatically truncate compilation buffers so they don't accumulate too
 ;; much data and bog down the rest of Emacs.
-(autoload 'comint-truncate-buffer "comint" nil t)
-(add-hook 'compilation-filter-hook #'comint-truncate-buffer)
+(leaf comint
+  :commands comint-truncate-buffer
+  :hook (compilation-filter-hook . comint-truncate-buffer))
 
 ;;;; Ediff
 
@@ -852,8 +867,10 @@ Use `delete-trailing-whitespace' command."
 
 ;;;; Eldoc
 
-(blackout 'eldoc-mode)
-(setopt eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly)
+(leaf eldoc
+  :blackout t
+  :custom (eldoc-documentation-strategy . 'eldoc-documentation-compose-eagerly))
+;; eldoc-documentation-functions
 
 ;;;; image-mode
 
@@ -873,20 +890,20 @@ Use `delete-trailing-whitespace' command."
 
 ;;;; project.el
 
-(use-package project
+(leaf project
   :straight (project :type built-in)
   :custom
-  (project-vc-extra-root-markers '(".project"))
-  (project-vc-merge-submodules nil)
-  (project-kill-buffers-display-buffer-list t)
-  ;; (project-mode-line t)
-  (project-switch-commands '((project-dired "Dired")
-                             (project-find-file "Find file")
-                             ;; (project-find-regexp "Find regexp")
-                             (project-find-dir "Find directory")
-                             (project-vc-dir "VC-Dir")
-                             (project-eshell "Eshell")
-                             (project-any-command "Other"))))
+  (project-vc-extra-root-markers . '(".project"))
+  (project-vc-merge-submodules . nil)
+  (project-kill-buffers-display-buffer-list . t)
+  ;; (project-mode-line . t)
+  (project-switch-commands . '((project-dired "Dired")
+                               (project-find-file "Find file")
+                               ;; (project-find-regexp "Find regexp")
+                               (project-find-dir "Find directory")
+                               (project-vc-dir "VC-Dir")
+                               (project-eshell "Eshell")
+                               (project-any-command "Other"))))
 
 ;;;; Version Control
 
@@ -908,14 +925,14 @@ Use `delete-trailing-whitespace' command."
 
 ;;;; Which-Key
 
-(use-package which-key
-  :hook (after-init-hook . which-key-mode)
+(leaf which-key
+  :global-minor-mode which-key-mode
   :custom
-  (which-key-lighter nil)
-  (which-key-idle-delay 1.5)
-  (which-key-idle-secondary-delay 0.25)
-  (which-key-add-column-padding 1)
-  (which-key-max-description-length 40))
+  (which-key-lighter . nil)
+  (which-key-idle-delay . 1.5)
+  (which-key-idle-secondary-delay . 0.25)
+  (which-key-add-column-padding . 1)
+  (which-key-max-description-length . 40))
 
 ;;; .
 (provide 'helheim-core)

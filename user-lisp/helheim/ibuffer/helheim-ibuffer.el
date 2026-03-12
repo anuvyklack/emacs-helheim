@@ -88,29 +88,28 @@
 ;; <leader> p C-b
 (setq project-buffers-viewer 'helheim-ibuffer-project-buffers)
 
-(use-package ibuffer
-  :defer t
+(leaf ibuffer
   :custom
-  (ibuffer-truncate-lines t)
-  (ibuffer-show-empty-filter-groups nil) ; Don't show emtpy filter groups
-  ;; (ibuffer-display-summary nil)
-  ;; (ibuffer-movement-cycle nil)
-  (ibuffer-old-time 2) ;; hours
-  (ibuffer-directory-abbrev-alist `((,abbreviated-home-dir . "~/")))
-  (ibuffer-default-sorting-mode 'filename/process)
-  ;; (ibuffer-read-only-char ?%)
-  ;; (ibuffer-modified-char  ?*)
-  ;; (ibuffer-marked-char    ?>)
-  ;; (ibuffer-locked-char    ?L)
-  ;; (ibuffer-deletion-char  ?D)
-  :config
+  (ibuffer-truncate-lines . t)
+  (ibuffer-show-empty-filter-groups . nil) ; Don't show emtpy filter groups
+  ;; (ibuffer-display-summary . nil)
+  ;; (ibuffer-movement-cycle . nil)
+  (ibuffer-old-time . 2) ;; hours
+  (ibuffer-directory-abbrev-alist . `((,abbreviated-home-dir . "~/")))
+  (ibuffer-default-sorting-mode . 'filename/process)
+  ;; (ibuffer-read-only-char . ?%)
+  ;; (ibuffer-modified-char  . ?*)
+  ;; (ibuffer-marked-char    . ?>)
+  ;; (ibuffer-locked-char    . ?L)
+  ;; (ibuffer-deletion-char  . ?D)
+  :hook
+  (ibuffer-mode-hook . ibuffer-auto-mode) ;; Automatically update Ibuffer.
+  :defer-config
   (require 'mule-util)
   (require 'ibuf-ext)
   (setopt ibuffer-eliding-string (truncate-string-ellipsis)
           ibuffer-maybe-show-predicates (list #'helheim-ibuffer-maybe-show-p))
-  (cl-pushnew 'helpful-mode ibuffer-help-buffer-modes)
-  ;; Automatically update Ibuffer.
-  (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode))
+  (cl-pushnew 'helpful-mode ibuffer-help-buffer-modes))
 
 (advice-add 'ibuffer-generate-filter-groups
             :before #'helheim-ibuffer-update-project-filter-groups)

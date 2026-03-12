@@ -61,16 +61,16 @@
 
 ;;; Config
 
-(use-package outli
+(leaf outli
   :straight (outli :host github :repo "jdtsmith/outli")
-  :blackout outline-mode
-  :blackout outline-minor-mode
+  :blackout outline-mode outline-minor-mode
   :hook (emacs-lisp-mode-hook . outli-mode)
   :config
   (with-eval-after-load 'consult-imenu
     (cl-pushnew '(?h "Headings" font-lock-comment-face)
-                (-> (alist-get 'emacs-lisp-mode consult-imenu-config)
-                    (plist-get :types))
+                (-> consult-imenu-config
+                    (map-elt 'emacs-lisp-mode)
+                    (map-elt :types))
                 :test #'equal)))
 
 (hel-define-advice outline-up-heading (:before (&rest _) push-mark)

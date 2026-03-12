@@ -63,20 +63,23 @@
         org-special-ctrl-a/e t
         org-pretty-entities t)
 
-;; Open org links in the same window. Use "C-c &" to back to the link.
-(with-eval-after-load 'ol
+(leaf ol
+  :defer-config
+  ;; Open org links in the same window. Use "C-c &" to back to the link.
   (setf (alist-get 'file org-link-frame-setup) #'find-file))
 
-(with-eval-after-load 'org-indent
-  (blackout 'org-indent-mode))
+(leaf org-indent
+  :blackout t)
 
-(use-package hel-org :after org)
-
-(use-package org-eldoc
-  :ensure org-contrib
+(leaf hel-org
   :after org
-  :custom (org-eldoc-breadcrumb-separator " → ")
-  :config
+  :require t)
+
+(leaf org-eldoc
+  :straight org-contrib
+  :after org
+  :custom (org-eldoc-breadcrumb-separator . " → ")
+  :defer-config
   ;; Show target for link at point. Emacs has `help-at-pt-display-when-idle',
   ;; but its timer competes with Eldoc for the echo area, so for those who use
   ;; Eldoc in Emacs 31 `eldoc-help-at-pt' option was added.
@@ -347,12 +350,11 @@ Like `org-attach' but tuned for Emacs Helheim."
 
 ;;;; org-cliplink
 
-(use-package org-cliplink
-  :ensure t
-  :defer t
+(leaf org-cliplink
+  :straight t
   :custom
-  (org-cliplink-max-length nil)
-  (org-cliplink-ellipsis "…"))
+  (org-cliplink-max-length . nil)
+  (org-cliplink-ellipsis . "…"))
 
 (with-eval-after-load 'org-keys
   (hel-keymap-set org-mode-map

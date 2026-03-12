@@ -72,7 +72,8 @@
 
 ;;; Color theme
 
-(use-package helheim-modus-themes
+(leaf helheim-modus-themes
+  :require t
   :config
   (load-theme 'modus-operandi t))
 
@@ -80,7 +81,7 @@
 ;; touches to spruce up org-mode elements that some users switch to it from
 ;; their usual dark doom or modus themes when working on org-mode projects.
 ;;   You may try it with ": load-theme" then type "leuven".
-(use-package leuven-theme :straight t)
+(leaf leuven-theme :straight t)
 
 ;;; Other modules
 
@@ -109,12 +110,11 @@
 
 ;;; Org mode
 
-;; The `org-directory' variable must be set before `helheim-org' is loaded!
-(setopt org-directory (expand-file-name "~/notes/"))
-
-;; Which modules to load. Place cursor on variable and press "M" to see
-;; all possible values.
-(setq org-modules '(ol-bibtex ol-docview ol-info))
+;; Following variables must be set before `helheim-org' is loaded!
+(setopt org-directory (expand-file-name "~/notes/")
+        ;; Which modules to load.
+        ;; Place cursor on variable and press "M" to see all possible values.
+        org-modules '(ol-bibtex ol-docview ol-info))
 
 (require 'helheim-org)
 (require 'helheim-org-node)

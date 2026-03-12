@@ -32,7 +32,7 @@
 ;;; Code:
 (require 'hel-core)
 
-(use-package edit-indirect :straight t :defer t)
+(leaf edit-indirect :straight t)
 
 ;;; Keybindings
 

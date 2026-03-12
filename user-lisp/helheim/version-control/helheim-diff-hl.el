@@ -46,16 +46,16 @@
 
 ;;; Config
 
-(use-package diff-hl
+(leaf diff-hl
   :straight t
   :commands (diff-hl-stage-current-hunk
              diff-hl-revert-hunk
              diff-hl-next-hunk
              diff-hl-previous-hunk)
   :custom
-  (diff-hl-show-staged-changes nil)
-  (diff-hl-show-hunk-function 'diff-hl-show-hunk-inline)
-  (diff-hl-show-hunk-inline-smart-lines nil)
+  (diff-hl-show-staged-changes . nil)
+  (diff-hl-show-hunk-function . 'diff-hl-show-hunk-inline)
+  (diff-hl-show-hunk-inline-smart-lines . nil)
   :hook
   (after-init-hook . global-diff-hl-mode)
   (dired-mode-hook . diff-hl-dired-mode)
@@ -64,7 +64,7 @@
   ;; (vc-dir-mode-hook . turn-on-diff-hl-mode)
   ;; (diff-hl-mode-hook . diff-hl-flydiff-mode)
   (diff-hl-mode-hook . diff-hl-show-hunk-mouse-mode)
-  :init
+  :defer-config
   ;; Suppress default repeat-map assigment.
   (setq diff-hl-repeat-exceptions '(diff-hl-revert-hunk
                                     diff-hl-previous-hunk

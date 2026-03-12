@@ -74,26 +74,28 @@
 
 ;;; Code
 
-(use-package org-mem
+(leaf org-mem
   :straight t
-  :custom (org-mem-do-sync-with-org-id t)
+  :custom (org-mem-do-sync-with-org-id . t)
   :hook   (after-init-hook . org-mem-updater-mode)
-  :config (unless org-mem-watch-dirs
-            (setq org-mem-watch-dirs (list org-directory))))
+  :require t
+  :config
+  (unless org-mem-watch-dirs
+    (setq org-mem-watch-dirs (list org-directory))))
 
-(use-package org-node
+(leaf org-node
   :straight t
-  :custom
-  (org-node-prefer-with-heading t)
-  (org-node-creation-fn #'org-node-new-file)
-  (org-node-file-slug-fn #'org-node-slugify-for-web)
-  (org-node-file-timestamp-format (concat helheim-id-format "--")) ;; Denote format
-  (org-node-blank-input-hint nil)
-  (org-node-alter-candidates t)
-  (org-node-affixation-fn 'helheim-org-node-append-tags)
-  (org-node-filter-fn 'helheim-org-node-filter-p)
-  :hook
-  (after-init-hook . org-node-cache-mode)
+  :require t
+  :hook (after-init-hook . org-node-cache-mode)
+  :init
+  (setopt org-node-prefer-with-heading t
+          org-node-creation-fn #'org-node-new-file
+          org-node-file-slug-fn #'org-node-slugify-for-web
+          org-node-file-timestamp-format (concat helheim-id-format "--") ;; Denote format
+          org-node-blank-input-hint nil
+          org-node-alter-candidates t
+          org-node-affixation-fn 'helheim-org-node-append-tags
+          org-node-filter-fn 'helheim-org-node-filter-p)
   :config
   ;; We have this information in ID.
   (remove-hook 'org-node-creation-hook #'org-node-ensure-crtime-property)
@@ -121,9 +123,10 @@
   (not (or (org-mem-property-with-inheritance "IGNORE" node)
            (org-mem-property-with-inheritance "ROAM_EXCLUDE" node))))
 
-;; (use-package org-node-seq
+;; (leaf org-node-seq
 ;;   :after org-node
 ;;   :hook (after-init-hook . org-node-seq-mode)
+;;   :require t
 ;;   :config
 ;;   (setopt org-node-seq-defs
 ;;           (list
@@ -136,10 +139,10 @@
 
 ;;;; Backlinks drawers
 
-(use-package org-node-backlink
+(leaf org-node-backlink
   :custom
-  (org-node-backlink-do-drawers t)
-  (org-node-backlink-drawer-formatter 'helheim-org-node-backlink-format)
+  (org-node-backlink-do-drawers . t)
+  (org-node-backlink-drawer-formatter . 'helheim-org-node-backlink-format)
   :hook
   (after-init-hook . org-node-backlink-mode))
 
@@ -151,11 +154,10 @@ ID and DESC are link id and description, TIME a Lisp time value."
 
 ;;;; Backlinks buffer
 
-(use-package org-node-context
+(leaf org-node-context
   :after org-node
-  :defer t
   :custom
-  (org-node-context-collapse-more-than 1) ;; Start in collapsed state.
+  (org-node-context-collapse-more-than . 1) ;; Start in collapsed state.
   :config
   (add-hook 'org-node-context-postprocess-hook
             'helheim-org-node-context--add-empty-line-at-eob

@@ -63,74 +63,76 @@
 ;; For on hover documentation formatting.
 (require 'helheim-markdown)
 
-(use-package flymake
+(leaf flymake
   :straight (flymake :type built-in)
   :hook (prog-mode-hook . flymake-mode)
   :custom
-  (flymake-mode-line-lighter nil))
+  (flymake-mode-line-lighter . nil))
 
-;; (use-package jsonrpc
+;; (leaf jsonrpc
 ;;   :straight (jsonrpc :type built-in))
 
-(use-package eglot
+(leaf eglot
   :straight (eglot :type built-in)
-  :defer t
   :hook (eglot-managed-mode-hook . hel-update-active-keymaps)
   :custom
-  (eglot-sync-connect 1)
-  (eglot-autoshutdown t)
-  (eglot-confirm-server-edits '((t . maybe-diff)))
+  (eglot-sync-connect . 1)
+  (eglot-autoshutdown . t)
+  (eglot-confirm-server-edits . '((t . maybe-diff)))
   ;; Margin indicator may increase line height due to glyph display
   ;; failures or emoji font height differences.
-  (eglot-code-action-indications '(eldoc-hint))
-  (eglot-code-action-indicator "") ;; 💡   󰌵 󱠂 󱠃
-  (eglot-extend-to-xref t)
-  :config
+  (eglot-code-action-indications . '(eldoc-hint))
+  (eglot-code-action-indicator . "") ;; 💡   󰌵 󱠂 󱠃
+  (eglot-extend-to-xref . t)
+  :defer-config
   ;; PERF: Disable the eglot-events-buffer, so Emacs doesn't churn GC and
   ;;   CPU cycles on pretty-printing the events buffer in the background
   ;;   (once it reaches max size).
   (unless init-file-debug
     (cl-callf plist-put eglot-events-buffer-config :size 0)))
 
-(use-package eldoc-box
+(leaf eldoc-box
   :straight t
-  :defer t
   :custom
-  (eldoc-box-self-insert-command-list '(self-insert-command)))
+  (eldoc-box-self-insert-command-list . '(self-insert-command)))
 
-(use-package consult-eglot
+(leaf consult-eglot
   :straight t
   :after eglot
   :config
   (hel-keymap-set eglot-mode-map
     "<remap> <xref-find-apropos>" 'consult-eglot-symbols))
 
-(use-package sideline
+(leaf sideline
   :straight t
   :blackout t
   :hook (flymake-mode-hook . sideline-mode)
   :custom
-  (sideline-format-right "  %s")
-  (sideline-backends-right-skip-current-line nil)
-  (sideline-display-backend-name t))
+  (sideline-format-right . "  %s")
+  (sideline-backends-right-skip-current-line . nil)
+  (sideline-display-backend-name . t))
 
-(use-package sideline-flymake
+(leaf sideline-flymake
   :straight t
   :after sideline
   :custom
-  (sideline-flymake-display-mode 'line) ;; 'line or 'point
-  :config
-  (add-to-list 'sideline-backends-right 'sideline-flymake))
+  (sideline-flymake-display-mode . 'line) ;; 'line or 'point
+  :hook (sideline-backends-right . sideline-flymake)
+  ;; :config
+  ;; (add-to-list 'sideline-backends-right 'sideline-flymake)
+  )
 
-(use-package sideline-eglot
+(leaf sideline-eglot
   :straight t
   :after sideline
   :custom
-  (sideline-eglot-code-actions-prefix "󰌵 ") ;; 💡   󰌵 󱠂 󱠃
-  :config
-  (add-to-list 'sideline-backends-right 'sideline-eglot))
+  (sideline-eglot-code-actions-prefix . "󰌵 ") ;; 💡   󰌵 󱠂 󱠃
+  :hook (sideline-backends-right . sideline-eglot)
+  ;; :config
+  ;; (add-to-list 'sideline-backends-right 'sideline-eglot)
+  )
 
-(use-package breadcrumb
+(leaf breadcrumb
   :straight t
   :hook ((c-mode-hook
           c++-mode-hook

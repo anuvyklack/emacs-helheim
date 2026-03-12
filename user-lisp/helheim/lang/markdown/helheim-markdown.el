@@ -27,30 +27,28 @@
 
 ;; Required by `markdown-mode', or it will install it via package.el
 ;; if it isn't present when you call `markdown-edit-code-block'.
-(use-package edit-indirect
+(leaf edit-indirect
   :straight t
-  :defer t
-  :config
+  :defer-config
   (hel-keymap-set edit-indirect-mode-map :state 'normal
     "Z Z" 'edit-indirect-commit
     "Z Q" 'edit-indirect-abort))
 
-(use-package markdown-mode
+(leaf markdown-mode
   :straight t
-  :defer t
   :mode ("README\\.md\\'" . gfm-mode) ;; Github Flavored Markdown
   :custom
   ;; Command to convert plain text to HTML
-  (markdown-command '("pandoc" "--from=markdown" "--to=html5"))
-  (markdown-list-indent-width 2)
-  (markdown-enable-highlighting-syntax t)
-  (markdown-fontify-code-blocks-natively t)
-  (markdown-gfm-additional-languages '("sh"))
-  (markdown-gfm-uppercase-checkbox t)
+  (markdown-command . '("pandoc" "--from=markdown" "--to=html5"))
+  (markdown-list-indent-width . 2)
+  (markdown-enable-highlighting-syntax . t)
+  (markdown-fontify-code-blocks-natively . t)
+  (markdown-gfm-additional-languages . '("sh"))
+  (markdown-gfm-uppercase-checkbox . t)
   :hook
   (markdown-mode-hook . helheim-markdown-mode-h)
   (markdown-mode-hook . +word-wrap-mode)
-  :config
+  :defer-config
   (setq markdown-open-command (pcase system-type
                                 ('gnu/linux "xdg-open")
                                 ('darwin "open")))

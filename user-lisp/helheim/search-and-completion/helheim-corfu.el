@@ -54,48 +54,48 @@
 
 ;;; Config
 
-(use-package corfu
+(leaf corfu
   :straight t
+  :global-minor-mode global-corfu-mode
   :custom
-  (corfu-auto t)
-  (corfu-auto-delay 0.24)
-  (corfu-auto-prefix 2)
-  (corfu-cycle t)
-  (corfu-count 16)
-  (corfu-max-width 120)
-  (corfu-quit-at-boundary 'separator) ;; M-SPC to continue completion.
-  (corfu-quit-no-match 'separator)
+  (corfu-auto . t)
+  (corfu-auto-delay . 0.24)
+  (corfu-auto-prefix . 2)
+  (corfu-cycle . t)
+  (corfu-count . 16)
+  (corfu-max-width . 120)
+  (corfu-quit-at-boundary . 'separator) ;; M-SPC to continue completion.
+  (corfu-quit-no-match . 'separator)
   ;; When the completion popup is visible, by default the current candidate is
   ;; previewed into the buffer, and further input commits that candidate as
   ;; previewed. The feature is in line with other common editors.
   ;; - t :: non-inserting preview
-  (corfu-preview-current 'insert)
-  (corfu-preselect 'prompt)
-  (corfu-on-exact-match nil) ;; Handling of exact matches.
-  (global-corfu-minibuffer t)
-  (tab-always-indent 'complete)
-  (tab-first-completion 'word)
+  (corfu-preview-current . 'insert)
+  (corfu-preselect . 'prompt)
+  (corfu-on-exact-match . nil) ;; Handling of exact matches.
+  (global-corfu-minibuffer . t)
+  (tab-always-indent . 'complete)
+  (tab-first-completion . 'word)
   ;; Disable Ispell completion function. As an alternative try `cape-dict'.
-  (text-mode-ispell-word-completion nil)
-  :hook (after-init-hook . global-corfu-mode))
+  (text-mode-ispell-word-completion . nil))
 
-(use-package corfu-history
+(leaf corfu-history
   :hook (global-corfu-mode-hook . corfu-history-mode)
   :config
   (add-to-list 'savehist-additional-variables 'corfu-history))
 
-(use-package corfu-popupinfo
+(leaf corfu-popupinfo
   :hook (global-corfu-mode-hook . corfu-popupinfo-mode)
   :custom
   (corfu-popupinfo-delay '(0.5 . 0.5)))
 
-(use-package nerd-icons-corfu
+(leaf nerd-icons-corfu
   :straight t
   :after corfu
   :config
   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
-(use-package cape
+(leaf cape
   :straight t
   :config
   ;; Add to the global default value of `completion-at-point-functions'

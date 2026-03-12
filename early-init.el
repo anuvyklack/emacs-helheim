@@ -209,8 +209,8 @@ This variable holds a list of Emacs UI features that can be enabled:
 ;;; use-package
 
 ;; Explicit is better than implicit.
-(setq use-package-always-ensure nil ; Do not auto `:ensure'.
-      use-package-hook-name-suffix nil) ; Specify the full hook name.
+(setq use-package-always-ensure nil) ; Do not auto `:ensure'.
+;; (setq use-package-hook-name-suffix nil) ; Specify the full hook name.
 
 (setq use-package-enable-imenu-support t)
 

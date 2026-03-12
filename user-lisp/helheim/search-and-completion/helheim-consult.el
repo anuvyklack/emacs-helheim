@@ -43,19 +43,18 @@
 
 ;;; Config
 
-(use-package consult
+(leaf consult
   :straight t
-  :defer t
   :custom
-  (consult-narrow-key "<")
-  (consult-fd-args '((if (executable-find "fdfind" 'remote) "fdfind" "fd")
-                     "--color=never"
-                     ;; https://github.com/sharkdp/fd/issues/839
-                     "--full-path --absolute-path"
-                     "--hidden --exclude .git"))
-  (xref-show-xrefs-function #'consult-xref)
-  (xref-show-definitions-function #'consult-xref)
-  :config
+  (consult-narrow-key . "<")
+  (consult-fd-args . '((if (executable-find "fdfind" 'remote) "fdfind" "fd")
+                       "--color=never"
+                       ;; https://github.com/sharkdp/fd/issues/839
+                       "--full-path --absolute-path"
+                       "--hidden --exclude .git"))
+  (xref-show-xrefs-function . #'consult-xref)
+  (xref-show-definitions-function . #'consult-xref)
+  :defer-config
   ;; Aggressive asynchronous that yield instantaneous results. (suitable for
   ;; high-performance systems.) Note: Minad, the author of Consult, does not
   ;; recommend aggressive values.

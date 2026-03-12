@@ -2,19 +2,18 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package xref
+(leaf xref
   ;; :straight t
-  :defer t
   :custom
-  (xref-search-program 'ripgrep) ; or 'ugrep
-  (xref-auto-jump-to-first-definition 'show)
-  (xref-prompt-for-identifier nil)
-  (xref-history-storage #'xref-window-local-history)
+  (xref-search-program . 'ripgrep) ; or 'ugrep
+  (xref-auto-jump-to-first-definition . 'show)
+  (xref-prompt-for-identifier . nil)
+  (xref-history-storage . #'xref-window-local-history)
   ;; ;; Enable completion in the minibuffer instead of the definitions buffer.
   ;; ;; You can use `embark-export' to export minibuffer content to xref buffer.
-  ;; (xref-show-xrefs-function #'xref-show-definitions-completing-read)
-  ;; (xref-show-definitions-function #'xref-show-definitions-completing-read)
-  ;; ;; (xref-show-definitions-function #'xref-show-definitions-buffer-at-bottom)
+  ;; (xref-show-xrefs-function . #'xref-show-definitions-completing-read)
+  ;; (xref-show-definitions-function . #'xref-show-definitions-completing-read)
+  ;; ;; (xref-show-definitions-function . #'xref-show-definitions-buffer-at-bottom)
   :config
   ;; Open xref buffer in another window
   (add-to-list 'display-buffer-alist
@@ -23,17 +22,17 @@
                  (inhibit-same-window . t)
                  (body-function . select-window))))
 
-(use-package dumb-jump
+(leaf dumb-jump
   :straight t
   :after xref
   :config
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
   (remove-hook 'xref-backend-functions #'etags--xref-backend))
 
-(use-package nerd-icons-xref
+(leaf nerd-icons-xref
   :straight t
   :after xref
-  :config (nerd-icons-xref-mode))
+  :global-minor-mode nerd-icons-xref-mode)
 
 ;;; Make Xref try all backends untill first one succeed
 

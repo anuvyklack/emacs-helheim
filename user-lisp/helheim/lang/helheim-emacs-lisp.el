@@ -35,7 +35,7 @@
 
 ;;; Config
 
-(use-package hel-paredit
+(leaf hel-paredit
   :straight paredit
   :hook
   (emacs-lisp-mode-hook . hel-paredit-mode)
@@ -55,7 +55,7 @@
                (inhibit-same-window . t)
                (body-function . select-window)))
 
-(use-package elisp-demos
+(leaf elisp-demos
   :straight t
   :after helpful
   :config
@@ -63,7 +63,7 @@
   (advice-add 'helpful-update      :after #'elisp-demos-advice-helpful-update))
 
 ;; Extra highlighting
-(use-package highlight-defined
+(leaf highlight-defined
   :straight t
   ;; :custom (highlight-defined-face-use-itself . t)
   :hook
@@ -75,9 +75,9 @@
 ;; `elisp-refs-symbol'
 ;; `elisp-refs-special'
 ;; `elisp-refs-variable'
-(use-package elisp-refs
+(leaf elisp-refs
   :straight t
-  :config
+  :defer-config
   (hel-keymap-set elisp-refs-mode-map
     "C-j" 'elisp-refs-next-match
     "C-k" 'elisp-refs-prev-match
@@ -89,14 +89,14 @@
                  elisp-refs-prev-match))
     (hel-advice-add cmd :around #'hel-jump-command-a)))
 
-(use-package edebug
+(leaf edebug
   :custom
-  (edebug-print-length 10)
-  (edebug-print-level 3))
+  (edebug-print-length . 10)
+  (edebug-print-level . 3))
 
 ;;;; Go to definition
 
-(use-package elisp-def :straight t :defer t)
+(leaf elisp-def :straight t)
 
 (defun helheim-elisp-find-definitions ()
   "Try `elisp-def', on fail try other xref backends."

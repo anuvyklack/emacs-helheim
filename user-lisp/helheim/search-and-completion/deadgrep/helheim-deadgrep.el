@@ -8,12 +8,11 @@
 (hel-keymap-set search-map
   "s" 'deadgrep)
 
-(use-package deadgrep
+(leaf deadgrep
   :straight t
-  :defer t
   ;; :hook
   ;; (deadgrep-mode-hook . next-error-follow-minor-mode)
-  :config
+  :defer-config
   (load "helheim-deadgrep-keys"))
 
 (add-hook 'deadgrep-mode-hook

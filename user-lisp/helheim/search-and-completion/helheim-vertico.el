@@ -47,13 +47,15 @@
 
 ;;; Config
 
-(use-package vertico
+(leaf vertico
   :straight t
+  :global-minor-mode vertico-mode
+  :hook (minibuffer-setup-hook . vertico-repeat-save)
   :custom
-  (vertico-resize 'grow-only) ; Grow and shrink the Vertico minibuffer
-  (vertico-count 15) ; How many candidates to show
-  (vertico-scroll-margin 2)
-  (vertico-cycle nil)
+  (vertico-resize . 'grow-only) ; Grow and shrink the Vertico minibuffer
+  (vertico-count . 15) ; How many candidates to show
+  (vertico-scroll-margin . 2)
+  (vertico-cycle . nil)
   :config
   ;; Prompt indicator for `completing-read-multiple'.
   (when (< emacs-major-version 31)
@@ -62,12 +64,11 @@
                   (cons (format "[CRM%s] %s"
                                 (string-replace "[ \t]*" "" crm-separator)
                                 (car args))
-                        (cdr args)))))
-  (add-hook 'minibuffer-setup-hook #'vertico-repeat-save)
-  (vertico-mode))
+                        (cdr args))))))
 
-(use-package vertico-directory
+(leaf vertico-directory
   :after vertico
+  :require t
   :hook
   ;; Cleans up path when moving directories with shadowed paths syntax, e.g.
   ;; cleans ~/foo/bar/// to /, and ~/foo/bar/~/ to ~/.
@@ -75,30 +76,28 @@
   :config
   (keymap-set vertico-directory-map "C-h" 'vertico-directory-up))
 
-(use-package marginalia
+(leaf marginalia
   :straight t
-  :config
-  (marginalia-mode))
+  :global-minor-mode marginalia-mode)
 
-(use-package nerd-icons-completion
+(leaf nerd-icons-completion
   :straight t
   :after marginalia
   :custom
   ;; Icons make no sense when they are all the same and only add distraction.”
-  (nerd-icons-completion-category-icons nil)
-  (nerd-icons-completion-icon-size 0.95)
-  :config
-  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup)
-  (nerd-icons-completion-mode))
+  (nerd-icons-completion-category-icons . nil)
+  (nerd-icons-completion-icon-size . 0.95)
+  :hook (marginalia-mode-hook . nerd-icons-completion-marginalia-setup)
+  :global-minor-mode nerd-icons-completion-mode)
 
-(use-package orderless
+(leaf orderless
   :straight t
   :custom
-  (completion-styles '(orderless basic))
-  (completion-category-defaults nil)
+  (completion-styles . '(orderless basic))
+  (completion-category-defaults . nil)
   ;; Despite override in the name orderless can still be used in `find-file' etc.
-  (completion-category-overrides '((file (styles orderless partial-completion))))
-  ;; (orderless-component-separator #'orderless-escapable-split-on-space)
+  (completion-category-overrides . '((file (styles orderless partial-completion))))
+  ;; (orderless-component-separator . #'orderless-escapable-split-on-space)
   )
 
 (provide 'helheim-vertico)

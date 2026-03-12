@@ -13,11 +13,11 @@ Add following line to your init.el file:
 
 If you want Flymake diagnostics to be shown only in sideline:
 #+begin_src emacs-lisp
-(use-package helheim-eglot
-  :config
-  (add-hook 'sideline-mode-hook (lambda ()
-                                  (remove-hook 'eldoc-documentation-functions
-                                               'flymake-eldoc-function t))))
+(leaf helheim-eglot
+  :require t
+  :hook (sideline-mode-hook . (lambda ()
+                                (remove-hook 'eldoc-documentation-functions
+                                             'flymake-eldoc-function t))))
 #+end_src
 
 ** Keybindings

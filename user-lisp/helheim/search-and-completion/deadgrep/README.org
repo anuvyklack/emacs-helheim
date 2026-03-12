@@ -16,6 +16,7 @@ This module setup [[https://github.com/Wilfred/deadgrep][Deadgrep]] — a nice i
 
 If you want a preview in other window follows your moves in deadgrep buffer:
 #+begin_src emacs-lisp
-(use-package heleheim-deadgrep
+(leaf heleheim-deadgrep
+  :require t
   :hook (deadgrep-mode-hook . next-error-follow-minor-mode))
 #+end_src

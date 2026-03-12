@@ -84,10 +84,10 @@
 
 ;;; Customize
 
-(use-package cus-edit
-  :defer t
-  :init (hel-set-initial-state 'Custom-mode 'normal)
+(leaf cus-edit
   :config
+  (hel-set-initial-state 'Custom-mode 'normal)
+  :defer-config
   (hel-keymap-set custom-mode-map :state 'normal
     "z j" 'widget-forward
     "z k" 'widget-backward
@@ -175,14 +175,14 @@
 
 ;;; Man
 
-(use-package man
-  :defer t
-  :init (hel-set-initial-state 'Man-mode 'normal)
+(leaf man
   :config
+  (hel-set-initial-state 'Man-mode 'normal)
   (add-hook 'Man-mode-hook
             (defun helheim-man-mode-h ()
               (setq-local revert-buffer-function (lambda (&rest _)
                                                    (Man-update-manpage)))))
+  :defer-config
   ;; User may also enable `outline-minor-mode' in a Man buffer, so the keys
   ;; should possibly not interfere with it.
   (hel-keymap-set Man-mode-map :state 'normal
