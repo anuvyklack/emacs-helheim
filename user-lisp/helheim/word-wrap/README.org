@@ -6,4 +6,4 @@ lines in the buffer without modifying the buffer content.
 ** Enable
 
 No need to ~require~ this module manually. The =+word-wrap-mode= is autoloaded, and
-bound to =SPC t w=.
+bound to =SPC t w= (or =C-c t w=).
