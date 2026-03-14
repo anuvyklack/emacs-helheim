@@ -50,27 +50,28 @@
               "X"   'org-mem-reset)))
 
 ;; Keys that available in Org mode.
-(hel-keymap-set (keymap-lookup org-mode-map "C-c")
-  ;; "insert"
-  "i i" '("add ID" . org-node-nodeify-entry) ; "ii" - insert ID
-  "i I" '("add ID and ignore" . helheimg-org-node-create-ignored-node)
-  "i n" '("insert link to node" . org-node-insert-link) ; insert node
-  "i a" 'org-node-add-alias
-  ;; Because "C-c C-q" is `org-set-tags-command'
-  "i q" 'org-node-add-tags-here ;; or `org-node-add-tags'
-  ;; "i q" 'org-node-set-tags ; or `org-node-set-tags'
-  ;;
-  ;; "links"
-  "l t" 'org-node-insert-transclusion
-  "l y" 'org-node-insert-transclusion-as-subtree
-  ;;
-  ;; "notes"
-  "n b" '("backlinks buffer" . helheim-org-node-backlinks-buffer)
-  "n i" '("add ID" . org-node-nodeify-entry)
-  "n I" '("add ID and ignore" . helheimg-org-node-create-ignored-node)
-  "n l" '("insert link to node" . org-node-insert-link)
-  ;; "n I" 'org-node-insert-include ;; TODO. Not yet a good command.
-  "n w" 'org-node-refile) ;; because "C-c C-w" is `org-refile'
+(with-eval-after-load 'org-keys
+  (hel-keymap-set (keymap-lookup org-mode-map "C-c")
+    ;; "insert"
+    "i i" '("add ID" . org-node-nodeify-entry) ; "ii" - insert ID
+    "i I" '("add ID and ignore" . helheimg-org-node-create-ignored-node)
+    "i n" '("insert link to node" . org-node-insert-link) ; insert node
+    "i a" 'org-node-add-alias
+    ;; Because "C-c C-q" is `org-set-tags-command'
+    "i q" 'org-node-add-tags-here ;; or `org-node-add-tags'
+    ;; "i q" 'org-node-set-tags ; or `org-node-set-tags'
+    ;;
+    ;; "links"
+    "l t" 'org-node-insert-transclusion
+    "l y" 'org-node-insert-transclusion-as-subtree
+    ;;
+    ;; "notes"
+    "n b" '("backlinks buffer" . helheim-org-node-backlinks-buffer)
+    "n i" '("add ID" . org-node-nodeify-entry)
+    "n I" '("add ID and ignore" . helheimg-org-node-create-ignored-node)
+    "n l" '("insert link to node" . org-node-insert-link)
+    ;; "n I" 'org-node-insert-include ;; TODO. Not yet a good command.
+    "n w" 'org-node-refile)) ;; because "C-c C-w" is `org-refile'
 
 ;;; Code
 

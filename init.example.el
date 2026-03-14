@@ -125,7 +125,6 @@
 
 (require 'helheim-emacs-lisp)
 (require 'helheim-markdown)
-(require 'helheim-rust)
 (require 'helheim-sh)
 
 ;;; Keybindings

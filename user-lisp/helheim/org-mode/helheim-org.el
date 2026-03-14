@@ -1,5 +1,4 @@
 ;;; helheim-org.el -*- lexical-binding: t; no-byte-compile: t; -*-
-;;; Commentary:
 ;;; Code:
 (require 'hel-core)
 
@@ -17,15 +16,17 @@
     "g n" 'org-next-link
     "g N" 'org-previous-link
     "] l" 'org-next-link
-    "[ l" 'org-previous-link)
+    "[ l" 'org-previous-link
+    ","   (define-keymap
+            "a"   'org-attach
+            "o"   'org-open-at-point))
   ;; <leader>
   (hel-keymap-set (keymap-lookup org-mode-map "C-c")
-    "'"   nil ;; `org-edit-special' is moved to "z'"
-    ","   nil ;; `org-priority' is moved to "z,"
-    "/"   nil ;; `org-sparse-tree' is moved to "z/"
+    "'"   nil ;; `org-edit-special' — moved to "z'"
+    ","   nil ;; `org-priority' — moved to "z,"
+    "/"   nil ;; `org-sparse-tree' — moved to "z/"
     "RET" 'dired-jump ;; rebind `org-ctrl-c-ret', which is also on "z RET"
     "a"   'org-attach
-    "o"   'org-open-at-point
     "t i" 'org-toggle-inline-images
     "t l" 'org-toggle-link-display
     "t f" 'org-table-toggle-formula-debugger
@@ -53,9 +54,6 @@
 
 ;;; Config
 
-(unless org-directory
-  org-directory (expand-file-name "~/org/"))
-
 (setopt org-insert-heading-respect-content nil
         org-M-RET-may-split-line '((default . t)
                                    (item . nil))
@@ -78,7 +76,8 @@
 (leaf org-eldoc
   :straight org-contrib
   :after org
-  :custom (org-eldoc-breadcrumb-separator . " → ")
+  :init
+  (setopt org-eldoc-breadcrumb-separator " → ")
   :defer-config
   ;; Show target for link at point. Emacs has `help-at-pt-display-when-idle',
   ;; but its timer competes with Eldoc for the echo area, so for those who use
@@ -194,24 +193,24 @@ heading fontification."
 ;;   and `org-open-at-point' loads it only for headings, but not for links.
 (cl-pushnew 'org-attach org-modules)
 
-(use-package org
-  :custom
-  (org-attach-id-dir (expand-file-name "org-attach/" org-directory))
-  (org-attach-method 'mv) ;; move
-  (org-attach-store-link-p 'attached)
-  (org-attach-preferred-new-method 'id)
-  (org-attach-use-inheritance nil)
-  (org-attach-dir-relative t)
-  (org-attach-sync-delete-empty-dir t)
-  (org-attach-id-to-path-function-list '(helheim-org-attach-id-ts-folder-format
-                                         org-attach-id-uuid-folder-format
-                                         identity))
+(leaf org-attach
+  :after org
   :config
-  (setopt org-attach-auto-tag "ATTACH")
-  (cl-pushnew org-attach-auto-tag
-              org-tags-exclude-from-inheritance
-              :test #'equal)
-  (keymap-set org-mode-map "<remap> <org-attach>" 'helheim-org-attach))
+  (setopt org-attach-id-dir (expand-file-name "org-attach/" org-directory)
+          org-attach-method 'mv ;; move
+          org-attach-store-link-p 'attached
+          org-attach-preferred-new-method 'id
+          org-attach-use-inheritance nil
+          org-attach-dir-relative t
+          org-attach-sync-delete-empty-dir t
+          org-attach-id-to-path-function-list '(helheim-org-attach-id-ts-folder-format
+                                                org-attach-id-uuid-folder-format
+                                                identity)
+          org-attach-auto-tag "ATTACH")
+  (add-to-list 'org-tags-exclude-from-inheritance org-attach-auto-tag)
+  (with-eval-after-load 'org-keys
+    (hel-keymap-set org-mode-map
+      "<remap> <org-attach>" 'helheim-org-attach)))
 
 (defun helheim-org-attach-id-ts-folder-format (id)
   "Translate an ID based on a ISO8601 timestamp to a folder-path.
@@ -352,13 +351,12 @@ Like `org-attach' but tuned for Emacs Helheim."
 
 (leaf org-cliplink
   :straight t
-  :custom
-  (org-cliplink-max-length . nil)
-  (org-cliplink-ellipsis . "…"))
-
-(with-eval-after-load 'org-keys
-  (hel-keymap-set org-mode-map
-    "<remap> <org-insert-link>" 'helheim-org-insert-link))
+  :config
+  (setopt org-cliplink-max-length nil
+          org-cliplink-ellipsis "…")
+  (with-eval-after-load 'org-keys
+    (hel-keymap-set org-mode-map
+      "<remap> <org-insert-link>" 'helheim-org-insert-link)))
 
 ;; Based on https://xenodium.com/emacs-dwim-do-what-i-mean/
 (defun helheim-org-insert-link ()
@@ -380,7 +378,8 @@ Like `org-attach' but tuned for Emacs Helheim."
           ((and clipboard-url (not point-at-link))
            (org-cliplink))
           (t
-           (call-interactively 'org-insert-link)))))
+           (call-interactively 'org-insert-link))))
+  (hel-extend-selection -1))
 
 ;;; .
 (provide 'helheim-org)
