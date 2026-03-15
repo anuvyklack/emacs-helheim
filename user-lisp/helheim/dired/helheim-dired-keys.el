@@ -120,7 +120,7 @@
   ;; on upper-case letters. The exception to this is "p" which is bound
   ;; to `dired-filter-pop', which is a very common operation and warrants
   ;; a quick binding.
-  "f"   dired-filter-map
+  "f"   'dired-filter-map
   "F"   'dired-filter-group-mode
   "C-c t f" 'dired-filter-group-mode ;; like in Ibuffer
   ;; dired narrow

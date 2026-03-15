@@ -85,10 +85,12 @@
 (leaf dired-filter
   :straight t
   :after dired
-  :custom
-  (dired-filter-verbose . nil)
-  (dired-filter-prefix . nil)
-  (dired-filter-mark-prefix . nil)
+  :require t
+  :init
+  ;; These variables must be set before `dired-filter' is loaded.
+  (setopt dired-filter-prefix nil
+          dired-filter-verbose nil
+          dired-filter-mark-prefix nil)
   :config
   (setopt dired-filter-group-saved-groups
           '(("default"
@@ -106,7 +108,8 @@
              ;; ("Org"
              ;;  (extension . "org"))
              ("PDF"
-              (extension . "pdf"))))))
+              (extension . "pdf")))))
+  (fset 'dired-filter-map dired-filter-map))
 
 ;; `ls-lisp' package
 (setq ls-lisp-verbosity nil
