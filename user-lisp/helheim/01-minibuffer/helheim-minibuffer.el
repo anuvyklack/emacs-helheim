@@ -1,5 +1,4 @@
-;;; helheim-vertico.el -*- lexical-binding: t; no-byte-compile: t; -*-
-;;; Commentary:
+;;; helheim-minibuffer.el -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;; Code:
 (require 'hel-core)
 
@@ -51,11 +50,11 @@
   :straight t
   :global-minor-mode vertico-mode
   :hook (minibuffer-setup-hook . vertico-repeat-save)
-  :custom
-  (vertico-resize . 'grow-only) ; Grow and shrink the Vertico minibuffer
-  (vertico-count . 15) ; How many candidates to show
-  (vertico-scroll-margin . 2)
-  (vertico-cycle . nil)
+  :init
+  (setopt vertico-resize 'grow-only ; Grow and shrink the Vertico minibuffer
+          vertico-count 15 ; How many candidates to show
+          vertico-scroll-margin 2
+          vertico-cycle nil)
   :config
   ;; Prompt indicator for `completing-read-multiple'.
   (when (< emacs-major-version 31)
@@ -74,7 +73,8 @@
   ;; cleans ~/foo/bar/// to /, and ~/foo/bar/~/ to ~/.
   (rfn-eshadow-update-overlay-hook . vertico-directory-tidy)
   :config
-  (keymap-set vertico-directory-map "C-h" 'vertico-directory-up))
+  (hel-keymap-set vertico-directory-map
+    "C-h" 'vertico-directory-up))
 
 (leaf marginalia
   :straight t
@@ -83,22 +83,12 @@
 (leaf nerd-icons-completion
   :straight t
   :after marginalia
-  :custom
-  ;; Icons make no sense when they are all the same and only add distraction.”
-  (nerd-icons-completion-category-icons . nil)
-  (nerd-icons-completion-icon-size . 0.95)
+  :global-minor-mode nerd-icons-completion-mode
   :hook (marginalia-mode-hook . nerd-icons-completion-marginalia-setup)
-  :global-minor-mode nerd-icons-completion-mode)
+  :init
+  ;; Icons make no sense when they are all the same and only add distraction.
+  (setopt nerd-icons-completion-category-icons nil)
+  (setopt nerd-icons-completion-icon-size 0.95))
 
-(leaf orderless
-  :straight t
-  :custom
-  (completion-styles . '(orderless basic))
-  (completion-category-defaults . nil)
-  ;; Despite override in the name orderless can still be used in `find-file' etc.
-  (completion-category-overrides . '((file (styles orderless partial-completion))))
-  ;; (orderless-component-separator . #'orderless-escapable-split-on-space)
-  )
-
-(provide 'helheim-vertico)
-;;; helheim-vertico.el ends here
+(provide 'helheim-minibuffer)
+;;; helheim-minibuffer.el ends here

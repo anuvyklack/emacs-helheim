@@ -4,10 +4,6 @@ A common search and complet functionallity you are expect in modern editor.
 
 ** Helheim modules
 
-- =helheim-vertico= ::
-  Configures [[https://github.com/minad/vertico][Vertico]], which turns the Emacs minibuffer into a command-palette
-  analogue.
-
 - =helheim-consult= ::
   Configures [[https://github.com/minad/consult][Consult]], which provides a set of search-and-preview commands.
 
@@ -29,10 +25,6 @@ a smooth start.
   Search in current project with ripgrep and show results in minibuffer.
   Use =C-c C-c= to export them to ~grep-mode~ buffer.
 
-- =C-c C-c= in minibuffer ::
-  With search results in minibuffer export them to regular buffer with
-  appropriate major mode.
-
 - =i= ::
   In practically all buffers with search results: ~grep-mode~, ~deadgrep-mode~,
   ~occur-mode~, you can switch to Insert state for editing original files directly
@@ -41,12 +33,7 @@ a smooth start.
 
   The only place where it doesn't work is Xref buffer (~xref--xref-buffer-mode~).
 
-- =Space '= :: Repeat last search.
-- =Space "= :: Select a search session from the history and repeat it.
-
 - =Space s r= :: Search and replace string literally.
 - =Space s R= :: Search and replace Emacs regexp.
 
-- =C-r= :: Minibuffer history. =C-r= is chosen because it’s the same key used in
-  shells. See also the excellent article: [[https://andreyor.st/posts/2023-10-27-you-dont-need-a-terminal-emulator/]["You don’t need a terminal emulator"]].
 

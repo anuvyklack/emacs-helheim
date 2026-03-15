@@ -69,6 +69,7 @@
   (prepare-user-lisp))
 
 (require 'helheim-core)
+(require 'helheim-minibuffer) ; Emacs alternative of command pallet
 
 ;;; Color theme
 
@@ -93,7 +94,6 @@
 ;;; Search and completion
 
 (require 'helheim-corfu)    ; Code completion menus
-(require 'helheim-vertico)  ; Emacs version of command pallet
 (require 'helheim-consult)  ; A set of search commands with preview
 (require 'helheim-deadgrep) ; Interface to Ripgrep
 (require 'helheim-embark)   ; Context-aware action menus

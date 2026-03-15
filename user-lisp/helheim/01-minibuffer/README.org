@@ -1,0 +1,24 @@
+* helheim-minibuffer
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-minibuffer)
+#+end_src
+
+** Usage
+
+| =Space '= | Reopen last minibuffer session.                               |
+| =Space "= | Select a minibuffer session from the history and activate it. |
+
+*** Keys in minibuffer
+**** Normal state
+| =y=      | copy current candidate to kill ring |
+| =j= / =k=  | next / previous candidate           |
+| =gg= / =G= | first / last candidate              |
+
+**** Normal and Insert states
+| =C-c C-c=       | export minibuffer candidates to regular buffer (~embark-export~) |
+| =C-j= / =C-k=     | move over candidates                                           |
+| =C-S-j= / =C-S-k= | move over groups of candidates                                 |
+| =C-r=           | history (like in shell)                                        |
+| =C-l=           | insert current candidate in minibuffer                         |
+| =C-h=           | directory up, where appliable                                  |
