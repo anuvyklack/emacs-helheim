@@ -4,6 +4,10 @@
 
 (with-eval-after-load 'diff-hl
   (hel-keymap-set diff-hl-mode-map :state 'normal
+    ;; "] ]" 'diff-hl-next-hunk
+    ;; "[ [" 'diff-hl-previous-hunk
+    ;; "[ {" 'diff-hl-show-hunk-previous
+    ;; "] }" 'diff-hl-show-hunk-next
     "] v" 'diff-hl-show-hunk-next
     "[ v" 'diff-hl-show-hunk-previous)
   (hel-keymap-set diff-hl-mode-map
@@ -15,34 +19,6 @@
     "C-c v s" '("Stage hunk" . diff-hl-stage-dwim)
     "C-c v r" '("Revert hunk" . diff-hl-revert-hunk)
     "C-c v =" '("Goto hunk" . diff-hl-diff-goto-hunk)))
-
-;;;; diff-hl-show-hunk mode
-
-(with-eval-after-load 'diff-hl-show-hunk
-  (hel-keymap-set diff-hl-show-hunk-map :state 'motion
-    "["   'diff-hl-show-hunk-previous
-    "]"   'diff-hl-show-hunk-next)
-  (hel-keymap-set diff-hl-show-hunk-map
-    "C-j" 'diff-hl-show-hunk-next
-    "C-k" 'diff-hl-show-hunk-previous
-    "y"   'diff-hl-show-hunk-copy-original-text
-    "s"   'diff-hl-show-hunk-stage-hunk))
-
-(with-eval-after-load 'diff-hl-show-hunk-inline
-  (hel-keymap-set diff-hl-show-hunk-inline-transient-mode-map :state 'motion
-    "j"   'diff-hl-show-hunk-inline--popup-up
-    "k"   'diff-hl-show-hunk-inline--popup-down
-    "C-b" 'diff-hl-show-hunk-inline--popup-pagedown
-    "C-f" 'diff-hl-show-hunk-inline--popup-pageup
-    "C-u" 'diff-hl-show-hunk-inline--popup-pagedown
-    "C-d" 'diff-hl-show-hunk-inline--popup-pageup))
-
-(define-advice diff-hl-show-hunk-inline (:after (&rest _) helheim)
-  (setq diff-hl-show-hunk-inline--current-footer
-        (if diff-hl-show-staged-changes
-            "(q)Quit  (])Next  ([)Previous  (r)Revert  (y)Copy original"
-          "(q)Quit  (])Next  ([)Previous  (s)Stage  (r)Revert  (y)Copy original"))
-  (diff-hl-show-hunk-inline-scroll-to 0))
 
 ;;; Config
 
@@ -73,6 +49,33 @@
                                     diff-hl-show-hunk-previous
                                     diff-hl-show-hunk-next
                                     diff-hl-stage-dwim)))
+
+(with-eval-after-load 'diff-hl-show-hunk
+  (hel-keymap-set diff-hl-show-hunk-map :state 'motion
+    "["   'diff-hl-show-hunk-previous
+    "]"   'diff-hl-show-hunk-next)
+  (hel-keymap-set diff-hl-show-hunk-map
+    "C-j" 'diff-hl-show-hunk-next
+    "C-k" 'diff-hl-show-hunk-previous
+    "y"   'diff-hl-show-hunk-copy-original-text
+    "s"   'diff-hl-show-hunk-stage-hunk))
+
+(leaf diff-hl-show-hunk-inline
+  :defer-config
+  (hel-keymap-set diff-hl-show-hunk-inline-transient-mode-map :state 'motion
+    "j"   'diff-hl-show-hunk-inline--popup-up
+    "k"   'diff-hl-show-hunk-inline--popup-down
+    "C-b" 'diff-hl-show-hunk-inline--popup-pagedown
+    "C-f" 'diff-hl-show-hunk-inline--popup-pageup
+    "C-u" 'diff-hl-show-hunk-inline--popup-pagedown
+    "C-d" 'diff-hl-show-hunk-inline--popup-pageup)
+  :config
+  (define-advice diff-hl-show-hunk-inline (:after (&rest _) helheim)
+    (setq diff-hl-show-hunk-inline--current-footer
+          (if diff-hl-show-staged-changes
+              "(q)Quit  (])Next  ([)Previous  (r)Revert  (y)Copy original"
+            "(q)Quit  (])Next  ([)Previous  (s)Stage  (r)Revert  (y)Copy original"))
+    (diff-hl-show-hunk-inline-scroll-to 0)))
 
 ;;; .
 (provide 'helheim-diff-hl)
