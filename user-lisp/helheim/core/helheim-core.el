@@ -92,11 +92,10 @@
   (nerd-icons-scale-factor . 0.95)
   :defer-config
   ;; Add some icons
-  (cl-loop for (mode . icon-spec)
-           in '((fundamental-mode nerd-icons-faicon "nf-fa-file_o" :face nerd-icons-dsilver)
-                (deadgrep-mode nerd-icons-faicon "nf-fa-search"))
-           do (setf (alist-get mode nerd-icons-mode-icon-alist)
-                    icon-spec)))
+  (-each '((fundamental-mode nerd-icons-faicon "nf-fa-file_o" :face nerd-icons-dsilver)
+           (deadgrep-mode nerd-icons-faicon "nf-fa-search"))
+    (-lambda ((mode . icon-spec))
+      (setf (alist-get mode nerd-icons-mode-icon-alist) icon-spec))))
 
 ;; `helheim-word-wrap' dependencies, which file is autoloaded, so we install
 ;; its dependences out of it.
