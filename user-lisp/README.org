@@ -1,3 +1,3 @@
-All Emacs lisp file in this directory will be byte-compiled, scraped for
+All Emacs lisp files in this directory will be byte-compiled, scraped for
 autoload cookies and ensured to be in =load-path= to be available via ~require~ or
 ~load~ functions.
