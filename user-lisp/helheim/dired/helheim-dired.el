@@ -12,38 +12,41 @@
 ;;   (dired-async-mode)) ; Do dired actions asynchronously.
 
 (leaf dired
-  :custom
+  :hook
+  (dired-mode-hook . dired-hide-details-mode)
+  (dired-mode-hook . dired-omit-mode)
+  :config
+  (setopt delete-by-moving-to-trash t
+          auto-revert-remote-files nil)
+  (setopt dired-kill-when-opening-new-dired-buffer t
+          ;; dired-free-space nil
+          dired-dwim-target t ;; Propose a target for intelligent moving/copying
+          dired-mouse-drag-files t ;; 'move
+          dired-deletion-confirmer 'y-or-n-p
+          dired-recursive-deletes 'always
+          dired-recursive-copies 'always
+          dired-vc-rename-file t
+          dired-create-destination-dirs 'ask
+          dired-do-revert-buffer t
+          dired-auto-revert-buffer #'dired-directory-changed-p ; #'dired-buffer-stale-p
+          dired-no-confirm t
+          dired-clean-confirm-killing-deleted-buffers nil
+          dired-maybe-use-globstar t
+          dired-omit-verbose t
+          dired-omit-files "\\`[.]?#\\|\\`[.].+"
+          dired-hide-details-hide-symlink-targets nil
+          dired-hide-details-hide-absolute-location t) ;; Emacs 31
+  :defer-config
+  ;; PERF: `dired-listing-switches' is autoloaded, so setup in `:defer-config'
+  ;;   section to avoid loading Dired at Emacs startup.
+  ;; ---------------------------------------------------------------------
   ;; -l                   :: use a long listing format
   ;; -a, --all            :: do not ignore entries starting with "."
   ;; -A, --almost-all     :: do not list implied "." and ".."
   ;; -h, --human-readable :: print sizes like 1K 234M 2G
   ;; -F, --classify       :: append indicator (one of /=>@|) to entries
   ;; -v                   :: natural sort of (version) numbers within text
-  (dired-listing-switches . "-lAhF -v --group-directories-first")
-  ;; (dired-free-space . nil)
-  (dired-kill-when-opening-new-dired-buffer . t)
-  (dired-dwim-target . t) ;; Propose a target for intelligent moving/copying
-  (dired-mouse-drag-files . t) ;; 'move
-  (delete-by-moving-to-trash . t)
-  (dired-deletion-confirmer . 'y-or-n-p)
-  (dired-recursive-deletes . 'always)
-  (dired-recursive-copies . 'always)
-  (dired-vc-rename-file . t)
-  (dired-create-destination-dirs . 'ask)
-  (dired-do-revert-buffer . t)
-  (auto-revert-remote-files . nil)
-  (dired-auto-revert-buffer . #'dired-directory-changed-p) ; #'dired-buffer-stale-p
-  (dired-no-confirm . t)
-  (dired-clean-confirm-killing-deleted-buffers . nil)
-  (dired-maybe-use-globstar . t)
-  (dired-omit-verbose . t)
-  (dired-omit-files . "\\`[.]?#\\|\\`[.].+")
-  (dired-hide-details-hide-symlink-targets . nil)
-  ;; (dired-hide-details-hide-absolute-location . t) ;; from Emacs 31
-  :hook
-  (dired-mode-hook . dired-hide-details-mode)
-  (dired-mode-hook . dired-omit-mode)
-  :defer-config
+  (setopt dired-listing-switches "-lAhF -v --group-directories-first")
   (put 'dired-jump 'repeat-map nil)
   (load "helheim-dired-lib" nil t)
   (load "helheim-dired-keys" nil t))
