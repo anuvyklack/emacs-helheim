@@ -1,4 +1,4 @@
-;;; helheim-embark/keys.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-embark-keys.el -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;; Commentary:
 ;;
 ;; Original Embark keybindings are tailored for Emacs.
@@ -250,4 +250,7 @@ the first target at point."
   (embark-select)
   (next-line))
 
-;;; helheim-embark/keys.el ends here
+;;; .
+(provide 'helheim-embark '(keys))
+;;; helheim-embark-keys.el ends here
+

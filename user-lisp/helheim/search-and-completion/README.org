@@ -14,9 +14,6 @@ A common search and complet functionallity you are expect in modern editor.
 - =helheim-corfu= ::
   Configures [[https://github.com/minad/corfu][Corfu]], which provides floating menus for code completion.
 
-- =helheim-embark= ::
-  Configures [[https://github.com/oantolin/embark][Embark]] package. See below for more details.
-
 ** Notable keybindings
 
 A few keybinding highlights from my day-to-day usage, to provide inspiration and
@@ -52,41 +49,4 @@ a smooth start.
 
 - =C-r= :: Minibuffer history. =C-r= is chosen because it’s the same key used in
   shells. See also the excellent article: [[https://andreyor.st/posts/2023-10-27-you-dont-need-a-terminal-emulator/]["You don’t need a terminal emulator"]].
-
-** Embark
-
-The Embark package provides context-dependent menus analogous to a mouse
-right-click. Its default configuration is geared toward native Emacs users, whos
-do not have Normal and Insert states, and includes many commands for which Hel
-already provides keybindings.
-
-I really like the idea of using Embark menus for useful but rarely used
-commands. This module therefore mostly cleans up Embark’s keymaps by removing
-commands like "kill region" or "copy region" which Hel already covers.
-
-Which menu Embark shows depends on the target’s category, and the corresponding
-keymaps are stored in ~embark-$category-map~ variables. A good introduction to
-categories can be found in the [[https://github.com/minad/marginalia/#adding-custom-annotators-or-classifiers][Marginalia README]].
-
-Another notable use case for Embark is the minibuffer. You can read an excellent
-article about it here: [[https://karthinks.com/software/fifteen-ways-to-use-embark/][Fifteen ways to use Embark]].
-
-*** Keybindings
-
-- =C-m= (~embark-act~) :: Open the Embark menu. Works everywhere.
-
-  - =C-m c= :: Capitalize the region. I use it very often as a counterpart to =gu=
-    and =gU=.
-
-**** In minibuffer
-
-- =C-c C-c= (~embark-export~) 
-- =C-c C-v= (~embark-collect~)
-- =C-c C-b= (~embark-become~)
-
-The difference between ~embark-export~ and ~embark-collect~ is well explained in
-the [[https://github.com/oantolin/embark?tab=readme-ov-file#working-with-sets-of-possible-targets][Embark README]].
-
-=c=, =v=, =b= keys are choosen because they are next to each other on qwerty layout.
-(The same reason why Emacs uses =M-x=, =C-x= and =C-c=)
 

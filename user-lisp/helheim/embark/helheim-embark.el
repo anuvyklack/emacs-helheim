@@ -1,11 +1,9 @@
 ;;; helheim-embark.el -*- lexical-binding: t; no-byte-compile: t; -*-
-;;; Commentary:
 ;;; Keybindings
 
 (require 'hel-core)
 
 (hel-keymap-global-set
-  ;; "C-<return>" 'embark-act
   "C-<m>" 'embark-act
   "M-m"   'embark-dwim)
 
@@ -17,20 +15,24 @@
 
 ;;; Config
 
-(leaf embark-consult :straight t)
-
 (leaf embark
   :straight t
-  :custom
-  (which-key-use-C-h-commands . nil)
-  (prefix-help-command . 'embark-prefix-help-command)
-  :defer-config
-  (require 'embark-consult)
+  :init
+  (setopt which-key-use-C-h-commands nil
+          prefix-help-command 'embark-prefix-help-command)
+  :config
   ;; Hide the modeline of the Embark live/completions buffers.
   (add-to-list 'display-buffer-alist
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
-                 (window-parameters (mode-line-format . none)))))
+                 (window-parameters (mode-line-format . none))))
+  :defer-config
+  (load "helheim-embark-keys" nil t))
+
+(leaf embark-consult
+  :straight t
+  :after embark
+  :require t)
 
 ;;; .
 (provide 'helheim-embark)

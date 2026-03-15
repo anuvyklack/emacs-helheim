@@ -1,0 +1,53 @@
+* helheim-embark
+
+The [[https://github.com/oantolin/embark][Embark]] package provides context-dependent menus analogous to a mouse
+right-click. Its default configuration is geared toward native Emacs users, whos
+do not have Normal and Insert states, and includes many commands for which Hel
+already provides keybindings.
+
+I really like the idea of using Embark menus for useful but rarely used
+commands. This module therefore mostly cleans up Embark’s keymaps by removing
+commands like "kill region" or "copy region" which Hel already covers.
+
+Which menu Embark shows depends on the target’s category, and the corresponding
+keymaps are stored in ~embark-$category-map~ variables. A good introduction to
+categories can be found in the [[https://github.com/minad/marginalia/#adding-custom-annotators-or-classifiers][Marginalia README]].
+
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-embark)
+#+end_src
+
+** Usage
+
+| =C-m= | Open the Embark menu. Works everywhere. (~embark-act~) |
+| =M-m= | (~embark-dwim~)                                        |
+
+Example:
+
+| =C-m c= | Capitalize the region. Nice counterpart to =gu= and =gU=. |
+
+*** In minibuffer
+
+| =C-c C-c= | ~embark-export~  |
+| =C-c C-v= | ~embark-collect~ |
+| =C-c C-b= | ~embark-become~  |
+
+=c=, =v=, =b= keys are choosen because they are next to each other on qwerty layout.
+(The same reason why Emacs uses =M-x=, =C-x= and =C-c=)
+
+- =C-c C-c= (~embark-export~) ::
+  Export minibuffer candidates to regular buffer with deducing an appropriate
+  major mode. If the candidates are files you will get a Dired buffer; if they
+  are buffers — Ibuffer; =C-/= (~consult-line~) command exports to ~occur-mode~
+  buffer; =SPC /= (~consult-ripgrep~) exports to ~grep-mode~.
+
+- =C-c C-v= (~embark-collect~) ::
+  The same as =C-c C-c= but without trying to deduce major mode. The rule of
+  thumb is: always use =C-c C-c=, unless you know what you're doing.
+
+- =C-c C-b= (~embark-become~) :: 
+
+  In minibuffer make the invoked command become a different command. For more
+  details and examples, read this great article: [[https://karthinks.com/software/fifteen-ways-to-use-embark/][Fifteen ways to use Embark]].
+
