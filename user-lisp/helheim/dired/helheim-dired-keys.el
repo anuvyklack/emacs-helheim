@@ -3,7 +3,6 @@
 
 (require 'dired)
 (require 'dired-x) ;; Load because it unconditionally binds "F" and "V" keys.
-(require 'dired-subtree)
 
 ;; All original keys are overriden!
 (hel-keymap-set dired-mode-map
@@ -94,7 +93,7 @@
   "U"   'dired-unmark-all-marks ;; remove all marks from all files
   "~"   'dired-toggle-marks     ;; reverse marks
   "*"   'helheim-dired-mark-map
-  ", m" (cons "mark" 'helheim-dired-mark-map)
+  ", m" '("mark" . helheim-dired-mark-map)
   "M-DEL" 'dired-unmark-all-files
   ;; regexp commands
   "r"   (define-keymap
@@ -219,6 +218,7 @@
   )
 
 (defvar-keymap helheim-dired-mark-map
+  :prefix 'helheim-dired-mark-map
   "c" '("Change marks" . dired-change-marks)
   "t" '("Toggle marks" . dired-toggle-marks)
   "u" '("Remove specific mark" . dired-unmark-all-files)
@@ -245,7 +245,6 @@
   ;; "o" 'dired-filter-mark-by-omit
   ;; "g" 'dired-filter-mark-by-garbage
   )
-(fset 'helheim-dired-mark-map helheim-dired-mark-map)
 
 ;;; image-dired
 

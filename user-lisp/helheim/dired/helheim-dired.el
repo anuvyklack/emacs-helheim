@@ -111,27 +111,28 @@
               (extension . "pdf")))))
   (fset 'dired-filter-map dired-filter-map))
 
-;; `ls-lisp' package
-(setq ls-lisp-verbosity nil
-      ls-lisp-dirs-first t)
+(leaf ls-lisp
+  :config
+  (setopt ls-lisp-verbosity nil
+          ls-lisp-dirs-first t))
 
 ;;;; Convert local minor-modes to global ones
 
-(defmacro helheim-dired-convert-to-global-minor-mode (mode)
+(defmacro helheim-dired--convert-to-global-minor-mode (mode)
   (declare (debug t))
   `(define-advice ,mode (:after (&rest _) helheim)
      (if ,mode
          (add-hook 'dired-mode-hook #',mode)
        (remove-hook 'dired-mode-hook #',mode))))
 
-(helheim-dired-convert-to-global-minor-mode dired-hide-details-mode)
-(helheim-dired-convert-to-global-minor-mode dired-omit-mode)
-(helheim-dired-convert-to-global-minor-mode dired-filter-group-mode)
+(helheim-dired--convert-to-global-minor-mode dired-hide-details-mode)
+(helheim-dired--convert-to-global-minor-mode dired-omit-mode)
+(helheim-dired--convert-to-global-minor-mode dired-filter-group-mode)
 
 ;;;; image-dired
 
 (leaf image-dired
-  :custom
+  :init
   ;; Use Thumbnail Managing Standard
   ;;
   ;; Thumbnails size:
@@ -139,8 +140,8 @@
   ;; - standard-large     256 pixels
   ;; - standard-x-large   512 pixels
   ;; - standard-xx-large
-  (image-dired-thumbnail-storage . 'standard)
-  (image-dired-marking-shows-next . nil)
+  (setopt image-dired-thumbnail-storage 'standard)
+  (setopt image-dired-marking-shows-next nil)
   :defer-config
   (add-to-list 'display-buffer-alist
                `(,(regexp-quote image-dired-thumbnail-buffer)
