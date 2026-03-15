@@ -1,7 +1,6 @@
 ;;; helheim-dired-keys.el -*- lexical-binding: t; no-byte-compile: t; -*-
-;;; Keybindings
+;;; dired
 
-(require 'dash)
 (require 'dired)
 (require 'dired-x) ;; Load because it unconditionally binds "F" and "V" keys.
 (require 'dired-subtree)
@@ -248,53 +247,12 @@
   )
 (fset 'helheim-dired-mark-map helheim-dired-mark-map)
 
-;;;; image-dired
+;;; image-dired
 
 (with-eval-after-load 'image-dired
   (hel-keymap-set image-dired-thumbnail-mode-map
     :unset "w"
-    "y" 'image-dired-copy-filename-as-kill)) "w"
-
-;;; Commands
-
-;; j
-(defun helheim-dired-next-line (count)
-  (interactive "p" dired-mode)
-  (if (region-active-p)
-      (hel-expand-line-selection count)
-    (dired-next-line count)))
-
-;; k
-(defun helheim-dired-previous-line (count)
-  (interactive "p" dired-mode)
-  (if (region-active-p)
-      (hel-expand-line-selection (- count))
-    (dired-previous-line count)))
-
-;; v
-(defun helheim-dired-toggle-selection ()
-  "Toggle selection."
-  (interactive nil dired-mode)
-  (if (use-region-p)
-      (deactivate-mark)
-    (hel-expand-line-selection 1)))
-
-;; To make it easier to find it in M-x menu.
-(defalias '+dired-copy-file-name #'dired-copy-filename-as-kill)
-
-(defun +dired-copy-file-path ()
-  "Copy full file name (including path) into kill ring."
-  (interactive nil dired-mode)
-  (dired-copy-filename-as-kill 0))
-
-(defun +dired-do-flagged-delete-permanently ()
-  "Delete files permanently instead of trashing them."
-  (declare (interactive-only t))
-  (interactive nil dired-mode)
-  (let ((delete-by-moving-to-trash nil))
-    (dired-do-flagged-delete)))
-
-(defalias '+dired-delete-permanently #'+dired-do-flagged-delete-permanently)
+    "y" 'image-dired-copy-filename-as-kill)) ; "w"
 
 ;;; .
 (provide 'helheim-dired '(keys))

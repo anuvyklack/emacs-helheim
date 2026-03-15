@@ -1,7 +1,49 @@
 ;;; helheim-dired-lib.el -*- lexical-binding: t -*-
 ;;; Code:
 
-(eval-when-compile (require 'dash))
+(require 'dash)
+(require 'dired)
+
+;;; Commands
+
+;; j
+(defun helheim-dired-next-line (count)
+  (interactive "p" dired-mode)
+  (if (region-active-p)
+      (hel-expand-line-selection count)
+    (dired-next-line count)))
+
+;; k
+(defun helheim-dired-previous-line (count)
+  (interactive "p" dired-mode)
+  (if (region-active-p)
+      (hel-expand-line-selection (- count))
+    (dired-previous-line count)))
+
+;; v
+(defun helheim-dired-toggle-selection ()
+  "Toggle selection."
+  (interactive nil dired-mode)
+  (if (use-region-p)
+      (deactivate-mark)
+    (hel-expand-line-selection 1)))
+
+;; To make it easier to find it in M-x menu.
+(defalias '+dired-copy-file-name #'dired-copy-filename-as-kill)
+
+(defun +dired-copy-file-path ()
+  "Copy full file name (including path) into kill ring."
+  (interactive nil dired-mode)
+  (dired-copy-filename-as-kill 0))
+
+(defun +dired-do-flagged-delete-permanently ()
+  "Delete files permanently instead of trashing them."
+  (declare (interactive-only t))
+  (interactive nil dired-mode)
+  (let ((delete-by-moving-to-trash nil))
+    (dired-do-flagged-delete)))
+
+(defalias '+dired-delete-permanently #'+dired-do-flagged-delete-permanently)
 
 ;;; dired-subtree
 
