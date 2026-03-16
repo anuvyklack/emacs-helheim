@@ -3,3 +3,17 @@
 #+begin_src emacs-lisp
 (require 'helheim-completion)
 #+end_src
+
+** Usage
+*** When completion popup is active
+
+| =Tab= / =S-Tab= | next / previous candidate |
+| =C-j= / =C-k=   | next / previous candidate |
+| =M-j= / =M-k=   | next / previous candidate |
+| =C-f= / =C-b=   | Scroll candidates list    |
+
+
+| =Enter=      | Insert selected candidate                                                 |
+| =M-Space=    | Insert space without aborting completion                                  |
+| =C-l=        | Insert selected candidate or expands the common prefix of all candidates. |
+| =C-i= or =C-h= | Show documentation for current candidate.                                 |

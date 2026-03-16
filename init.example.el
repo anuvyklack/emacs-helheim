@@ -95,7 +95,7 @@
 (require 'helheim-xref)     ; Go to definition framework
 (require 'helheim-eglot)    ; Built-in LSP client
 
-;;; Version control system
+;;; Version control
 
 (require 'helheim-magit)
 (require 'helheim-diff-hl)  ; git gutter

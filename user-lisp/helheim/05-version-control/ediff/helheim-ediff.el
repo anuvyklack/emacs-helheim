@@ -14,7 +14,7 @@
   :config
   (hel-set-initial-state 'ediff-mode 'motion))
 
-;;;;; Restore windows configuration after quitting ediff
+;;; Restore windows configuration after quitting ediff
 
 (let (wconf) ; Private variable shared by two functions.
   ;;
