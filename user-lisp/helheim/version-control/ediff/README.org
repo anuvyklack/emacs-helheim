@@ -1,4 +1,10 @@
-* Ediff
+* helheim-ediff
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-ediff)
+#+end_src
+
+** Usage
 
 | Helheim     | Original   | Command                   |
 |-------------+------------+---------------------------|
@@ -18,3 +24,4 @@
 | =H=           | =h=          | toggle highlighting       |
 | =C-z=         | =z=          | ~ediff-suspend~             |
 | =ua=, =ub=, =uc=  | =ra=, =rb=, =rc= | restore old diff          |
+

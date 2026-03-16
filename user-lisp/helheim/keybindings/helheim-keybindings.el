@@ -99,11 +99,6 @@
 
 (hel-set-initial-state 'elpaca-info-mode 'normal)
 
-;;; Ediff
-
-(hel-set-initial-state 'ediff-mode 'motion)
-(add-hook 'ediff-keymap-setup-hook #'helheim-ediff-setup-keys)
-
 ;;; Help
 
 ;; <F1>

@@ -1,1 +1,0 @@
-Do not load manually files from this folder!

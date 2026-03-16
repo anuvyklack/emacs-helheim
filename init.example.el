@@ -90,6 +90,7 @@
 (require 'helheim-tab-bar)  ; Each tab represents a set of windows, as in Vim
 (require 'helheim-ibuffer)  ; Buffers menu
 (require 'helheim-dired)    ; File-manager
+(require 'helheim-ediff)
 (require 'helheim-outline-mode) ; See "Outline Mode" in Emacs manual
 
 ;;; Search and completion

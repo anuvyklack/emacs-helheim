@@ -1,9 +1,6 @@
 ;;; helheim-ediff-keys.el -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;
-;; WARNING: Don't load this file manually! It is automatically loaded
-;;   by `helheim-keybindings' module in `ediff-keymap-setup-hook'.
-;;
 ;; All credit goes to the `evil-collection' package.
 ;;
 ;;; Keybindings
@@ -42,24 +39,25 @@
 
 ;;;; Help message
 
-(dolist (msg '(ediff-long-help-message-compare2
-               ediff-long-help-message-compare3
-               ediff-long-help-message-narrow2
-               ediff-long-help-message-word-mode
-               ediff-long-help-message-merge
-               ediff-long-help-message-head
-               ediff-long-help-message-tail))
-  (cl-loop for (from . to)
-           in '(;;("^" . "  ")
-                ("p,DEL -previous diff " . "  k,N -previous diff ")
-                ("n,SPC -next diff     " . "  j,n -next diff     ")
-                ("    j -jump to diff  " . "    d -jump to diff  ")
-                ("    h -highlighting  " . "    H -highlighting  ")
-                ("  v/V -scroll up/dn  " . "C-u/d -scroll up/dn  ")
-                ("  </> -scroll lt/rt  " . "zh/zl -scroll lt/rt  ")
-                ("  z/q -suspend/quit"   . "C-z/q -suspend/quit"))
-           do (setf (symbol-value msg)
-                    (replace-regexp-in-string from to (symbol-value msg)))))
+(let ((messages '(ediff-long-help-message-compare2
+                  ediff-long-help-message-compare3
+                  ediff-long-help-message-narrow2
+                  ediff-long-help-message-word-mode
+                  ediff-long-help-message-merge
+                  ediff-long-help-message-head
+                  ediff-long-help-message-tail))
+      (replace '(;;("^" . "  ")
+                 ("p,DEL -previous diff " . "  k,N -previous diff ")
+                 ("n,SPC -next diff     " . "  j,n -next diff     ")
+                 ("    j -jump to diff  " . "    d -jump to diff  ")
+                 ("    h -highlighting  " . "    H -highlighting  ")
+                 ("  v/V -scroll up/dn  " . "C-u/d -scroll up/dn  ")
+                 ("  </> -scroll lt/rt  " . "zh/zl -scroll lt/rt  ")
+                 ("  z/q -suspend/quit"   . "C-z/q -suspend/quit"))))
+  (dolist (msg messages)
+    (cl-loop for (from . to) in replace
+             do (setf (symbol-value msg)
+                      (replace-regexp-in-string from to (symbol-value msg))))))
 
 ;;; Commands
 
@@ -109,4 +107,6 @@
   (interactive)
   (ediff-jump-to-difference ediff-number-of-differences))
 
+;;; .
+(provide 'helheim-ediff '(keys))
 ;;; helheim-ediff-keys.el ends here
