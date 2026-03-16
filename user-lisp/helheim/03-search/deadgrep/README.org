@@ -1,6 +1,6 @@
 * helheim-deadgrep
 
-This module setup [[https://github.com/Wilfred/deadgrep][Deadgrep]] — a nice interface to [[https://github.com/BurntSushi/ripgrep][Ripgrep]] from Emacs.
+[[https://github.com/Wilfred/deadgrep][Deadgrep]] is a nice interface for [[https://github.com/BurntSushi/ripgrep][Ripgrep]] in Emacs.
 
 ** Enable
 #+begin_src emacs-lisp
@@ -9,7 +9,7 @@ This module setup [[https://github.com/Wilfred/deadgrep][Deadgrep]] — a nice i
 
 ** Usage
 
-- =SPC s s= — start a ripgrep search
+| =SPC s s= | start a ripgrep search |
 
 ** Configuration
 *** Automatically show preveiw in other window
