@@ -15,6 +15,6 @@ Xref is an Emacs *go-to definition* and *show references* framework.
 
 ** Usage
 
-- =g d= — go to definition
-- =C-w g d= — open definition in another window
-- =g D= — find references
+| =g d=     | go to definition                  |
+| =C-w g d= | open definition in another window |
+| =g r=     | find references                   |
