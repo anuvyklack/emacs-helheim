@@ -1,13 +1,4 @@
 * Modules
-** helheim-emacs-lisp
-
-Configure Hel to work with Emacs Lisp, see documentation for [[https://github.com/anuvyklack/hel/blob/main/docs/extensions.org#hel-paredit][hel-paredit]]
-extension.
-
-- =M= :: Show help for the symbol at point.
-
-- =Space e= :: Prefix for commands that evaluate Emacs Lisp.
-
 ** helheim-tab-bar
 
 Configure *tab-bar* mode — each tab represents a set of windows (like in Vim).

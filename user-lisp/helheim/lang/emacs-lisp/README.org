@@ -1,0 +1,18 @@
+* helheim-emacs-lisp
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-emacs-lisp)
+#+end_src
+
+** Usage
+
+Configure Hel to work with Emacs Lisp, see documentation for [[https://github.com/anuvyklack/hel/blob/main/docs/extensions.org#hel-paredit][hel-paredit]]
+extension.
+
+| =K= or =M=  | Show documentation for symbol at point |
+| =, e e=   |                                        |
+| =, e f=   |                                        |
+| =, e r=   |                                        |
+| =, e B=   |                                        |
+| =, e m=   |                                        |
+| =, e RET= |                                        |
