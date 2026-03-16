@@ -104,13 +104,13 @@
 ;; <F1>
 (hel-keymap-set help-map
   ;; Unclatter help-map to make `whick-key' useable.
-  "<f1>" nil "C-h" nil "?" nil "<help>" nil ; `help-for-help'
-  "C-e"  nil ; `view-external-packages' — irrelevant or outdated information
-  "C-o"  nil ; `describe-distribution'
-  "C-q"  nil ; `help-quick-toggle' — irrelevant to us
-  "C-w"  nil ; `describe-no-warranty'
-  "R"    nil ; `info-display-manual' — move to "RET"
-  "C-n"  nil ; `view-emacs-news' — duplicated on "n"
+  :unset '("<f1>" "C-h" "?" "<help>") ;; `help-for-help'
+  "C-e"  nil ;; `view-external-packages' — irrelevant or outdated information
+  "C-o"  nil ;; `describe-distribution'
+  "C-q"  nil ;; `help-quick-toggle' — irrelevant to us
+  "C-w"  nil ;; `describe-no-warranty'
+  "R"    nil ;; `info-display-manual' — moved to "RET"
+  "C-n"  nil ;; `view-emacs-news' — duplicated on "n"
   ;;
   "m"   'describe-mode
   "C-d" 'view-emacs-debugging
@@ -127,7 +127,7 @@
   "b" (cons "bindings"
             (define-keymap
               "b" 'describe-bindings
-              "B" 'embark-bindings ; alternative for `describe-bindings'
+              "B" 'embark-bindings ;; alternative for `describe-bindings'
               "i" 'which-key-show-minor-mode-keymap
               "m" 'which-key-show-major-mode
               "t" 'which-key-show-top-level
@@ -136,9 +136,8 @@
 
 ;;; Info
 
-(hel-set-initial-state 'Info-mode 'normal)
-
-(with-eval-after-load 'info
+(leaf info
+  :defer-config
   (hel-keymap-set Info-mode-map :state 'normal
     "C-j"   'Info-next
     "C-k"   'Info-prev
@@ -146,7 +145,7 @@
     "z k"   'Info-backward-node
     "z u"   'Info-up
     "z d"   'Info-directory
-    "z ~"   'Info-directory ;; "~" if for "home"
+    "z ~"   'Info-directory ;; "~" is for "home"
     ;;
     "z h"   'Info-history
     "u"     'Info-history-back
@@ -163,10 +162,11 @@
     "z I"   'Info-virtual-index
     "C-c s a" 'info-apropos
     ;;
-    "M-h"   'Info-help))
-
-(hel-advice-add 'Info-next-reference :before #'hel-deactivate-mark-a)
-(hel-advice-add 'Info-prev-reference :before #'hel-deactivate-mark-a)
+    "M-h"   'Info-help)
+  :config
+  (hel-set-initial-state 'Info-mode 'normal)
+  (hel-advice-add 'Info-next-reference :before #'hel-deactivate-mark-a)
+  (hel-advice-add 'Info-prev-reference :before #'hel-deactivate-mark-a))
 
 ;;; Man
 
