@@ -58,8 +58,8 @@
 
 ;;; Helheim core
 
-;; ;; In case you use VPN. Also Emacs populates `url-proxy-services' variable
-;; ;; from: `https_proxy', `socks_proxy', `no_proxy' environment variables.
+;; In case you use VPN. Also Emacs populates `url-proxy-services' variable
+;; from: `https_proxy', `socks_proxy', `no_proxy' environment variables.
 ;; (setopt url-proxy-services '(("socks" . "127.0.0.1:10808")
 ;;                              ("https" . "127.0.0.1:10809"))
 ;;         gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
@@ -85,30 +85,29 @@
 ;;   You may try it with ": load-theme" then type "leuven".
 (leaf leuven-theme :straight t)
 
-;;; Other modules
-
-(require 'helheim-tab-bar)  ; Each tab represents a set of windows, as in Vim
-(require 'helheim-ibuffer)  ; Buffers menu
-(require 'helheim-dired)    ; File-manager
-(require 'helheim-ediff)
-(require 'helheim-outline-mode) ; See "Outline Mode" in Emacs manual
-
-;;; Search and completion
+;;; Search
 
 (require 'helheim-consult)  ; A set of search commands with preview
-(require 'helheim-deadgrep) ; Interface to Ripgrep
-(require 'helheim-embark)   ; Context-aware action menus
+(require 'helheim-deadgrep) ; Interface for Ripgrep in Emacs
 
 ;;; IDE
 
 (require 'helheim-xref)     ; Go to definition framework
 (require 'helheim-eglot)    ; Built-in LSP client
 
-;;; Major modes
+;;; Version control system
 
-(require 'helheim-emacs-lisp)
-(require 'helheim-markdown)
-(require 'helheim-sh)
+(require 'helheim-magit)
+(require 'helheim-diff-hl)  ; git gutter
+(require 'helheim-ediff)
+
+;;; Other modules
+
+(require 'helheim-tab-bar)  ; Each tab represents a set of windows, as in Vim
+(require 'helheim-ibuffer)  ; Buffers menu
+(require 'helheim-dired)    ; File-manager
+(require 'helheim-embark)   ; Context-aware action menus
+(require 'helheim-outline-mode) ; See "Outline Mode" in Emacs manual
 
 ;;; Org mode
 
@@ -122,10 +121,12 @@
 (require 'helheim-org-node)
 (require 'helheim-daily-notes)
 
-;;; Version control system
+;;; Major modes
 
-(require 'helheim-magit)
-(require 'helheim-diff-hl)
+(require 'helheim-emacs-lisp)
+(require 'helheim-markdown)
+(require 'helheim-rust)
+(require 'helheim-sh)
 
 ;;; Keybindings
 
