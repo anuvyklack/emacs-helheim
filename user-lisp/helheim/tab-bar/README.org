@@ -1,0 +1,24 @@
+* helheim-tab-bar
+
+Configure *tab-bar* mode — each tab represents a set of windows (like in Vim).
+
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-tab-bar)
+#+end_src
+
+** Usage
+
+| =[t= / =]t= | Switch over tabs.                                              |
+| =C-w tab= | Create new tab. With =M-u= detach current window into new tab.   |
+| =C-w t=   | Prefix for tab-bar keys                                        |
+| =C-w t n= | Display buffer for next command in new tab. (~other-tab-prefix~) |
+| =C-w t c= | Close tab                                                      |
+| =C-w t g= | Add current tab to group.                                      |
+| =C-w t u= | Reopen last closed tab.                                        |
+| =C-w t o= | Close all other tabs.                                          |
+| =C-w t w= | Move current window to new tab.                                |
+| =C-w t r= | Rename tab                                                     |
+| =C-w t >= | Move tab right.                                                |
+| =C-w t <= | Move tab left.                                                 |
+
