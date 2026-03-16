@@ -1,0 +1,5 @@
+* helheim-completion
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-completion)
+#+end_src

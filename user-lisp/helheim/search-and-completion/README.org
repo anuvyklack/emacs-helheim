@@ -7,9 +7,6 @@ A common search and complet functionallity you are expect in modern editor.
 - =helheim-consult= ::
   Configures [[https://github.com/minad/consult][Consult]], which provides a set of search-and-preview commands.
 
-- =helheim-corfu= ::
-  Configures [[https://github.com/minad/corfu][Corfu]], which provides floating menus for code completion.
-
 ** Notable keybindings
 
 A few keybinding highlights from my day-to-day usage, to provide inspiration and
