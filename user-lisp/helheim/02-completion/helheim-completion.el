@@ -1,48 +1,48 @@
 ;;; helheim-completion.el -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;; Keybindings
 
-(with-eval-after-load 'corfu
-  (hel-keymap-set corfu-map
-    "<tab>"     'corfu-next
-    "<backtab>" 'corfu-previous ;; S-<tab>
-    "M-<tab>"   'corfu-expand
-    "RET"       'corfu-insert
-    "M-SPC"     'corfu-insert-separator
-    ;;
-    "C-h"       'corfu-info-documentation
-    "C-l"       'corfu-complete
-    "C-<i>"     'corfu-info-documentation
-    "C-d"       'corfu-info-location ;; "gd" is go to definition
-    ;; Scrolling
-    "C-f"       'corfu-scroll-down
-    "C-b"       'corfu-scroll-up
-    ;; All versions of up/down
-    "C-j"       'corfu-next
-    "C-k"       'corfu-previous
-    "M-j"       'corfu-next
-    "M-k"       'corfu-previous
-    "C-n"       'corfu-next
-    "C-p"       'corfu-previous))
+(setup corfu
+  (:after-load
+    (:with-keymap corfu-map
+      (:bind
+        "<tab>"     'corfu-next
+        "<backtab>" 'corfu-previous ;; S-<tab>
+        "M-<tab>"   'corfu-expand
+        "RET"       'corfu-insert
+        "M-SPC"     'corfu-insert-separator
+        ;;
+        "C-h"       'corfu-info-documentation
+        "C-l"       'corfu-complete
+        "C-<i>"     'corfu-info-documentation
+        "C-d"       'corfu-info-location ;; "gd" is go to definition
+        ;; Scrolling
+        "C-f"       'corfu-scroll-down
+        "C-b"       'corfu-scroll-up
+        ;; All versions of up/down
+        "C-j"       'corfu-next
+        "C-k"       'corfu-previous
+        "M-j"       'corfu-next
+        "M-k"       'corfu-previous
+        "C-n"       'corfu-next
+        "C-p"       'corfu-previous))))
 
 ;;; Config
 
-(leaf orderless
-  :straight t
-  :init
-  (setopt completion-styles '(orderless partial-completion basic)
-          ;; completion-styles '(orderless basic)
+(setup orderless
+  (:install t)
+  (setopt completion-styles '(orderless basic)
+          ;; completion-styles '(orderless partial-completion basic)
           completion-category-defaults nil
           completion-category-overrides '((file (styles partial-completion)))
           completion-pcm-leading-wildcard t ;; Emacs 31
           orderless-matching-styles '(orderless-literal
                                       orderless-regexp
-                                      orderless-flex)
+                                      ;; orderless-flex
+                                      )
           orderless-component-separator #'orderless-escapable-split-on-space))
 
-(leaf corfu
-  :straight t
-  :global-minor-mode global-corfu-mode
-  :init
+(setup corfu
+  (:install t)
   (setopt tab-always-indent 'complete
           tab-first-completion 'word
           ;; Disable Ispell completion function. As an alternative try `cape-dict'.
@@ -63,36 +63,33 @@
           ;;   - t :: non-inserting preview
           corfu-preview-current 'insert
           corfu-preselect 'prompt
-          corfu-on-exact-match nil)) ;; Handling of exact matches.
+          corfu-on-exact-match nil) ;; Handling of exact matches.
+  (global-corfu-mode))
 
-(leaf corfu-history
-  :hook (global-corfu-mode-hook . corfu-history-mode)
-  :config
+(setup corfu-history
+  (:hook global-corfu-mode-hook corfu-history-mode)
   (add-to-list 'savehist-additional-variables 'corfu-history))
 
-(leaf corfu-popupinfo
-  :hook (global-corfu-mode-hook . corfu-popupinfo-mode)
-  :init
+(setup corfu-popupinfo
+  (:hook global-corfu-mode-hook corfu-popupinfo-mode)
   (setopt corfu-popupinfo-delay '(0.8 . 0.5))
-  :defer-config
-  (hel-keymap-set corfu-popupinfo-map
-    "C-<i>" 'corfu-popupinfo-toggle))
+  (:after-load
+    (:with-keymap corfu-popupinfo-map
+      (:bind "C-<i>" 'corfu-popupinfo-toggle))))
 
-(leaf nerd-icons-corfu
-  :straight t
-  :after corfu
-  :config
+(setup nerd-icons-corfu
+  (:install t)
+  (:after corfu)
   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
-(leaf cape
-  :straight t
-  :config
+(setup cape
+  (:install t)
   ;; Add to the global default value of `completion-at-point-functions'
   ;; which is used by `completion-at-point'.
-  (add-hook 'completion-at-point-functions #'cape-dabbrev)
-  (add-hook 'completion-at-point-functions #'cape-file)
-  (add-hook 'completion-at-point-functions #'cape-elisp-block)
-  (add-hook 'completion-at-point-functions #'cape-history))
+  (:hook completion-at-point-functions (cape-dabbrev
+                                        cape-file
+                                        cape-elisp-block
+                                        cape-history)))
 
 ;;; Commands
 

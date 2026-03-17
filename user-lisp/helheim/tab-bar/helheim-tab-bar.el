@@ -44,10 +44,7 @@
 
 ;;; Config
 
-(leaf tab-bar
-  :global-minor-mode (tab-bar-mode
-                      tab-bar-history-mode)
-  :init
+(setup tab-bar
   (setopt tab-bar-format '(tab-bar-format-history
                            tab-bar-format-tabs-groups
                            tab-bar-separator
@@ -60,7 +57,9 @@
           ;; - 1 -- Hide tab bar if only 1 tabs open.
           ;; - t -- Always show tab bar.
           tab-bar-show t
-          tab-bar-history-limit 20))
+          tab-bar-history-limit 20)
+  (tab-bar-mode)
+  (tab-bar-history-mode))
 
 (defun helheim-tab-new (arg)
   "Create new tab. With \\[universal-argument] detach current window into new tab."

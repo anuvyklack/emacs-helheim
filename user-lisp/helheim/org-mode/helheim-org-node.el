@@ -75,20 +75,18 @@
 
 ;;; Code
 
-(leaf org-mem
-  :straight t
-  :custom (org-mem-do-sync-with-org-id . t)
-  :hook   (after-init-hook . org-mem-updater-mode)
-  :require t
-  :config
+(setup org-mem
+  (:install t)
+  (setopt org-mem-do-sync-with-org-id t)
+  (:after-init org-mem-updater-mode)
+  (:require t)
   (unless org-mem-watch-dirs
     (setq org-mem-watch-dirs (list org-directory))))
 
-(leaf org-node
-  :straight t
-  :require t
-  :hook (after-init-hook . org-node-cache-mode)
-  :init
+(setup org-node
+  (:install t)
+  (:require t)
+  (:after-init org-node-cache-mode)
   (setopt org-node-prefer-with-heading t
           org-node-creation-fn #'org-node-new-file
           org-node-file-slug-fn #'org-node-slugify-for-web
@@ -97,7 +95,6 @@
           org-node-alter-candidates t
           org-node-affixation-fn 'helheim-org-node-append-tags
           org-node-filter-fn 'helheim-org-node-filter-p)
-  :config
   ;; We have this information in ID.
   (remove-hook 'org-node-creation-hook #'org-node-ensure-crtime-property)
   ;; Open backlinks buffer in another window.
@@ -124,11 +121,10 @@
   (not (or (org-mem-property-with-inheritance "IGNORE" node)
            (org-mem-property-with-inheritance "ROAM_EXCLUDE" node))))
 
-;; (leaf org-node-seq
-;;   :after org-node
-;;   :hook (after-init-hook . org-node-seq-mode)
-;;   :require t
-;;   :config
+;; (setup org-node-seq
+;;   (:after org-node)
+;;   (:after-init org-node-seq-mode)
+;;   (:require t)
 ;;   (setopt org-node-seq-defs
 ;;           (list
 ;;            ;; My day-notes, a.k.a. journal/diary.  Currently I still
@@ -140,12 +136,10 @@
 
 ;;;; Backlinks drawers
 
-(leaf org-node-backlink
-  :custom
-  (org-node-backlink-do-drawers . t)
-  (org-node-backlink-drawer-formatter . 'helheim-org-node-backlink-format)
-  :hook
-  (after-init-hook . org-node-backlink-mode))
+(setup org-node-backlink
+  (setopt org-node-backlink-do-drawers t
+          org-node-backlink-drawer-formatter 'helheim-org-node-backlink-format)
+  (:after-init org-node-backlink-mode))
 
 (defun helheim-org-node-backlink-format (id desc &optional _time)
   "Format as list item: \"- [[id:ID][Node title]]\".
@@ -155,11 +149,9 @@ ID and DESC are link id and description, TIME a Lisp time value."
 
 ;;;; Backlinks buffer
 
-(leaf org-node-context
-  :after org-node
-  :custom
-  (org-node-context-collapse-more-than . 1) ;; Start in collapsed state.
-  :config
+(setup org-node-context
+  (:after org-node)
+  (setopt org-node-context-collapse-more-than 1) ;; Start in collapsed state.
   (add-hook 'org-node-context-postprocess-hook
             'helheim-org-node-context--add-empty-line-at-eob
             95))

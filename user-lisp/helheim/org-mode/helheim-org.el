@@ -4,103 +4,104 @@
 
 ;;; Keybindings
 
-(with-eval-after-load 'org-keys
-  ;; Normal state
-  (hel-keymap-set org-mode-map :state 'normal
-    "z '" 'org-edit-special
-    "z ," 'org-insert-structure-template
-    "z /" 'org-sparse-tree
-    ;; "z n" 'org-narrow-to-subtree
-    "g i" 'consult-org-heading
-    "g x" 'org-open-at-point
-    "g n" 'org-next-link
-    "g N" 'org-previous-link
-    "] l" 'org-next-link
-    "[ l" 'org-previous-link
-    ","   (define-keymap
-            "a"   'org-attach
-            "o"   'org-open-at-point))
-  ;; <leader>
-  (hel-keymap-set (keymap-lookup org-mode-map "C-c")
-    "'"   nil ;; `org-edit-special' — moved to "z'"
-    ","   nil ;; `org-priority' — moved to "z,"
-    "/"   nil ;; `org-sparse-tree' — moved to "z/"
-    "RET" 'dired-jump ;; rebind `org-ctrl-c-ret', which is also on "z RET"
-    "a"   'org-attach
-    "t i" 'org-toggle-inline-images
-    "t l" 'org-toggle-link-display
-    "t f" 'org-table-toggle-formula-debugger
-    "t o" 'org-table-toggle-coordinate-overlays
-    "i"   (cons "insert"
-                (define-keymap
-                  "l" '("insert link" . org-insert-link)
-                  "m" 'yank-media
-                  "d" 'org-deadline
-                  "s" 'org-schedule
-                  "t" 'org-time-stamp
-                  "T" 'org-time-stamp-inactive
-                  "Q" 'org-set-tags-command))
-    "l"   (cons "links"
-                (define-keymap
-                  "l" 'org-insert-link
-                  "i" 'org-insert-last-stored-link ;; "i" for insert
-                  "s" 'org-store-link
-                  "a" 'org-insert-all-links
-                  "m" 'yank-media))))
+(setup org
+  (with-eval-after-load 'org-keys
+    (:with-keymap org-mode-map
+      (:bind :state 'normal
+        "z '" 'org-edit-special
+        "z ," 'org-insert-structure-template
+        "z /" 'org-sparse-tree
+        ;; "z n" 'org-narrow-to-subtree
+        "g i" 'consult-org-heading
+        "g x" 'org-open-at-point
+        "g n" 'org-next-link
+        "g N" 'org-previous-link
+        "] l" 'org-next-link
+        "[ l" 'org-previous-link
+        ","   (define-keymap
+                "a" 'org-attach
+                "o" 'org-open-at-point)))
+    ;; <leader>
+    (let ((org-leader (or (keymap-lookup org-mode-map "C-c")
+                          (make-sparse-keymap))))
+      (:with-keymap org-leader
+        (:unbind
+          "'"  ;; `org-edit-special' — moved to "z'"
+          ","  ;; `org-priority' — moved to "z,"
+          "/") ;; `org-sparse-tree' — moved to "z/"
+        (:bind
+          "RET" 'dired-jump ;; rebind `org-ctrl-c-ret', which is also on "z RET"
+          "a"   'org-attach
+          "t i" 'org-toggle-inline-images
+          "t l" 'org-toggle-link-display
+          "t f" 'org-table-toggle-formula-debugger
+          "t o" 'org-table-toggle-coordinate-overlays
+          "i"   (cons "insert"
+                      (define-keymap
+                        "l" '("insert link" . org-insert-link)
+                        "m" 'yank-media
+                        "d" 'org-deadline
+                        "s" 'org-schedule
+                        "t" 'org-time-stamp
+                        "T" 'org-time-stamp-inactive
+                        "Q" 'org-set-tags-command))
+          "l"   (cons "links"
+                      (define-keymap
+                        "l" 'org-insert-link
+                        "i" 'org-insert-last-stored-link ;; "i" for insert
+                        "s" 'org-store-link
+                        "a" 'org-insert-all-links
+                        "m" 'yank-media)))))))
 
-(with-eval-after-load 'dired
-  (hel-keymap-set dired-mode-map
-    "C-c a" 'org-attach-dired-to-subtree))
+(setup dired
+  (:after-load
+    (:with-keymap dired-mode-map
+      (:bind "C-c a" 'org-attach-dired-to-subtree))))
 
 ;;; Config
 
-(leaf org
-  :straight t ;; (org :type built-in)
-  ;; BUG: After updating Org to version 9.8 a misterious error appear:
-  ;;   > symbol's function definition is void org-priority-valid-value-p
-  ;;   Temporary overcome is to explicitly load Org on startup.
-  :require t)
+(setup org
+  (:install t)
+  ;; (:built-in)
+  (setopt org-insert-heading-respect-content nil
+          org-M-RET-may-split-line '((default . t)
+                                     (item . nil))
+          org-return-follows-link t
+          org-special-ctrl-a/e t
+          org-pretty-entities t))
 
-(setopt org-insert-heading-respect-content nil
-        org-M-RET-may-split-line '((default . t)
-                                   (item . nil))
-        org-return-follows-link t
-        org-special-ctrl-a/e t
-        org-pretty-entities t)
+(setup ol
+  (:after-load
+    ;; Open org links in the same window. Use "C-c &" to back to the link.
+    (setf (alist-get 'file org-link-frame-setup) #'find-file)))
 
-(leaf ol
-  :defer-config
-  ;; Open org links in the same window. Use "C-c &" to back to the link.
-  (setf (alist-get 'file org-link-frame-setup) #'find-file))
+(setup org-indent
+  (:blackout t))
 
-(leaf org-indent
-  :blackout t)
+(setup hel-org
+  (:after org)
+  (:require t))
 
-(leaf hel-org
-  :after org
-  :require t)
-
-(leaf org-eldoc
-  :straight org-contrib
-  :after org
-  :init
+(setup org-eldoc
+  (:install org-contrib)
+  (:after org)
   (setopt org-eldoc-breadcrumb-separator " → ")
-  :defer-config
-  ;; Show target for link at point. Emacs has `help-at-pt-display-when-idle',
-  ;; but its timer competes with Eldoc for the echo area, so for those who use
-  ;; Eldoc in Emacs 31 `eldoc-help-at-pt' option was added.
-  (if (version<= "31" emacs-version)
-      (setopt eldoc-help-at-pt t) ;; since Emacs 31
-    (define-advice org-eldoc-documentation-function (:before-until (&rest _) helheim)
-      "Display link target in echo area when cursor/mouse is over it."
-      (if-let ((url (thing-at-point 'url t)))
-          (format "LINK: %s" url))))
-  ;; HACK Fix #2972: infinite recursion when eldoc kicks in 'org' or 'python'
-  ;;   src blocks.
-  ;; TODO Should be reported upstream!
-  (puthash "org" #'ignore org-eldoc-local-functions-cache)
-  (puthash "plantuml" #'ignore org-eldoc-local-functions-cache)
-  (puthash "python" #'python-eldoc-function org-eldoc-local-functions-cache))
+  (:after-load
+    ;; Show target for link at point. Emacs has `help-at-pt-display-when-idle',
+    ;; but its timer competes with Eldoc for the echo area, so for those who use
+    ;; Eldoc in Emacs 31 `eldoc-help-at-pt' option was added.
+    (if (version<= "31" emacs-version)
+        (setopt eldoc-help-at-pt t) ;; since Emacs 31
+      (define-advice org-eldoc-documentation-function (:before-until (&rest _) helheim)
+        "Display link target in echo area when cursor/mouse is over it."
+        (if-let ((url (thing-at-point 'url t)))
+            (format "LINK: %s" url))))
+    ;; HACK Fix #2972: infinite recursion when eldoc kicks in 'org' or 'python'
+    ;;   src blocks.
+    ;; TODO Should be reported upstream!
+    (puthash "org" #'ignore org-eldoc-local-functions-cache)
+    (puthash "plantuml" #'ignore org-eldoc-local-functions-cache)
+    (puthash "python" #'python-eldoc-function org-eldoc-local-functions-cache)))
 
 ;;;; Add padding to headings
 
@@ -152,16 +153,16 @@ heading fontification."
 
 ;;;; Prettify symbols mode
 
-;; You may delete the hooks you don't like with:
-;;   (remove-hook 'org-mode-hook 'helheim-org-prettify-todo-keywords)
-(add-hook 'org-mode-hook 'prettify-symbols-mode)
-(add-hook 'org-mode-hook 'helheim-org-prettify-todo-keywords)
-(add-hook 'org-mode-hook 'helheim-org-prettify-blocks)
-
-(setq-default org-todo-keywords
-              '((sequence "SOMEDAY" "TODO" "IN-PROGRESS" "WAIT" "|"
-                          "DONE" "ARCHIVED" "CANCELLED")
-                (sequence "READ" "IN-PROGRESS" "|" "DONE")))
+(setup org
+  ;; You may delete the hooks you don't like with:
+  ;;   (remove-hook 'org-mode-hook 'helheim-org-prettify-todo-keywords)
+  (:hook org-mode-hook (prettify-symbols-mode
+                        helheim-org-prettify-todo-keywords
+                        helheim-org-prettify-blocks))
+  (setq-default org-todo-keywords
+                '((sequence "SOMEDAY" "TODO" "IN-PROGRESS" "WAIT" "|"
+                            "DONE" "ARCHIVED" "CANCELLED")
+                  (sequence "READ" "IN-PROGRESS" "|" "DONE"))))
 
 (defun helheim-org-prettify-todo-keywords ()
   "Beautify org mode \"todo\" keywords using `prettify-symbols-mode'."
@@ -198,11 +199,10 @@ heading fontification."
 
 ;; FIX: Link to attachment can't be oppend before `org-attach' is loaded,
 ;;   and `org-open-at-point' loads it only for headings, but not for links.
-(cl-pushnew 'org-attach org-modules)
+(add-to-list 'org-modules 'org-attach)
 
-(leaf org-attach
-  :after org
-  :config
+(setup org-attach
+  (:after org)
   (setopt org-attach-id-dir (expand-file-name "org-attach/" org-directory)
           org-attach-method 'mv ;; move
           org-attach-store-link-p 'attached
@@ -216,8 +216,8 @@ heading fontification."
           org-attach-auto-tag "ATTACH")
   (add-to-list 'org-tags-exclude-from-inheritance org-attach-auto-tag)
   (with-eval-after-load 'org-keys
-    (hel-keymap-set org-mode-map
-      "<remap> <org-attach>" 'helheim-org-attach)))
+    (:with-keymap org-mode-map
+      (:bind [remap org-attach] 'helheim-org-attach))))
 
 (defun helheim-org-attach-id-ts-folder-format (id)
   "Translate an ID based on a ISO8601 timestamp to a folder-path.
@@ -356,14 +356,13 @@ Like `org-attach' but tuned for Emacs Helheim."
 
 ;;;; org-cliplink
 
-(leaf org-cliplink
-  :straight t
-  :config
+(setup org-cliplink
+  (:install t)
   (setopt org-cliplink-max-length nil
           org-cliplink-ellipsis "…")
   (with-eval-after-load 'org-keys
-    (hel-keymap-set org-mode-map
-      "<remap> <org-insert-link>" 'helheim-org-insert-link)))
+    (:with-keymap org-mode-map
+      (:bind [remap org-insert-link] 'helheim-org-insert-link))))
 
 ;; Based on https://xenodium.com/emacs-dwim-do-what-i-mean/
 (defun helheim-org-insert-link ()

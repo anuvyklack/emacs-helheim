@@ -16,7 +16,5 @@
 
 If you want a preview in other window follows your moves in deadgrep buffer:
 #+begin_src emacs-lisp
-(leaf heleheim-deadgrep
-  :require t
-  :hook (deadgrep-mode-hook . next-error-follow-minor-mode))
+(add-hook 'deadgrep-mode-hook #'next-error-follow-minor-mode)
 #+end_src

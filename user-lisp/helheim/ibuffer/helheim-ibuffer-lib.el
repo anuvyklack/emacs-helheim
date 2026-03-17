@@ -100,6 +100,7 @@
                '(("Files" (or (visiting-file)
                               (mode . dired-mode)))))))
 
+;;;###autoload
 (defun helheim-ibuffer-project-buffers (project &optional files-only)
   "List buffers for PROJECT using Ibuffer.
 If FILES-ONLY is non-nil, only show the file-visiting buffers."

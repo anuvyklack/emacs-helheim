@@ -8,136 +8,131 @@
 ;;
 ;;; Keybindings
 
-(hel-keymap-set mode-specific-map
-  "l" (cons "LSP" (hel-keymap-set (or (keymap-lookup mode-specific-map "l")
-                                      (make-sparse-keymap))
-                    "RET" 'eglot)))
+(let* ((leader mode-specific-map)
+       (leader-l (or (keymap-lookup leader "l")
+                     (make-sparse-keymap))))
+  (keymap-set leader "l" `("LSP" . ,leader-l))
+  (keymap-set leader-l "RET" 'eglot))
 
-(with-eval-after-load 'eglot
-  (hel-keymap-set eglot-mode-map :state 'normal
-    "K"         'eldoc-box-help-at-point
-    "M"         'eldoc-box-help-at-point
-    "g d"       '("Definition" . xref-find-definitions)
-    "g r"       '("References" . xref-find-references)
-    "g D"       '("Declaration" . eglot-find-declaration)
-    "g t"       '("Type definition" . eglot-find-typeDefinition)
-    "g i"       '("Implementations" . eglot-find-implementation)
-    "<f2>"      'eglot-rename
-    ;;
-    "C-c t h"   'eglot-inlay-hints-mode
-    "C-c t s"   'eglot-semantic-tokens-mode
-    ;;
-    "C-c l" (cons "LSP"
-                  (define-keymap
-                    "RET" '("LSP reconnect" . eglot-reconnect)
-                    "Q"   '("LSP shutdown" . eglot-shutdown)
-                    "r"   '("Rename" . eglot-rename)
-                    "f"   '("Format" . eglot-format)
-                    "="   '("Format" . eglot-format)
-                    "a"   '("Code actions" . eglot-code-actions)
-                    "o"   '("Organize imports" . eglot-code-action-organize-imports)
-                    "q"   '("Quickfix" . eglot-code-action-quickfix)
-                    "e"   '("Refactor Extract" . eglot-code-action-extract)
-                    "i"   '("Rewrite Inline" . eglot-code-action-inline)
-                    "R"   '("Refactor Rewrite" eglot-code-action-rewrite)
-                    "t"   '("Type hierarchy" . eglot-show-type-hierarchy)
-                    "c"   '("Call hierarchy" . eglot-show-call-hierarchy)))))
+(setup eglot
+  (:after-load
+    (:with-keymap eglot-mode-map
+      (:bind :state 'normal
+        "K"        'eldoc-box-help-at-point
+        "M"        'eldoc-box-help-at-point
+        "g d"      '("Definition" . xref-find-definitions)
+        "g r"      '("References" . xref-find-references)
+        "g D"      '("Declaration" . eglot-find-declaration)
+        "g t"      '("Type definition" . eglot-find-typeDefinition)
+        "g i"      '("Implementations" . eglot-find-implementation)
+        "<f2>"     'eglot-rename
+        ;;
+        "C-c t h"  'eglot-inlay-hints-mode
+        "C-c t s"  'eglot-semantic-tokens-mode
+        ;;
+        "C-c l" (cons "LSP"
+                      (define-keymap
+                        "RET" '("LSP reconnect" . eglot-reconnect)
+                        "Q"   '("LSP shutdown" . eglot-shutdown)
+                        "r"   '("Rename" . eglot-rename)
+                        "f"   '("Format" . eglot-format)
+                        "="   '("Format" . eglot-format)
+                        "a"   '("Code actions" . eglot-code-actions)
+                        "o"   '("Organize imports" . eglot-code-action-organize-imports)
+                        "q"   '("Quickfix" . eglot-code-action-quickfix)
+                        "e"   '("Refactor Extract" . eglot-code-action-extract)
+                        "i"   '("Rewrite Inline" . eglot-code-action-inline)
+                        "R"   '("Refactor Rewrite" eglot-code-action-rewrite)
+                        "t"   '("Type hierarchy" . eglot-show-type-hierarchy)
+                        "c"   '("Call hierarchy" . eglot-show-call-hierarchy)))))))
 
-(with-eval-after-load 'flymake
-  (hel-keymap-set flymake-mode-map :state 'normal
-    "] d"      '("Next diagnostic" . flymake-goto-next-error)
-    "[ d"      '("Prev diagnostic" . flymake-goto-prev-error)
-    "C-c l d"  '("Diagnostic" . flymake-show-buffer-diagnostics)
-    "C-c l D"  '("Project diagnostic" . flymake-show-project-diagnostics))
-  ;; Flymake buffer
-  (hel-keymap-set flymake-diagnostics-buffer-mode-map
-    :unset "C-m"
-    "RET"      'flymake-goto-diagnostic
-    "S-RET"    'flymake-show-diagnostic
-    "M-RET"    'flymake-show-diagnostic
-    "o"        'flymake-show-diagnostic
-    "g o"      'flymake-show-diagnostic))
+(setup flymake
+  (:after-load
+    (:with-keymap flymake-mode-map
+      (:bind :state 'normal
+        "] d"      '("Next diagnostic" . flymake-goto-next-error)
+        "[ d"      '("Prev diagnostic" . flymake-goto-prev-error)
+        "C-c l d"  '("Diagnostic" . flymake-show-buffer-diagnostics)
+        "C-c l D"  '("Project diagnostic" . flymake-show-project-diagnostics)))
+    ;; Flymake buffer
+    (:with-keymap flymake-diagnostics-buffer-mode-map
+      ;; (:unbind "C-m")
+      (:bind
+        "RET"      'flymake-goto-diagnostic
+        "S-RET"    'flymake-show-diagnostic
+        "M-RET"    'flymake-show-diagnostic
+        "o"        'flymake-show-diagnostic
+        "g o"      'flymake-show-diagnostic))))
 
 ;;; Config
 
-;; For on hover documentation formatting.
-(require 'helheim-markdown)
 
-(leaf flymake
-  :straight (flymake :type built-in)
-  :hook (prog-mode-hook . flymake-mode)
-  :custom
-  (flymake-mode-line-lighter . nil))
+(setup flymake
+  (:built-in)
+  (:hook prog-mode-hook flymake-mode)
+  (setopt flymake-mode-line-lighter nil))
 
-;; (leaf jsonrpc
-;;   :straight (jsonrpc :type built-in))
+(setup jsonrpc (:built-in))
 
-(leaf eglot
-  :straight (eglot :type built-in)
-  :hook (eglot-managed-mode-hook . hel-update-active-keymaps)
-  :custom
-  (eglot-sync-connect . 1)
-  (eglot-autoshutdown . t)
-  (eglot-confirm-server-edits . '((t . maybe-diff)))
-  ;; Margin indicator may increase line height due to glyph display
-  ;; failures or emoji font height differences.
-  (eglot-code-action-indications . '(eldoc-hint))
-  (eglot-code-action-indicator . "") ;; 💡   󰌵 󱠂 󱠃
-  (eglot-extend-to-xref . t)
-  :defer-config
-  ;; PERF: Disable the eglot-events-buffer, so Emacs doesn't churn GC and
-  ;;   CPU cycles on pretty-printing the events buffer in the background
-  ;;   (once it reaches max size).
-  (unless init-file-debug
-    (cl-callf plist-put eglot-events-buffer-config :size 0)))
+(setup eglot
+  (:built-in)
+  (:require helheim-markdown) ;; For on hover documentation formatting.
+  (:hook eglot-managed-mode-hook hel-update-active-keymaps)
+  (setopt eglot-sync-connect 1
+          eglot-autoshutdown t
+          eglot-confirm-server-edits '((t . maybe-diff))
+          ;; Margin indicator may increase line height due to glyph display
+          ;; failures or emoji font height differences.
+          eglot-code-action-indications '(eldoc-hint)
+          eglot-code-action-indicator "" ;; 💡   󰌵 󱠂 󱠃
+          eglot-extend-to-xref t)
+  (:after-load
+    ;; PERF: Disable the eglot-events-buffer, so Emacs doesn't churn GC and
+    ;;   CPU cycles on pretty-printing the events buffer in the background
+    ;;   (once it reaches max size).
+    (unless init-file-debug
+      (cl-callf plist-put eglot-events-buffer-config :size 0))))
 
-(leaf eldoc-box
-  :straight t
-  :custom
-  (eldoc-box-self-insert-command-list . '(self-insert-command)))
+(setup eldoc-box
+  (:install t)
+  (setopt eldoc-box-self-insert-command-list '(self-insert-command)))
 
-(leaf consult-eglot
-  :straight t
-  :after eglot
-  :config
-  (hel-keymap-set eglot-mode-map
-    "<remap> <xref-find-apropos>" 'consult-eglot-symbols))
+(setup consult-eglot
+  (:install t)
+  (:after eglot)
+  (:with-keymap eglot-mode-map
+    (:bind "<remap> <xref-find-apropos>" 'consult-eglot-symbols)))
 
-(leaf sideline
-  :straight t
-  :blackout t
-  :hook (flymake-mode-hook . sideline-mode)
-  :custom
-  (sideline-format-right . "  %s")
-  (sideline-backends-right-skip-current-line . nil)
-  (sideline-display-backend-name . t))
+(setup sideline
+  (:install t)
+  (:blackout t)
+  (:hook flymake-mode-hook sideline-mode)
+  (setopt sideline-format-right "  %s"
+          sideline-backends-right-skip-current-line nil
+          sideline-display-backend-name t))
 
-(leaf sideline-flymake
-  :straight t
-  :after sideline
-  :custom
-  (sideline-flymake-display-mode . 'line) ;; 'line or 'point
-  :hook (sideline-backends-right . sideline-flymake)
-  ;; :config
+(setup sideline-flymake
+  (:install t)
+  (:after sideline)
+  (setopt sideline-flymake-display-mode 'line) ;; 'line or 'point
+  (:hook sideline-backends-right sideline-flymake)
   ;; (add-to-list 'sideline-backends-right 'sideline-flymake)
   )
 
-(leaf sideline-eglot
-  :straight t
-  :after sideline
-  :custom
-  (sideline-eglot-code-actions-prefix . "󰌵 ") ;; 💡   󰌵 󱠂 󱠃
-  :hook (sideline-backends-right . sideline-eglot)
-  ;; :config
+(setup sideline-eglot
+  (:install t)
+  (:after sideline)
+  (setopt sideline-eglot-code-actions-prefix "󰌵 ") ;; 💡   󰌵 󱠂 󱠃
+  (:hook sideline-backends-right sideline-eglot)
   ;; (add-to-list 'sideline-backends-right 'sideline-eglot)
   )
 
-(leaf breadcrumb
-  :straight t
-  :hook ((c-mode-hook
+(setup breadcrumb
+  (:install t)
+  (:hook (c-mode-hook
           c++-mode-hook
           c-ts-mode-hook
-          c++-ts-mode-hook) . breadcrumb-local-mode))
+          c++-ts-mode-hook) breadcrumb-local-mode))
 
 ;;; .
 (provide 'helheim-eglot)

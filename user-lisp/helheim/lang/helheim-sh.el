@@ -4,12 +4,11 @@
 ;; (executable-find "shellcheck")
 ;; (executable-find "shfmt")
 
-(leaf sh-script
-  :hook ((sh-mode-hook bash-ts-mode-hook) . helheim-lsp)
-  :mode (("\\.\\(?:zunit\\|env\\)\\'" . sh-mode)
+(setup sh-script
+  (:hook (sh-mode-hook bash-ts-mode-hook) helheim-lsp)
+  (:mode ("\\.\\(?:zunit\\|env\\)\\'" . sh-mode)
          ("/bspwmrc\\'" . sh-mode))
-  :magic ("#compdef " . sh-mode)
-  :config
+  (add-to-list 'magic-mode-alist '("#compdef " . sh-mode))
   (setf (alist-get 'sh-mode major-mode-remap-alist) 'bash-ts-mode))
 
 (with-eval-after-load 'consult-imenu
@@ -18,7 +17,7 @@
            :types ((?f "Function" font-lock-function-name-face)
                    (?v "Variable" font-lock-constant-face)))))
 
-(leaf fish-mode :straight t)
+(setup fish-mode (:install t))
 
 ;;; .
 (provide 'helheim-sh)

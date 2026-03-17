@@ -68,22 +68,22 @@
   (load-file (expand-file-name "prepare-user-lisp.el" user-lisp-directory))
   (prepare-user-lisp))
 
+(setq helheim-package-manager 'elpaca) ;; or 'straight
 (require 'helheim-core)
 (require 'helheim-minibuffer) ; Emacs alternative of command pallet
 (require 'helheim-completion)
 
 ;;; Color theme
 
-(leaf helheim-modus-themes
-  :require t
-  :config
+(setup helheim-modus-themes
+  (:require t)
   (load-theme 'modus-operandi t))
 
 ;; I can recommend `leuven' theme for org-mode work. It has so many nice little
 ;; touches to spruce up org-mode elements that some users switch to it from
 ;; their usual dark doom or modus themes when working on org-mode projects.
 ;;   You may try it with ": load-theme" then type "leuven".
-(leaf leuven-theme :straight t)
+(setup leuven-theme (:install t))
 
 ;;; Search
 

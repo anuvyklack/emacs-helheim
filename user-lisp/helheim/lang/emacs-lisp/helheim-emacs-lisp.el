@@ -4,20 +4,23 @@
 
 ;;; Keybindings
 
-(dolist (keymap (list emacs-lisp-mode-map
-                      lisp-interaction-mode-map))
-  (hel-keymap-set keymap
-    "C-c e"   '("eval" . helheim-elisp-eval-map)) ; <localleader>
-  (hel-keymap-set keymap :state 'normal
-    ", e"     '("eval" . helheim-elisp-eval-map) ; <leader>
-    "K"       'helpful-at-point ;; after Vim
-    "M"       'helpful-at-point
-    "g d"     '("Find definition" . helheim-elisp-find-definitions)
-    "C-w g d" '("Find definition other window" . helheim-elisp-find-definitions-other-window)))
+(setup elisp-mode
+  (:with-keymap (emacs-lisp-mode-map
+                 lisp-interaction-mode-map)
+    (:bind
+      "C-c e"   '("eval" . helheim-elisp-eval-map)) ;; <leader>
+    (:bind :state 'normal
+      ", e"     '("eval" . helheim-elisp-eval-map) ;; <localleader>
+      "K"       'helpful-at-point ;; after Vim
+      "M"       'helpful-at-point
+      "g d"     '("Find definition" . helheim-elisp-find-definitions)
+      "C-w g d" '("Find definition other window" . helheim-elisp-find-definitions-other-window))))
 
-(hel-keymap-set lisp-data-mode-map :state 'normal
-  "K"   'helpful-at-point
-  "M"   'helpful-at-point)
+(setup lisp-mode
+  (:with-keymap lisp-data-mode-map
+    (:bind :state 'normal
+      "K"   'helpful-at-point
+      "M"   'helpful-at-point)))
 
 (defvar-keymap helheim-elisp-eval-map
   :prefix 'helheim-elisp-eval-map
@@ -35,11 +38,10 @@
 
 ;;; Config
 
-(leaf hel-paredit
-  :straight paredit
-  :hook
-  (emacs-lisp-mode-hook . hel-paredit-mode)
-  (lisp-data-mode-hook .  hel-paredit-mode))
+(setup hel-paredit
+  (:install paredit)
+  (:require t)
+  (:hook (emacs-lisp-mode-hook lisp-data-mode-hook)))
 
 ;; ;; Treat `-' char as part of the word on `w', `e', `b', motions.
 ;; (modify-syntax-entry ?- "w" emacs-lisp-mode-syntax-table)
@@ -55,48 +57,44 @@
                (inhibit-same-window . t)
                (body-function . select-window)))
 
-(leaf elisp-demos
-  :straight t
-  :after helpful
-  :config
+(setup elisp-demos
+  (:install t)
+  (:after helpful)
   (advice-add 'describe-function-1 :after #'elisp-demos-advice-describe-function-1)
   (advice-add 'helpful-update      :after #'elisp-demos-advice-helpful-update))
 
 ;; Extra highlighting
-(leaf highlight-defined
-  :straight t
-  ;; :custom (highlight-defined-face-use-itself . t)
-  :hook
-  (emacs-lisp-mode-hook . highlight-defined-mode)
-  (help-mode-hook . highlight-defined-mode))
+(setup highlight-defined
+  (:install t)
+  ;; (setopt highlight-defined-face-use-itself t)
+  (:hook (emacs-lisp-mode-hook help-mode-hook)))
 
 ;; `elisp-refs-function'
 ;; `elisp-refs-macro'
 ;; `elisp-refs-symbol'
 ;; `elisp-refs-special'
 ;; `elisp-refs-variable'
-(leaf elisp-refs
-  :straight t
-  :defer-config
-  (hel-keymap-set elisp-refs-mode-map
-    "C-j" 'elisp-refs-next-match
-    "C-k" 'elisp-refs-prev-match
-    "n"   'elisp-refs-next-match
-    "N"   'elisp-refs-prev-match)
+(setup elisp-refs
+  (:install t)
+  (:after-load
+    (:with-keymap elisp-refs-mode-map
+      (:bind
+        "C-j" 'elisp-refs-next-match
+        "C-k" 'elisp-refs-prev-match
+        "n"   'elisp-refs-next-match
+        "N"   'elisp-refs-prev-match)))
   ;;
   (dolist (cmd '(elisp-refs-visit-match
                  elisp-refs-next-match
                  elisp-refs-prev-match))
     (hel-advice-add cmd :around #'hel-jump-command-a)))
 
-(leaf edebug
-  :custom
-  (edebug-print-length . 10)
-  (edebug-print-level . 3))
+(setopt edebug-print-length 10
+        edebug-print-level 3)
 
 ;;;; Go to definition
 
-(leaf elisp-def :straight t)
+(setup elisp-def (:install t))
 
 (defun helheim-elisp-find-definitions ()
   "Try `elisp-def', on fail try other xref backends."

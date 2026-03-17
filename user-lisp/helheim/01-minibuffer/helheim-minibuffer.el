@@ -4,58 +4,56 @@
 
 ;;; Keybindings
 
-(hel-keymap-global-set :state '(normal motion)
-  "C-c '"  '("vertico repeat" . vertico-repeat)
-  "C-c \"" '("select vertico session" . vertico-repeat-select))
+(setup vertico
+  (:global-bind :state '(normal motion)
+    "C-c '"   '("vertico repeat" . vertico-repeat)
+    "C-c \""  '("select vertico session" . vertico-repeat-select))
+  (:with-keymap minibuffer-local-map
+    (:bind
+      "M-a" 'marginalia-cycle))
+  (:after-load
+    (:with-keymap vertico-map
+      (:bind :state 'normal
+        "y"     'vertico-save ;; Copy current candidate to kill ring.
+        "j"     'vertico-next
+        "k"     'vertico-previous
+        "g g"   'vertico-first
+        "G"     'vertico-last)
+      (:bind
+        "C-j"   'vertico-next
+        "C-k"   'vertico-previous
+        "C-S-j" 'vertico-next-group
+        "C-S-k" 'vertico-previous-group
 
-(hel-keymap-set minibuffer-local-map
-  "M-a"  'marginalia-cycle)
+        "C-l"   'vertico-insert
+        "C-h"   'vertico-directory-up
 
-(with-eval-after-load 'vertico
-  (hel-keymap-set vertico-map :state 'normal
-    "y"     'vertico-save ; Copy current candidate to kill ring.
-    "j"     'vertico-next
-    "k"     'vertico-previous
-    "g g"   'vertico-first
-    "G"     'vertico-last)
+        ;; Scrolling in Insert state.
+        "C-f"   'vertico-scroll-up
+        "C-b"   'vertico-scroll-down
 
-  (hel-keymap-set vertico-map
-    "C-j"   'vertico-next
-    "C-k"   'vertico-previous
-    "C-S-j" 'vertico-next-group
-    "C-S-k" 'vertico-previous-group
+        ;; Rebind "}" / "{" and "]p" / "[p" keys
+        [remap hel-forward-paragraph]      'vertico-next-group
+        [remap hel-backward-paragraph]     'vertico-previous-group
+        [remap hel-forward-paragraph-end]  'vertico-next-group
+        [remap hel-backward-paragraph-end] 'vertico-previous-group
 
-    "C-l"   'vertico-insert
-    "C-h"   'vertico-directory-up
-
-    ;; Scrolling in Insert state.
-    "C-f"   'vertico-scroll-up
-    "C-b"   'vertico-scroll-down
-
-    ;; Rebind "}" / "{" and "]p" / "[p" keys
-    "<remap> <hel-forward-paragraph>"      'vertico-next-group
-    "<remap> <hel-backward-paragraph>"     'vertico-previous-group
-    "<remap> <hel-forward-paragraph-end>"  'vertico-next-group
-    "<remap> <hel-backward-paragraph-end>" 'vertico-previous-group
-
-    ;; Rebind "C-f" / "C-b" and "C-d" / "C-u" scrolling keys
-    "<remap> <hel-smooth-scroll-down>"      'vertico-scroll-up
-    "<remap> <hel-smooth-scroll-up>"        'vertico-scroll-down
-    "<remap> <hel-smooth-scroll-page-down>" 'vertico-scroll-up
-    "<remap> <hel-smooth-scroll-page-up>"   'vertico-scroll-down))
+        ;; Rebind "C-f" / "C-b" and "C-d" / "C-u" scrolling keys
+        [remap hel-smooth-scroll-down]      'vertico-scroll-up
+        [remap hel-smooth-scroll-up]        'vertico-scroll-down
+        [remap hel-smooth-scroll-page-down] 'vertico-scroll-up
+        [remap hel-smooth-scroll-page-up]   'vertico-scroll-down))))
 
 ;;; Config
 
-(leaf vertico
-  :straight t
-  :global-minor-mode vertico-mode
-  :hook (minibuffer-setup-hook . vertico-repeat-save)
-  :init
-  (setopt vertico-resize 'grow-only ; Grow and shrink the Vertico minibuffer
-          vertico-count 15 ; How many candidates to show
+(setup vertico
+  (:install t)
+  (:after-init vertico-mode)
+  (:hook minibuffer-setup-hook vertico-repeat-save)
+  (setopt vertico-resize 'grow-only ;; Grow and shrink the Vertico minibuffer
+          vertico-count 15  ;; How many candidates to show
           vertico-scroll-margin 2
           vertico-cycle nil)
-  :config
   ;; Prompt indicator for `completing-read-multiple'.
   (when (< emacs-major-version 31)
     (advice-add #'completing-read-multiple :filter-args
@@ -65,30 +63,27 @@
                                 (car args))
                         (cdr args))))))
 
-(leaf vertico-directory
-  :after vertico
-  :require t
-  :hook
+(setup vertico-directory
+  (:after vertico)
+  (:require t)
   ;; Cleans up path when moving directories with shadowed paths syntax, e.g.
   ;; cleans ~/foo/bar/// to /, and ~/foo/bar/~/ to ~/.
-  (rfn-eshadow-update-overlay-hook . vertico-directory-tidy)
-  :config
-  (hel-keymap-set vertico-directory-map
-    "C-h" 'vertico-directory-up))
+  (:hook rfn-eshadow-update-overlay-hook vertico-directory-tidy)
+  (:with-keymap vertico-directory-map
+    (:bind "C-h" 'vertico-directory-up)))
 
-(leaf marginalia
-  :straight t
-  :global-minor-mode marginalia-mode)
+(setup marginalia
+  (:install t)
+  (marginalia-mode))
 
-(leaf nerd-icons-completion
-  :straight t
-  :after marginalia
-  :global-minor-mode nerd-icons-completion-mode
-  :hook (marginalia-mode-hook . nerd-icons-completion-marginalia-setup)
-  :init
+(setup nerd-icons-completion
+  (:install t)
+  (:after marginalia)
   ;; Icons make no sense when they are all the same and only add distraction.
-  (setopt nerd-icons-completion-category-icons nil)
-  (setopt nerd-icons-completion-icon-size 0.95))
+  (setopt nerd-icons-completion-category-icons nil
+          nerd-icons-completion-icon-size 0.95)
+  (:hook marginalia-mode-hook nerd-icons-completion-marginalia-setup)
+  (nerd-icons-completion-mode))
 
 (provide 'helheim-minibuffer)
 ;;; helheim-minibuffer.el ends here

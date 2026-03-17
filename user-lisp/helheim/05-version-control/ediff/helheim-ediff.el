@@ -1,17 +1,12 @@
 ;;; helheim-ediff.el -*- lexical-binding: t; no-byte-compile: t; -*-
 
-(require 'hel-core)
-
-(leaf ediff
-  :hook
-  (ediff-keymap-setup-hook . helheim-ediff-setup-keys)
-  :init
+(setup ediff
+  (:hook ediff-keymap-setup-hook helheim-ediff-setup-keys)
   (setopt ediff-diff-options "-w" ;; turn off whitespace checking
           ediff-split-window-function #'split-window-horizontally
           ediff-window-setup-function #'ediff-setup-windows-plain
           ;; ediff-keep-variants nil
           )
-  :config
   (hel-set-initial-state 'ediff-mode 'motion))
 
 ;;; Restore windows configuration after quitting ediff

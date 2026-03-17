@@ -56,188 +56,205 @@
 
 ;;; Code:
 
-(require 'embark)
+(setup embark
+  (:require t)
+  (:with-keymap embark-general-map
+    (:unbind "w" "DEL")
+    (:bind
+      "E"   'embark-export
+      "S"   'embark-collect ;; for "snapshot"
+      "L"   'embark-live
+      "B"   'embark-become
+      "A"   'embark-act-all
+      "SPC" 'embark-select
+      "i"   'embark-insert
+      "y"   'embark-copy-as-kill ;; "w"
+      "q"   'embark-toggle-quit))
 
-(hel-keymap-set embark-general-map
-  :unset '("w" "DEL")
-  "E"   'embark-export
-  "S"   'embark-collect ; for "snapshot"
-  "L"   'embark-live
-  "B"   'embark-become
-  "A"   'embark-act-all
-  "SPC" 'embark-select
-  "i"   'embark-insert
-  "y"   'embark-copy-as-kill ; "w"
-  "q"   'embark-toggle-quit)
+  (:with-keymap embark-region-map
+    (:unbind
+      "u"  ;; `upcase-region'
+      "l"  ;; `downcase-region'
+      "t"  ;; `transpose-regions'
+      ";"  ;; `comment-or-uncomment-region'
+      "+"  ;; `append-to-file'
+      "n") ;; `hel-narrow-to-region-indirectly'
+    (:bind
+      "<left>"  'indent-rigidly
+      "<right>" 'indent-rigidly
+      "TAB" 'indent-region
+      "c"   'capitalize-region
+      "|"   'shell-command-on-region
+      "e"   'eval-region
+      "<"   'embark-eval-replace
+      "a"   'align
+      "A"   'align-regexp
+      "f"   'fill-region
+      "p"   'fill-region-as-paragraph
+      "$"   'ispell-region
+      "="   'count-words-region
+      "w"   'whitespace-cleanup-region  ; "F"
+      "o"   'org-table-convert-region
+      "W"   'write-region
+      ;; "k"   'apply-macro-to-region-lines ; "k" for keyboard macro
+      "m"   'apply-macro-to-region-lines
+      "*"   'calc-grab-region
+      ":"   'calc-grab-sum-down
+      "_"   'calc-grab-sum-across
+      "r"   'reverse-region
+      "d"   'delete-duplicate-lines
+      "b"   'browse-url-of-region
+      "h"   'shr-render-region
+      "'"   'expand-region-abbrevs
+      "v"   'vc-region-history
+      "R"   'repunctuate-sentences
+      "s"   'embark-sort-map
+      ">"   'embark-encode-map))
 
-(hel-keymap-set embark-region-map
-  "<left>"  'indent-rigidly
-  "<right>" 'indent-rigidly
-  "TAB" 'indent-region
-  "c"   'capitalize-region
-  "|"   'shell-command-on-region
-  "e"   'eval-region
-  "<"   'embark-eval-replace
-  "a"   'align
-  "A"   'align-regexp
-  "f"   'fill-region
-  "p"   'fill-region-as-paragraph
-  "$"   'ispell-region
-  "="   'count-words-region
-  "w"   'whitespace-cleanup-region ; "F"
-  "o"   'org-table-convert-region
-  "W"   'write-region
-  ;; "k"   'apply-macro-to-region-lines ; "k" for keyboard macro
-  "m"   'apply-macro-to-region-lines
-  "*"   'calc-grab-region
-  ":"   'calc-grab-sum-down
-  "_"   'calc-grab-sum-across
-  "r"   'reverse-region
-  "d"   'delete-duplicate-lines
-  "b"   'browse-url-of-region
-  "h"   'shr-render-region
-  "'"   'expand-region-abbrevs
-  "v"   'vc-region-history
-  "R"   'repunctuate-sentences
-  "s"   'embark-sort-map
-  ">"   'embark-encode-map
-  "u"    nil  ; `upcase-region'
-  "l"    nil  ; `downcase-region'
-  "t"    nil  ; `transpose-regions'
-  ";"    nil  ; `comment-or-uncomment-region'
-  "+"    nil  ; `append-to-file'
-  "n"    nil) ; `hel-narrow-to-region-indirectly'
+  (:with-keymap embark-kill-ring-map
+    (:unbind "\\")
+    (:bind "d" 'embark-kill-ring-remove)) ;; "\"
 
-(hel-keymap-set embark-kill-ring-map
-  :unset "\\"
-  "d"   'embark-kill-ring-remove) ; "\"
+  (:with-keymap embark-buffer-map
+    (:unbind
+      "k" "K"
+      "b"  ;; `switch-to-buffer'
+      "z") ;; `embark-bury-buffer'
+    (:bind
+      "RET" 'switch-to-buffer
+      "d"   'kill-buffer                   ; "k"
+      "D"   'embark-kill-buffer-and-window ; "K
+      "o"   'switch-to-buffer-other-window
+      "r"   'embark-rename-buffer
+      "="   'ediff-buffers
+      "|"   'embark-shell-command-on-buffer
+      "<"   'insert-buffer
+      "x"   'embark-open-externally
+      "j"   'embark-dired-jump
+      "$"   'eshell))
 
-(hel-keymap-set embark-buffer-map
-  :unset '("k" "K")
-  "RET" 'switch-to-buffer
-  "d"   'kill-buffer                   ; "k"
-  "D"   'embark-kill-buffer-and-window ; "K
-  "o"   'switch-to-buffer-other-window
-  "r"   'embark-rename-buffer
-  "="   'ediff-buffers
-  "|"   'embark-shell-command-on-buffer
-  "<"   'insert-buffer
-  "x"   'embark-open-externally
-  "j"   'embark-dired-jump
-  "$"   'eshell
-  "b"    nil  ; `switch-to-buffer'
-  "z"    nil) ; `embark-bury-buffer'
+  (:with-keymap embark-tab-map
+    (:unbind "k" "s")
+    (:bind
+      "RET" 'tab-bar-select-tab-by-name ; "s"
+      "r"   'tab-bar-rename-tab-by-name
+      "d"   'tab-bar-close-tab-by-name)) ; "k"
 
-(hel-keymap-set embark-tab-map
-  :unset '("k" "s")
-  "RET" 'tab-bar-select-tab-by-name ; "s"
-  "r"   'tab-bar-rename-tab-by-name
-  "d"   'tab-bar-close-tab-by-name) ; "k"
+  (:with-keymap embark-identifier-map
+    (:unbind
+      ;; Use `hel-paredit' instead.
+      "n"  ;; `embark-next-symbol'
+      "p") ;; `embark-previous-symbol'
+    (:bind
+      "RET" 'xref-find-definitions
+      "h"   'display-local-help
+      "H"   'embark-toggle-highlight
+      "d"   'xref-find-definitions
+      "r"   'xref-find-references
+      "a"   'xref-find-apropos
+      "i"   'info-lookup-symbol ;; "s"
+      "'"   'expand-abbrev
+      "$"   'ispell-word
+      "o"   'occur))
 
-(hel-keymap-set embark-identifier-map
-  "RET" 'xref-find-definitions
-  "h"   'display-local-help
-  "H"   'embark-toggle-highlight
-  "d"   'xref-find-definitions
-  "r"   'xref-find-references
-  "a"   'xref-find-apropos
-  "i"   'info-lookup-symbol ; "s"
-  "'"   'expand-abbrev
-  "$"   'ispell-word
-  "o"   'occur
-  ;; Use `hel-paredit' instead.
-  "n"    nil  ; `embark-next-symbol'
-  "p"    nil) ; `embark-previous-symbol'
-
-(hel-keymap-set embark-symbol-map
   ;; inherit from `embark-identifier-map'
-  "RET" 'embark-find-definition
-  "h"   'describe-symbol
-  "i"   'embark-info-lookup-symbol ; "s"
-  "d"   'embark-find-definition
-  "e"   'pp-eval-expression
-  "a"   'apropos
-  "\\"  'embark-history-remove)
+  (:with-keymap embark-symbol-map
+    (:bind
+      "RET" 'embark-find-definition
+      "h"   'describe-symbol
+      "i"   'embark-info-lookup-symbol ;; "s"
+      "d"   'embark-find-definition
+      "e"   'pp-eval-expression
+      "a"   'apropos
+      "\\"  'embark-history-remove))
 
-(hel-keymap-set embark-expression-map
-  :unset "k"
-  "RET" 'pp-eval-expression
-  "e"   'pp-eval-expression
-  "<"   'embark-eval-replace
-  "m"   'pp-macroexpand-expression
-  "TAB" 'indent-region
-  ";"   'comment-dwim
-  "t"   'transpose-sexps
-  "d"   'kill-region ; "k"
-  ;; Use `hel-paredit' instead.
-  "r"    nil  ; `raise-sexp'
-  "u"    nil  ; `backward-up-list'
-  "n"    nil  ; `forward-list'
-  "p"    nil) ; `backward-list'
+  (:with-keymap embark-expression-map
+    (:unbind "k"
+      ;; Use `hel-paredit' instead.
+      "r"  ;; `raise-sexp'
+      "u"  ;; `backward-up-list'
+      "n"  ;; `forward-list'
+      "p") ;; `backward-list'
+    (:bind
+      "RET" 'pp-eval-expression
+      "e"   'pp-eval-expression
+      "<"   'embark-eval-replace
+      "m"   'pp-macroexpand-expression
+      "TAB" 'indent-region
+      ";"   'comment-dwim
+      "t"   'transpose-sexps
+      "d"   'kill-region)) ;; "k"
 
-(hel-keymap-set embark-defun-map
   ;; inherit from `embark-expression-map'
-  "RET" 'embark-pp-eval-defun
-  "e"   'embark-pp-eval-defun
-  "c"   'compile-defun
-  "D"   'edebug-defun
-  "o"   'checkdoc-defun
-  "N"    nil) ; `narrow-to-defun'
+  (:with-keymap embark-defun-map
+    (:ubind "N") ;; `narrow-to-defun'
+    (:bind
+      "RET" 'embark-pp-eval-defun
+      "e"   'embark-pp-eval-defun
+      "c"   'compile-defun
+      "D"   'edebug-defun
+      "o"   'checkdoc-defun))
 
-(hel-keymap-set embark-heading-map
-  :unset '("C-SPC" "n" "p" "f" "b" "^" "v" "+" "-")
-  "RET" 'outline-show-subtree
-  "TAB" 'outline-cycle
-  "o"   'outline-show-subtree             ; "+"
-  "c"   'outline-hide-subtree             ; "-"
-  "m"   'outline-mark-subtree             ; "C-SPC"
-  "j"   'outline-next-visible-heading     ; "n"
-  "k"   'outline-previous-visible-heading ; "p"
-  "J"   'outline-forward-same-level       ; "f"
-  "K"   'outline-backward-same-level      ; "b"
-  "u"   'outline-up-heading
-  "M-j" 'outline-move-subtree-up          ; "^"
-  "M-j" 'outline-move-subtree-down        ; "v"
-  ">"   'outline-demote
-  "<"   'outline-promote)
+  (:with-keymap embark-heading-map
+    (:unbind "C-SPC" "n" "p" "f" "b" "^" "v" "+" "-")
+    (:bind
+      "RET" 'outline-show-subtree
+      "TAB" 'outline-cycle
+      "o"   'outline-show-subtree             ; "+"
+      "c"   'outline-hide-subtree             ; "-"
+      "m"   'outline-mark-subtree             ; "C-SPC"
+      "j"   'outline-next-visible-heading     ; "n"
+      "k"   'outline-previous-visible-heading ; "p"
+      "J"   'outline-forward-same-level       ; "f"
+      "K"   'outline-backward-same-level      ; "b"
+      "u"   'outline-up-heading
+      "M-j" 'outline-move-subtree-up    ; "^"
+      "M-j" 'outline-move-subtree-down  ; "v"
+      ">"   'outline-demote
+      "<"   'outline-promote))
 
-(hel-keymap-set embark-flymake-map
-  :unset '("n" "p")
-  "RET" 'flymake-show-buffer-diagnostics
-  "j"   'flymake-goto-next-error  ; "n"
-  "k"   'flymake-goto-prev-error) ; "p"
+  (:with-keymap embark-flymake-map
+    (:unbind "n" "p")
+    (:bind
+      "RET" 'flymake-show-buffer-diagnostics
+      "j"   'flymake-goto-next-error   ;; "n"
+      "k"   'flymake-goto-prev-error)) ;; "p"
 
-(hel-keymap-set embark-unicode-name-map
-  :unset '("I" "W")
-  "RET" 'insert-char
-  "Y"   'embark-save-unicode-character) ; "W"
+  (:with-keymap embark-unicode-name-map
+    (:unbind "I" "W")
+    (:bind
+      "RET" 'insert-char
+      "Y"   'embark-save-unicode-character)) ;; "W"
 
-(hel-keymap-set embark-prose-map
-  :unset "F"
-  "$"   'ispell-region
-  "f"   'fill-region
-  "c"   'capitalize-region
-  "w"   'whitespace-cleanup-region ; "F"
-  "="   'count-words-region
-  "u"    nil  ; `upcase-region'
-  "l"    nil) ; `downcase-region'
+  (:with-keymap embark-consult-rerun-map
+    (:unbind "F"
+      "u"  ;; `upcase-region'
+      "l") ;; `downcase-region'
+    (:bind
+      "$"   'ispell-region
+      "f"   'fill-region
+      "c"   'capitalize-region
+      "w"   'whitespace-cleanup-region ;; "F"
+      "="   'count-words-region))
 
-(hel-keymap-set embark-sentence-map
-  ;; inherit from `embark-prose-map'
-  "t"   'transpose-sentences
-  ")"   'forward-sentence
-  "("   'backward-sentence)
+  (:with-keymap embark-consult-rerun-map
+    (:bind
+      ;; inherit from `embark-prose-map'
+      "t"   'transpose-sentences
+      ")"   'forward-sentence
+      "("   'backward-sentence))
 
-;; Keymap for *Embark Collect* buffer.
-(hel-keymap-set embark-collect-mode-map
-  ;; `m' and `u' are used for selecting and unselecting in Dired like buffers.
-  "m"   'hel-embark-select
-  "u"   'hel-embark-select
-  "y"   'embark-copy-as-kill)
+  ;; Keymap for *Embark Collect* buffer.
+  (:with-keymap embark-consult-rerun-map
+    (:bind
+      ;; `m' and `u' are used for selecting and unselecting in Dired like buffers.
+      "m"   'hel-embark-select
+      "u"   'hel-embark-select
+      "y"   'embark-copy-as-kill))
 
-(hel-keymap-set embark-consult-rerun-map
-  :unset "g"
-  "g r" 'embark-rerun-collect-or-export)
+  (:with-keymap embark-consult-rerun-map
+    (:unbind "F")
+    (:bind "g r" 'embark-rerun-collect-or-export)))
 
 ;;; Commands
 

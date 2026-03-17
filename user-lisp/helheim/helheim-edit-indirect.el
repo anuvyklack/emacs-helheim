@@ -32,7 +32,7 @@
 ;;; Code:
 (require 'hel-core)
 
-(leaf edit-indirect :straight t)
+(setup edit-indirect (:install t))
 
 ;;; Keybindings
 

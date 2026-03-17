@@ -13,18 +13,18 @@
                                   (t . (regular 1.03)))))
 
 ;; ;; Requires Emacs 31
-;; (leaf modus-themes
-;;   :straight t
-;;   :custom
-;;   ;; (modus-themes-to-toggle . '(modus-operandi modus-vivendi))
-;;   ;; (modus-themes-to-rotate . modus-themes-items)
-;;   (modus-themes-mixed-fonts . t)
-;;   (modus-themes-variable-pitch-ui . t)
-;;   (modus-themes-italic-constructs . t)
-;;   (modus-themes-bold-constructs . t)
-;;   (modus-themes-headings . '((agenda-structure . (variable-pitch light 2.2))
-;;                              (agenda-date . (variable-pitch regular 1.3))
-;;                              (t . (regular 1.03)))))
+;; (setup modus-themes
+;;   (:install t)
+;;   (setopt
+;;    ;; modus-themes-to-toggle '(modus-operandi modus-vivendi)
+;;    ;; modus-themes-to-rotate modus-themes-items
+;;    modus-themes-mixed-fonts t
+;;    modus-themes-variable-pitch-ui t
+;;    modus-themes-italic-constructs t
+;;    modus-themes-bold-constructs t
+;;    modus-themes-headings '((agenda-structure . (variable-pitch light 2.2))
+;;                            (agenda-date . (variable-pitch regular 1.3))
+;;                            (t . (regular 1.03)))))
 
 ;;; modus-operandi
 ;;;; General

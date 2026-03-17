@@ -22,54 +22,64 @@
 
 ;;; Config
 
-(leaf diff-hl
-  :straight t
-  :commands (diff-hl-stage-current-hunk
+(setup diff-hl
+  (:install t)
+  (:autoload diff-hl-stage-current-hunk
              diff-hl-revert-hunk
              diff-hl-next-hunk
              diff-hl-previous-hunk)
-  :custom
-  (diff-hl-show-staged-changes . nil)
-  (diff-hl-show-hunk-function . 'diff-hl-show-hunk-inline)
-  (diff-hl-show-hunk-inline-smart-lines . nil)
-  :hook
-  (after-init-hook . global-diff-hl-mode)
-  (dired-mode-hook . diff-hl-dired-mode)
-  (magit-post-refresh-hook . diff-hl-magit-post-refresh)
-  ;; (dired-mode-hook . diff-hl-dired-mode-unless-remote)
-  ;; (vc-dir-mode-hook . turn-on-diff-hl-mode)
-  ;; (diff-hl-mode-hook . diff-hl-flydiff-mode)
-  (diff-hl-mode-hook . diff-hl-show-hunk-mouse-mode)
-  :defer-config
-  ;; Suppress default repeat-map assigment.
-  (setq diff-hl-repeat-exceptions '(diff-hl-revert-hunk
-                                    diff-hl-previous-hunk
-                                    diff-hl-next-hunk
-                                    diff-hl-show-hunk
-                                    diff-hl-show-hunk-previous
-                                    diff-hl-show-hunk-next
-                                    diff-hl-stage-dwim)))
+  (setopt diff-hl-show-staged-changes nil
+          diff-hl-show-hunk-function 'diff-hl-show-hunk-inline
+          diff-hl-show-hunk-inline-smart-lines nil)
+  (:after-init global-diff-hl-mode)
+  (:hook dired-mode-hook diff-hl-dired-mode)
+  (:hook magit-post-refresh-hook diff-hl-magit-post-refresh)
+  ;; (:hook dired-mode-hook diff-hl-dired-mode-unless-remote)
+  ;; (:hook vc-dir-mode-hook turn-on-diff-hl-mode)
+  ;; (:hook diff-hl-mode-hook diff-hl-flydiff-mode)
+  (:hook diff-hl-mode-hook diff-hl-show-hunk-mouse-mode)
+  (:after-load
+    ;; Suppress default repeat-map assigment.
+    (setq diff-hl-repeat-exceptions '(diff-hl-revert-hunk
+                                      diff-hl-previous-hunk
+                                      diff-hl-next-hunk
+                                      diff-hl-show-hunk
+                                      diff-hl-show-hunk-previous
+                                      diff-hl-show-hunk-next
+                                      diff-hl-stage-dwim))))
 
-(with-eval-after-load 'diff-hl-show-hunk
-  (hel-keymap-set diff-hl-show-hunk-map :state 'motion
-    "["   'diff-hl-show-hunk-previous
-    "]"   'diff-hl-show-hunk-next)
-  (hel-keymap-set diff-hl-show-hunk-map
-    "C-j" 'diff-hl-show-hunk-next
-    "C-k" 'diff-hl-show-hunk-previous
-    "y"   'diff-hl-show-hunk-copy-original-text
-    "s"   'diff-hl-show-hunk-stage-hunk))
+;; (with-eval-after-load 'diff-hl-show-hunk
+;;   (hel-keymap-set diff-hl-show-hunk-map :state 'motion
+;;     "["   'diff-hl-show-hunk-previous
+;;     "]"   'diff-hl-show-hunk-next)
+;;   (hel-keymap-set diff-hl-show-hunk-map
+;;     "C-j" 'diff-hl-show-hunk-next
+;;     "C-k" 'diff-hl-show-hunk-previous
+;;     "y"   'diff-hl-show-hunk-copy-original-text
+;;     "s"   'diff-hl-show-hunk-stage-hunk))
 
-(leaf diff-hl-show-hunk-inline
-  :defer-config
-  (hel-keymap-set diff-hl-show-hunk-inline-transient-mode-map :state 'motion
-    "j"   'diff-hl-show-hunk-inline--popup-up
-    "k"   'diff-hl-show-hunk-inline--popup-down
-    "C-b" 'diff-hl-show-hunk-inline--popup-pagedown
-    "C-f" 'diff-hl-show-hunk-inline--popup-pageup
-    "C-u" 'diff-hl-show-hunk-inline--popup-pagedown
-    "C-d" 'diff-hl-show-hunk-inline--popup-pageup)
-  :config
+(setup diff-hl-show-hunk
+  (:after-load
+    (:with-keymap diff-hl-show-hunk-map
+      (:bind :state 'motion
+        "["   'diff-hl-show-hunk-previous
+        "]"   'diff-hl-show-hunk-next)
+      (:bind
+        "C-j" 'diff-hl-show-hunk-next
+        "C-k" 'diff-hl-show-hunk-previous
+        "y"   'diff-hl-show-hunk-copy-original-text
+        "s"   'diff-hl-show-hunk-stage-hunk))))
+
+(setup diff-hl-show-hunk-inline
+  (:after-load
+    (:with-keymap diff-hl-show-hunk-inline-transient-mode-map
+      (:bind :state 'motion
+        "j"   'diff-hl-show-hunk-inline--popup-up
+        "k"   'diff-hl-show-hunk-inline--popup-down
+        "C-b" 'diff-hl-show-hunk-inline--popup-pagedown
+        "C-f" 'diff-hl-show-hunk-inline--popup-pageup
+        "C-u" 'diff-hl-show-hunk-inline--popup-pagedown
+        "C-d" 'diff-hl-show-hunk-inline--popup-pageup)))
   (define-advice diff-hl-show-hunk-inline (:after (&rest _) helheim)
     (setq diff-hl-show-hunk-inline--current-footer
           (if diff-hl-show-staged-changes

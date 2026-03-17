@@ -7,44 +7,45 @@
 
 ;;; Keybindings
 
-(hel-keymap-set deadgrep-mode-map
-  :unset "g"
+(setup deadgrep
+  (:with-keymap deadgrep-mode-map
+    (:unbind "g")
+    (:bind
+      "i"   'deadgrep-edit-mode
 
-  "i"   'deadgrep-edit-mode
+      "a"   'deadgrep-incremental       ; "a" for amend
+      "g r" 'deadgrep-restart           ; also "C-w r"
 
-  "a"   'deadgrep-incremental ; "a" for amend
-  "g r" 'deadgrep-restart     ; also "C-w r"
+      "RET" 'deadgrep-visit-result-other-window
 
-  "RET" 'deadgrep-visit-result-other-window
+      "o"   '+deadgrep-show-result-other-window
+      "C-o" '+deadgrep-show-result-other-window
 
-  "o"   '+deadgrep-show-result-other-window
-  "C-o" '+deadgrep-show-result-other-window
+      "n"   'deadgrep-forward-match
+      "N"   'deadgrep-backward-match
 
-  "n"   'deadgrep-forward-match
-  "N"   'deadgrep-backward-match
+      "C-j" '+deadgrep-forward-match-show-other-window
+      "C-k" '+deadgrep-backward-match-show-other-window
 
-  "C-j" '+deadgrep-forward-match-show-other-window
-  "C-k" '+deadgrep-backward-match-show-other-window
+      "}"   'deadgrep-forward-filename
+      "{"   'deadgrep-backward-filename
+      "] p" 'deadgrep-forward-filename
+      "[ p" 'deadgrep-backward-filename
 
-  "}"   'deadgrep-forward-filename
-  "{"   'deadgrep-backward-filename
-  "] p" 'deadgrep-forward-filename
-  "[ p" 'deadgrep-backward-filename
+      "z j" 'deadgrep-forward-filename
+      "z k" 'deadgrep-backward-filename
+      "z u" 'deadgrep-parent-directory))
+  (:with-keymap deadgrep-edit-mode-map
+    (:bind :state 'normal
+      "<escape>" 'deadgrep-mode
+      "z x" 'deadgrep-mode
+      "Z Z" 'deadgrep-mode
+      "RET" 'deadgrep-visit-result-other-window
 
-  "z j" 'deadgrep-forward-filename
-  "z k" 'deadgrep-backward-filename
-  "z u" 'deadgrep-parent-directory)
-
-(hel-keymap-set deadgrep-edit-mode-map :state 'normal
-  "<escape>" 'deadgrep-mode
-  "z x" 'deadgrep-mode
-  "Z Z" 'deadgrep-mode
-  "RET" 'deadgrep-visit-result-other-window
-
-  ;; Commands bound to these keys have no sense for Deadgrep.
-  "o"   'undefined
-  "O"   'undefined
-  "J"   'undefined)
+      ;; Commands bound to these keys have no sense for Deadgrep.
+      "o"   'undefined
+      "O"   'undefined
+      "J"   'undefined)))
 
 ;;; Commands
 

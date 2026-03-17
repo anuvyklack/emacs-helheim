@@ -1,9 +1,9 @@
 ;;; helheim-xref.el -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;; Code:
 
-(leaf xref
-  ;; :straight t
-  :init
+(setup xref
+  ;; (:install t)
+  (:built-in)
   (setopt xref-search-program 'ripgrep ;; or 'ugrep
           xref-auto-jump-to-first-definition 'show
           xref-prompt-for-identifier nil
@@ -15,12 +15,12 @@
           ;; xref-show-definitions-function #'xref-show-definitions-completing-read
           ;; ;; xref-show-definitions-function #'xref-show-definitions-buffer-at-bottom
           )
-  :bind
-  ;; Make Xref try all backends untill first one succeed
-  ([remap xref-find-references]  . helheim-xref-find-references)
-  ([remap xref-find-definitions] . helheim-xref-find-definitions)
-  ([remap xref-find-definitions-other-window] . helheim-xref-find-definitions-other-window)
-  ([remap xref-find-definitions-other-frame] . helheim-xref-find-definitions-other-frame)
+  (:global-bind
+    ;; Make Xref try all backends untill first one succeed
+    [remap xref-find-references]  'helheim-xref-find-references
+    [remap xref-find-definitions] 'helheim-xref-find-definitions
+    [remap xref-find-definitions-other-window] 'helheim-xref-find-definitions-other-window
+    [remap xref-find-definitions-other-frame]  'helheim-xref-find-definitions-other-frame)
   :config
   ;; Open xref buffer in another window
   (add-to-list 'display-buffer-alist
@@ -29,17 +29,16 @@
                  (inhibit-same-window . t)
                  (body-function . select-window))))
 
-(leaf dumb-jump
-  :straight t
-  :after xref
-  :config
+(setup dumb-jump
+  (:install t)
+  (:after xref)
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
   (remove-hook 'xref-backend-functions #'etags--xref-backend))
 
-(leaf nerd-icons-xref
-  :straight t
-  :after xref
-  :global-minor-mode nerd-icons-xref-mode)
+(setup nerd-icons-xref
+  (:install t)
+  (:after xref)
+  (nerd-icons-xref-mode))
 
 ;;; .
 (provide 'helheim-xref)

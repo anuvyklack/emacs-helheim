@@ -4,16 +4,14 @@
 (require 'hel-macros)
 (require 'hel-core)
 
-;; <leader> ss — deadgrep entry point
-(hel-keymap-set search-map
-  "s" 'deadgrep)
-
-(leaf deadgrep
-  :straight t
-  ;; :hook
-  ;; (deadgrep-mode-hook . next-error-follow-minor-mode)
-  :defer-config
-  (load "helheim-deadgrep-keys" nil t))
+(setup deadgrep
+  (:install t)
+  ;; <leader> ss — deadgrep entry point
+  (:with-keymap search-map
+    (:bind "s" 'deadgrep))
+  ;; (:hook deadgrep-mode-hook next-error-follow-minor-mode)
+  (:after-load
+    (load "helheim-deadgrep-keys" nil t)))
 
 (add-hook 'deadgrep-mode-hook
           (defun helheim-deadgrep-mode-h ()
@@ -22,7 +20,8 @@
                                                  (deadgrep-restart)))))
 
 ;; TODO: upstream this
-(dolist (fun '(deadgrep deadgrep-search-term))
+(dolist (fun '(deadgrep
+               deadgrep-search-term))
   (advice-add fun :after 'helheim-deadgrep-set-list-buffers-directory-a))
 
 (defun helheim-deadgrep-set-list-buffers-directory-a (&rest _)

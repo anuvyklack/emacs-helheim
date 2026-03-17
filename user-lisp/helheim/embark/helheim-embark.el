@@ -15,24 +15,22 @@
 
 ;;; Config
 
-(leaf embark
-  :straight t
-  :init
+(setup embark
+  (:install t)
   (setopt which-key-use-C-h-commands nil
           prefix-help-command 'embark-prefix-help-command)
-  :config
   ;; Hide the modeline of the Embark live/completions buffers.
   (add-to-list 'display-buffer-alist
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
                  (window-parameters (mode-line-format . none))))
-  :defer-config
-  (load "helheim-embark-keys" nil t))
+  (:after-load
+    (load "helheim-embark-keys" nil t)))
 
-(leaf embark-consult
-  :straight t
-  :after embark
-  :require t)
+(setup embark-consult
+  (:install t)
+  (:after embark)
+  (:require t))
 
 ;;; .
 (provide 'helheim-embark)
