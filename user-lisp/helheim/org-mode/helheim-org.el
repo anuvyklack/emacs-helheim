@@ -54,6 +54,13 @@
 
 ;;; Config
 
+(leaf org
+  :straight t ;; (org :type built-in)
+  ;; BUG: After updating Org to version 9.8 a misterious error appear:
+  ;;   > symbol's function definition is void org-priority-valid-value-p
+  ;;   Temporary overcome is to explicitly load Org on startup.
+  :require t)
+
 (setopt org-insert-heading-respect-content nil
         org-M-RET-may-split-line '((default . t)
                                    (item . nil))
