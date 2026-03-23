@@ -112,7 +112,8 @@
   (lambda (&rest features)
     (push `(after . ,features) setup-attributes)
     nil)
-  :documentation "Evaluate BODY after all the FEATURES will been loaded.")
+  :documentation
+  "Evaluate current `setup' macro body after all the FEATURES will been loaded.")
 
 (defun helheim-setup--with-eval-after-load (body _feature)
   "Wrap BODY in `with-eval-after-load' form."
@@ -175,7 +176,8 @@ all elements of MAP.")
                  (args (cl-loop for (key command) on args by #'cddr
                                 do (when (vectorp key)
                                      (setq key (key-description key)))
-                                collect key collect command)))
+                                collect key
+                                collect command)))
       `(hel-keymap-set ,(setup-get 'map) ,@kwargs ,@args)))
   :indent 'defun
   :documentation

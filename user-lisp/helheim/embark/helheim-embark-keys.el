@@ -187,7 +187,7 @@
 
   ;; inherit from `embark-expression-map'
   (:with-keymap embark-defun-map
-    (:ubind "N") ;; `narrow-to-defun'
+    (:unbind "N") ;; `narrow-to-defun'
     (:bind
       "RET" 'embark-pp-eval-defun
       "e"   'embark-pp-eval-defun
@@ -226,7 +226,7 @@
       "RET" 'insert-char
       "Y"   'embark-save-unicode-character)) ;; "W"
 
-  (:with-keymap embark-consult-rerun-map
+  (:with-keymap embark-prose-map
     (:unbind "F"
       "u"  ;; `upcase-region'
       "l") ;; `downcase-region'
@@ -237,7 +237,7 @@
       "w"   'whitespace-cleanup-region ;; "F"
       "="   'count-words-region))
 
-  (:with-keymap embark-consult-rerun-map
+  (:with-keymap embark-sentence-map
     (:bind
       ;; inherit from `embark-prose-map'
       "t"   'transpose-sentences
@@ -245,7 +245,7 @@
       "("   'backward-sentence))
 
   ;; Keymap for *Embark Collect* buffer.
-  (:with-keymap embark-consult-rerun-map
+  (:with-keymap embark-collect-mode-map
     (:bind
       ;; `m' and `u' are used for selecting and unselecting in Dired like buffers.
       "m"   'hel-embark-select
@@ -253,7 +253,7 @@
       "y"   'embark-copy-as-kill))
 
   (:with-keymap embark-consult-rerun-map
-    (:unbind "F")
+    (:unbind "g")
     (:bind "g r" 'embark-rerun-collect-or-export)))
 
 ;;; Commands
