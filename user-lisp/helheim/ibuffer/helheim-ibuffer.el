@@ -1,9 +1,4 @@
 ;;; helheim-ibuffer.el -*- lexical-binding: t; no-byte-compile: t; -*-
-;;; Code:
-
-(require 'dash)
-(require 'hel-core)
-
 ;;; Customization
 
 (defcustom helheim-ibuffer-not-project-buffer-filters

@@ -1,9 +1,8 @@
 ;;; helheim-xref-lib.el -*- lexical-binding: t -*-
 ;;; Make Xref try all backends untill first one succeed
 
-(eval-when-compile
-  (require 'dash)
-  (require 'helheim-lib))
+(eval-when-compile (require 'cl-macs))
+(require 'helheim-lib)
 (require 'xref)
 
 (defun helheim-xref--create-fetcher (kind)

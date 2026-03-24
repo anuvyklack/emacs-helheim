@@ -1,7 +1,7 @@
 ;;; helheim-dired-lib.el -*- lexical-binding: t -*-
 ;;; Code:
 
-(require 'dash)
+(eval-when-compile (require 'dash))
 (require 'dired)
 
 ;;; Commands

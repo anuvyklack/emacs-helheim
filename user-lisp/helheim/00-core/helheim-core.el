@@ -21,13 +21,24 @@
   :type 'string
   :group 'helheim)
 
-;;; Dependencies
+;;; Package management
 
 (pcase helheim-package-manager
   ('straight (require 'helheim-straight))
   ('elpaca   (require 'helheim-elpaca)))
 
 (require 'helheim-setup)
+
+;; Compiles .el files before they are loaded with `load' or `require'.
+(setup compile-angel
+  (:install t)
+  (:require t)
+  (:blackout t)
+  (setopt compile-angel-verbose t)
+  (cl-callf nconc compile-angel-excluded-files
+    '("/init.el"
+      "/custom.el"))
+  (compile-angel-on-load-mode))
 
 ;; (setup leaf
 ;;   (:install t)
@@ -43,6 +54,8 @@
 ;;   (:install t)
 ;;   (:require t)
 ;;   (leaf-keywords-init))
+
+;;; Dependencies
 
 (setup dash     (:install t) (:require t))
 (setup s        (:install t) (:require t))

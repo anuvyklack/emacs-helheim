@@ -1,6 +1,9 @@
 ;;; helheim-ibuffer-lib.el -*- lexical-binding: t -*-
 
-(eval-when-compile (require 'dash))
+(eval-when-compile
+  (require 'cl-lib)
+  (require 'ibuf-macs))
+(require 'dash)
 (require 'ibuffer)
 (require 'ibuf-ext)
 

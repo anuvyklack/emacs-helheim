@@ -1,7 +1,7 @@
 ;;; helheim-lib.el -*- lexical-binding: t -*-
 ;;; Code:
 
-(require 'cl-macs)
+(eval-when-compile (require 'cl-macs))
 (require 'dash)
 (require 's)
 
