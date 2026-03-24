@@ -524,7 +524,14 @@ Use `delete-trailing-whitespace' command."
 ;; to make you never lose bookmarks if Emacs crashes.
 (setq bookmark-save-flag 1)
 
-(setq custom-buffer-done-kill t)
+;;;; Custom
+
+(setup custom
+  (setopt custom-file (expand-file-name "custom.el" helheim-root-directory)
+          custom-theme-directory (expand-file-name "themes/" helheim-root-directory)
+          custom-buffer-done-kill t)
+  (:after-init
+    (load custom-file t t)))
 
 ;;;; Help
 

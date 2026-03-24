@@ -239,13 +239,9 @@ You may place there any Emacs lisp files or directories with such files, and
 they all will be added to `load-path' bytecompiled an scrapped for autoload
 cookies.")
 
-(setq user-emacs-directory   (expand-file-name "var/" helheim-root-directory)
-      user-lisp-directory    (expand-file-name "user-lisp/" helheim-root-directory)
-      package-user-dir       (expand-file-name "elpa/" user-emacs-directory)
-      custom-theme-directory (expand-file-name "themes/" helheim-root-directory)
-      custom-file            (expand-file-name "custom.el" helheim-root-directory))
-
-(add-hook 'after-init-hook (lambda () (load custom-file t t)))
+(setq user-emacs-directory (expand-file-name "var/" helheim-root-directory)
+      user-lisp-directory  (expand-file-name "user-lisp/" helheim-root-directory)
+      package-user-dir     (expand-file-name "elpa/" user-emacs-directory))
 
 ;;; .
 ;; Local variables:
