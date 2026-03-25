@@ -33,11 +33,11 @@
 (setup compile-angel
   (:install t)
   (:require t)
-  (:blackout t)
   (setopt compile-angel-verbose t)
   (cl-callf nconc compile-angel-excluded-files
     '("/init.el"
       "/custom.el"))
+  (:blackout compile-angel-on-load-mode)
   (compile-angel-on-load-mode))
 
 ;; (setup leaf
