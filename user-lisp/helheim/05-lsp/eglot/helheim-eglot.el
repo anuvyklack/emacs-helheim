@@ -1,4 +1,4 @@
-;;; helheim-eglot.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-eglot.el -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Commentary:
 ;;
 ;; TODO:
@@ -9,9 +9,9 @@
 ;;; Keybindings
 
 (setup eglot
-  (:with-keymap (helheim-leader-map)
-    (:bind "l" (cons "LSP" (hel-keymap-set (helheim-leader-prefix-map "l")
-                             "RET" 'eglot))))
+  (:with-keymap prog-mode-map
+    (:bind
+      "C-c l RET" 'eglot))
   (:after-load
     (:with-keymap eglot-mode-map
       (:bind :state 'normal
@@ -55,7 +55,6 @@
         "C-c l D"  '("Project diagnostic" . flymake-show-project-diagnostics)))
     ;; Flymake buffer
     (:with-keymap flymake-diagnostics-buffer-mode-map
-      ;; (:unbind "C-m")
       (:bind
         "RET"      'flymake-goto-diagnostic
         "S-RET"    'flymake-show-diagnostic
@@ -69,7 +68,9 @@
 (setup flymake
   (:built-in)
   (:hook prog-mode-hook flymake-mode)
-  (setopt flymake-mode-line-lighter nil))
+  (setopt flymake-mode-line-lighter nil
+          flymake-show-diagnostics-at-end-of-line nil
+          flymake-wrap-around t))
 
 ;; (setup flymake-popon
 ;;   (:install t)
@@ -79,22 +80,28 @@
 
 (setup eglot
   (:built-in)
-  (:require helheim-markdown) ;; For on hover documentation formatting.
+  (require 'helheim-markdown) ;; For on hover documentation formatting.
   (:hook eglot-managed-mode-hook hel-update-active-keymaps)
-  (setopt eglot-sync-connect 1
-          eglot-autoshutdown t
-          eglot-confirm-server-edits '((t . maybe-diff))
-          ;; Margin indicator may increase line height due to glyph display
-          ;; failures or emoji font height differences.
-          eglot-code-action-indications '(eldoc-hint)
-          eglot-code-action-indicator "" ;; 💡   󰌵 󱠂 󱠃
-          eglot-extend-to-xref t)
+  (setopt
+   ;; A setting of nil or 0 means Eglot will not block the UI at all, allowing
+   ;; Emacs to remain fully responsive, although LSP features will only become
+   ;; available once the connection is established in the background.
+   eglot-sync-connect 0
+   ;; Shut down server after killing last managed buffer
+   eglot-autoshutdown t
+   eglot-confirm-server-edits '((t . maybe-diff))
+   ;; Margin indicator may increase line height due to glyph display
+   ;; failures or emoji font height differences.
+   eglot-code-action-indications '(eldoc-hint)
+   eglot-code-action-indicator "" ;; 💡   󰌵 󱠂 󱠃
+   eglot-extend-to-xref t)
   (:after-load
     ;; PERF: Disable the eglot-events-buffer, so Emacs doesn't churn GC and
     ;;   CPU cycles on pretty-printing the events buffer in the background
     ;;   (once it reaches max size).
     (unless init-file-debug
-      (cl-callf plist-put eglot-events-buffer-config :size 0))))
+      (cl-callf plist-put eglot-events-buffer-config :size 0)
+      (setq jsonrpc-event-hook nil))))
 
 (setup eldoc-box
   (:install t)

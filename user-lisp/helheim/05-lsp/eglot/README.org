@@ -4,58 +4,63 @@ This module configures the Eglot LSP client and the Flymake diagnostics
 framework, both built into Emacs.
 
 ** Enable
-Add following line to your init.el file:
+
+Add the following line to your =init.el=:
 #+begin_src emacs-lisp
 (require 'helheim-eglot)
 #+end_src
 
 ** Customization
 
-If you want Flymake diagnostics to be shown only in sideline:
+To show Flymake diagnostics only in the sideline (suppressing them from the
+Eldoc echo area):
 #+begin_src emacs-lisp
-(require 'helheim-eglot)
-(add-hook 'sideline-mode-hook (lambda ()
-                                (remove-hook 'eldoc-documentation-functions
-                                             'flymake-eldoc-function t)))
+(add-hook 'sideline-mode-hook
+          (lambda ()
+            (remove-hook 'eldoc-documentation-functions 'flymake-eldoc-function t)))
 #+end_src
 
 ** Keybindings
 
 | =K= or =M= | Show on hover documentation |
-| =gd=     | Goto definition             |
-| =gD=     | Goto declaration            |
+| =gd=     | Go to definition            |
+| =gD=     | Go to declaration           |
 | =gr=     | Find references             |
-| =gt=     | Goto type definition        |
+| =gt=     | Go to type definition       |
 | =gi=     | Find all implementations    |
+| =] d=    | Next diagnostic             |
+| =[ d=    | Previous diagnostic         |
 
 -----
 
-*** =SPC l= (or =C-c l=) is a prefix for LSP commands
+*** =SPC l= (or =C-c l=) — LSP commands
 
 | =SPC l RET= | Start (or restart) LSP session in current buffer |
-| =SPC l Q=   | Shutdown LSP session                             |
+| =SPC l Q=   | Shut down LSP session                            |
 
 -----
 
-| =SPC l r= | Rename symbol                                                  |
-| =SPC l f= | Format region or buffer                                        |
-| =SPC l t= | Type hierarchy                                                 |
-| =SPC l c= | Call hierarchy                                                 |
-| =SPC l a= | Code actions                                                   |
-| =SPC l o= | Organize imports (~source.organizeImports~ code action)          |
-| =SPC l q= | Quickfix (~quickfix~ code action)                                |
-| =SPC l e= | Extract into separate function (~refactor.extract~ code actions) |
-| =SPC l i= | Inline function (~refactor.inline~ code action)                  |
-| =SPC l R= | Refactor (~refactor.rewrite~ code action)                        |
+| =SPC l r= | Rename symbol                                                 |
+| =SPC l f= | Format region or buffer                                       |
+| =SPC l t= | Type hierarchy                                                |
+| =SPC l c= | Call hierarchy                                                |
+| =SPC l a= | Code actions                                                  |
+| =SPC l o= | Organize imports (~source.organizeImports~ code action)         |
+| =SPC l q= | Quickfix (~quickfix~ code action)                               |
+| =SPC l e= | Extract into separate function (~refactor.extract~ code action) |
+| =SPC l i= | Inline function (~refactor.inline~ code action)                 |
+| =SPC l R= | Refactor (~refactor.rewrite~ code action)                       |
+| =SPC l d= | Show buffer diagnostics                                       |
+| =SPC l D= | Show project-wide diagnostics                                 |
 
 -----
 
-*** =SPC t= (or =C-c t=) is general Helheim prefix for various toggleable features
+*** =SPC t= (or =C-c t=) — Toggle features
 
-| =SPC t h= | Toggle inlay hints                 |
-| =SPC t s= | Toggle semantic tokens highlihting |
+| =SPC t h= | Toggle inlay hints                  |
+| =SPC t s= | Toggle semantic tokens highlighting |
 
 ** Warning
 
 DO NOT try to update Eglot with ~eglot-upgrade-eglot~ function. It will try to do
-it via =package.el= package manager, but Helheim disables it since uses straight.el.
+it via =package.el= package manager which is disabled in Helheim.
