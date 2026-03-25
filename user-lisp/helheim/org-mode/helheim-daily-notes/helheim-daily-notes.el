@@ -7,8 +7,9 @@
 ;; This package also set `org-default-notes-file' to be today's daily note.
 ;;
 ;;; Code:
+
 (require 'dash)
-(require 'hel-core)
+(require 'hel)
 
 ;;; Customization
 
