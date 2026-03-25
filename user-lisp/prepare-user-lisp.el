@@ -71,16 +71,16 @@ unconditionally."
              (add-to-list 'load-path file)
              (push file dirs))))
     (unless just-activate
-      (let ((comp (lambda ()
-                    (dolist (file files)
-                      (with-demoted-errors "Error while compiling: %S"
-                        ;; If `native-comp-jit-compilation' is non-nil,
-                        ;; .elc files will also be compiled to native code
-                        ;; asynchronously.
-                        (byte-recompile-file file force 0))))))
+      (let ((comp-fn (lambda ()
+                       (dolist (file files)
+                         (with-demoted-errors "Error while compiling: %S"
+                           ;; If `native-comp-jit-compilation' is non-nil,
+                           ;; .elc files will also be compiled to native code
+                           ;; asynchronously.
+                           (byte-recompile-file file force 0))))))
         (if force
-            (funcall comp)
-          (add-hook 'emacs-startup-hook comp 95)))
+            (funcall comp-fn)
+          (add-hook 'emacs-startup-hook comp-fn 95)))
       (loaddefs-generate dirs autoload-file nil nil nil force))
     (when (file-exists-p autoload-file)
       (load autoload-file nil t))))

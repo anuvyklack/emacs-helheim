@@ -16,12 +16,6 @@
       "g d"     '("Find definition" . helheim-elisp-find-definitions)
       "C-w g d" '("Find definition other window" . helheim-elisp-find-definitions-other-window))))
 
-(setup lisp-mode
-  (:with-keymap lisp-data-mode-map
-    (:bind :state 'normal
-      "K"   'helpful-at-point
-      "M"   'helpful-at-point)))
-
 (defvar-keymap helheim-elisp-eval-map
   :prefix 'helheim-elisp-eval-map
   "e"   'pp-eval-last-sexp
@@ -34,6 +28,12 @@
   "p"   'pp-macroexpand-last-sexp
   "RET" 'eval-print-last-sexp)
 
+(setup lisp-mode
+  (:with-keymap lisp-data-mode-map
+    (:bind :state 'normal
+      "K"   'helpful-at-point
+      "M"   'helpful-at-point)))
+
 (hel-keymap-global-set "<remap> <eval-expression>" 'pp-eval-expression)
 
 ;;; Config
@@ -41,7 +41,8 @@
 (setup hel-paredit
   (:install paredit)
   (:require t)
-  (:hook (emacs-lisp-mode-hook lisp-data-mode-hook)))
+  (:hook (emacs-lisp-mode-hook
+          lisp-data-mode-hook) hel-paredit-mode))
 
 ;; ;; Treat `-' char as part of the word on `w', `e', `b', motions.
 ;; (modify-syntax-entry ?- "w" emacs-lisp-mode-syntax-table)

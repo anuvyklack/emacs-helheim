@@ -1,6 +1,7 @@
 ;;; helheim-outline-mode.el -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;; Commentary:
 ;;; Code:
+(require 'dash)
 (require 'hel-macros)
 (require 'hel-common)
 (require 'hel-core)
@@ -62,7 +63,7 @@
 
 ;;; Config
 
-(setup outli
+(setup outline
   (:install outli :host github :repo "jdtsmith/outli")
   (:blackout outline-mode
              outline-minor-mode)

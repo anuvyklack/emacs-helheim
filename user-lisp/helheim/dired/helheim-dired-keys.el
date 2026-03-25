@@ -1,5 +1,5 @@
 ;;; helheim-dired-keys.el -*- lexical-binding: t; no-byte-compile: t; -*-
-;;; dired
+;;; Dired
 
 (require 'dired)
 (require 'dired-x) ;; Load because it unconditionally binds "F" and "V" keys.
@@ -7,7 +7,13 @@
 ;; All original keys are overriden!
 (setup dired
   (:with-keymap dired-mode-map
-    (:unbind "g")
+    (:unbind
+      ;; Upper case keys
+      "A" "E" "G" "H" "Q" "T" "R" "Y" "W"
+      ;; "I"   'dired-do-info
+      ;; "N"   'dired-do-man
+      ;; Lower case keys
+      "b" "g" "w")
     (:bind
       "i"   'dired-toggle-read-only ;; wdired
       "v"   'helheim-dired-toggle-selection
@@ -91,7 +97,7 @@
       ;; Mark / Unmark
       "m"   'dired-mark
       "u"   'dired-unmark
-      "DEL" 'dired-unmark-backward ;; <backspace>
+      "DEL" 'dired-unmark-backward  ;; <backspace>
       "U"   'dired-unmark-all-marks ;; remove all marks from all files
       "~"   'dired-toggle-marks     ;; reverse marks
       "*"   'helheim-dired-mark-map
@@ -196,22 +202,6 @@
       ;;         "f"   'image-dired-mark-tagged-files
       ;;         "C-t" 'image-dired-dired-toggle-marked-thumbs
       ;;         "e"   'image-dired-dired-edit-comment-and-tags)
-      ;; ---------------------------------------------------------------------------
-      ;; Upper case keys
-      "A"   nil
-      "E"   nil
-      "G"   nil
-      "H"   nil
-      ;; "I"   'dired-do-info
-      ;; "N"   'dired-do-man
-      "Q"   nil
-      "T"   nil
-      "R"   nil
-      "Y"   nil
-      "W"   nil
-      ;; Lower keys
-      "b"   nil
-      "w"   nil
       ;; ;; isearch
       ;; "C-c s a C-s"   'dired-do-isearch
       ;; "C-c s a C-M-s" 'dired-do-isearch-regexp

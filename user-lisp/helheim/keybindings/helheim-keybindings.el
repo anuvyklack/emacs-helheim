@@ -58,7 +58,7 @@
   "o" (cons "open"
             (hel-keymap-set (or (keymap-lookup mode-specific-map "o")
                                 (make-sparse-keymap))
-              "t" 'treemacs ; from future
+              "f" 'treemacs ; from future
               "i" 'imenu-list-smart-toggle))
   "p" (cons "project"
             (hel-keymap-set project-prefix-map

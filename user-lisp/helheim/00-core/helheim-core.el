@@ -517,13 +517,13 @@ Use `delete-trailing-whitespace' command."
   (add-to-list 'so-long-variable-overrides '(save-place-alist . nil))
   ;; But disable everything else that may be unnecessary/expensive for large
   ;; or wide buffers.
-  (cl-callf append so-long-minor-modes '(eldoc-mode
-                                         auto-composition-mode
-                                         hl-fill-column-mode
-                                         spell-fu-mode
-                                         undo-tree-mode
-                                         ws-butler-mode
-                                         highlight-indent-guides-mode)))
+  (cl-callf nconc so-long-minor-modes '(eldoc-mode
+                                        auto-composition-mode
+                                        hl-fill-column-mode
+                                        spell-fu-mode
+                                        undo-tree-mode
+                                        ws-butler-mode
+                                        highlight-indent-guides-mode)))
 
 ;;; Emacs built-in packages
 

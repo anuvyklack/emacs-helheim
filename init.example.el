@@ -103,11 +103,12 @@
 
 ;;; Other modules
 
-(require 'helheim-tab-bar)  ; Each tab represents a set of windows, as in Vim
-(require 'helheim-ibuffer)  ; Buffers menu
 (require 'helheim-dired)    ; File-manager
 (require 'helheim-embark)   ; Context-aware action menus
+(require 'helheim-ibuffer)  ; Buffers menu
 (require 'helheim-outline-mode) ; See "Outline Mode" in Emacs manual
+(require 'helheim-tab-bar)  ; Each tab represents a set of windows, as in Vim
+; (require 'helheim-edit-indirect) ; Alternative "zn" binding
 
 ;;; Org mode
 
