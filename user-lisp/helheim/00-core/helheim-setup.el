@@ -6,6 +6,7 @@
 ;;
 ;;; Code:
 
+(eval-when-compile (require 'cl-macs))
 (require 'setup)
 
 ;; Order matters: functions will be executed in the order they appear in list.
@@ -225,12 +226,30 @@ keybindings will be active. Can be a symbol or list of symbols.")
 ;;; :blackout
 
 (setup-define :blackout
-  (lambda (mode)
-    (when (eq mode 't)
-      (setq mode (setup-get 'mode)))
-    `(blackout ',mode nil))
-  :repeatable t
-  :documentation "Don't show MODE in the modeline.")
+  (lambda (&rest modes)
+    (or modes (setq modes '(t)))
+    `(with-eval-after-load ',(setup-get 'feature)
+       ,@(cl-loop for mode in modes
+                  collect (pcase mode
+                            ('t
+                             `(blackout ',(setup-get 'mode)))
+                            ((and (pred symbolp) mode)
+                             `(blackout ',mode ))
+                            ((and (pred stringp) replacement)
+                             `(blackout ',(setup-get 'mode) replacement))
+                            (`(,mode . ,replacement)
+                             `(blackout ',mode replacement))))))
+  :documentation
+  "Do not display MODE in the mode line.
+
+    \(setup foo
+      (:blackout t))                   =>  \(blackout 'foo-mode nil)
+
+    \(setup foo
+      (:blackout \" Foo\"))              =>  \(blackout 'foo-mode \" Foo\")
+
+    \(setup foo
+      \(:blackout \(foo-mode . \" Foo\"))  =>  \(blackout 'foo-mode \" Foo\")")
 
 ;;; :autoload
 

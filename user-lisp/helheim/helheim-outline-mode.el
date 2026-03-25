@@ -64,7 +64,8 @@
 
 (setup outli
   (:install outli :host github :repo "jdtsmith/outli")
-  (:blackout outline-mode outline-minor-mode)
+  (:blackout outline-mode
+             outline-minor-mode)
   (:hook emacs-lisp-mode-hook outli-mode)
   (with-eval-after-load 'consult-imenu
     (cl-pushnew '(?h "Headings" font-lock-comment-face)
