@@ -272,12 +272,6 @@ Use `delete-trailing-whitespace' command."
 ;; instead of error out.
 (setq switch-to-buffer-in-dedicated-window 'pop)
 
-;; By default Emacs distinguishes between automatic and manual window
-;; switching. If you effect a window switch yourself with "C-x b", it’s
-;; manual — and exempt from any display action rules you create yourself.
-;; Disable this behavior.
-(setq switch-to-buffer-obey-display-actions t)
-
 (setq window-resize-pixelwise t)
 
 ;; FIX: The native border "consumes" a pixel of the fringe on righter-most
