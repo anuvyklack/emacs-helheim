@@ -28,17 +28,8 @@
   ('elpaca   (require 'helheim-elpaca)))
 
 (require 'helheim-setup)
-
-;; Compiles .el files before they are loaded with `load' or `require'.
-(setup compile-angel
-  (:install t)
-  (:require t)
-  (setopt compile-angel-verbose t)
-  (cl-callf nconc compile-angel-excluded-files
-    '("/init.el"
-      "/custom.el"))
-  (:blackout compile-angel-on-load-mode)
-  (compile-angel-on-load-mode))
+(setup blackout (:install t) (:require t))
+(elpaca-wait)
 
 ;; (setup leaf
 ;;   (:install t)
@@ -55,15 +46,24 @@
 ;;   (:require t)
 ;;   (leaf-keywords-init))
 
+
+;; Compiles .el files before they are loaded with `load' or `require'.
+(setup compile-angel
+  (:install t)
+  (:require t)
+  (setopt compile-angel-verbose t)
+  (cl-callf nconc compile-angel-excluded-files
+    '("/init.el"
+      "/custom.el"))
+  (:blackout compile-angel-on-load-mode)
+  (compile-angel-on-load-mode))
+
 ;;; Dependencies
 
-(setup dash     (:install t) (:require t))
-(setup s        (:install t) (:require t))
-(setup blackout (:install t) (:require t))
-(setup pcre2el  (:install t))
-(setup wgrep    (:install t))
-
-(elpaca-wait)
+(setup dash    (:install t) (:require t))
+(setup s       (:install t) (:require t))
+(setup pcre2el (:install t))
+(setup wgrep   (:install t))
 
 (setup avy
   (:install t)
