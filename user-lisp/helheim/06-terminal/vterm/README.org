@@ -1,0 +1,44 @@
+* helheim-vterm
+
+This module installs and configures [[https://github.com/akermu/emacs-libvterm][Vterm]].
+
+** Prerequisites
+*** Emacs with dynamic module support
+
+To check if your build of Emacs has dynamic module support look
+for ~--with-modules~ in ~system-configuration-options~ variable
+(=F1 v system-configuration-options=).
+
+*** libvterm
+
+When you first load vterm, it will attempt to compile =vterm-module.so= for which
+it needs =libvterm= library.
+
+| Debian    | ~sudo apt-get install libvterm-dev~ |
+| Fedora    | ~sudo dnf install libvterm-devel~   |
+| ArchLinux | ~sudo pacman -S libvterm~           |
+| MacOS     | ~brew install libvterm~             |
+
+*** Shell side configuration
+
+For proper work =vterm= also needs shell side configuration. Consult its [[https://github.com/akermu/emacs-libvterm][README]]
+for detailed information.
+
+The simpliest option is to add following snippet to you =.bashrc= file.
+
+#+begin_src bash
+if [[ "$INSIDE_EMACS" = 'vterm' ]] \
+    && [[ -n ${EMACS_VTERM_PATH} ]] \
+    && [[ -f ${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh ]]; then
+	source ${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh
+fi
+#+end_src
+
+Replace =emacs-vterm-bash.sh= with:
+- =/etc/emacs-vterm-zsh.sh= for zsh;
+- =/etc/emacs-vterm.fish= for fish.
+
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-vterm)
+#+end_src

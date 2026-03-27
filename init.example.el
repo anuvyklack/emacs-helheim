@@ -108,6 +108,7 @@
 (require 'helheim-ibuffer)  ; Buffers menu
 (require 'helheim-outline-mode) ; See "Outline Mode" in Emacs manual
 (require 'helheim-tab-bar)  ; Each tab represents a set of windows, as in Vim
+; (require 'helheim-vterm)    ; Terminal emulator. Needs shell side configuration
 ; (require 'helheim-edit-indirect) ; Alternative "zn" binding
 
 ;;; Org mode
