@@ -76,7 +76,8 @@
           avy-single-candidate-jump t))
 
 (setup hel
-  (:install hel :host github :repo "anuvyklack/hel" :files (:defaults "**"))
+  (:install hel :host github :repo "anuvyklack/hel"
+            :files (:defaults "extensions/**/*.el"))
   (hel-mode))
 
 (elpaca-wait)
