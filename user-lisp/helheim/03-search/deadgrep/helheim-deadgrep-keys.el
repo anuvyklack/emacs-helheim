@@ -1,8 +1,7 @@
 ;;; helheim-deadgrep-keys.el -*- lexical-binding: t -*-
 
-(eval-when-compile
-  (require 'hel-macros)
-  (require 'hel-core))
+(eval-when-compile (require 'hel-macros))
+(require 'hel-core)
 (require 'deadgrep)
 
 ;;; Keybindings
