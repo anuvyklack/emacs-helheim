@@ -1,9 +1,6 @@
 ;;; helheim-deadgrep.el -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;; Config
 
-(require 'hel-macros)
-(require 'hel-core)
-
 (setup deadgrep
   (:install t)
   ;; <leader> ss — deadgrep entry point

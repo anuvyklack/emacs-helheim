@@ -28,6 +28,7 @@
   ('elpaca   (require 'helheim-elpaca)))
 
 (require 'helheim-setup)
+(setup dash     (:install t) (:require t))
 (setup blackout (:install t) (:require t))
 (elpaca-wait)
 
@@ -55,12 +56,11 @@
   (cl-callf nconc compile-angel-excluded-files
     '("/init.el"
       "/custom.el"))
-  (:blackout compile-angel-on-load-mode)
+  (blackout 'compile-angel-on-load-mode)
   (compile-angel-on-load-mode))
 
 ;;; Dependencies
 
-(setup dash    (:install t) (:require t))
 (setup s       (:install t) (:require t))
 (setup pcre2el (:install t))
 (setup wgrep   (:install t))
