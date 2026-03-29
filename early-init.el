@@ -241,7 +241,7 @@ cookies.")
 
 (setq user-emacs-directory (expand-file-name "var/" helheim-root-directory)
       user-lisp-directory  (expand-file-name "user-lisp/" helheim-root-directory)
-      package-user-dir     (expand-file-name "elpa/" user-emacs-directory))
+      package-user-dir     (locate-user-emacs-file "elpa/"))
 
 ;;; .
 ;; Local variables:

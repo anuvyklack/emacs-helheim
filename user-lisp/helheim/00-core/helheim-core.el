@@ -664,7 +664,7 @@ Use `delete-trailing-whitespace' command."
 (setq create-lockfiles nil
       make-backup-files nil
       ;; But in case the user does enable it, some sensible defaults:
-      backup-directory-alist (list (cons "." (expand-file-name "backup" user-emacs-directory)))
+      backup-directory-alist (list (cons "." (locate-user-emacs-file "backup")))
       tramp-backup-directory-alist backup-directory-alist
       version-control t     ; number each backup file
       backup-by-copying t   ; instead of renaming current file (clobbers links)
@@ -682,8 +682,8 @@ Use `delete-trailing-whitespace' command."
       auto-save-include-big-deletions nil
       kill-buffer-delete-auto-save-files t)
 
-(setq auto-save-list-file-prefix (expand-file-name "autosave/" user-emacs-directory)
-      tramp-auto-save-directory  (expand-file-name "tramp-autosave/" user-emacs-directory))
+(setq auto-save-list-file-prefix (locate-user-emacs-file "autosave/")
+      tramp-auto-save-directory  (locate-user-emacs-file "tramp-autosave/"))
 
 ;; HACK: Emacs generates long file paths for its auto-save files; long is:
 ;;   `auto-save-list-file-prefix' + `buffer-file-name'. If too long, the
@@ -769,7 +769,7 @@ Use `delete-trailing-whitespace' command."
   (setopt save-place-limit 600)
   (:after-init save-place-mode)
   ;; :config
-  ;; (setq save-place-file (expand-file-name "saveplace" user-emacs-directory))
+  ;; (setq save-place-file (locate-user-emacs-file "saveplace"))
   )
 
 ;;;; TRAMP
