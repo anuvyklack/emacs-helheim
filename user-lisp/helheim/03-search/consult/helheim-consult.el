@@ -1,5 +1,5 @@
 ;;; helheim-consult.el -*- lexical-binding: t; no-byte-compile: t; -*-
-;;; Keybindings
+;;; Config
 
 (setup consult
   (:install t)
@@ -41,8 +41,11 @@
                        ;; :preview-key "M-."
                        :preview-key '(:debounce 0.2 any))
     (consult-customize consult-theme
-                       :preview-key '(:debounce 0.5 any)))
+                       :preview-key '(:debounce 0.5 any))))
 
+;;; Keybindings
+
+(setup consult
   (:global-bind :state '(normal motion)
     "C-/" 'consult-line                 ; "/" is for search
     "C-?" 'consult-line-multi)          ; "C-S-/"
