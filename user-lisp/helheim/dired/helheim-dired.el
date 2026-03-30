@@ -35,7 +35,7 @@
           dired-hide-details-hide-symlink-targets nil
           dired-hide-details-hide-absolute-location t) ;; Emacs 31
   (:after-load
-    ;; PERF: `dired-listing-switches' is autoloaded, so setup in `:defer-config'
+    ;; PERF: `dired-listing-switches' is autoloaded, so setup in `:after-load'
     ;;   section to avoid loading Dired at Emacs startup.
     ;; ---------------------------------------------------------------------
     ;; -l                   :: use a long listing format

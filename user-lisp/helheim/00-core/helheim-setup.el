@@ -96,7 +96,7 @@
   :indent 0
   :documentation "Evaluate BODY after the current feature has been loaded.")
 
-;;; :defer-config
+;;; :after-load
 
 (setup-define :after-load
   (lambda (&rest body)
@@ -272,8 +272,8 @@ keybindings will be active. Can be a symbol or list of symbols.")
 
 (setup-define :when
   (lambda (condition)
-    `(unless ,condition
-       ,(setup-quit)))
+    `(or ,condition
+         ,(setup-quit)))
   :debug '(form)
   :repeatable t
   :documentation "If CONDITION evaluates to nil, stop evaluating the body.")
