@@ -53,8 +53,7 @@
 (defun helheim-setup--install-with-straight (body _feature)
   (if-let* ((recipe (alist-get 'straight setup-attributes)))
       `(progn
-         (or (straight-use-package ',recipe)
-             ,(setup-quit))
+         (straight-use-package ',recipe)
          ,@(macroexp-unprogn body))
     body))
 
