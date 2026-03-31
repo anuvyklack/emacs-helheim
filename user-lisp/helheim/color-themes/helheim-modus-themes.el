@@ -1,9 +1,11 @@
 ;;; helheim-modus-themes.el -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;; Code:
 
-(require-theme 'modus-themes)
+;; We restore this variable at the end of the file.
+(setq modus-themes-custom-auto-reload nil)
 
-(let ((modus-themes-custom-auto-reload nil))
+(setup modus-themes
+  (require-theme 'modus-themes)
   (setopt modus-themes-mixed-fonts t
           modus-themes-variable-pitch-ui t
           modus-themes-italic-constructs t
@@ -15,16 +17,18 @@
 ;; ;; Requires Emacs 31
 ;; (setup modus-themes
 ;;   (:install t)
-;;   (setopt
-;;    ;; modus-themes-to-toggle '(modus-operandi modus-vivendi)
-;;    ;; modus-themes-to-rotate modus-themes-items
-;;    modus-themes-mixed-fonts t
-;;    modus-themes-variable-pitch-ui t
-;;    modus-themes-italic-constructs t
-;;    modus-themes-bold-constructs t
-;;    modus-themes-headings '((agenda-structure . (variable-pitch light 2.2))
-;;                            (agenda-date . (variable-pitch regular 1.3))
-;;                            (t . (regular 1.03)))))
+;;   (require-theme 'modus-themes)
+;;   (let ((modus-themes-custom-auto-reload nil))
+;;     (setopt
+;;      ;; modus-themes-to-toggle '(modus-operandi modus-vivendi)
+;;      ;; modus-themes-to-rotate modus-themes-items
+;;      modus-themes-mixed-fonts t
+;;      modus-themes-variable-pitch-ui t
+;;      modus-themes-italic-constructs t
+;;      modus-themes-bold-constructs t
+;;      modus-themes-headings '((agenda-structure . (variable-pitch light 2.2))
+;;                              (agenda-date . (variable-pitch regular 1.3))
+;;                              (t . (regular 1.03))))))
 
 ;;; modus-operandi
 ;;;; General
@@ -55,7 +59,7 @@
             (bg-search-lazy    bg-cyan-subtle)
             (bg-search-static  bg-magenta-subtle)
             (bg-search-replace bg-red-subtle)
-                                        ;
+            ;;
             ;; (bg-search-rx-group-0 bg-blue-subtle)
             ;; (bg-search-rx-group-1 bg-green-subtle)
             ;; (bg-search-rx-group-2 bg-red-subtle)
@@ -117,6 +121,15 @@
                          :inherit fixed-pitch)
   '(org-block-end-line :inherit org-block-begin-line))
 
+;;; modus-vivendi
+
+(helheim-theme-set-faces 'modus-vivendi
+  '(cursor :background "white")
+  '(region :background "#4c5967"))
+
 ;;; .
+;; Restore original value.
+(setq modus-themes-custom-auto-reload t)
+
 (provide 'helheim-modus-themes)
 ;;; helheim-modus-themes.el ends here

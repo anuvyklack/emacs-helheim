@@ -18,13 +18,14 @@
 (advice-add 'load-theme :around 'helheim-load-theme-a)
 
 (defun helheim-load-theme-a (orig-fun theme &optional no-confirm no-enable)
-  "Load THEME and all customizations made with `helheim-theme-set-faces'."
+  "Disable all other themes, load and enable THEME and all customizations made
+with `helheim-theme-set-faces'."
   (-each custom-enabled-themes #'disable-theme)
   (funcall orig-fun theme no-confirm no-enable)
   (when-let* ((faces (alist-get theme helheim-themes-faces)))
     (apply #'custom-theme-set-faces theme faces))
-  (or no-enable
-      (enable-theme theme)))
+  (unless no-enable
+    (enable-theme theme)))
 
 (defvar helheim-themes-faces nil
   "Per theme faces overrides made by `helheim-theme-set-faces'.
@@ -114,7 +115,7 @@ the unwritable tidbits."
 HOOK should be a symbol."
   (if (local-variable-p hook)
       (append (->> (buffer-local-value hook (current-buffer))
-                   (delq t))
+                   (-remove-item t))
               (default-value hook))
     ;; else
     (ensure-list (symbol-value hook))))
