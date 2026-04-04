@@ -9,6 +9,8 @@
 (eval-when-compile (require 'cl-macs))
 (require 'setup)
 
+(declare-function hel-split-keyword-args "hel-common" (args))
+
 ;; Order matters: functions will be executed in the order they appear in list.
 (setopt setup-modifier-list '(helheim-setup--with-eval-after-load
                               helheim-setup--install-with-straight
