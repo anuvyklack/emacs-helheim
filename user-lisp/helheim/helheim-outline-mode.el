@@ -1,11 +1,4 @@
 ;;; helheim-outline-mode.el -*- lexical-binding: t; no-byte-compile: t; -*-
-;;; Commentary:
-;;; Code:
-(require 'dash)
-(require 'hel-macros)
-(require 'hel-common)
-(require 'hel-core)
-
 ;;; Keybindings
 
 (setup outline
@@ -126,5 +119,6 @@
                   -1)
   (hel-reveal-point-when-on-top))
 
+;;; .
 (provide 'helheim-outline-mode)
 ;;; helheim-outline-mode.el ends here

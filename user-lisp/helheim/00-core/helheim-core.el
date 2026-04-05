@@ -47,7 +47,6 @@
 ;;   (:require t)
 ;;   (leaf-keywords-init))
 
-
 ;; Compiles .el files before they are loaded with `load' or `require'.
 (setup compile-angel
   (:install t)
@@ -79,8 +78,6 @@
   (:install hel :host github :repo "anuvyklack/hel"
             :files (:defaults "extensions/**/*.el"))
   (hel-mode))
-
-(elpaca-wait)
 
 (setup transient
   (:install t)
@@ -114,7 +111,6 @@
 (setup visual-fill-column (:install t))
 
 (elpaca-wait)
-
 (require 'helheim-lib)
 
 ;;; UI

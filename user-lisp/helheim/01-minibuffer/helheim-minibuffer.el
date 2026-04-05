@@ -1,7 +1,5 @@
 ;;; helheim-minibuffer.el -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;; Code:
-(require 'hel-core)
-
 ;;; Keybindings
 
 (setup vertico
@@ -9,8 +7,7 @@
     "C-c '"   '("vertico repeat" . vertico-repeat)
     "C-c \""  '("select vertico session" . vertico-repeat-select))
   (:with-keymap minibuffer-local-map
-    (:bind
-      "M-a" 'marginalia-cycle))
+    (:bind "M-a" 'marginalia-cycle))
   (:after-load
     (:with-keymap vertico-map
       (:bind :state 'normal

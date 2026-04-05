@@ -1,4 +1,4 @@
-;;; helheim-edit-indirect.el -*- lexical-binding: t; -*-
+;;; helheim-edit-indirect.el -*- lexical-binding: t -*-
 ;;
 ;; Copyright © 2025 Yuriy Artemyev
 ;;
@@ -30,7 +30,8 @@
 ;; `edit-indirect-overlapping' error is signaled.
 ;;
 ;;; Code:
-(require 'hel-core)
+
+(require 'hel)
 
 (setup edit-indirect (:install t))
 

@@ -1,7 +1,10 @@
 ;;; helheim-deadgrep-lib.el -*- lexical-binding: t -*-
 
 (eval-when-compile (require 'hel-common))
-(require 'deadgrep)
+
+(declare-function deadgrep-visit-result-other-window "deadgrep")
+(declare-function deadgrep-forward-match "deadgrep")
+(declare-function deadgrep-backward-match "deadgrep")
 
 ;; o or C-o
 (defun +deadgrep-show-result-other-window ()

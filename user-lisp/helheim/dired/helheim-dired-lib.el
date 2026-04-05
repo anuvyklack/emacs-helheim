@@ -3,6 +3,7 @@
 
 (eval-when-compile (require 'dash))
 (require 'dired)
+(require 'hel)
 
 ;;; Commands
 
@@ -75,7 +76,7 @@
 ;;; image-dired
 
 ;; TODO: Upstream this.
-;; FIX: Original `image-dired-show-all-from-dir' command is carelessly written:
+;; FIX: Original `image-dired-show-all-from-dir' command is inaccurate written:
 ;;   it calls `image-dired-display-thumbs' which creates and displays
 ;;   `image-dired-thumbnail-buffer' with `pop-to-buffer' and calls
 ;;   `image-dired--update-header-line'. And then it does it again itself.

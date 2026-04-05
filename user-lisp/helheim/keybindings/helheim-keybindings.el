@@ -6,8 +6,7 @@
 ;;
 ;;; General
 
-(require 'hel-macros)
-(require 'hel-core)
+(require 'hel)
 
 (setup helheim
   (:global-bind :state 'normal

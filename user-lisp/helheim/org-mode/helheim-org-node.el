@@ -1,8 +1,4 @@
 ;;; helheim-org-node.el -*- lexical-binding: t; no-byte-compile: t; -*-
-;;; Commentary:
-;;; Code:
-(require 'hel-core)
-
 ;;; Customization
 
 (defcustom helheimg-org-node-visit-backlink-in-another-window nil

@@ -1,7 +1,6 @@
 ;;; helheim-dired.el -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;; Commentary:
 ;;; Code:
-(require 'dash)
 
 (setup casual (:install t))
 

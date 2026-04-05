@@ -1,7 +1,7 @@
 ;;; helheim-embark.el -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;; Keybindings
 
-(require 'hel-core)
+(require 'hel)
 
 (hel-keymap-global-set
   "C-<m>" 'embark-act

@@ -4,6 +4,9 @@
 ;; Each tab represents a set of windows (like in Vim).
 ;;
 ;;; Code:
+
+(require 'hel)
+
 ;;; Keybindings
 
 ;; "C-w"
