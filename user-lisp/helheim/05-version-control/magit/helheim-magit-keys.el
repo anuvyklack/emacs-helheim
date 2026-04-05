@@ -8,113 +8,114 @@
   ;; `magit-mode-map' is the common parent keymap for all other Magit keymaps.
   (:with-keymap magit-mode-map
     (:unbind "g" "z")
+    (:bind :state '(motion normal)
+      "C-w p" 'magit-toggle-buffer-lock) ;; <leader><leader>
     (:bind
       "C-<return>" 'magit-visit-thing
       "M-<return>" 'magit-visit-thing
-      "RET"        'magit-visit-thing
-      "M-TAB"      'magit-dired-jump
-      "M-<tab>"    'magit-section-cycle-diffs
-      "+"          'magit-diff-more-context
-      "-"          'magit-diff-less-context
-      "0"          'magit-diff-default-context
+      "RET"     'magit-visit-thing
+      "M-TAB"   'magit-dired-jump
+      "M-<tab>" 'magit-section-cycle-diffs
+      "+"       'magit-diff-more-context
+      "-"       'magit-diff-less-context
+      "0"       'magit-diff-default-context
       ;; Use the default Hel motion commands instead of `magit-next-line'
       ;; and `magit-previous-line', because they are surprisingly slow and
       ;; make little sense, since we have toggle selection on "v".
-      "j"   'next-line
-      "k"   'previous-line
-      "g g" 'beginning-of-buffer
-      "G"   'end-of-buffer
+      "j"       'next-line
+      "k"       'previous-line
+      "g g"     'beginning-of-buffer
+      "G"       'end-of-buffer
       ;;
-      "a"   'magit-cherry-apply
-      "A"   'magit-cherry-pick
-      "b"   'magit-branch
-      "B"   'magit-bisect
-      "c"   'magit-commit
-      "C"   'magit-clone
-      "d"   'magit-delete-thing
-      "D"   'magit-file-untrack
-      ", d" 'magit-diff
-      ", D" 'magit-diff-refresh
-      "e"   'magit-ediff-dwim
-      "E"   'magit-ediff
-      "f"   'magit-fetch
-      "F"   'magit-pull
-      "g r" 'magit-refresh-all
-      "h"   'magit-dispatch
-      "H"   'magit-describe-section
-      ;; "i"   'helheim-magit-text-mode
-      "i"   'magit-gitignore
-      ", i" 'magit-gitignore
-      "I"   'magit-init
-      "l"   'magit-log
-      "L"   'magit-log-refresh
-      "m"   'magit-merge
-      "M"   'magit-remote
-      "n"   'magit-show-refs
-      "N"   'magit-cherry
-      "o"   'magit-submodule
-      "O"   'magit-subtree
-      "p"   'magit-push
-      "q"   'magit-mode-bury-buffer
-      "Q"   'magit-git-command
-      "r"   'magit-rebase
-      "R"   'magit-file-rename
-      "s"   'magit-stage-files
-      "S"   'magit-stage-modified
-      "t"   'magit-tag
-      "T"   'magit-notes
-      "u"   'magit-unstage-files
-      "U"   'magit-unstage-all
-      "v"   'helheim-magit-toggle-selection
+      "a"       'magit-cherry-apply
+      "A"       'magit-cherry-pick
+      "b"       'magit-branch
+      "B"       'magit-bisect
+      "c"       'magit-commit
+      "C"       'magit-clone
+      "d"       'magit-delete-thing
+      "D"       'magit-file-untrack
+      ", d"     'magit-diff
+      ", D"     'magit-diff-refresh
+      "e"       'magit-ediff-dwim
+      "E"       'magit-ediff
+      "f"       'magit-fetch
+      "F"       'magit-pull
+      "g r"     'magit-refresh-all
+      "h"       'magit-dispatch
+      "H"       'magit-describe-section
+      ;; "i"       'helheim-magit-text-mode
+      "i"       'magit-gitignore
+      ", i"     'magit-gitignore
+      "I"       'magit-init
+      "l"       'magit-log
+      "L"       'magit-log-refresh
+      "m"       'magit-merge
+      "M"       'magit-remote
+      "n"       'magit-show-refs
+      "N"       'magit-cherry
+      "o"       'magit-submodule
+      "O"       'magit-subtree
+      "p"       'magit-push
+      "q"       'magit-mode-bury-buffer
+      "Q"       'magit-git-command
+      "r"       'magit-rebase
+      "R"       'magit-file-rename
+      "s"       'magit-stage-files
+      "S"       'magit-stage-modified
+      "t"       'magit-tag
+      "T"       'magit-notes
+      "u"       'magit-unstage-files
+      "U"       'magit-unstage-all
+      "v"       'helheim-magit-toggle-selection
       "<escape>" (lambda () (interactive) (deactivate-mark))
-      ", v" 'magit-revert-no-commit
-      ", V" 'magit-revert
-      "w"   'magit-am
-      "W"   'magit-patch
-      "x"   'magit-reset-quickly
-      "X"   'magit-reset
-      "y"   'magit-copy-section-value
-      "Y"   'magit-copy-buffer-revision
-      ", z" 'magit-worktree
-      "Z"   'magit-stash
-      "!"   'magit-run
-      ">"   'magit-sparse-checkout
-      ";"   'magit-git-command
-      "?"   'magit-dispatch
-      "$"   'magit-process-buffer
-      "%"   'magit-worktree
-      ;; "/"   'magit-status-quick
-      ", ," 'magit-display-repository-buffer ;; counterpart to "SPC ,"
-      ", ?" 'magit-describe-section
-      ", e" 'magit-edit-thing
-      ", o" 'magit-browse-thing
-      ", y" 'magit-copy-thing ;; it seams it does nothing currently
-      "g n" 'magit-next-reference
-      "g p" 'magit-previous-reference
-      "g N" 'magit-previous-reference
+      ", v"     'magit-revert-no-commit
+      ", V"     'magit-revert
+      "w"       'magit-am
+      "W"       'magit-patch
+      "x"       'magit-reset-quickly
+      "X"       'magit-reset
+      "y"       'magit-copy-section-value
+      "Y"       'magit-copy-buffer-revision
+      ", z"     'magit-worktree
+      "Z"       'magit-stash
+      "!"       'magit-run
+      ">"       'magit-sparse-checkout
+      ";"       'magit-git-command
+      "?"       'magit-dispatch
+      "$"       'magit-process-buffer
+      "%"       'magit-worktree
+      ;; "/"       'magit-status-quick
+      ", ,"     'magit-display-repository-buffer ;; counterpart to "SPC ,"
+      ", ?"     'magit-describe-section
+      ", e"     'magit-edit-thing
+      ", o"     'magit-browse-thing
+      ", y"     'magit-copy-thing ;; it seams it does nothing currently
+      "g n"     'magit-next-reference
+      "g p"     'magit-previous-reference
+      "g N"     'magit-previous-reference
       "C-c C-c" 'magit-dispatch
-      "C-c SPC" 'magit-dispatch)) ;; <leader><leader>
-
+      "C-c SPC" 'magit-dispatch))
+  ;;
   ;; Repeat keymap
   (:with-keymap magit-reference-navigation-repeat-map
     (:unbind "r")
     (:bind
-      "n" 'magit-next-reference
-      "p" 'magit-previous-reference
-      "N" 'magit-previous-reference))
-
-  (:with-keymap magit-mode-map
-    (:bind :state '(motion normal)
-      "C-w p" 'magit-toggle-buffer-lock))
+      "n"  'magit-next-reference
+      "p"  'magit-previous-reference
+      "N"  'magit-previous-reference)))
 
 ;;; Magit status buffer
 
+(setup magit-status
   (:with-keymap magit-status-mode-map
     (:unbind "j")
-    (:bind "/" 'magit-status-jump)) ;; "j"
+    (:bind
+      "/"  'magit-status-jump))) ;; "j"
 
 ;;; Magit diff
 
+(setup magit-diff
   (:with-keymap magit-diff-mode-map
     (:unbind "j")
     (:bind
@@ -130,37 +131,39 @@
     (:bind
       "C-<return>" 'magit-diff-visit-worktree-file
       "M-<return>" 'magit-diff-visit-worktree-file
-      ", t" 'magit-diff-trace-definition
-      ", e" 'magit-diff-edit-hunk-commit))
+      ", t"  'magit-diff-trace-definition
+      ", e"  'magit-diff-edit-hunk-commit)))
 
 ;;; Revision buffer
 
+(setup magit-diff
   (:with-keymap magit-revision-mode-map
     (:unbind "j")
-    (:bind "/" 'magit-revision-jump))
+    (:bind "/" 'magit-revision-jump)))
 
 ;;; Magit log
 
+(setup magit-log
   (:with-keymap magit-log-mode-map
     (:unbind "j")
     (:bind
-      "C-j" 'magit-log-move-to-parent
-      "C-o" 'magit-go-backward
-      "C-i" 'magit-go-forward
-      "/"   'magit-log-move-to-revision
-      "="   'magit-log-toggle-commit-limit
-      "+"   'magit-log-double-commit-limit
-      "-"   'magit-log-half-commit-limit
-      "q"   'magit-log-bury-buffer))
-
+      "C-j"  'magit-log-move-to-parent
+      "C-o"  'magit-go-backward
+      "C-i"  'magit-go-forward
+      "/"    'magit-log-move-to-revision
+      "="    'magit-log-toggle-commit-limit
+      "+"    'magit-log-double-commit-limit
+      "-"    'magit-log-half-commit-limit
+      "q"    'magit-log-bury-buffer))
+  ;;
   (:with-keymap magit-log-select-mode-map
     (:bind
-      "Z Z" 'magit-log-select-quit
-      "Z Q" 'magit-log-select-quit))
+      "Z Z"  'magit-log-select-quit
+      "Z Q"  'magit-log-select-quit))
   (put 'magit-log-select-quit :advertised-binding [?Z ?Q]))
 
-  ;; magit-reflog-mode-map
-  ;; magit-stashes-mode-map
+;; magit-reflog-mode-map
+;; magit-stashes-mode-map
 
 ;;; Blame
 
@@ -173,47 +176,47 @@
     (:unbind "SPC" "S-SPC" "DEL") ;; "C-m"
     (:bind
       ;; "RET" 'magit-diff-show-or-scroll-up
-      "RET" 'magit-show-commit
-      "q"   'magit-blame-quit
+      "RET"  'magit-show-commit
+      "q"    'magit-blame-quit
       ;;
-      "j"   'magit-blame-next-chunk
-      "k"   'magit-blame-previous-chunk
-      "C-j" 'magit-blame-next-chunk-same-commit
-      "C-k" 'magit-blame-previous-chunk-same-commit
+      "j"    'magit-blame-next-chunk
+      "k"    'magit-blame-previous-chunk
+      "C-j"  'magit-blame-next-chunk-same-commit
+      "C-k"  'magit-blame-previous-chunk-same-commit
       ;;
-      "p"   'magit-blame-previous-chunk
-      "P"   'magit-blame-previous-chunk-same-commit
-      "n"   'magit-blame-next-chunk
-      "N"   'magit-blame-next-chunk-same-commit
+      "p"    'magit-blame-previous-chunk
+      "P"    'magit-blame-previous-chunk-same-commit
+      "n"    'magit-blame-next-chunk
+      "N"    'magit-blame-next-chunk-same-commit
       ;;
-      "b"   'magit-blame-addition
-      "r"   'magit-blame-removal
-      "f"   'magit-blame-reverse
-      "B"   'magit-blame
-      "v"   '("Cycle view" . magit-blame-cycle-style)
-      "y"   '("Copy hash" . magit-blame-copy-hash)
-      ", b" 'magit-blame-addition
-      ", r" 'magit-blame-removal
-      ", f" 'magit-blame-reverse
-      ", B" 'magit-blame
-      ", v" '("Cycle view" . magit-blame-cycle-style)
-      ", y" '("Copy hash" . magit-blame-copy-hash))))
+      "b"    'magit-blame-addition
+      "r"    'magit-blame-removal
+      "f"    'magit-blame-reverse
+      "B"    'magit-blame
+      "v"    '("Cycle view" . magit-blame-cycle-style)
+      "y"    '("Copy hash" . magit-blame-copy-hash)
+      ", b"  'magit-blame-addition
+      ", r"  'magit-blame-removal
+      ", f"  'magit-blame-reverse
+      ", B"  'magit-blame
+      ", v"  '("Cycle view" . magit-blame-cycle-style)
+      ", y"  '("Copy hash" . magit-blame-copy-hash))))
 
 ;;; Git commit
 
 (setup git-commit
   (:with-keymap git-commit-mode-map
     (:bind :state 'normal
-      "g j" 'git-commit-next-message ;; "M-n"
-      "g k" 'git-commit-prev-message ;; "M-p"
-      ;; "z j" 'git-commit-next-message
-      ;; "z k" 'git-commit-prev-message
-      ", j" 'git-commit-search-message-forward
-      ", k" 'git-commit-search-message-backward
-      ", i" 'git-commit-insert-trailer
-      ", s" 'git-commit-save-message
-      ", d" 'magit-diff-while-committing
-      ", p" 'magit-pop-revision-stack)))
+      "g j"  'git-commit-next-message ;; "M-n"
+      "g k"  'git-commit-prev-message ;; "M-p"
+      ;; "z j"  'git-commit-next-message
+      ;; "z k"  'git-commit-prev-message
+      ", j"  'git-commit-search-message-forward
+      ", k"  'git-commit-search-message-backward
+      ", i"  'git-commit-insert-trailer
+      ", s"  'git-commit-save-message
+      ", d"  'magit-diff-while-committing
+      ", p"  'magit-pop-revision-stack)))
 
 ;;; Git rebase
 
@@ -326,8 +329,8 @@ with the key bindings used in Magit."
   (:after-load
     (:with-keymap with-editor-mode-map
       (:bind :state '(normal motion)
-        "Z Z" 'with-editor-finish
-        "Z Q" 'with-editor-cancel))))
+        "Z Z"  'with-editor-finish
+        "Z Q"  'with-editor-cancel))))
 
 ;;; Other
 
@@ -338,14 +341,14 @@ with the key bindings used in Magit."
     ;; in Ediff in ~{index}~ buffer.
     (:unbind "g" "p" "n" "b" "r" "f" "q")
     (:bind :state 'normal
-      "] ]" 'magit-blob-next
-      "[ [" 'magit-blob-previous
-      "] v" 'magit-blob-next
-      "[ v" 'magit-blob-previous
-      ", a" 'magit-blame-addition
-      ", r" 'magit-blame-removal
-      ", f" 'magit-blame-reverse
-      "q"   'magit-bury-or-kill-buffer)))
+      "] ]"  'magit-blob-next
+      "[ ["  'magit-blob-previous
+      "] v"  'magit-blob-next
+      "[ v"  'magit-blob-previous
+      ", a"  'magit-blame-addition
+      ", r"  'magit-blame-removal
+      ", f"  'magit-blame-reverse
+      "q"    'magit-bury-or-kill-buffer)))
 
 ;;; Transient dispatches
 
@@ -355,7 +358,7 @@ with the key bindings used in Magit."
 (transient-suffix-put 'magit-branch "d" :key "D") ;; `magit-branch.<branch>.description'
 (transient-suffix-put 'magit-branch "k" :key "d") ;; `magit-branch-delete'
 
-(transient-suffix-put 'magit-stash "k" :key "d") ;; `magit-stash-drop'
+(transient-suffix-put 'magit-stash    "k" :key "d") ;; `magit-stash-drop'
 (transient-suffix-put 'magit-worktree "k" :key "d") ;; `magit-worktree-delete'
 
 ;;; Commands
