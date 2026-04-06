@@ -9,8 +9,6 @@
 (eval-when-compile (require 'cl-macs))
 (require 'setup)
 
-(declare-function hel-split-keyword-args "hel-common" (args))
-
 ;; Order matters: functions will be executed in the order they appear in list.
 (setopt setup-modifier-list '(helheim-setup--with-eval-after-load
                               helheim-setup--install-with-straight
@@ -174,13 +172,10 @@ all elements of MAP.")
 
 (setup-define :bind
   (lambda (&rest args)
-    (pcase-let* ((`(,kwargs . ,args) (hel-split-keyword-args args))
-                 (args (cl-loop for (key command) on args by #'cddr
-                                do (when (vectorp key)
-                                     (setq key (key-description key)))
-                                collect key
-                                collect command)))
-      `(hel-keymap-set ,(setup-get 'map) ,@kwargs ,@args)))
+    (cl-loop for key in-ref args by #'cddr
+             when (vectorp key)
+             do (setf key (key-description key)))
+    `(hel-keymap-set ,(setup-get 'map) ,@args))
   :indent 'defun
   :documentation
   "\(:bind [:state STATE] &rest [KEY DEFINITION]...)
@@ -194,9 +189,10 @@ KEY and DEFINITION arguments are like those in `keymap-set'.")
 
 (setup-define :unbind
   (lambda (&rest keys)
-    `(hel-keymap-set ,(setup-get 'map) ,@(cl-loop for key in keys
-                                                  collect key
-                                                  collect nil)))
+    `(hel-keymap-set ,(setup-get 'map)
+       ,@(cl-loop for key in keys
+                  collect key
+                  collect nil)))
   :indent 'defun
   :documentation
   "\(:unbind [:state STATE] &rest KEYS)
@@ -210,13 +206,10 @@ a symbol or list of symbols.")
 
 (setup-define :global-bind
   (lambda (&rest args)
-    (pcase-let* ((`(,kwargs . ,args) (hel-split-keyword-args args))
-                 (args (cl-loop for (key command) on args by #'cddr
-                                do (when (vectorp key)
-                                     (setq key (key-description key)))
-                                collect key
-                                collect command)))
-      `(hel-keymap-global-set ,@kwargs ,@args)))
+    (cl-loop for key in-ref args by #'cddr
+             when (vectorp key)
+             do (setf key (key-description key)))
+    `(hel-keymap-global-set ,@args))
   :indent 'defun
   :documentation
   "\(:global-bind [:state STATE] &rest [KEY DEFINITION]...)
