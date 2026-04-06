@@ -6,8 +6,8 @@
 ;;; Keybindings
 
 (setup elisp-mode
-  (:with-keymap (emacs-lisp-mode-map
-                 lisp-interaction-mode-map)
+  (:with-keymaps (emacs-lisp-mode-map
+                  lisp-interaction-mode-map)
     (:bind
       "C-c e"   '("eval" . helheim-elisp-eval-map)) ;; <leader>
     (:bind :state 'normal

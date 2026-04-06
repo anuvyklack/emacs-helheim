@@ -158,17 +158,25 @@ or forms that will be wrapped in lambda in this case.")
 ;;; :bind
 
 (setup-define :with-keymap
-  (lambda (keymaps &rest body)
-    (let (bodies)
-      (dolist (map (ensure-list keymaps))
-        (push (setup-bind body (map map))
-              bodies))
-      (macroexp-progn (nreverse bodies))))
-  :debug '([&or ([&rest sexp]) sexp] setup)
+  (lambda (keymap &rest body)
+    (macroexp-let2 symbolp map keymap
+      (setup-bind body (map map))))
+  :debug '(sexp setup)
   :indent 1
   :documentation
-  "Change the KEYMAP that BODY will bind to. If KEYMAP is a list, apply BODY to
-all elements of MAP.")
+  "Change the KEYMAP that BODY will bind to.
+KEYMAP can be any form that evaluates to keymap.")
+
+(setup-define :with-keymaps
+  (lambda (keymaps &rest body)
+    (macroexp-progn
+     (cl-loop for map in keymaps
+              collect (setup-bind body (map map)))))
+  :debug '([&rest symbol] setup)
+  :indent 1
+  :documentation
+  "For each item in KEYMAPS expand BODY with current keymap bound to it.
+KEYMAPS should be an unquoted list of symbols.")
 
 (setup-define :bind
   (lambda (&rest args)

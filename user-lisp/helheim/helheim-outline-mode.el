@@ -3,8 +3,8 @@
 
 (setup outline
   (:after-load
-    (:with-keymap (outline-mode-map
-                   outline-minor-mode-map)
+    (:with-keymaps (outline-mode-map
+                    outline-minor-mode-map)
       (:bind :state 'normal
         "m h"   'helheim-outline-mark-subtree ; "h" is for heading
         "m i h" 'helheim-outline-mark-subtree
