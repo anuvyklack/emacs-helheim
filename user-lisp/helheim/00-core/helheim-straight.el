@@ -21,7 +21,9 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil t))
 
+(straight-use-package 'dash)
 (straight-use-package 'setup)
+(straight-use-package 'blackout)
 
 (defalias 'elpaca-wait #'ignore)
 

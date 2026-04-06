@@ -28,9 +28,6 @@
   ('elpaca   (require 'helheim-elpaca)))
 
 (require 'helheim-setup)
-(setup dash     (:install t) (:require t))
-(setup blackout (:install t) (:require t))
-(elpaca-wait)
 
 ;; (setup leaf
 ;;   (:install t)

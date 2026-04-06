@@ -44,7 +44,9 @@
 (add-hook 'after-init-hook #'elpaca-process-queues)
 (elpaca `(,@elpaca-order))
 
+(elpaca 'dash)
 (elpaca 'setup)
+(elpaca 'blackout)
 (elpaca-wait)
 
 ;;; .
