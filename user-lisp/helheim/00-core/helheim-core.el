@@ -107,6 +107,18 @@
 (setup adaptive-wrap (:install t))
 (setup visual-fill-column (:install t))
 
+;; Required by:
+;; - `markdown-mode', or it will install it via package.el if it isn't present
+;;    on call of `markdown-edit-code-block'.
+;; - `helheim-edit-indirect'
+(setup edit-indirect
+  (:install t)
+  (:after-load
+    ;; edit-indirect-mode-map
+    (:bind :state 'normal
+      "Z Z" 'edit-indirect-commit
+      "Z Q" 'edit-indirect-abort)))
+
 (elpaca-wait)
 (require 'helheim-lib)
 

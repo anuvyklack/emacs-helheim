@@ -27,16 +27,6 @@
 
 ;;; Config
 
-;; Required by `markdown-mode', or it will install it via package.el
-;; if it isn't present when you call `markdown-edit-code-block'.
-(setup edit-indirect
-  (:install t)
-  (:after-load
-    ;; edit-indirect-mode-map
-    (:bind :state 'normal
-      "Z Z" 'edit-indirect-commit
-      "Z Q" 'edit-indirect-abort)))
-
 (setup markdown-mode
   (:install t)
   (:mode ("README\\.md\\'" . gfm-mode)) ;; Github Flavored Markdown
