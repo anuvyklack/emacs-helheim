@@ -1,0 +1,23 @@
+* helheim-edit-indirect
+
+This module rebinds =zn= key chord to ~helheim-edit-indirect~ command.
+
+It differs from ~hel-narrow-to-region-indirectly~ (original =zn= binding) which
+clones buffer inidrectly with narrowing in that the text properties are not
+shared, so the parent buffer major mode and the edit-indirect buffer major mode
+will not be able to tread on each other's toes by setting up potentially
+conflicting text properties, which happens surprisingly often when the font-lock
+mode is used.
+
+When done, exit with =ZZ= (~edit-indirect-commit~), which will remove the original
+region and replace it with the edited version; or with =ZQ= (~edit-indirect-abort~),
+which will drop the modifications.
+
+If there's already an edit-indirect buffer for region, use that. If there's
+already an edit-indirect buffer active overlapping any portion of region, an
+error is signaled.
+
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-edit-indirect)
+#+end_src
