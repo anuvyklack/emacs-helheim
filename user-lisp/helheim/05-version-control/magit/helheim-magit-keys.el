@@ -361,6 +361,9 @@ with the key bindings used in Magit."
 (transient-suffix-put 'magit-stash    "k" :key "d") ;; `magit-stash-drop'
 (transient-suffix-put 'magit-worktree "k" :key "d") ;; `magit-worktree-delete'
 
+(transient-suffix-put 'magit-file-dispatch "p" :key "[") ;; `magit-blob-previous'
+(transient-suffix-put 'magit-file-dispatch "n" :key "]") ;; `magit-blob-next'
+
 ;;; Commands
 
 (defun helheim-magit-toggle-selection ()
