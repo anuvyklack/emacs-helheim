@@ -1,0 +1,30 @@
+* helheim-whisper
+
+This module installs and configures [[https://github.com/natrys/whisper.el][Whisper.el]] package which provides speech to
+text conversion.
+
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-whisper)
+#+end_src
+
+** Configuration
+
+Refer to the official whisper.el [[https://github.com/natrys/whisper.el][documentation]] for advanced configurations and
+additional information.
+
+** Usage
+
+On first invocation [[https://github.com/ggml-org/whisper.cpp][whisper.cpp]] engine will be installed and recognition model
+will be downloaded.
+
+- =C-r= ::
+  - Starts recording audio.
+  - Stops recording and starts transcribing.
+  - Abort transcribing if it is in progress.
+  - With =M-u= (~universal-argument~) use a local file as input.
+
+** Hacks
+
+- The inserted transcription text is selected. This makes it visible, allows to
+  delete it with single key, and is aligned with other Hel behavior.
