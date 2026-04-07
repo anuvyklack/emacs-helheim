@@ -7,6 +7,7 @@
 ;;; Code:
 
 (eval-when-compile (require 'cl-macs))
+(require 'dash)
 (require 'setup)
 
 ;; Order matters: functions will be executed in the order they appear in list.
@@ -127,15 +128,26 @@
 (setup-define :hook
   (lambda (hooks &optional functions)
     (or functions (setq functions (setup-get 'mode)))
-    (macroexp-progn (let (result)
-                      (dolist (hook (ensure-list hooks))
-                        (dolist (func (ensure-list functions))
-                          (push `(add-hook ',hook ',func)
-                                result)))
-                      (nreverse result))))
+    (cond ((memq (car-safe functions) '(lambda defun))
+           (cond ((symbolp hooks)
+                  `(add-hook ',hooks ,functions))
+                 ((proper-list-p hooks)
+                  (cl-with-gensyms x
+                    (let ((x functions))
+                      (cl-loop for hook in hooks
+                               collect `(add-hook ',hook ,x)))))))
+          ;; else
+          ((or (proper-list-p hooks)
+               (proper-list-p functions))
+           `(progn
+              ,@(->> (-table-flat #'list (ensure-list hooks) (ensure-list functions))
+                     (-map (-lambda ((hook func))
+                             `(add-hook ',hook ',func))))))
+          (t
+           `(add-hook ',hooks ',functions))))
   :documentation
-  "Add FUNCTIONS to HOOKS. The main purpose of this macro is to map many to
-many. It doesn't work with `(lambda ...)' — use `add-hook' instead.")
+  "Add FUNCTIONS to HOOKS.
+This macro can map many. Also it accepts lambda form.")
 
 ;;; :after-init
 
@@ -155,7 +167,7 @@ many. It doesn't work with `(lambda ...)' — use `add-hook' instead.")
 `elpaca-after-init-hook' instead. BODY can be a symbol, a lambda, or any number
 or forms that will be wrapped in lambda in this case.")
 
-;;; :bind
+;;; :with-keymap
 
 (setup-define :with-keymap
   (lambda (keymap &rest body)
@@ -177,6 +189,8 @@ KEYMAP can be any form that evaluates to keymap.")
   :documentation
   "For each item in KEYMAPS expand BODY with current keymap bound to it.
 KEYMAPS should be an unquoted list of symbols.")
+
+;;; :bind
 
 (setup-define :bind
   (lambda (&rest args)
