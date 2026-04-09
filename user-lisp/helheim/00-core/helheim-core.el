@@ -185,10 +185,8 @@
 The predicate is passed as argument to `buffer-match-p', which see."
     :type '(buffer-predicate :tag "Predicate for `buffer-match-p'"))
   ;;
-  (define-advice global-hl-line-highlight (:around (orig-fun) helheim)
-    (if (buffer-match-p global-hl-line-buffers (current-buffer))
-        (funcall orig-fun)
-      (global-hl-line-unhighlight))))
+  (advice-add 'global-hl-line-highlight :around
+              #'helheim-global-hl-line-highlight-a))
 
 (setup hl-line
   (setopt global-hl-line-sticky-flag 'window ;; Emacs 31
@@ -196,24 +194,16 @@ The predicate is passed as argument to `buffer-match-p', which see."
           ;; Hel motion state, and temporary disable it when region is active.
           ;; In text editing modes disable it, because it interferes with Hel
           ;; selections.
-          global-hl-line-buffers `(and (or (derived-mode . special-mode)
+          global-hl-line-buffers '(and (or (derived-mode . special-mode)
                                            ;; For `define-compilation-mode'
                                            (derived-mode . compilation-mode)
                                            ;; Follow major modes doesn't inherit
                                            ;; from `special-mode'.
                                            (major-mode . dired-mode))
                                        ;; According to my measures, compiled
-                                       ;; lambda is two times faster.
-                                       ,(native-compile
-                                         '(lambda (buffer)
-                                            (with-current-buffer buffer
-                                              (and (eq hel-state 'motion)
-                                                   (not (use-region-p))))))))
-  (global-hl-line-mode)
-  ;; (:config
-  ;;   (global-hl-line-mode))
-  ;; (:global-minor-mode global-hl-line-mode)
-  )
+                                       ;; function is two times faster.
+                                       helheim--global-hl-line-buffers-pred))
+  (global-hl-line-mode))
 
 ;;;; Display line numbers
 
@@ -648,16 +638,7 @@ Use `delete-trailing-whitespace' command."
 
 ;; Create missing directories when we open a file that doesn't exist under
 ;; a directory tree that may not exist.
-(add-hook 'find-file-not-found-functions
-          (defun helheim-create-missing-directories-h ()
-            "Automatically create missing directories when creating new files."
-            (unless (file-remote-p buffer-file-name)
-              (let ((parent-directory (file-name-directory buffer-file-name)))
-                (and (not (file-directory-p parent-directory))
-                     (y-or-n-p (format "Directory `%s' does not exist! Create it?"
-                                       parent-directory))
-                     (progn (make-directory parent-directory 'parents)
-                            t))))))
+(add-hook 'find-file-not-found-functions #'helheim-create-missing-directories-h)
 
 ;;;;; Backup files
 
@@ -692,45 +673,16 @@ Use `delete-trailing-whitespace' command."
 
 ;; HACK: Emacs generates long file paths for its auto-save files; long is:
 ;;   `auto-save-list-file-prefix' + `buffer-file-name'. If too long, the
-;;   filesystem will murder your family. To appease it the `buffer-file-name'
+;;   filesystem will murder your cat. To appease it the `buffer-file-name'
 ;;   is compressed to a stable 40 characters.
 ;; Borrowed from Doom Emacs.
-(define-advice make-auto-save-file-name ( :around (fn)
-                                          helheim-make-hashed-auto-save-file-name)
-  "Compress the auto-save file name so paths don't get too long."
-  (let ((buffer-file-name
-         (if (or
-              ;; Don't do anything for non-file-visiting buffers. Names
-              ;; generated for those are short enough already.
-              (null buffer-file-name)
-              ;; If an alternate handler exists for this path, bow out. Most of
-              ;; them end up calling `make-auto-save-file-name' again anyway, so
-              ;; we still achieve this advice's ultimate goal.
-              (find-file-name-handler buffer-file-name
-                                      'make-auto-save-file-name))
-             buffer-file-name
-           (sha1 buffer-file-name))))
-    (funcall fn)))
+(advice-add 'make-auto-save-file-name :around
+            #'helheim-make-hashed-auto-save-file-name-a)
 
 ;; HACK: ...does the same for Emacs backup files, but also packages that use
-;;   `make-backup-file-name-1' directly (like undo-tree).
-(define-advice make-backup-file-name-1 ( :around (fn file)
-                                         helheim-make-hashed-backup-file-name)
-  "A few places use the backup file name so paths don't get too long."
-  (let ((alist backup-directory-alist)
-        backup-directory)
-    (while alist
-      (let ((elt (car alist)))
-        (if (string-match (car elt) file)
-            (setq backup-directory (cdr elt)
-                  alist nil)
-          (setq alist (cdr alist)))))
-    (let ((file (funcall fn file)))
-      (if (or (null backup-directory)
-              (not (file-name-absolute-p backup-directory)))
-          file
-        (expand-file-name (sha1 (file-name-nondirectory file))
-                          (file-name-directory file))))))
+;;   `make-backup-file-name-1' directly (like `undo-tree').
+(advice-add 'make-backup-file-name-1 :around
+            #'helheim-make-hashed-backup-file-name-a)
 
 ;;;;; Auto revert
 

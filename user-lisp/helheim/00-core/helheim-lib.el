@@ -56,7 +56,60 @@ Emacs magic happen.)
   (when (memq theme custom-enabled-themes)
     (enable-theme theme)))
 
-;;; Save minibuffer history between sessions
+;;; Hooks and Advices
+
+(defun helheim-make-hashed-auto-save-file-name-a (orig-fun)
+  "Compress the auto-save file name so paths don't get too long."
+  (let ((buffer-file-name
+         (if (or
+              ;; Don't do anything for non-file-visiting buffers.
+              ;; Names generated for those are short enough already.
+              (not buffer-file-name)
+              ;; If an alternate handler exists for this path, bow out.
+              ;; Most of them end up calling `make-auto-save-file-name'
+              ;; again anyway, so we still achieve this advice's ultimate
+              ;; goal.
+              (find-file-name-handler buffer-file-name 'make-auto-save-file-name))
+             buffer-file-name
+           (sha1 buffer-file-name))))
+    (funcall orig-fun)))
+
+(defun helheim-make-hashed-backup-file-name-a (orig-fun file)
+  "Make sure backup file names aren't too long."
+  (let ((backup-file (funcall orig-fun file)))
+    (if-let* ((backup-directory (map-some (lambda (_regexp directory)
+                                            (if (string-match directory file)
+                                                directory))
+                                          backup-directory-alist))
+              ((file-name-absolute-p backup-directory)))
+        (expand-file-name (sha1 (file-name-nondirectory backup-file))
+                          (file-name-directory backup-file))
+      ;; else
+      backup-file)))
+
+(when (< emacs-major-version 31)
+  (defvar global-hl-line-buffers)
+  (defun helheim-global-hl-line-highlight-a (orig-fun)
+    (if (buffer-match-p global-hl-line-buffers (current-buffer))
+        (funcall orig-fun)
+      (global-hl-line-unhighlight))))
+
+(defun helheim--global-hl-line-buffers-pred (buffer)
+  "Enable current line highlighting only in special modes that are in Hel motion
+state, and temporary disable it when region is active."
+  (with-current-buffer buffer
+    (and (eq hel-state 'motion)
+         (not (use-region-p)))))
+
+(defun helheim-create-missing-directories-h ()
+  "Automatically create missing directories when creating new files."
+  (unless (file-remote-p buffer-file-name)
+    (let ((parent-directory (file-name-directory buffer-file-name)))
+      (and (not (file-directory-p parent-directory))
+           (y-or-n-p (format "Directory `%s' does not exist! Create it?"
+                             parent-directory))
+           (progn (make-directory parent-directory 'parents)
+                  t)))))
 
 (defun helheim-savehist-unpropertize-variables-h ()
   "Remove text properties from tracked variables to reduce savehist cache size."
@@ -77,17 +130,12 @@ the unwritable tidbits."
   ;; unserializable registers in the current session!
   (setq-local register-alist (-filter #'savehist-printable register-alist)))
 
-;;; Tree-sitter
-
-;;;###autoload
 (defun helheim-install-missing-treesit-grammars ()
   "Install all missing tree-sitter grammars."
   (interactive)
   (cl-loop for (lang . _) in treesit-language-source-alist
            unless (treesit-language-available-p lang)
            do (treesit-install-language-grammar lang)))
-
-;;; LSP
 
 (defun helheim-lsp ()
   (cond ((featurep 'helheim-eglot)
