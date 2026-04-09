@@ -3,9 +3,9 @@
 (setup whisper
   (:install whisper :host github :repo "natrys/whisper.el")
   (setopt whisper-install-directory user-emacs-directory
-          whisper-language "auto" ;; "en"
-          whisper-model "base"
-          whisper-translate nil
+          whisper-language "auto"
+          ;; whisper-model "base"
+          ;; whisper-translate nil
           whisper-return-cursor 'end ;; 'start
           whisper-use-threads (ceiling (* 0.7 (num-processors))))
   (keymap-global-set "C-r" 'whisper-run))
