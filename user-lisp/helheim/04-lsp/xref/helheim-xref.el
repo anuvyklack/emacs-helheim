@@ -1,5 +1,4 @@
-;;; helheim-xref.el -*- lexical-binding: t; no-byte-compile: t; -*-
-;;; Code:
+;;; helheim-xref.el -*- lexical-binding: t; no-byte-compile: t -*-
 
 (setup xref
   ;; (:install t)
@@ -21,7 +20,6 @@
     [remap xref-find-definitions] 'helheim-xref-find-definitions
     [remap xref-find-definitions-other-window] 'helheim-xref-find-definitions-other-window
     [remap xref-find-definitions-other-frame]  'helheim-xref-find-definitions-other-frame)
-  :config
   ;; Open xref buffer in another window
   (add-to-list 'display-buffer-alist
                '((major-mode . xref--xref-buffer-mode)
