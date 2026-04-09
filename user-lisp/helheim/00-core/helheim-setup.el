@@ -239,6 +239,20 @@ a symbol or list of symbols.")
 STATE is an optional keyword argument that specifies the Hel state in which the
 keybindings will be active. Can be a symbol or list of symbols.")
 
+(setup-define :global-unbind
+  (lambda (&rest keys)
+    `(hel-keymap-global-set ,@(cl-loop for key in keys
+                                       collect key
+                                       collect nil)))
+  :indent 'defun
+  :documentation
+  "\(:global-unbind [:state STATE] &rest KEYS)
+
+Remove KEYS bindings from current keymap.
+
+STATE is an optional keyword argument that specifies the Hel state. Can be
+a symbol or list of symbols.")
+
 ;;; :blackout
 
 (setup-define :blackout
