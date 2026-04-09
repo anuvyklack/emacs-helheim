@@ -22,19 +22,21 @@
 
 ;;; Garbage collector
 
-(if noninteractive                      ; in CLI sessions
-    (setq gc-cons-threshold 134217728)  ; 128mb
+(if noninteractive ;; in CLI sessions
+    (setq gc-cons-threshold (* 128 1024 1024)) ; 128mb
   ;; Else, disable garbage collection during startup.
-  (setq-default gc-cons-threshold most-positive-fixnum))
+  (setq-default gc-cons-threshold most-positive-fixnum
+                gc-cons-percentage 1.0))
 
 ;; Enable garbage collection after start up.
 (add-hook 'emacs-startup-hook 'helheim--restore-original-gc-values 105)
 
 (defun helheim--restore-original-gc-values ()
-  "Reset `gc-cons-threshold' without user's config."
-  (when (= (default-value 'gc-cons-threshold)
-           most-positive-fixnum)
-    (setq-default gc-cons-threshold (* 16 1024 1024)))) ; 16mb
+  "Reset `gc-cons-threshold' and `gc-cons-percentage'."
+  (when (= (default-value 'gc-cons-threshold) most-positive-fixnum)
+    (setq-default gc-cons-threshold (* 16 1024 1024))) ; 16mb
+  (when (= (default-value 'gc-cons-percentage) 1.0)
+    (setq-default gc-cons-percentage 0.1)))
 
 ;;; Native compilation and Byte compilation
 
