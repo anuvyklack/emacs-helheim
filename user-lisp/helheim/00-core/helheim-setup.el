@@ -132,11 +132,10 @@
            (cond ((symbolp hooks)
                   `(add-hook ',hooks ,functions))
                  ((proper-list-p hooks)
-                  (cl-with-gensyms x
-                    (let ((x functions))
-                      (cl-loop for hook in hooks
-                               collect `(add-hook ',hook ,x)))))))
-          ;; else
+                  (cl-with-gensyms (fun)
+                    `(let ((,fun ,functions))
+                       ,@(cl-loop for hook in hooks
+                                  collect `(add-hook ',hook ,fun)))))))
           ((or (proper-list-p hooks)
                (proper-list-p functions))
            `(progn
