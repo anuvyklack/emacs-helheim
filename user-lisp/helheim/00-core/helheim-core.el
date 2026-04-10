@@ -645,42 +645,53 @@ Use `delete-trailing-whitespace' command."
 ;; Don't generate backups or lockfiles. While auto-save maintains a copy so long
 ;; as a buffer is unsaved, backups create copies once, when the file is first
 ;; written, and never again until it is killed and reopened. This is better
-;; suited to version control, and I don't want world-readable copies of
-;; potentially sensitive material floating around our filesystem.
+;; suited to version control, and it is not a good idead to have world-readable
+;; copies of potentially sensitive material floating around our filesystem.
 (setq create-lockfiles nil
       make-backup-files nil
       ;; But in case the user does enable it, some sensible defaults:
-      backup-directory-alist (list (cons "." (locate-user-emacs-file "backup")))
-      tramp-backup-directory-alist backup-directory-alist
       version-control t     ; number each backup file
       backup-by-copying t   ; instead of renaming current file (clobbers links)
       delete-old-versions t ; clean up after itself
       kept-old-versions 5
-      kept-new-versions 5)
+      kept-new-versions 5
+      backup-directory-alist `(("." . ,(locate-user-emacs-file "backup")))
+      tramp-backup-directory-alist backup-directory-alist)
 
 ;;;;; Auto save changes in files
 ;; Use `recover-file' or `recover-session' commands to restore auto-saved data.
 
 (setq auto-save-default t
       auto-save-no-message t
-      ;; Auto-disable auto-save after deleting large chunks of text.
-      ;; I believe that in case of crash the more date the better.
-      auto-save-include-big-deletions nil
-      kill-buffer-delete-auto-save-files t)
+      auto-save-include-big-deletions t
+      kill-buffer-delete-auto-save-files t
+      auto-save-list-file-prefix (locate-user-emacs-file "autosave/")
+      ;; This resolves two issue while ensuring auto-save files are still
+      ;; reasonably recognizable at a glance:
+      ;;
+      ;; 1. Emacs generates long file paths for its auto-save files; long is:
+      ;;    `auto-save-list-file-prefix' + `buffer-file-name'. If too long, the
+      ;;    filesystem will murder your cat. `sha1' compresses the path into a
+      ;;    ~40 character hash!
+      ;; 2. The default transform rule writes TRAMP auto-save files to
+      ;;    `temporary-file-directory', which TRAMP doesn't like! It'll prompt
+      ;;    you about it every time an auto-save file is written, unless
+      ;;    `tramp-allow-unsafe-temporary-files' is set. A more sensible default
+      ;;    transform is better:
+      auto-save-file-name-transforms
+      `(("\\`/[^/]*:\\([^/]*/\\)*\\([^/]*\\)\\'"
+         ,(file-name-concat auto-save-list-file-prefix "tramp-\\2-")
+         sha1)
+        ("\\`/\\([^/]+/\\)*\\([^/]+\\)\\'"
+         ,(file-name-concat auto-save-list-file-prefix "\\2-")
+         sha1)))
 
-(setq auto-save-list-file-prefix (locate-user-emacs-file "autosave/")
-      tramp-auto-save-directory  (locate-user-emacs-file "tramp-autosave/"))
+(add-hook 'auto-save-hook (defun helheim-ensure-auto-save-prefix-exists-h ()
+                            (with-file-modes #o700
+                              (make-directory auto-save-list-file-prefix t))))
 
-;; HACK: Emacs generates long file paths for its auto-save files; long is:
-;;   `auto-save-list-file-prefix' + `buffer-file-name'. If too long, the
-;;   filesystem will murder your cat. To appease it the `buffer-file-name'
-;;   is compressed to a stable 40 characters.
-;; Borrowed from Doom Emacs.
-(advice-add 'make-auto-save-file-name :around
-            #'helheim-make-hashed-auto-save-file-name-a)
-
-;; HACK: ...does the same for Emacs backup files, but also packages that use
-;;   `make-backup-file-name-1' directly (like `undo-tree').
+;; HACK: Make sure backup files (like `undo-tree's) don't have ridiculously long
+;;   file names that some filesystems will refuse.
 (advice-add 'make-backup-file-name-1 :around
             #'helheim-make-hashed-backup-file-name-a)
 
@@ -731,10 +742,13 @@ Use `delete-trailing-whitespace' command."
 
 ;;;; TRAMP
 
-(setq remote-file-name-inhibit-cache 50
-      tramp-default-method "ssh" ; faster than the default "scp"
-      tramp-verbose 1 ; Reduce verbosity
-      tramp-completion-reread-directory-timeout 50)
+(setopt remote-file-name-inhibit-cache 60
+        remote-file-name-inhibit-auto-save-visited t
+        tramp-default-method "ssh" ; faster than the default "scp"
+        tramp-copy-size-limit (* 1024 1024) ; 1mb
+        tramp-use-scp-direct-remote-copying t
+        ;; tramp-verbose 1 ; Reduce verbosity
+        tramp-completion-reread-directory-timeout 60)
 
 ;;;; Imenu
 

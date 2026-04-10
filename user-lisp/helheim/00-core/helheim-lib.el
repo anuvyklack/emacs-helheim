@@ -58,35 +58,6 @@ Emacs magic happen.)
 
 ;;; Hooks and Advices
 
-(defun helheim-make-hashed-auto-save-file-name-a (orig-fun)
-  "Compress the auto-save file name so paths don't get too long."
-  (let ((buffer-file-name
-         (if (or
-              ;; Don't do anything for non-file-visiting buffers.
-              ;; Names generated for those are short enough already.
-              (not buffer-file-name)
-              ;; If an alternate handler exists for this path, bow out.
-              ;; Most of them end up calling `make-auto-save-file-name'
-              ;; again anyway, so we still achieve this advice's ultimate
-              ;; goal.
-              (find-file-name-handler buffer-file-name 'make-auto-save-file-name))
-             buffer-file-name
-           (sha1 buffer-file-name))))
-    (funcall orig-fun)))
-
-(defun helheim-make-hashed-backup-file-name-a (orig-fun file)
-  "Make sure backup file names aren't too long."
-  (let ((backup-file (funcall orig-fun file)))
-    (if-let* ((backup-directory (map-some (lambda (_regexp directory)
-                                            (if (string-match directory file)
-                                                directory))
-                                          backup-directory-alist))
-              ((file-name-absolute-p backup-directory)))
-        (expand-file-name (sha1 (file-name-nondirectory backup-file))
-                          (file-name-directory backup-file))
-      ;; else
-      backup-file)))
-
 (when (< emacs-major-version 31)
   (defvar global-hl-line-buffers)
   (defun helheim-global-hl-line-highlight-a (orig-fun)
@@ -100,6 +71,19 @@ state, and temporary disable it when region is active."
   (with-current-buffer buffer
     (and (eq hel-state 'motion)
          (not (use-region-p)))))
+
+(defun helheim-make-hashed-backup-file-name-a (orig-fun file)
+  "Make sure backup file names aren't too long."
+  (let ((backup-file (funcall orig-fun file)))
+    (if-let* ((backup-directory (map-some (lambda (_regexp directory)
+                                            (if (string-match directory file)
+                                                directory))
+                                          backup-directory-alist))
+              ((file-name-absolute-p backup-directory)))
+        (expand-file-name (sha1 (file-name-nondirectory backup-file))
+                          (file-name-directory backup-file))
+      ;; else
+      backup-file)))
 
 (defun helheim-create-missing-directories-h ()
   "Automatically create missing directories when creating new files."
