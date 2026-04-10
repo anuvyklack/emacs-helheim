@@ -242,8 +242,17 @@ they all will be added to `load-path' bytecompiled an scrapped for autoload
 cookies.")
 
 (setq user-emacs-directory (expand-file-name "var/" helheim-root-directory)
-      user-lisp-directory  (expand-file-name "user-lisp/" helheim-root-directory)
-      package-user-dir     (locate-user-emacs-file "elpa/"))
+      package-user-dir     (locate-user-emacs-file "elpa/")
+      user-lisp-directory  (expand-file-name "user-lisp/" helheim-root-directory))
+
+;; Don't compile content of `user-emacs-directory' in `prepare-user-lisp'
+;; funciton. It is called to early when dependencies are not installed yet.
+;; And it will be compiled later by `compile-angel'.
+(setq user-lisp-auto-scrape nil)
+
+(when (< emacs-major-version 31)
+  (load-file (expand-file-name "prepare-user-lisp.el" user-lisp-directory))
+  (prepare-user-lisp (not user-lisp-auto-scrape)))
 
 ;;; .
 ;; Local variables:

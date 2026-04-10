@@ -64,10 +64,6 @@
 ;;                              ("https" . "127.0.0.1:10809"))
 ;;         gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
-(when (< emacs-major-version 31)
-  (load-file (expand-file-name "prepare-user-lisp.el" user-lisp-directory))
-  (prepare-user-lisp))
-
 (setq helheim-package-manager 'elpaca) ;; or 'straight
 (require 'helheim-core)
 (require 'helheim-minibuffer) ; Emacs alternative of command pallet
