@@ -33,7 +33,7 @@
   (setopt completion-styles '(orderless basic)
           ;; completion-styles '(orderless partial-completion basic)
           completion-category-defaults nil
-          completion-category-overrides '((file (styles partial-completion)))
+          completion-category-overrides '((file (styles orderless partial-completion)))
           completion-pcm-leading-wildcard t ;; Emacs 31
           orderless-matching-styles '(orderless-literal
                                       orderless-regexp
