@@ -604,9 +604,10 @@ Use `delete-trailing-whitespace' command."
 
 (setq uniquify-buffer-name-style 'forward)
 
-;; "C-x C-b" (`list-buffers') and `M-x buffer-menu'.
-(when (version<= "30.2" emacs-version)
-  (setopt Buffer-menu-group-by #'Buffer-menu-group-by-root))
+;; ;; BUG: This setting breaks `project-kill-buffers' command.
+;; ;; "C-x C-b" (`list-buffers') and `M-x buffer-menu'.
+;; (when (version<= "30.2" emacs-version)
+;;   (setopt Buffer-menu-group-by #'Buffer-menu-group-by-root))
 
 ;; ;; The initial buffer is created during startup even in non-interactive
 ;; ;; sessions, and its major mode is fully initialized. Modes like `text-mode',
