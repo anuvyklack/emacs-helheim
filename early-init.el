@@ -251,7 +251,7 @@ cookies.")
 (setq user-lisp-auto-scrape nil)
 
 (when (< emacs-major-version 31)
-  (load-file (expand-file-name "prepare-user-lisp.el" user-lisp-directory))
+  (load (expand-file-name "prepare-user-lisp.el" user-lisp-directory) nil t)
   (prepare-user-lisp (not user-lisp-auto-scrape)))
 
 ;;; .
