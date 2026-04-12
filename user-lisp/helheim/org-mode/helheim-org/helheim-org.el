@@ -20,7 +20,7 @@
                 "a" 'org-attach
                 "o" 'org-open-at-point)))
     ;; <leader>
-    (:with-keymap (keymap-lookup org-mode-map "C-c")
+    (:with-keymap (helheim-leader-map org-mode-map)
       (:unbind
         "'"  ;; `org-edit-special' — moved to "z'"
         ","  ;; `org-priority' — moved to "z,"
@@ -49,10 +49,9 @@
                       "a" 'org-insert-all-links
                       "m" 'yank-media))))))
 
-(setup dired
-  (:after-load
-    (:with-keymap dired-mode-map
-      (:bind "C-c a" 'org-attach-dired-to-subtree))))
+(with-eval-after-load 'dired
+  (hel-keymap-set (helheim-leader-map dired-mode-map)
+    "a" 'org-attach-dired-to-subtree))
 
 ;;; Config
 

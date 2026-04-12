@@ -47,7 +47,7 @@
 
 ;; Keys that available in Org mode.
 (with-eval-after-load 'org-keys
-  (hel-keymap-set (keymap-lookup org-mode-map "C-c")
+  (hel-keymap-set (helheim-leader-map org-mode-map)
     ;; "insert"
     "i i" '("add ID" . org-node-nodeify-entry) ; "ii" - insert ID
     "i I" '("add ID and ignore" . helheimg-org-node-create-ignored-node)

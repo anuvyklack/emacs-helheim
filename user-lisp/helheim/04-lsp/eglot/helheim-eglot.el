@@ -8,13 +8,11 @@
 ;;
 ;;; Keybindings
 
-(let* ((leader mode-specific-map)
-       (leader-l (or (keymap-lookup leader "l")
-                     (make-sparse-keymap))))
-  (keymap-set leader "l" `("LSP" . ,leader-l))
-  (keymap-set leader-l "RET" 'eglot))
-
 (setup eglot
+  (:with-keymap (helheim-leader-map)
+    (:bind "l" (cons "LSP" (helheim-leader-map "l"))))
+  (:with-keymap (helheim-leader-prefix-map "l")
+    (:bind "RET" 'eglot))
   (:after-load
     (:with-keymap eglot-mode-map
       (:bind :state 'normal

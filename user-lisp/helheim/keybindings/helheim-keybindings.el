@@ -23,14 +23,13 @@
 
 ;;; <Leader>
 
-(hel-keymap-set mode-specific-map
+(hel-keymap-set (helheim-leader-map)
   "RET" 'dired-jump
   "," 'switch-to-buffer
   "/" 'consult-ripgrep ; "/" is for search in Hel
   "d" 'dired-jump
   "b" (cons "buffer"
-            (hel-keymap-set (or (keymap-lookup mode-specific-map "b")
-                                (make-sparse-keymap))
+            (hel-keymap-set (helheim-leader-prefix-map "b")
               "b" 'ibuffer-jump        ;; "<leader> bb"
               "n" 'switch-to-buffer    ;; next key after "b"
               "s" 'save-buffer
@@ -45,8 +44,7 @@
               "m" 'bookmark-set
               "M" 'bookmark-delete))
   "f" (cons "file"
-            (hel-keymap-set (or (keymap-lookup mode-specific-map "f")
-                                (make-sparse-keymap))
+            (hel-keymap-set (helheim-leader-prefix-map "f")
               "b" 'switch-to-buffer
               "f" 'find-file  ; select file in current dir or create new one
               "/" 'consult-fd ; or `consult-find'
@@ -55,8 +53,7 @@
               "r" '("Recent files" . recentf-open)
               "w" 'write-file))
   "o" (cons "open"
-            (hel-keymap-set (or (keymap-lookup mode-specific-map "o")
-                                (make-sparse-keymap))
+            (hel-keymap-set (helheim-leader-prefix-map "o")
               "f" 'treemacs ; from future
               "i" 'imenu-list-smart-toggle))
   "p" (cons "project"
@@ -66,8 +63,7 @@
               "/"   'project-find-regexp
               "B"   'project-list-buffers))
   "t" (cons "toggle"
-            (hel-keymap-set (or (keymap-lookup mode-specific-map "t")
-                                (make-sparse-keymap))
+            (hel-keymap-set (helheim-leader-prefix-map "t")
               "w" '("Wrap lines" . +word-wrap-mode)
               "r" '("Read only" . read-only-mode) ;; "C-x C-q"
               "$" 'set-selective-display)) ;; "C-x $"
@@ -76,9 +72,7 @@
               "a" 'xref-find-apropos
               "r" 'query-replace
               "R" 'query-replace-regexp))
-  "v" (cons "version control"
-            (or (keymap-lookup mode-specific-map "v")
-                (make-sparse-keymap))))
+  "v" (cons "version control" (helheim-leader-prefix-map "v")))
 
 ;;; Customize
 
