@@ -153,5 +153,5 @@ Like `org-attach' but tuned for Emacs Helheim."
   (hel-extend-selection -1))
 
 ;;; .
-(provide 'helheim-org-lib '(lib))
+(provide 'helheim-org '(lib))
 ;;; helheim-org-lib.el ends here
