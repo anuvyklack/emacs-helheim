@@ -898,12 +898,48 @@ Use `delete-trailing-whitespace' command."
 ;;;; Which-Key
 
 (setup which-key
+  (:after-init which-key-mode)
   (:setopt which-key-lighter nil
-          which-key-idle-delay 1.5
-          which-key-idle-secondary-delay 0.25
-          which-key-add-column-padding 1
-          which-key-max-description-length 40)
-  (:after-init which-key-mode))
+           ;; Sorts by description to groups similar functions together.
+           which-key-sort-order 'which-key-description-order
+           which-key-idle-delay 1.5
+           which-key-idle-secondary-delay 0.25
+           which-key-add-column-padding 1
+           which-key-max-description-length 40
+           which-key-show-remaining-keys t
+           which-key-ellipsis "…")
+  (setopt which-key-replacement-alist
+          `(((nil . "which-key-show-next-page-no-cycle") . (nil . "wk next pg"))
+            ;; RET -> Enter
+            (("RET" . nil) . ("Enter" . nil))
+            ;; <left> -> left
+            ;; <C-m>  -> C-m
+            (("<\\([[:alnum:]-]+\\)>" . nil) . ("\\1" . nil))
+            ;; dired-jump   -> dired
+            ;; ibuffer-jump -> ibuffer
+            ((nil . "\\([[:alnum:]-]+\\)-jump") . (nil . "\\1"))
+            ;; ((nil . "copy-as-kill") . (nil . "copy"))
+            ;; Strip meaningless packages prefixes.
+            ,(cons `(nil . ,(rx line-start
+                                (or "consult-" "hel-" "helheim-" "elisp-"
+                                    "xref-" "my-")))
+                   '(nil . ""))
+            ;; Display embark specific commands literally...
+            ,(cons `(nil . ,(rx line-start
+                                (or "embark-act" "embark-dwim" "embark-become"
+                                    "embark-export" "embark-collect"
+                                    "embark-cycle" "embark-live")
+                                line-end))
+                   '(nil . nil))
+            ;; ... for other commands strip "embark-" prefix.
+            '((nil . "embark-") . (nil . "")))))
+
+(setup which-key-posframe
+  (:install t)
+  (:after which-key)
+  (:hook which-key-mode-hook which-key-posframe-mode)
+  (:setopt which-key-max-display-columns 1
+           which-key-posframe-poshandler '+posframe-poshandler-window-bottom-right-corner-with-padding))
 
 ;;; .
 (provide 'helheim-core)

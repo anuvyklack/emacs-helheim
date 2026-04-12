@@ -129,6 +129,21 @@ the unwritable tidbits."
         ((featurep 'helheim-lsp-mode)
          (lsp-deferred))))
 
+(defun +posframe-poshandler-window-bottom-right-corner-with-padding (info)
+  "Posframe's position handler.
+The structure of INFO can be found in docstring of `posframe-show'."
+  (let* ((window-left      (plist-get info :parent-window-left))
+         (window-top       (plist-get info :parent-window-top))
+         (window-width     (plist-get info :parent-window-width))
+         (window-height    (plist-get info :parent-window-height))
+         (posframe-width   (plist-get info :posframe-width))
+         (posframe-height  (plist-get info :posframe-height))
+         (mode-line-height (plist-get info :mode-line-height)))
+    (cons (- (+ window-left window-width)
+             posframe-width 20)
+          (- (+ window-top window-height)
+             mode-line-height posframe-height 20))))
+
 ;;; Leader maps
 
 (defun helheim-leader-prefix-map (&optional keys keymap)
