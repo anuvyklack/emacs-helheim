@@ -15,43 +15,59 @@
         "g N" 'org-previous-link
         "] l" 'org-next-link
         "[ l" 'org-previous-link
-        ","   (define-keymap
-                ","  'org-priority
-                "a" 'org-attach
-                "o" 'org-open-at-point)))
+        ;; <local-leader>
+        "," (define-keymap
+              "RET" 'org-ctrl-c-ret ;; also on "z RET"
+              "'"   'org-edit-special
+              ","   'org-priority
+              "/"   'org-sparse-tree
+              "#"   'org-update-statistics-cookies
+              "a"   'org-attach
+              "i"   (cons "insert" 'helheim-org-insert-map)
+              "l"   (cons "links" 'helheim-org-link-map)
+              "o"   'org-open-at-point
+              "p"   'yank-media
+              "t"   'org-todo)))
     ;; <leader>
     (:with-keymap (helheim-leader-map org-mode-map)
       (:unbind
-        "'"  ;; `org-edit-special' — moved to "z'"
-        ","  ;; `org-priority' — moved to "z,"
-        "/") ;; `org-sparse-tree' — moved to "z/"
+        "'"  ;; `org-edit-special' — moved to ,' and z'
+        ","  ;; `org-priority'     — moved to ,' and z,
+        "/") ;; `org-sparse-tree'  — moved to ,' and z/
       (:bind
-        "RET" 'dired-jump ;; rebind `org-ctrl-c-ret', which is also on "z RET"
-        "a"   'org-attach
-        "t i" 'org-toggle-inline-images
-        "t l" 'org-toggle-link-display
-        "t f" 'org-table-toggle-formula-debugger
-        "t o" 'org-table-toggle-coordinate-overlays
-        "i"   (cons "insert"
-                    (define-keymap
-                      "l" '("insert link" . org-insert-link)
-                      "m" 'yank-media
-                      "d" 'org-deadline
-                      "s" 'org-schedule
-                      "t" 'org-time-stamp
-                      "T" 'org-time-stamp-inactive
-                      "Q" 'org-set-tags-command))
-        "l"   (cons "links"
-                    (define-keymap
-                      "l" 'org-insert-link
-                      "i" 'org-insert-last-stored-link ;; "i" for insert
-                      "s" 'org-store-link
-                      "a" 'org-insert-all-links
-                      "m" 'yank-media))))))
+        "RET" 'dired-jump ;; rebind `org-ctrl-c-ret' which is moved to ", RET"
+        "a"  'org-attach
+        "i"  (cons "insert" 'helheim-org-insert-map)
+        "l"  (cons "links" 'helheim-org-link-map)
+        "t"  (cons "toggle"
+                   (define-keymap
+                     "i" '("Inline images" . org-toggle-inline-images)
+                     "l" '("Links display" . org-toggle-link-display)
+                     "f" '("Table formula debugger" . org-table-toggle-formula-debugger)
+                     "o" '("Table coordinate overlays" . org-table-toggle-coordinate-overlays)))))
+    ;; <leader> l or <local-leader> l
+    (defvar-keymap helheim-org-link-map
+      :prefix 'helheim-org-link-map
+      "l" '("Insert link" . org-insert-link)
+      "i" '("Insert last stored link" . org-insert-last-stored-link) ;; "i" for insert
+      "s" '("Store link" . org-store-link)
+      "a" '("Insert all links" . org-insert-all-links)
+      "u" '("Update id locations" . org-id-update-id-locations))
+    ;; <leader> i or <local-leader> i
+    (defvar-keymap helheim-org-insert-map
+      :prefix 'helheim-org-insert-map
+      "l" '("Link" . org-insert-link)
+      "m" 'yank-media
+      "d" '("Deadline" . org-deadline)
+      "s" '("Schedule" . org-schedule)
+      "t" '("Time stamp" . org-time-stamp)
+      "T" '("Time stamp inactive" . org-time-stamp-inactive)
+      "Q" '("Set tags" . org-set-tags-command))))
 
-(with-eval-after-load 'dired
-  (hel-keymap-set (helheim-leader-map dired-mode-map)
-    "a" 'org-attach-dired-to-subtree))
+(setup dired
+  (:after-load
+    (:with-keymap (helheim-leader-map dired-mode-map)
+      (:bind "a" 'org-attach-dired-to-subtree))))
 
 ;;; Config
 
