@@ -10,39 +10,40 @@
 
 (setup eglot
   (:with-keymap (helheim-leader-map)
-    (:bind "l" (cons "LSP" (helheim-leader-map "l"))))
-  (:with-keymap (helheim-leader-prefix-map "l")
-    (:bind "RET" 'eglot))
+    (:bind "l" (cons "LSP" (hel-keymap-set (helheim-leader-prefix-map "l")
+                             "RET" 'eglot))))
   (:after-load
     (:with-keymap eglot-mode-map
       (:bind :state 'normal
-        "K"        'eldoc-box-help-at-point
-        "M"        'eldoc-box-help-at-point
-        "g d"      '("Definition" . xref-find-definitions)
-        "g r"      '("References" . xref-find-references)
-        "g D"      '("Declaration" . eglot-find-declaration)
-        "g t"      '("Type definition" . eglot-find-typeDefinition)
-        "g i"      '("Implementations" . eglot-find-implementation)
-        "<f2>"     'eglot-rename
-        ;;
-        "C-c t h"  'eglot-inlay-hints-mode
-        "C-c t s"  'eglot-semantic-tokens-mode
-        ;;
-        "C-c l" (cons "LSP"
-                      (define-keymap
-                        "RET" '("LSP reconnect" . eglot-reconnect)
-                        "Q"   '("LSP shutdown" . eglot-shutdown)
-                        "r"   '("Rename" . eglot-rename)
-                        "f"   '("Format" . eglot-format)
-                        "="   '("Format" . eglot-format)
-                        "a"   '("Code actions" . eglot-code-actions)
-                        "o"   '("Organize imports" . eglot-code-action-organize-imports)
-                        "q"   '("Quickfix" . eglot-code-action-quickfix)
-                        "e"   '("Refactor Extract" . eglot-code-action-extract)
-                        "i"   '("Rewrite Inline" . eglot-code-action-inline)
-                        "R"   '("Refactor Rewrite" eglot-code-action-rewrite)
-                        "t"   '("Type hierarchy" . eglot-show-type-hierarchy)
-                        "c"   '("Call hierarchy" . eglot-show-call-hierarchy)))))))
+        "<f2>" 'eglot-rename
+        "K"    'eldoc-box-help-at-point
+        "M"    'eldoc-box-help-at-point
+        "g d"  '("Definition" . xref-find-definitions)
+        "g r"  '("References" . xref-find-references)
+        "g D"  '("Declaration" . eglot-find-declaration)
+        "g t"  '("Type definition" . eglot-find-typeDefinition)
+        "g i"  '("Implementations" . eglot-find-implementation)))
+    (:with-keymap (helheim-leader-map eglot-mode-map)
+      (:bind
+        "t" (cons "toggle"
+                  (define-keymap
+                    "h" 'eglot-inlay-hints-mode
+                    "s" 'eglot-semantic-tokens-mode))
+        "l" (cons "LSP"
+                  (define-keymap
+                    "RET" '("LSP reconnect" . eglot-reconnect)
+                    "Q"   '("LSP shutdown" . eglot-shutdown)
+                    "r"   '("Rename" . eglot-rename)
+                    "f"   '("Format" . eglot-format)
+                    "="   '("Format" . eglot-format)
+                    "a"   '("Code actions" . eglot-code-actions)
+                    "o"   '("Organize imports" . eglot-code-action-organize-imports)
+                    "q"   '("Quickfix" . eglot-code-action-quickfix)
+                    "e"   '("Refactor Extract" . eglot-code-action-extract)
+                    "i"   '("Rewrite Inline" . eglot-code-action-inline)
+                    "R"   '("Refactor Rewrite" eglot-code-action-rewrite)
+                    "t"   '("Type hierarchy" . eglot-show-type-hierarchy)
+                    "c"   '("Call hierarchy" . eglot-show-call-hierarchy)))))))
 
 (setup flymake
   (:after-load
@@ -69,6 +70,10 @@
   (:built-in)
   (:hook prog-mode-hook flymake-mode)
   (setopt flymake-mode-line-lighter nil))
+
+;; (setup flymake-popon
+;;   (:install t)
+;;   (:hook flymake-mode-hook flymake-popon-mode))
 
 (setup jsonrpc (:built-in))
 
