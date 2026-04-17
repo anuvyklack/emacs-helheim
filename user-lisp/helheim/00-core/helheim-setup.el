@@ -89,10 +89,9 @@
 
 (setup-define :require
   (lambda (feature)
-    (when (eq feature 't)
-      (setq feature (setup-get 'feature)))
-    `(or (require ',feature nil t)
-         ,(setup-quit)))
+    `(require ',(if (eq feature t)
+                    (setup-get 'feature)
+                  feature)))
   :repeatable t
   :documentation "Try to require FEATURE, or stop evaluating body.")
 
