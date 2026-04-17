@@ -55,9 +55,10 @@
   (blackout 'compile-angel-on-load-mode)
   (compile-angel-on-load-mode))
 
+(require 'helheim-lib)
+
 ;;; Dependencies
 
-(setup s       (:install t) (:require t))
 (setup pcre2el (:install t))
 (setup wgrep   (:install t))
 
@@ -120,7 +121,6 @@
       "Z Q" 'edit-indirect-abort)))
 
 (elpaca-wait)
-(require 'helheim-lib)
 
 ;;; UI
 ;;;; Misc

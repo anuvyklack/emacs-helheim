@@ -9,6 +9,7 @@
 (eval-when-compile (require 'cl-macs))
 (require 'dash)
 (require 'setup)
+(require 'helheim-lib)
 
 ;; Order matters: functions will be executed in the order they appear in list.
 (setq setup-modifier-list '(helheim-setup--with-eval-after-load

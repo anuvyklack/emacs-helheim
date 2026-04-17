@@ -1,0 +1,39 @@
+;;; helheim-browser.el -*- lexical-binding: t; no-byte-compile: t -*-
+
+(setup atomic-chrome
+  (:install atomic-chrome :host github :repo "KarimAziev/atomic-chrome")
+  (:blackout (atomic-chrome-edit-mode . " Browser"))
+  (:hook atomic-chrome-edit-mode-hook (lambda () (display-line-numbers-mode -1)))
+  (:defer
+    (:require t)
+    (atomic-chrome-start-server)
+    (:setopt atomic-chrome-extension-type-list '(atomic-chrome)
+             atomic-chrome-buffer-open-style 'frame
+             atomic-chrome-buffer-frame-width  80
+             atomic-chrome-buffer-frame-height 30
+             atomic-chrome-frame-parameters '((alpha-background . 95)
+                                              (fullscreen . nil))
+             atomic-chrome-auto-remove-file t
+             atomic-chrome-default-major-mode 'markdown-mode)
+    (:setopt atomic-chrome-url-major-mode-alist
+             '(("github.com" . gfm-mode)
+               ("us-east-2.console.aws.amazon.com" . yaml-ts-mode)
+               ("ramdajs.com" . js-ts-mode)
+               ("gitlab.com" . gfm-mode)
+               ("leetcode.com" . typescript-ts-mode)
+               ("typescriptlang.org" . typescript-ts-mode)
+               ("jsfiddle.net" . js-ts-mode)
+               ("w3schools.com" . js-ts-mode)))
+    (:with-keymap (helheim-leader-map atomic-chrome-edit-mode-map)
+      (:bind "SPC" 'atomic-chrome-close-current-buffer))
+    (:with-keymap (helheim-leader-prefix-map "t" atomic-chrome-edit-mode-map)
+      (:bind "s" '("Sync selection" . atomic-chrome-toggle-selection)))
+    (:with-keymap atomic-chrome-edit-mode-map
+      (:bind :state 'normal
+        "Z Z" 'atomic-chrome-close-current-buffer)
+      (:bind
+        [remap save-buffers-kill-terminal] 'atomic-chrome-close-current-buffer))))
+
+;;; .
+(provide 'helheim-browser)
+;;; helheim-browser.el ends here

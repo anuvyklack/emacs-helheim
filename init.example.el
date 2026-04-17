@@ -99,13 +99,14 @@
 
 ;;; Other modules
 
-(require 'helheim-dired)    ; File-manager
-(require 'helheim-embark)   ; Context-aware action menus
-(require 'helheim-ibuffer)  ; Buffers menu
-(require 'helheim-outline)  ; See "Outline Mode" in Emacs manual
-(require 'helheim-tab-bar)  ; Each tab represents a set of windows, as in Vim
-(require 'helheim-whisper)  ; Speech to text conversion
-; (require 'helheim-vterm)    ; Terminal emulator. Needs shell side configuration!
+(require 'helheim-browser) ; Synchronize online text editor with Emacs buffer
+(require 'helheim-dired)   ; File-manager
+(require 'helheim-embark)  ; Context-aware action menus
+(require 'helheim-ibuffer) ; Buffers menu
+(require 'helheim-outline) ; See "Outline Mode" in Emacs manual
+(require 'helheim-tab-bar) ; Each tab represents a set of windows, as in Vim
+(require 'helheim-whisper) ; Speech to text conversion
+; (require 'helheim-vterm) ; Terminal emulator. Requires shell-side configuration!
 ; (require 'helheim-edit-indirect) ; Alternative "zn" binding
 
 ;;; Org mode

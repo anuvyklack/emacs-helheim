@@ -22,6 +22,7 @@
   (load bootstrap-file nil t))
 
 (straight-use-package 'dash)
+(straight-use-package 's)
 (straight-use-package 'setup)
 (straight-use-package 'blackout)
 

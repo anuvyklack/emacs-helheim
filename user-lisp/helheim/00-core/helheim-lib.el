@@ -3,7 +3,6 @@
 
 (eval-when-compile (require 'cl-macs))
 (require 'dash)
-(require 's)
 
 ;;; Customize color themes
 ;;
