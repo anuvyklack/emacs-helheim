@@ -114,6 +114,51 @@
   :indent 0
   :documentation "Evaluate BODY after the current feature has been loaded.")
 
+;;; :defer
+
+(defvar helheim-initial-deferred-task-timeout (if (daemonp) 0 2.0)
+  "Number of seconds Emacs will wait until starts executing deferred tasks.
+Set this to nil to disable delayed loading at startup.
+Set this to 0 to load all deferred packages immediately at `after-init-hook'.")
+
+(defvar helheim-deferred-task-timeout 0.75
+  "Number of seconds Emacs should idle untill eval next delayed function.")
+
+(defvar helheim-deferred-tasks nil)
+
+(defsubst helheim-defer (task)
+  (declare (indent 0))
+  (push task helheim-deferred-tasks))
+
+(setup-define :defer
+  (lambda (&rest body)
+    `(helheim-defer (lambda () ,@body)))
+  :debug '(setup)
+  :indent 0
+  :documentation
+  "Evaluate BODY when Emacs is idle for DELAY seconds after startup.")
+
+(add-hook 'emacs-startup-hook 'helheim-schedule-deferred-tasks 99)
+
+(defun helheim-schedule-deferred-tasks ()
+  (when helheim-deferred-tasks
+    (run-with-idle-timer helheim-initial-deferred-task-timeout nil
+                         'helheim--eval-deferred-tasks
+                         (reverse helheim-deferred-tasks))
+    (unless debug-on-error
+      (setq helheim-deferred-tasks nil))))
+
+(defun helheim--eval-deferred-tasks (tasks)
+  (when tasks
+    (condition-case-unless-debug e
+        (let ((gc-cons-threshold most-positive-fixnum))
+          (funcall (car tasks)))
+      (error
+       (message "Error in deferred task: %s" e)))
+    (when (cdr tasks)
+      (run-with-idle-timer helheim-deferred-task-timeout nil
+                           'helheim--eval-deferred-tasks (cdr tasks)))))
+
 ;;; :after
 
 (setup-define :after
