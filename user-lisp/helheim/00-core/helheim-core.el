@@ -289,7 +289,8 @@ Use `delete-trailing-whitespace' command."
 
 ;; Enables faster scrolling. This may result in brief periods of inaccurate
 ;; syntax highlighting, which should quickly self-correct.
-(setq fast-but-imprecise-scrolling t)
+(setq fast-but-imprecise-scrolling t
+      redisplay-skip-fontification-on-input t)
 
 ;; Keep screen position if scroll command moved it vertically out of the window.
 (setq scroll-preserve-screen-position t)
