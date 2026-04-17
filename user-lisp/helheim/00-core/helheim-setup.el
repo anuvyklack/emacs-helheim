@@ -22,7 +22,15 @@
                   :if-package :if-feature :only-if :file-match :when-loaded))
   (assq-delete-all macro setup-macros))
 
-;;; package manager
+;;; utils
+
+(defsubst helheim-setup-unprogn (body)
+  "`macroexp-unprogn' BODY and delete all `nil' items from it."
+  (->> (macroexp-unprogn body)
+       (delete (list nil))
+       (delq nil)))
+
+;;; package managers
 ;;;; :install
 
 (setup-define :install
@@ -55,7 +63,7 @@
   (if-let* ((recipe (alist-get 'straight setup-attributes)))
       `(progn
          (straight-use-package ',recipe)
-         ,@(macroexp-unprogn body))
+         ,@(helheim-setup-unprogn body))
     body))
 
 ;;;; :elpaca
@@ -74,7 +82,7 @@
 
 (defun helheim-setup--install-with-elpaca (body _feature)
   (if-let* ((recipe (alist-get 'elpaca setup-attributes)))
-      `(elpaca ',recipe ,@(macroexp-unprogn body))
+      `(elpaca ',recipe ,@(helheim-setup-unprogn body))
     body))
 
 ;;; :require
@@ -120,7 +128,7 @@
   "Wrap BODY in `with-eval-after-load' form."
   (dolist (feature (nreverse (alist-get 'after setup-attributes)))
     (setq body `(with-eval-after-load ',feature
-                  ,@(macroexp-unprogn body))))
+                  ,@(helheim-setup-unprogn body))))
   body)
 
 ;;; :hook
