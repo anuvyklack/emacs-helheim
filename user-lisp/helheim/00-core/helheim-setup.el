@@ -334,19 +334,19 @@ a symbol or list of symbols.")
 ;;; :blackout
 
 (setup-define :blackout
-  (lambda (&rest modes)
-    (or modes (setq modes '(t)))
+  (lambda (&rest args)
+    (or args (setq args '(t)))
     `(with-eval-after-load ',(setup-get 'feature)
-       ,@(cl-loop for mode in modes
-                  collect (pcase mode
+       ,@(cl-loop for arg in args
+                  collect (pcase arg
                             ('t
                              `(blackout ',(setup-get 'mode)))
                             ((and (pred symbolp) mode)
                              `(blackout ',mode ))
                             ((and (pred stringp) replacement)
-                             `(blackout ',(setup-get 'mode) replacement))
+                             `(blackout ',(setup-get 'mode) ,replacement))
                             (`(,mode . ,replacement)
-                             `(blackout ',mode replacement))))))
+                             `(blackout ',mode ,replacement))))))
   :documentation
   "Do not display MODE in the mode line.
 
