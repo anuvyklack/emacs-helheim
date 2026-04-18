@@ -3,33 +3,32 @@
 
 (setup consult
   (:install t)
-  (setopt consult-line-start-from-top t
-          consult-narrow-key "<"
-          consult-fd-args `(,(if (executable-find "fdfind" 'remote) "fdfind" "fd")
-                            "--color=never"
-                            ;; https://github.com/sharkdp/fd/issues/839
-                            "--full-path --absolute-path"
-                            "--hidden --exclude .git")
-          ;; Aggressive asynchronous that yield instantaneous results (suitable
-          ;; for high-performance systems).
-          ;; Note: The author of Consult, does not recommend aggressive values.
-          ;; Read: https://github.com/minad/consult/discussions/951
-          ;;
-          ;; However, the author of minimal-emacs.d uses following parameters to
-          ;; achieve immediate feedback from Consult.
-          ;; consult-async-input-debounce 0.02
-          ;; consult-async-input-throttle 0.05
-          ;; consult-async-refresh-delay  0.02
-          consult-async-input-throttle 0.2
-          consult-async-input-debounce 0.1
-          consult-async-refresh-delay  0.15)
-  (with-eval-after-load 'xref
-    (setopt xref-show-xrefs-function #'consult-xref
-            xref-show-definitions-function #'consult-xref))
+  (:setopt consult-line-start-from-top t
+           consult-narrow-key "<"
+           consult-fd-args `(,(if (executable-find "fdfind" 'remote) "fdfind" "fd")
+                             "--color=never"
+                             ;; https://github.com/sharkdp/fd/issues/839
+                             "--full-path --absolute-path"
+                             "--hidden --exclude .git")
+           ;; Aggressive asynchronous that yield instantaneous results (suitable
+           ;; for high-performance systems).
+           ;; Note: The author of Consult, does not recommend aggressive values.
+           ;; Read: https://github.com/minad/consult/discussions/951
+           ;;
+           ;; However, the author of minimal-emacs.d uses following parameters to
+           ;; achieve immediate feedback from Consult.
+           ;; consult-async-input-debounce 0.02
+           ;; consult-async-input-throttle 0.05
+           ;; consult-async-refresh-delay  0.02
+           consult-async-input-throttle 0.2
+           consult-async-input-debounce 0.1
+           consult-async-refresh-delay  0.15)
+  (setopt xref-show-xrefs-function #'consult-xref
+          xref-show-definitions-function #'consult-xref)
   (:after-load
     ;; Configure the register formatting and preview. This improves the register.
-    (setq register-preview-delay 0.5
-          register-preview-function #'consult-register-format)
+    (:setopt register-preview-delay 0.5
+             register-preview-function #'consult-register-format)
     (advice-add 'register-preview :override #'consult-register-window)
     ;;
     (consult-customize consult-ripgrep consult-git-grep consult-grep

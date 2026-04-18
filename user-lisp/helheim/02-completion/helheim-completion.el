@@ -30,40 +30,40 @@
 
 (setup orderless
   (:install t)
-  (setopt completion-styles '(orderless basic)
-          ;; completion-styles '(orderless partial-completion basic)
-          completion-category-defaults nil
-          completion-category-overrides '((file (styles orderless partial-completion)))
-          completion-pcm-leading-wildcard t ;; Emacs 31
-          orderless-matching-styles '(orderless-literal
-                                      orderless-regexp
-                                      ;; orderless-flex
-                                      )
-          orderless-component-separator #'orderless-escapable-split-on-space))
+  (:setopt completion-styles '(orderless basic)
+           ;; completion-styles '(orderless partial-completion basic)
+           completion-category-defaults nil
+           completion-category-overrides '((file (styles orderless partial-completion)))
+           completion-pcm-leading-wildcard t ;; Emacs 31
+           orderless-matching-styles '(orderless-literal
+                                       orderless-regexp
+                                       ;; orderless-flex
+                                       )
+           orderless-component-separator #'orderless-escapable-split-on-space))
 
 (setup corfu
   (:install t)
-  (setopt tab-always-indent 'complete
-          tab-first-completion 'word
-          ;; Disable Ispell completion function. As an alternative try `cape-dict'.
-          text-mode-ispell-word-completion nil)
-  (setopt global-corfu-minibuffer t
-          corfu-auto t
-          corfu-auto-delay 0.24
-          corfu-auto-prefix 2
-          corfu-cycle t
-          corfu-count 16
-          corfu-max-width 120
-          corfu-quit-at-boundary 'separator ;; M-SPC to continue completion.
-          corfu-quit-no-match 'separator
-          ;; When the completion popup is visible, by default the current
-          ;; candidate is previewed into the buffer, and further input commits
-          ;; that candidate as previewed. The feature is in line with other
-          ;; common editors.
-          ;;   - t :: non-inserting preview
-          corfu-preview-current 'insert
-          corfu-preselect 'prompt
-          corfu-on-exact-match nil) ;; Handling of exact matches.
+  (:setopt tab-always-indent 'complete
+           tab-first-completion 'word
+           ;; Disable Ispell completion function. As an alternative try `cape-dict'.
+           text-mode-ispell-word-completion nil)
+  (:setopt global-corfu-minibuffer t
+           corfu-auto t
+           corfu-auto-delay 0.24
+           corfu-auto-prefix 2
+           corfu-cycle t
+           corfu-count 16
+           corfu-max-width 120
+           corfu-quit-at-boundary 'separator ;; M-SPC to continue completion.
+           corfu-quit-no-match 'separator
+           ;; When the completion popup is visible, by default the current
+           ;; candidate is previewed into the buffer, and further input commits
+           ;; that candidate as previewed. The feature is in line with other
+           ;; common editors.
+           ;;   - t :: non-inserting preview
+           corfu-preview-current 'insert
+           corfu-preselect 'prompt
+           corfu-on-exact-match nil) ;; Handling of exact matches.
   (global-corfu-mode))
 
 (setup corfu-history
@@ -72,7 +72,7 @@
 
 (setup corfu-popupinfo
   (:hook global-corfu-mode-hook corfu-popupinfo-mode)
-  (setopt corfu-popupinfo-delay '(0.8 . 0.5))
+  (:setopt corfu-popupinfo-delay '(0.8 . 0.5))
   (:after-load
     (:with-keymap corfu-popupinfo-map
       (:bind "C-<i>" 'corfu-popupinfo-toggle))))

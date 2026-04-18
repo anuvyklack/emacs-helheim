@@ -47,10 +47,10 @@
   (:install t)
   (:after-init vertico-mode)
   (:hook minibuffer-setup-hook vertico-repeat-save)
-  (setopt vertico-resize 'grow-only ;; Grow and shrink the Vertico minibuffer
-          vertico-count 15  ;; How many candidates to show
-          vertico-scroll-margin 2
-          vertico-cycle nil)
+  (:setopt vertico-resize 'grow-only ;; Grow and shrink the Vertico minibuffer
+           vertico-count 15  ;; How many candidates to show
+           vertico-scroll-margin 2
+           vertico-cycle nil)
   ;; Prompt indicator for `completing-read-multiple'.
   (when (< emacs-major-version 31)
     (advice-add #'completing-read-multiple :filter-args
@@ -77,8 +77,8 @@
   (:install t)
   (:after marginalia)
   ;; Icons make no sense when they are all the same and only add distraction.
-  (setopt nerd-icons-completion-category-icons nil
-          nerd-icons-completion-icon-size 0.95)
+  (:setopt nerd-icons-completion-category-icons nil
+           nerd-icons-completion-icon-size 0.95)
   (:hook marginalia-mode-hook nerd-icons-completion-marginalia-setup)
   (nerd-icons-completion-mode))
 

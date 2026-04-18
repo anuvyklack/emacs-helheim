@@ -73,7 +73,7 @@
 
 (setup org-mem
   (:install t)
-  (setopt org-mem-do-sync-with-org-id t)
+  (:setopt org-mem-do-sync-with-org-id t)
   (:after-init org-mem-updater-mode)
   (:require t)
   (unless org-mem-watch-dirs
@@ -83,14 +83,14 @@
   (:install t)
   (:require t)
   (:after-init org-node-cache-mode)
-  (setopt org-node-prefer-with-heading t
-          org-node-creation-fn #'org-node-new-file
-          org-node-file-slug-fn #'org-node-slugify-for-web
-          org-node-file-timestamp-format (concat helheim-id-format "--") ;; Denote format
-          org-node-blank-input-hint nil
-          org-node-alter-candidates t
-          org-node-affixation-fn 'helheim-org-node-append-tags
-          org-node-filter-fn 'helheim-org-node-filter-p)
+  (:setopt org-node-prefer-with-heading t
+           org-node-creation-fn #'org-node-new-file
+           org-node-file-slug-fn #'org-node-slugify-for-web
+           org-node-file-timestamp-format (concat helheim-id-format "--") ;; Denote format
+           org-node-blank-input-hint nil
+           org-node-alter-candidates t
+           org-node-affixation-fn 'helheim-org-node-append-tags
+           org-node-filter-fn 'helheim-org-node-filter-p)
   ;; We have this information in ID.
   (remove-hook 'org-node-creation-hook #'org-node-ensure-crtime-property)
   ;; Open backlinks buffer in another window.
@@ -107,27 +107,27 @@
 ;;   (:after org-node)
 ;;   (:after-init org-node-seq-mode)
 ;;   (:require t)
-;;   (setopt org-node-seq-defs
-;;           (list
-;;            ;; My day-notes, a.k.a. journal/diary.  Currently I still
-;;            ;; structure them like org-roam-dailies expects: confined to a
-;;            ;; subdirectory, with filenames such as "2024-11-18.org".
-;;            ;; This is actually a sequence of files, not sequence of ID-nodes.
-;;            (org-node-seq-def-on-filepath-sort-by-basename
-;;             "d" "Dailies" helheimg-org-daily-directory))))
+;;   (:setopt org-node-seq-defs
+;;            (list
+;;             ;; My day-notes, a.k.a. journal/diary.  Currently I still
+;;             ;; structure them like org-roam-dailies expects: confined to a
+;;             ;; subdirectory, with filenames such as "2024-11-18.org".
+;;             ;; This is actually a sequence of files, not sequence of ID-nodes.
+;;             (org-node-seq-def-on-filepath-sort-by-basename
+;;              "d" "Dailies" helheimg-org-daily-directory))))
 
 ;;;; Backlinks drawers
 
 (setup org-node-backlink
-  (setopt org-node-backlink-do-drawers t
-          org-node-backlink-drawer-formatter 'helheim-org-node-backlink-format)
+  (:setopt org-node-backlink-do-drawers t
+           org-node-backlink-drawer-formatter 'helheim-org-node-backlink-format)
   (:after-init org-node-backlink-mode))
 
 ;;;; Backlinks buffer
 
 (setup org-node-context
   (:after org-node)
-  (setopt org-node-context-collapse-more-than 1) ;; Start in collapsed state.
+  (:setopt org-node-context-collapse-more-than 1) ;; Start in collapsed state.
   (add-hook 'org-node-context-postprocess-hook
             'helheim-org-node-context--add-empty-line-at-eob
             95))

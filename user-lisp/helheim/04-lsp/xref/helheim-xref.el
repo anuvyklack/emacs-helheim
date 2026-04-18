@@ -3,17 +3,15 @@
 (setup xref
   ;; (:install t)
   (:built-in)
-  (setopt xref-search-program 'ripgrep ;; or 'ugrep
-          xref-auto-jump-to-first-definition 'show
-          xref-prompt-for-identifier nil
-          xref-history-storage #'xref-window-local-history
-          ;; ;; Enable completion in the minibuffer instead of the definitions
-          ;; ;; buffer. You can use `embark-export' to export minibuffer content
-          ;; ;; to xref buffer.
-          ;; xref-show-xrefs-function #'xref-show-definitions-completing-read
-          ;; xref-show-definitions-function #'xref-show-definitions-completing-read
-          ;; ;; xref-show-definitions-function #'xref-show-definitions-buffer-at-bottom
-          )
+  (:setopt xref-search-program 'ripgrep ;; or 'ugrep
+           xref-auto-jump-to-first-definition 'show
+           xref-prompt-for-identifier nil
+           xref-history-storage #'xref-window-local-history
+           ;; Enable completion in the minibuffer instead of the definitions
+           ;; buffer. Use `embark-export' to export minibuffer content to xref
+           ;; buffer.
+           xref-show-xrefs-function #'xref-show-definitions-completing-read
+           xref-show-definitions-function #'xref-show-definitions-completing-read)
   (:global-bind
     ;; Make Xref try all backends untill first one succeed
     [remap xref-find-references]  'helheim-xref-find-references

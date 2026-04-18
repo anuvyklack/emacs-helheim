@@ -44,19 +44,19 @@
 ;;; Config
 
 (setup tab-bar
-  (setopt tab-bar-format '(tab-bar-format-history
-                           tab-bar-format-tabs-groups
-                           tab-bar-separator
-                           tab-bar-format-add-tab
-                           tab-bar-format-align-right
-                           tab-bar-format-global)
-          ;; tab-bar-new-tab-choice "*dashboard*" ;; Buffer to show in new tab.
-          tab-bar-tab-hints nil ;; Show tab numbers.
-          tab-bar-close-button-show nil
-          ;; - 1 -- Hide tab bar if only 1 tabs open.
-          ;; - t -- Always show tab bar.
-          tab-bar-show t
-          tab-bar-history-limit 20)
+  (:setopt tab-bar-format '(tab-bar-format-history
+                            tab-bar-format-tabs-groups
+                            tab-bar-separator
+                            tab-bar-format-add-tab
+                            tab-bar-format-align-right
+                            tab-bar-format-global)
+           ;; tab-bar-new-tab-choice "*dashboard*" ;; Buffer to show in new tab.
+           tab-bar-tab-hints nil ;; Show tab numbers.
+           tab-bar-close-button-show nil
+           ;; - 1 -- Hide tab bar if only 1 tabs open.
+           ;; - t -- Always show tab bar.
+           tab-bar-show t
+           tab-bar-history-limit 20)
   (tab-bar-mode)
   (tab-bar-history-mode))
 

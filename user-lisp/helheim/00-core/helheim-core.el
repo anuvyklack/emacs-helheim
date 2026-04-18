@@ -48,7 +48,7 @@
 (setup compile-angel
   (:install t)
   (:require t)
-  (setopt compile-angel-verbose t)
+  (:setopt compile-angel-verbose t)
   (cl-callf nconc compile-angel-excluded-files
     '("/init.el"
       "/custom.el"))
@@ -63,13 +63,13 @@
 
 (setup avy
   (:install t)
-  (setopt avy-keys (number-sequence ?a ?z) ;; Any lower-case letter a-z.
-          avy-style 'at-full
-          avy-all-windows nil
-          avy-all-windows-alt t
-          avy-background t
-          ;; the unpredictability of this (when enabled) makes it a poor default
-          avy-single-candidate-jump t))
+  (:setopt avy-keys (number-sequence ?a ?z) ;; Any lower-case letter a-z.
+           avy-style 'at-full
+           avy-all-windows nil
+           avy-all-windows-alt t
+           avy-background t
+           ;; the unpredictability of this (when enabled) makes it a poor default
+           avy-single-candidate-jump t))
 
 (setup hel
   (:install hel :host github :repo "anuvyklack/hel"
@@ -78,23 +78,23 @@
 
 (setup transient
   (:install t)
-  (setopt transient-common-command-prefix "SPC"
-          ;; Pop up transient windows at the bottom of the current window
-          ;; instead of entire frame. This is more ergonomic for users with
-          ;; large displays or many splits.
-          transient-display-buffer-action '(display-buffer-below-selected
-                                            (dedicated . t)
-                                            (inhibit-same-window . t))
-          transient-show-during-minibuffer-read t
-          ;; transient-default-level 5
-          )
+  (:setopt transient-common-command-prefix "SPC"
+           ;; Pop up transient windows at the bottom of the current window
+           ;; instead of entire frame. This is more ergonomic for users with
+           ;; large displays or many splits.
+           transient-display-buffer-action '(display-buffer-below-selected
+                                             (dedicated . t)
+                                             (inhibit-same-window . t))
+           transient-show-during-minibuffer-read t
+           ;; transient-default-level 5
+           )
   (:after-load
     ;; Close transient menus with ESC.
     (keymap-set transient-map "<escape>" #'transient-quit-one)))
 
 (setup nerd-icons
   (:install t)
-  (setopt nerd-icons-scale-factor 0.95)
+  (:setopt nerd-icons-scale-factor 0.95)
   (:after-load
     ;; Add some icons
     (-each '((fundamental-mode nerd-icons-faicon "nf-fa-file_o" :face nerd-icons-dsilver)
@@ -189,7 +189,7 @@ The predicate is passed as argument to `buffer-match-p', which see."
               #'helheim-global-hl-line-highlight-a))
 
 (setup hl-line
-  (setopt global-hl-line-sticky-flag 'window ;; Emacs 31
+  (:setopt global-hl-line-sticky-flag 'window ;; Emacs 31
           ;; I want current line highlighting only in special modes that are in
           ;; Hel motion state, and temporary disable it when region is active.
           ;; In text editing modes disable it, because it interferes with Hel
@@ -209,13 +209,13 @@ The predicate is passed as argument to `buffer-match-p', which see."
 
 (setup display-line-numbers
   (:hook (prog-mode-hook conf-mode-hook text-mode-hook))
-  (setopt display-line-numbers-width 3
-          display-line-numbers-type t
-          display-line-numbers-width-start t
-          display-line-numbers-grow-only t
-          ;; Show absolute line numbers for narrowed regions to make it easier
-          ;; to tell the buffer is narrowed, and where you are, exactly.
-          display-line-numbers-widen t))
+  (:setopt display-line-numbers-width 3
+           display-line-numbers-type t
+           display-line-numbers-width-start t
+           display-line-numbers-grow-only t
+           ;; Show absolute line numbers for narrowed regions to make it easier
+           ;; to tell the buffer is narrowed, and where you are, exactly.
+           display-line-numbers-widen t))
 
 ;;;; Fill-Column indicator
 
@@ -327,11 +327,11 @@ Use `delete-trailing-whitespace' command."
 
 ;; `hel-scrolling' is based on `pixel-scroll' and uses its settings
 (setup pixel-scroll
-  (setopt pixel-scroll-precision-large-scroll-height 20.0
-          ;; The duration of smooth scrolling.
-          pixel-scroll-precision-interpolation-total-time 0.3
-          ;; Enable smooth scrolling with PageDown and PageUp keys
-          pixel-scroll-precision-interpolate-page t)
+  (:setopt pixel-scroll-precision-large-scroll-height 20.0
+           ;; The duration of smooth scrolling.
+           pixel-scroll-precision-interpolation-total-time 0.3
+           ;; Enable smooth scrolling with PageDown and PageUp keys
+           pixel-scroll-precision-interpolate-page t)
   (:global-bind
     [remap scroll-up-command]   'pixel-scroll-interpolate-down
     [remap scroll-down-command] 'pixel-scroll-interpolate-up))
@@ -341,8 +341,8 @@ Use `delete-trailing-whitespace' command."
 (setup ultra-scroll
   (:install ultra-scroll :host github :repo "jdtsmith/ultra-scroll")
   (:after-init ultra-scroll-mode)
-  (setopt mouse-wheel-tilt-scroll t ; Scroll horizontally with mouse side wheel.
-          mouse-wheel-progressive-speed nil))
+  (:setopt mouse-wheel-tilt-scroll t ; Scroll horizontally with mouse side wheel.
+           mouse-wheel-progressive-speed nil))
 
 ;;; Text editing
 ;;;; Misc
@@ -479,7 +479,7 @@ Use `delete-trailing-whitespace' command."
 (setup treesit
   (:when (treesit-available-p))
   (:hook emacs-startup-hook helheim-install-missing-treesit-grammars)
-  (setopt treesit-font-lock-level 4)
+  (:setopt treesit-font-lock-level 4)
   ;; BUG: Emacs provides this setting in yaml-ts-mode.el, but it only works
   ;;   after the package is loaded, defeating autoloading. So, we duplicate
   ;;   them here.
@@ -531,9 +531,9 @@ Use `delete-trailing-whitespace' command."
 ;;;; Custom
 
 (setup custom
-  (setopt custom-file (expand-file-name "custom.el" helheim-root-directory)
-          custom-theme-directory (expand-file-name "themes/" helheim-root-directory)
-          custom-buffer-done-kill t)
+  (:setopt custom-file (expand-file-name "custom.el" helheim-root-directory)
+           custom-theme-directory (expand-file-name "themes/" helheim-root-directory)
+           custom-buffer-done-kill t)
   (:after-init
     (load custom-file t t)))
 
@@ -543,10 +543,10 @@ Use `delete-trailing-whitespace' command."
 (setq apropos-do-all t)
 
 (setup help
-  (setopt help-enable-autoload nil
-          help-enable-completion-autoload nil
-          help-enable-symbol-autoload nil
-          help-window-select t) ;; Focus new help windows on open.
+  (:setopt help-enable-autoload nil
+           help-enable-completion-autoload nil
+           help-enable-symbol-autoload nil
+           help-window-select t) ;; Focus new help windows on open.
   (:after-load
     (:with-keymap help-map
       (:unbind
@@ -590,13 +590,13 @@ Use `delete-trailing-whitespace' command."
 
 (setup savehist
   (:require t)
-  (setopt history-length 300
-          savehist-additional-variables '(kill-ring
-                                          mark-ring
-                                          global-mark-ring
-                                          register-alist
-                                          search-ring
-                                          regexp-search-ring))
+  (:setopt history-length 300
+           savehist-additional-variables '(kill-ring
+                                           mark-ring
+                                           global-mark-ring
+                                           register-alist
+                                           search-ring
+                                           regexp-search-ring))
   (:hook savehist-save-hook (helheim-savehist-unpropertize-variables-h
                              helheim-savehist-remove-unprintable-registers-h))
   (:after-init savehist-mode))
@@ -704,26 +704,27 @@ Use `delete-trailing-whitespace' command."
 ;; its file on disk is deleted or renamed.
 (setup autorevert
   (:after-init global-auto-revert-mode)
-  (setopt auto-revert-stop-on-user-input nil
-          auto-revert-verbose t ; let us know when it happens
-          auto-revert-use-notify nil
-          auto-revert-stop-on-user-input nil
-          ;; Only prompts for confirmation when buffer is unsaved.
-          revert-without-query '(".")
-          global-auto-revert-non-file-buffers t ; e.g, Dired
-          global-auto-revert-ignore-modes '(ibuffer-mode ; has its own `ibuffer-auto-mode'
-                                            Buffer-menu-mode)))
+  (:setopt auto-revert-stop-on-user-input nil
+           auto-revert-verbose t ; let us know when it happens
+           auto-revert-use-notify nil
+           auto-revert-stop-on-user-input nil
+           ;; Only prompts for confirmation when buffer is unsaved.
+           revert-without-query '(".")
+           global-auto-revert-non-file-buffers t ; e.g, Dired
+           global-auto-revert-ignore-modes '(ibuffer-mode ; has its own `ibuffer-auto-mode'
+                                             Buffer-menu-mode)))
 
 ;;;;; Keep track of recently opened files and places in them
 
 ;; Keep track of opened files.
 (setup recentf
-  (setopt recentf-max-saved-items 300 ; default is 20
-          ;; Auto clean up recent files only in long-running daemon sessions,
-          ;; else do it on quiting Emacs.
-          recentf-auto-cleanup (if (daemonp) 300))
-  (:after-init (let ((inhibit-message t))
-                 (recentf-mode 1)))
+  (:setopt recentf-max-saved-items 300 ; default is 20
+           ;; Auto clean up recent files only in long-running daemon sessions,
+           ;; else do it on quiting Emacs.
+           recentf-auto-cleanup (if (daemonp) 300))
+  (:after-init
+    (let ((inhibit-message t))
+      (recentf-mode 1)))
   (:after-load
     (:hook kill-emacs-hook recentf-cleanup)
     ;; Don't remember files in runtime folders.
@@ -736,7 +737,7 @@ Use `delete-trailing-whitespace' command."
 
 ;; Save the last location within a file upon reopening.
 (setup saveplace
-  (setopt save-place-limit 600)
+  (:setopt save-place-limit 600)
   (:after-init save-place-mode)
   ;; :config
   ;; (setq save-place-file (locate-user-emacs-file "saveplace"))
@@ -763,7 +764,8 @@ Use `delete-trailing-whitespace' command."
 
 ;;;; Calendar
 
-(setopt calendar-week-start-day 1) ;; Monday
+(setup calendar
+  (:setopt calendar-week-start-day 1)) ;; Monday
 
 (add-to-list 'display-buffer-alist
              '((major-mode . calendar-mode)
@@ -790,17 +792,17 @@ Use `delete-trailing-whitespace' command."
   (:global-bind
     [remap dabbrev-expand] 'hippie-expand)
   (:after-load
-    (setopt hippie-expand-try-functions-list
-            '( try-expand-dabbrev
-               try-expand-dabbrev-all-buffers
-               try-expand-dabbrev-from-kill
-               try-complete-file-name-partially
-               try-complete-file-name
-               try-expand-all-abbrevs
-               try-expand-list
-               try-expand-line
-               try-complete-lisp-symbol-partially
-               try-complete-lisp-symbol))))
+    (:setopt hippie-expand-try-functions-list
+             '( try-expand-dabbrev
+                try-expand-dabbrev-all-buffers
+                try-expand-dabbrev-from-kill
+                try-complete-file-name-partially
+                try-complete-file-name
+                try-expand-all-abbrevs
+                try-expand-list
+                try-expand-line
+                try-complete-lisp-symbol-partially
+                try-complete-lisp-symbol))))
 
 ;;;; Comint (general command interpreter in a window)
 
@@ -826,7 +828,7 @@ Use `delete-trailing-whitespace' command."
 
 (setup eldoc
   (:blackout t)
-  (setopt eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly))
+  (:setopt eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly))
 ;; eldoc-documentation-functions
 
 ;;;; image-mode
@@ -850,33 +852,34 @@ Use `delete-trailing-whitespace' command."
 (setup project
   ;; (:install t)
   (:built-in)
-  (setopt project-vc-extra-root-markers '(".project")
-          project-vc-merge-submodules nil
-          project-kill-buffers-display-buffer-list t
-          ;; project-mode-line t
-          project-switch-commands '((project-dired "Dired")
-                                    (project-find-file "Find file")
-                                    ;; (project-find-regexp "Find regexp")
-                                    (project-find-dir "Find directory")
-                                    (project-vc-dir "VC-Dir")
-                                    (project-eshell "Eshell")
-                                    (project-any-command "Other"))))
+  (:setopt project-vc-extra-root-markers '(".project")
+           project-vc-merge-submodules nil
+           project-kill-buffers-display-buffer-list t
+           ;; project-mode-line t
+           project-switch-commands '((project-dired "Dired")
+                                     (project-find-file "Find file")
+                                     ;; (project-find-regexp "Find regexp")
+                                     (project-find-dir "Find directory")
+                                     (project-vc-dir "VC-Dir")
+                                     (project-eshell "Eshell")
+                                     (project-any-command "Other"))))
 
 ;;;; Version Control
 
-(setopt vc-git-print-log-follow t
-        ;; Do not backup version controlled files.
-        vc-make-backup-files nil
-        ;; Faster algorithm for diffing.
-        vc-git-diff-switches '("--histogram")
-        ;; Remove RCS, CVS, SCCS, and Bzr, because it's a lot less work for vc
-        ;; to check them all (especially in TRAMP buffers), and who uses any of
-        ;; these?
-        vc-handled-backends '(Git Hg SVN SRC)
-        ;; PERF: Ignore node_modules (expensive for vc ops to index).
-        vc-ignore-dir-regexp (format "%s\\|%s"
-                                     locate-dominating-stop-dir-regexp
-                                     "[/\\\\]node_modules"))
+(setup vc
+  (:setopt vc-git-print-log-follow t
+           ;; Do not backup version controlled files.
+           vc-make-backup-files nil
+           ;; Faster algorithm for diffing.
+           vc-git-diff-switches '("--histogram")
+           ;; Remove RCS, CVS, SCCS, and Bzr, because it's a lot less work for vc
+           ;; to check them all (especially in TRAMP buffers), and who uses any of
+           ;; these?
+           vc-handled-backends '(Git Hg SVN SRC)
+           ;; PERF: Ignore node_modules (expensive for vc ops to index).
+           vc-ignore-dir-regexp (format "%s\\|%s"
+                                        locate-dominating-stop-dir-regexp
+                                        "[/\\\\]node_modules")))
 
 (with-eval-after-load 'vc-annotate
   (keymap-set vc-annotate-mode-map "<remap> <quit-window>" #'kill-current-buffer))
@@ -889,7 +892,7 @@ Use `delete-trailing-whitespace' command."
 ;;;; Which-Key
 
 (setup which-key
-  (setopt which-key-lighter nil
+  (:setopt which-key-lighter nil
           which-key-idle-delay 1.5
           which-key-idle-secondary-delay 0.25
           which-key-add-column-padding 1

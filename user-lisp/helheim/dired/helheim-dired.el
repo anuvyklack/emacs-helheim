@@ -13,26 +13,26 @@
 (setup dired
   (:hook dired-mode-hook (dired-hide-details-mode
                           dired-omit-mode))
-  (setopt delete-by-moving-to-trash t
-          auto-revert-remote-files nil)
-  (setopt dired-kill-when-opening-new-dired-buffer t
-          ;; dired-free-space nil
-          dired-dwim-target t ;; Propose a target for intelligent moving/copying
-          dired-mouse-drag-files t ;; 'move
-          dired-deletion-confirmer 'y-or-n-p
-          dired-recursive-deletes 'always
-          dired-recursive-copies 'always
-          dired-vc-rename-file t
-          dired-create-destination-dirs 'ask
-          dired-do-revert-buffer t
-          dired-auto-revert-buffer #'dired-directory-changed-p ; #'dired-buffer-stale-p
-          dired-no-confirm t
-          dired-clean-confirm-killing-deleted-buffers nil
-          dired-maybe-use-globstar t
-          dired-omit-verbose t
-          dired-omit-files "\\`[.]?#\\|\\`[.].+"
-          dired-hide-details-hide-symlink-targets nil
-          dired-hide-details-hide-absolute-location t) ;; Emacs 31
+  (:setopt delete-by-moving-to-trash t
+           auto-revert-remote-files nil)
+  (:setopt dired-kill-when-opening-new-dired-buffer t
+           ;; dired-free-space nil
+           dired-dwim-target t ;; Propose a target for intelligent moving/copying
+           dired-mouse-drag-files t ;; 'move
+           dired-deletion-confirmer 'y-or-n-p
+           dired-recursive-deletes 'always
+           dired-recursive-copies 'always
+           dired-vc-rename-file t
+           dired-create-destination-dirs 'ask
+           dired-do-revert-buffer t
+           dired-auto-revert-buffer #'dired-directory-changed-p ; #'dired-buffer-stale-p
+           dired-no-confirm t
+           dired-clean-confirm-killing-deleted-buffers nil
+           dired-maybe-use-globstar t
+           dired-omit-verbose t
+           dired-omit-files "\\`[.]?#\\|\\`[.].+"
+           dired-hide-details-hide-symlink-targets nil
+           dired-hide-details-hide-absolute-location t) ;; Emacs 31
   (:after-load
     ;; PERF: `dired-listing-switches' is autoloaded, so setup in `:after-load'
     ;;   section to avoid loading Dired at Emacs startup.
@@ -43,15 +43,15 @@
     ;; -h, --human-readable :: print sizes like 1K 234M 2G
     ;; -F, --classify       :: append indicator (one of /=>@|) to entries
     ;; -v                   :: natural sort of (version) numbers within text
-    (setopt dired-listing-switches "-lAhF -v --group-directories-first")
+    (:setopt dired-listing-switches "-lAhF -v --group-directories-first")
     (put 'dired-jump 'repeat-map nil)
     (load "helheim-dired-lib" nil t)
     (load "helheim-dired-keys" nil t)))
 
 (setup wdired
-  (setopt wdired-use-dired-vertical-movement 'sometimes
-          ;; wdired-allow-to-change-permissions t ;; 'advanced
-          ))
+  (:setopt wdired-use-dired-vertical-movement 'sometimes
+           ;; wdired-allow-to-change-permissions t ;; 'advanced
+           ))
 
 (setup diredfl
   (:install t)
@@ -80,32 +80,32 @@
   (:install t)
   (:after dired)
   ;; These variables must be set before `dired-filter' is loaded.
-  (setopt dired-filter-prefix nil
-          dired-filter-verbose nil
-          dired-filter-mark-prefix nil)
+  (:setopt dired-filter-prefix nil
+           dired-filter-verbose nil
+           dired-filter-mark-prefix nil)
   (:require t)
-  (setopt dired-filter-group-saved-groups
-          '(("default"
-             ("Directories"
-              (directory))
-             ("Archives"
-              (extension "zip" "rar" "gz" "bz2" "tar"))
-             ("Pictures"
-              (or (extension "jfif" "JPG")
-                  (mode . 'image-mode)))
-             ("Videos"
-              (extension "mp4" "mkv" "flv" "mpg" "avi" "webm"))
-             ;; ("LaTeX"
-             ;;  (extension "tex" "bib"))
-             ;; ("Org"
-             ;;  (extension . "org"))
-             ("PDF"
-              (extension . "pdf")))))
+  (:setopt dired-filter-group-saved-groups
+           '(("default"
+              ("Directories"
+               (directory))
+              ("Archives"
+               (extension "zip" "rar" "gz" "bz2" "tar"))
+              ("Pictures"
+               (or (extension "jfif" "JPG")
+                   (mode . 'image-mode)))
+              ("Videos"
+               (extension "mp4" "mkv" "flv" "mpg" "avi" "webm"))
+              ;; ("LaTeX"
+              ;;  (extension "tex" "bib"))
+              ;; ("Org"
+              ;;  (extension . "org"))
+              ("PDF"
+               (extension . "pdf")))))
   (fset 'dired-filter-map dired-filter-map))
 
 (setup ls-lisp
-  (setopt ls-lisp-verbosity nil
-          ls-lisp-dirs-first t))
+  (:setopt ls-lisp-verbosity nil
+           ls-lisp-dirs-first t))
 
 ;;;; Convert local minor-modes to global ones
 
@@ -130,8 +130,8 @@
   ;; - standard-large     256 pixels
   ;; - standard-x-large   512 pixels
   ;; - standard-xx-large
-  (setopt image-dired-thumbnail-storage 'standard)
-  (setopt image-dired-marking-shows-next nil)
+  (:setopt image-dired-thumbnail-storage 'standard
+           image-dired-marking-shows-next nil)
   (:after-load
     (add-to-list 'display-buffer-alist
                  `(,(regexp-quote image-dired-thumbnail-buffer)

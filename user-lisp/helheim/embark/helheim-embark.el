@@ -17,8 +17,8 @@
 
 (setup embark
   (:install t)
-  (setopt which-key-use-C-h-commands nil
-          prefix-help-command 'embark-prefix-help-command)
+  (:setopt which-key-use-C-h-commands nil
+           prefix-help-command 'embark-prefix-help-command)
   ;; Hide the modeline of the Embark live/completions buffers.
   (add-to-list 'display-buffer-alist
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"

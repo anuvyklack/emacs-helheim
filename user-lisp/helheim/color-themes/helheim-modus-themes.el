@@ -6,29 +6,28 @@
 
 (setup modus-themes
   (require-theme 'modus-themes)
-  (setopt modus-themes-mixed-fonts t
-          modus-themes-variable-pitch-ui t
-          modus-themes-italic-constructs t
-          modus-themes-bold-constructs t
-          modus-themes-headings '((agenda-structure . (variable-pitch light 2.2))
-                                  (agenda-date . (variable-pitch regular 1.3))
-                                  (t . (regular 1.03)))))
+  (:setopt modus-themes-mixed-fonts t
+           modus-themes-variable-pitch-ui t
+           modus-themes-italic-constructs t
+           modus-themes-bold-constructs t
+           modus-themes-headings '((agenda-structure . (variable-pitch light 2.2))
+                                   (agenda-date . (variable-pitch regular 1.3))
+                                   (t . (regular 1.03)))))
 
 ;; ;; Requires Emacs 31
 ;; (setup modus-themes
 ;;   (:install t)
 ;;   (require-theme 'modus-themes)
-;;   (let ((modus-themes-custom-auto-reload nil))
-;;     (setopt
-;;      ;; modus-themes-to-toggle '(modus-operandi modus-vivendi)
-;;      ;; modus-themes-to-rotate modus-themes-items
-;;      modus-themes-mixed-fonts t
-;;      modus-themes-variable-pitch-ui t
-;;      modus-themes-italic-constructs t
-;;      modus-themes-bold-constructs t
-;;      modus-themes-headings '((agenda-structure . (variable-pitch light 2.2))
-;;                              (agenda-date . (variable-pitch regular 1.3))
-;;                              (t . (regular 1.03))))))
+;;   (:setopt
+;;     ;; modus-themes-to-toggle '(modus-operandi modus-vivendi)
+;;     ;; modus-themes-to-rotate modus-themes-items
+;;     modus-themes-mixed-fonts t
+;;     modus-themes-variable-pitch-ui t
+;;     modus-themes-italic-constructs t
+;;     modus-themes-bold-constructs t
+;;     modus-themes-headings '((agenda-structure . (variable-pitch light 2.2))
+;;                             (agenda-date . (variable-pitch regular 1.3))
+;;                             (t . (regular 1.03)))))
 
 ;;; modus-operandi
 ;;;; General
@@ -43,28 +42,28 @@
                      :box (:line-width (-1 . -1) :color "grey80")
                      :inherit fixed-pitch))
 
-(let ((modus-themes-custom-auto-reload nil))
-  (setopt modus-operandi-palette-overrides
-          '(;; Headings
-            (fg-heading-1 "#000000")
-            (fg-heading-2 "#624416")
-            (fg-heading-3 "#193668")
-            (fg-heading-4 "#721045")
-            (fg-heading-5 "#2a5045")
-            (fg-heading-6 "#7f0000")
-            (fg-heading-7 "#3f578f")
-            (fg-heading-8 "#595959")
-            ;; Search
-            (bg-search-current bg-yellow-subtle)
-            (bg-search-lazy    bg-cyan-subtle)
-            (bg-search-static  bg-magenta-subtle)
-            (bg-search-replace bg-red-subtle)
-            ;;
-            ;; (bg-search-rx-group-0 bg-blue-subtle)
-            ;; (bg-search-rx-group-1 bg-green-subtle)
-            ;; (bg-search-rx-group-2 bg-red-subtle)
-            ;; (bg-search-rx-group-3 bg-magenta-subtle)
-            )))
+(setup modus-themes
+  (:setopt modus-operandi-palette-overrides
+           '(;; Headings
+             (fg-heading-1 "#000000")
+             (fg-heading-2 "#624416")
+             (fg-heading-3 "#193668")
+             (fg-heading-4 "#721045")
+             (fg-heading-5 "#2a5045")
+             (fg-heading-6 "#7f0000")
+             (fg-heading-7 "#3f578f")
+             (fg-heading-8 "#595959")
+             ;; Search
+             (bg-search-current bg-yellow-subtle)
+             (bg-search-lazy    bg-cyan-subtle)
+             (bg-search-static  bg-magenta-subtle)
+             (bg-search-replace bg-red-subtle)
+             ;;
+             ;; (bg-search-rx-group-0 bg-blue-subtle)
+             ;; (bg-search-rx-group-1 bg-green-subtle)
+             ;; (bg-search-rx-group-2 bg-red-subtle)
+             ;; (bg-search-rx-group-3 bg-magenta-subtle)
+             )))
 
 ;;;; avy
 

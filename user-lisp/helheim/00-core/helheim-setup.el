@@ -11,10 +11,10 @@
 (require 'setup)
 
 ;; Order matters: functions will be executed in the order they appear in list.
-(setopt setup-modifier-list '(helheim-setup--with-eval-after-load
-                              helheim-setup--install-with-straight
-                              setup-wrap-to-catch-quits
-                              helheim-setup--install-with-elpaca))
+(setq setup-modifier-list '(helheim-setup--with-eval-after-load
+                            helheim-setup--install-with-straight
+                            setup-wrap-to-catch-quits
+                            helheim-setup--install-with-elpaca))
 
 ;; Remove some macros shipped with `setup'.
 (dolist (macro '( :package :with-map :autoload-this :require :global :bind
@@ -84,6 +84,33 @@
   (if-let* ((recipe (alist-get 'elpaca setup-attributes)))
       `(elpaca ',recipe ,@(helheim-setup-unprogn body))
     body))
+
+;;; :setopt
+
+(setup-define :setopt
+  (lambda (variable value)
+    (cl-assert (symbolp variable) nil "Attempting to set a non-symbol: %s" value)
+    `(helheim-setopt ',variable ,value))
+  :debug '(setq)
+  :indent 0
+  :repeatable t
+  :documentation
+  "Set VARIABLE to VALUE only if it hasn’t already been changed.
+This macro is for internal use in Helheim to prevent user settings from
+being overwritten by Helheim defaults. The Elpaca package manager is
+asynchronous, so user settings in `init.el' are applied before Helheim
+sets its defaults in `elpaca' macros. Use `setopt' for your custom
+settings.")
+
+(defun helheim-setopt (variable value)
+  "Set VARIABLE to VALUE only if it hasn’t been already changed."
+  (cond ((not (boundp variable))
+         (set-default variable value))
+        ((equal (symbol-value variable)
+                (+original-value variable))
+         (funcall (or (get variable 'custom-set)
+                      #'set-default)
+                  variable value))))
 
 ;;; :require
 
