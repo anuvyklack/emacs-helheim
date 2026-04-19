@@ -45,6 +45,7 @@
 (elpaca `(,@elpaca-order))
 
 (elpaca 'dash)
+(elpaca 'f)
 (elpaca 's)
 (elpaca 'setup)
 (elpaca 'blackout)

@@ -3,7 +3,6 @@
 (require 'org)
 (require 'org-mem)
 
-;;;###autoload
 (defun helheim-org-node-append-tags (node title)
   "Append NODE\\='s tags to TITLE."
   (list title
@@ -13,7 +12,6 @@
                         'face 'org-node-tag)
           "")))
 
-;;;###autoload
 (defun helheim-org-node-filter-p (node)
   "Hide NODE if it has or inherits an :IGNORE: or :ROAM_EXCLUDE: properties."
   (not (or (org-mem-property-with-inheritance "IGNORE" node)
@@ -21,7 +19,6 @@
 
 ;;; Backlinks drawers
 
-;;;###autoload
 (defun helheim-org-node-backlink-format (id desc &optional _time)
   "Format as list item: \"- [[id:ID][Node title]]\".
 ID and DESC are link id and description, TIME a Lisp time value."
@@ -30,13 +27,11 @@ ID and DESC are link id and description, TIME a Lisp time value."
 
 ;;; Backlinks buffer
 
-;;;###autoload
 (defun helheim-org-node-context--add-empty-line-at-eob ()
   "Add empty line at the end of a section to separate it from the following one."
   (goto-char (point-max))
   (insert "\n"))
 
-;;;###autoload
 (defun helheim-org-node-backlinks-buffer ()
   "Show backlinks buffer for the node at point.
 Org-node native command is `org-node-context-dwim'."
@@ -49,7 +44,6 @@ Org-node native command is `org-node-context-dwim'."
              (goto-char (point-min)))
       (display-buffer buffer))))
 
-;;;###autoload
 (defun helheim-open-in-another-window-a (orig-fun &rest args)
   "Open backlinks buffer in another window."
   ;; Set `display-buffer-overriding-action' only if it wasn't set before
@@ -64,7 +58,6 @@ Org-node native command is `org-node-context-dwim'."
 
 ;;; Commands
 
-;;;###autoload
 (defun helheimg-org-node-create-ignored-node ()
   "Add ID to node, and say Org-node to ignore it."
   (interactive)

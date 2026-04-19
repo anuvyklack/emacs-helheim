@@ -82,6 +82,7 @@
 (setup org-node
   (:install t)
   (:require t)
+  (load "helheim-org-node-lib" nil t)
   (:after-init org-node-cache-mode)
   (:setopt org-node-prefer-with-heading t
            org-node-creation-fn #'org-node-new-file

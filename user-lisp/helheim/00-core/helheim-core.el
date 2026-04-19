@@ -26,7 +26,9 @@
 (pcase helheim-package-manager
   ('straight (require 'helheim-straight))
   ('elpaca   (require 'helheim-elpaca)))
-
+(require 'dash)
+(require 'f)
+(require 'helheim-lib)
 (require 'helheim-setup)
 
 ;; (setup leaf
@@ -55,9 +57,13 @@
   (blackout 'compile-angel-on-load-mode)
   (compile-angel-on-load-mode))
 
-(require 'helheim-lib)
-
-;;; Dependencies
+;; We disabled byte-compilation by setting `user-lisp-auto-scrape' to nil
+;; in early-init.el file because it happens too early before dependencies
+;; are installed, and with this we also disabled autoload cookies scrapping.
+;; So do it manually here.
+(loaddefs-generate (f-directories user-lisp-directory nil t)
+                   (expand-file-name ".user-lisp-autoloads.el"
+                                     user-lisp-directory))
 
 (setup pcre2el (:install t))
 (setup wgrep   (:install t))
