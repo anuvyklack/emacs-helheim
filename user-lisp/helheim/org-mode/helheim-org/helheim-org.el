@@ -41,10 +41,11 @@
         "l"  (cons "links" 'helheim-org-link-map)
         "t"  (cons "toggle"
                    (define-keymap
-                     "i" '("Inline images" . org-toggle-inline-images)
-                     "l" '("Links display" . org-toggle-link-display)
+                     "i" '("link preview" . org-link-preview)
+                     "l" '("show/hide links" . org-toggle-link-display)
                      "f" '("Table formula debugger" . org-table-toggle-formula-debugger)
                      "o" '("Table coordinate overlays" . org-table-toggle-coordinate-overlays)))))
+    ;;
     ;; <leader> l or <local-leader> l
     (defvar-keymap helheim-org-link-map
       :prefix 'helheim-org-link-map
@@ -53,6 +54,7 @@
       "s" '("Store link" . org-store-link)
       "a" '("Insert all links" . org-insert-all-links)
       "u" '("Update id locations" . org-id-update-id-locations))
+    ;;
     ;; <leader> i or <local-leader> i
     (defvar-keymap helheim-org-insert-map
       :prefix 'helheim-org-insert-map
@@ -98,6 +100,7 @@
 (setup org-eldoc
   (:install org-contrib)
   (:after org)
+  (:require t)
   (:setopt org-eldoc-breadcrumb-separator " → ")
   (:after-load
     ;; Show target for link at point. Emacs has `help-at-pt-display-when-idle',
@@ -251,8 +254,9 @@ directory in dired and delete from there.\n")
 
 (setup org
   (:setopt org-startup-with-inline-images t
-           org-cycle-inline-images-display t
-           org-image-actual-width '(300)))
+           ;; 85% of fill-column width
+           org-image-actual-width (list (round (* 0.85 fill-column (default-font-width))))
+           org-cycle-inline-images-display t))
 
 ;;;; org-cliplink
 
