@@ -74,12 +74,12 @@
 (setup org
   (:install t)
   ;; (:built-in)
-  (setopt org-insert-heading-respect-content nil
-          org-M-RET-may-split-line '((default . t)
-                                     (item . nil))
-          org-return-follows-link t
-          org-special-ctrl-a/e t
-          org-pretty-entities t)
+  (:setopt org-insert-heading-respect-content nil
+           org-M-RET-may-split-line '((default . t)
+                                      (item . nil))
+           org-return-follows-link t
+           org-special-ctrl-a/e t
+           org-pretty-entities t)
   (:after-load
     (load "helheim-org-lib" nil t)))
 
@@ -98,7 +98,7 @@
 (setup org-eldoc
   (:install org-contrib)
   (:after org)
-  (setopt org-eldoc-breadcrumb-separator " → ")
+  (:setopt org-eldoc-breadcrumb-separator " → ")
   (:after-load
     ;; Show target for link at point. Emacs has `help-at-pt-display-when-idle',
     ;; but its timer competes with Eldoc for the echo area, so for those who use
@@ -148,10 +148,10 @@ Must be set with `setopt' function!"
   (:hook org-mode-hook (prettify-symbols-mode
                         helheim-org-prettify-todo-keywords
                         helheim-org-prettify-blocks))
-  (setq-default org-todo-keywords
-                '((sequence "SOMEDAY" "TODO" "IN-PROGRESS" "WAIT" "|"
-                            "DONE" "ARCHIVED" "CANCELLED")
-                  (sequence "READ" "IN-PROGRESS" "|" "DONE"))))
+  (:setopt org-todo-keywords
+           '((sequence "SOMEDAY" "TODO" "IN-PROGRESS" "WAIT" "|"
+                       "DONE" "ARCHIVED" "CANCELLED")
+             (sequence "READ" "IN-PROGRESS" "|" "DONE"))))
 
 (defun helheim-org-prettify-todo-keywords ()
   "Beautify org mode \"todo\" keywords using `prettify-symbols-mode'."
@@ -180,9 +180,10 @@ Must be set with `setopt' function!"
 ;;;; ID format
 
 ;; Use ISO 8601 timestamp.
-(setopt org-id-method 'ts
-        org-id-ts-format helheim-id-format
-        org-id-link-to-org-use-id 'create-if-interactive)
+(setup org
+  (:setopt org-id-method 'ts
+           org-id-ts-format helheim-id-format
+           org-id-link-to-org-use-id 'create-if-interactive))
 
 ;;;; org-attach
 
@@ -192,73 +193,73 @@ Must be set with `setopt' function!"
 
 (setup org-attach
   (:after org)
-  (setopt org-attach-id-dir (expand-file-name "org-attach/" org-directory)
-          org-attach-method 'mv ;; move
-          org-attach-store-link-p 'attached
-          org-attach-preferred-new-method 'id
-          org-attach-use-inheritance nil
-          org-attach-dir-relative t
-          org-attach-sync-delete-empty-dir t
-          org-attach-id-to-path-function-list '(helheim-org-attach-id-ts-folder-format
-                                                org-attach-id-uuid-folder-format
-                                                identity)
-          org-attach-auto-tag "ATTACH")
+  (:setopt org-attach-id-dir (expand-file-name "org-attach/" org-directory)
+           org-attach-method 'mv ;; move
+           org-attach-store-link-p 'attached
+           org-attach-preferred-new-method 'id
+           org-attach-use-inheritance nil
+           org-attach-dir-relative t
+           org-attach-sync-delete-empty-dir t
+           org-attach-id-to-path-function-list '(helheim-org-attach-id-ts-folder-format
+                                                 org-attach-id-uuid-folder-format
+                                                 identity)
+           org-attach-auto-tag "ATTACH")
   (add-to-list 'org-tags-exclude-from-inheritance org-attach-auto-tag)
   (with-eval-after-load 'org-keys
     (:with-keymap org-mode-map
-      (:bind [remap org-attach] 'helheim-org-attach))))
-
-(setq org-attach-commands
-      '(((?a ?\C-a) org-attach-attach
-         "Select a file and attach it to the task, using `org-attach-method'.")
-        ((?c ?\C-c) org-attach-attach-cp
-         "Attach a file using copy method.")
-        ((?m ?\C-m) org-attach-attach-mv
-         "Attach a file using move method.")
-        ((?l ?\C-l) org-attach-attach-ln
-         "Attach a file using link method.")
-        ((?y ?\C-y) org-attach-attach-lns
-         "Attach a file using symbolic-link method.")
-        ((?u ?\C-u) org-attach-url
-         "Attach a file from URL (downloading it).")
-        ((?b) org-attach-buffer
-         "Select a buffer and attach its contents to the task.")
-        ((?n ?\C-n) org-attach-new
-         "Create a new attachment, as an Emacs buffer.")
-        ((?z ?\C-z) org-attach-sync
-         "Synchronize the current node with its attachment\n directory, in case \
+      (:bind [remap org-attach] 'helheim-org-attach)))
+  (:setopt org-attach-commands
+           '(((?a ?\C-a) org-attach-attach
+              "Select a file and attach it to the task, using `org-attach-method'.")
+             ((?c ?\C-c) org-attach-attach-cp
+              "Attach a file using copy method.")
+             ((?m ?\C-m) org-attach-attach-mv
+              "Attach a file using move method.")
+             ((?l ?\C-l) org-attach-attach-ln
+              "Attach a file using link method.")
+             ((?y ?\C-y) org-attach-attach-lns
+              "Attach a file using symbolic-link method.")
+             ((?u ?\C-u) org-attach-url
+              "Attach a file from URL (downloading it).")
+             ((?b) org-attach-buffer
+              "Select a buffer and attach its contents to the task.")
+             ((?n ?\C-n) org-attach-new
+              "Create a new attachment, as an Emacs buffer.")
+             ((?z ?\C-z) org-attach-sync
+              "Synchronize the current node with its attachment\n directory, in case \
 you added attachments yourself.\n")
-        ((?o ?\C-o) org-attach-open
-         "Open current node's attachments.")
-        ((?O) org-attach-open-in-emacs
-         "Like \"o\", but force opening in Emacs.")
-        ((?f ?\C-f) org-attach-reveal-in-emacs
-         "Open current node's attachment directory in Dired.  Create if missing.")
-        ((?F) org-attach-reveal
-         "Like \"f\", but try to open in system file manager.\n")
-        ((?d ?\C-d) org-attach-delete-one
-         "Delete one attachment, you will be prompted for a file name.")
-        ((?D) org-attach-delete-all
-         "Delete all of a node's attachments.  A safer way is\n to open the \
+             ((?o ?\C-o) org-attach-open
+              "Open current node's attachments.")
+             ((?O) org-attach-open-in-emacs
+              "Like \"o\", but force opening in Emacs.")
+             ((?f ?\C-f) org-attach-reveal-in-emacs
+              "Open current node's attachment directory in Dired.  Create if missing.")
+             ((?F) org-attach-reveal
+              "Like \"f\", but try to open in system file manager.\n")
+             ((?d ?\C-d) org-attach-delete-one
+              "Delete one attachment, you will be prompted for a file name.")
+             ((?D) org-attach-delete-all
+              "Delete all of a node's attachments.  A safer way is\n to open the \
 directory in dired and delete from there.\n")
-        ((?s ?\C-s) org-attach-set-directory
-         "Set a specific attachment directory for this entry. Sets DIR property.")
-        ((?S ?\C-S) org-attach-unset-directory
-         "Unset the attachment directory for this entry.  Removes DIR property.")
-        ((?q) (lambda () (interactive) (message "Abort")) "Abort.")))
+             ((?s ?\C-s) org-attach-set-directory
+              "Set a specific attachment directory for this entry. Sets DIR property.")
+             ((?S ?\C-S) org-attach-unset-directory
+              "Unset the attachment directory for this entry.  Removes DIR property.")
+             ((?q) (lambda () (interactive) (message "Abort")) "Abort."))))
 
 ;;;; images
 
-(setopt org-startup-with-inline-images t
-        org-cycle-inline-images-display t
-        org-image-actual-width '(300))
+(setup org
+  (:setopt org-startup-with-inline-images t
+           org-cycle-inline-images-display t
+           org-image-actual-width '(300)))
 
 ;;;; org-cliplink
 
 (setup org-cliplink
   (:install t)
-  (setopt org-cliplink-max-length nil
-          org-cliplink-ellipsis "…")
+  (:setopt org-cliplink-max-length nil
+           org-cliplink-ellipsis "…")
   (with-eval-after-load 'org-keys
     (:with-keymap org-mode-map
       (:bind [remap org-insert-link] 'helheim-org-insert-link))))
