@@ -1,4 +1,4 @@
-;;; helheim-embark-keys.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-embark-keys.el -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Commentary:
 ;;
 ;; Original Embark keybindings are tailored for Emacs.
@@ -252,9 +252,10 @@
       "u"   'hel-embark-select
       "y"   'embark-copy-as-kill))
 
-  (:with-keymap embark-consult-rerun-map
-    (:unbind "g")
-    (:bind "g r" 'embark-rerun-collect-or-export)))
+  (with-eval-after-load 'embark-consult
+    (:with-keymap embark-consult-rerun-map
+      (:unbind "g")
+      (:bind "g r" 'embark-rerun-collect-or-export))))
 
 ;;; Commands
 
