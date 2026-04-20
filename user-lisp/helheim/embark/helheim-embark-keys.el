@@ -257,17 +257,6 @@
       (:unbind "g")
       (:bind "g r" 'embark-rerun-collect-or-export))))
 
-;;; Commands
-
-(defun hel-embark-select ()
-  "Add or remove the target from the current buffer's selection.
-You can act on all selected targets at once with `embark-act-all'.
-When called from outside `embark-act' this command will select
-the first target at point."
-  (interactive)
-  (embark-select)
-  (next-line))
-
 ;;; .
 (provide 'helheim-embark '(keys))
 ;;; helheim-embark-keys.el ends here

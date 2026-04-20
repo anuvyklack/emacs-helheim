@@ -1,6 +1,7 @@
 ;;; helheim-embark-lib.el -*- lexical-binding: t -*-
+;;; Display Emabark menus with Which-key
+;; From: https://github.com/oantolin/embark/wiki/Additional-Configuration#use-which-key-like-a-key-menu-prompt
 
-;; https://github.com/oantolin/embark/wiki/Additional-Configuration#use-which-key-like-a-key-menu-prompt
 (defun +embark-which-key-indicator ()
   "An embark indicator that displays keymaps using which-key.
 The which-key help message will show the type and value of the
@@ -32,6 +33,17 @@ targets."
   (which-key--hide-popup-ignore-command)
   (let ((embark-indicators (remq #'+embark-which-key-indicator embark-indicators)))
     (apply fn args)))
+
+;;; Commands
+
+(defun hel-embark-select ()
+  "Add or remove the target from the current buffer's selection.
+You can act on all selected targets at once with `embark-act-all'.
+When called from outside `embark-act' this command will select
+the first target at point."
+  (interactive)
+  (embark-select)
+  (next-line))
 
 ;;; .
 (provide 'helheim-embark '(lib))
