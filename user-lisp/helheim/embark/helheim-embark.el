@@ -1,4 +1,4 @@
-;;; helheim-embark.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-embark.el -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Keybindings
 
 (require 'hel)
@@ -18,13 +18,18 @@
 (setup embark
   (:install t)
   (:setopt which-key-use-C-h-commands nil
-           prefix-help-command 'embark-prefix-help-command)
+           prefix-help-command 'embark-prefix-help-command
+           ;; Display Emabark menus with Which-key.
+           embark-indicators '(+embark-which-key-indicator
+                               embark-highlight-indicator
+                               embark-isearch-highlight-indicator))
   ;; Hide the modeline of the Embark live/completions buffers.
   (add-to-list 'display-buffer-alist
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
                  (window-parameters (mode-line-format . none))))
   (:after-load
+    (load "helheim-embark-lib" nil t)
     (load "helheim-embark-keys" nil t)))
 
 (setup embark-consult
