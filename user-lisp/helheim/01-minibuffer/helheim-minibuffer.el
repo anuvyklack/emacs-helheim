@@ -4,8 +4,8 @@
 
 (setup vertico
   (:global-bind :state '(normal motion)
-    "C-c '"   '("vertico repeat" . vertico-repeat)
-    "C-c \""  '("select vertico session" . vertico-repeat-select))
+    "C-c '"   '("vertico last session" . vertico-repeat)
+    "C-c \""  '("vertico select session" . vertico-repeat-select))
   (:with-keymap minibuffer-local-map
     (:bind "M-a" 'marginalia-cycle))
   (:after-load
