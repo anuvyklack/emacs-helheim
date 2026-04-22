@@ -7,7 +7,7 @@
            whisper-model "base"
            whisper-translate nil
            whisper-return-cursor 'end ;; 'start
-           whisper-use-threads (ceiling (* 0.7 (num-processors))))
+           whisper-use-threads (1- (num-processors)))
   (keymap-global-set "C-r" 'whisper-run))
 
 (hel-define-advice whisper--insert-text (:around (orig-fun &rest args))
