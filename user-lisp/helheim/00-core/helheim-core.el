@@ -810,11 +810,13 @@ Use `delete-trailing-whitespace' command."
                 try-complete-lisp-symbol-partially
                 try-complete-lisp-symbol))))
 
-;;;; Comint (general command interpreter in a window)
+;;;; Comint (COMmand INTerpreter)
 
 (setq ansi-color-for-comint-mode t
       comint-prompt-read-only t
       comint-buffer-maximum-size 4096)
+
+(add-to-list 'comint-output-filter-functions 'comint-osc-process-output)
 
 ;;;; Compile
 
