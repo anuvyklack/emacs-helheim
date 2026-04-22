@@ -839,7 +839,8 @@ Use `delete-trailing-whitespace' command."
 
 ;;;; image-mode
 
-(setq image-animate-loop t)
+(setq image-animate-loop t
+      image-auto-resize 'fit-window)
 
 ;;;; occur-mode
 
