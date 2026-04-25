@@ -1,5 +1,4 @@
-;;; helheim-dired.el -*- lexical-binding: t; no-byte-compile: t; -*-
-;;; Commentary:
+;;; helheim-dired.el -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Code:
 
 (setup casual (:install t))
@@ -130,12 +129,22 @@
   ;; - standard-large     256 pixels
   ;; - standard-x-large   512 pixels
   ;; - standard-xx-large
-  (:setopt image-dired-thumbnail-storage 'standard
-           image-dired-marking-shows-next nil)
-  (:after-load
-    (add-to-list 'display-buffer-alist
-                 `(,(regexp-quote image-dired-thumbnail-buffer)
-                   (display-buffer-reuse-window display-buffer-pop-up-window)))))
+  (:setopt image-dired-thumbnail-storage 'standard)
+  (setopt image-dired-marking-shows-next nil
+          image-dired-external-viewer "display"
+          image-dired-thumb-relief 1
+          image-dired-thumb-margin 5)
+  (:hook image-dired-thumbnail-mode-hook
+         (lambda ()
+           (setq-local revert-buffer-function
+                       (lambda (&rest _)
+                         (image-dired-line-up-dynamic)))))
+  (add-to-list 'display-buffer-alist
+               '((major-mode . image-dired-thumbnail-mode)
+                 (display-buffer-reuse-window
+                  display-buffer-use-some-window
+                  display-buffer-pop-up-window)
+                 (inhibit-same-window . t))))
 
 ;;; .
 (provide 'helheim-dired)

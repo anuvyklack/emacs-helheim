@@ -244,7 +244,14 @@
   (:after-load
     (:with-keymap image-dired-thumbnail-mode-map
       (:unbind "w")
-      (:bind "y" 'image-dired-copy-filename-as-kill)))) ; "w"
+      (:bind
+        "n"   'image-dired-display-next
+        "p"   'image-dired-display-previous
+        "C-l" 'image-dired-display-next
+        "C-h" 'image-dired-display-previous
+        "y"   'image-dired-copy-filename-as-kill ;; "w"
+        "e"   'image-dired-thumbnail-display-external
+        "o"   'image-dired-thumbnail-display-external))))
 
 ;;; .
 (provide 'helheim-dired '(keys))

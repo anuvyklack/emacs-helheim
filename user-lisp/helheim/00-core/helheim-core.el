@@ -196,19 +196,20 @@ The predicate is passed as argument to `buffer-match-p', which see."
 
 (setup hl-line
   (:setopt global-hl-line-sticky-flag 'window ;; Emacs 31
-          ;; I want current line highlighting only in special modes that are in
-          ;; Hel motion state, and temporary disable it when region is active.
-          ;; In text editing modes disable it, because it interferes with Hel
-          ;; selections.
-          global-hl-line-buffers '(and (or (derived-mode . special-mode)
-                                           ;; For `define-compilation-mode'
-                                           (derived-mode . compilation-mode)
-                                           ;; Follow major modes doesn't inherit
-                                           ;; from `special-mode'.
-                                           (major-mode . dired-mode))
-                                       ;; According to my measures, compiled
-                                       ;; function is two times faster.
-                                       helheim--global-hl-line-buffers-pred))
+           ;; I want current line highlighting only in special modes that are in
+           ;; Hel motion state, and temporary disable it when region is active.
+           ;; In text editing modes disable it, because it interferes with Hel
+           ;; selections.
+           global-hl-line-buffers '(and (or (derived-mode . special-mode)
+                                            ;; For `define-compilation-mode'
+                                            (derived-mode . compilation-mode)
+                                            ;; Follow major modes doesn't inherit
+                                            ;; from `special-mode'.
+                                            (major-mode . dired-mode))
+                                        (not (major-mode . image-dired-thumbnail-mode))
+                                        ;; According to my measures, compiled
+                                        ;; function is two times faster.
+                                        helheim--global-hl-line-buffers-pred))
   (global-hl-line-mode))
 
 ;;;; Display line numbers
