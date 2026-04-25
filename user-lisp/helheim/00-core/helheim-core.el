@@ -912,31 +912,28 @@ Use `delete-trailing-whitespace' command."
            which-key-max-description-length 40
            which-key-show-remaining-keys t
            which-key-ellipsis "…")
-  (setopt which-key-replacement-alist
-          `(((nil . "which-key-show-next-page-no-cycle") . (nil . "wk next pg"))
-            ;; RET -> Enter
-            (("RET" . nil) . ("Enter" . nil))
-            ;; <left> -> left
-            ;; <C-m>  -> C-m
-            (("<\\([[:alnum:]-]+\\)>" . nil) . ("\\1" . nil))
-            ;; dired-jump   -> dired
-            ;; ibuffer-jump -> ibuffer
-            ((nil . "\\([[:alnum:]-]+\\)-jump") . (nil . "\\1"))
-            ;; ((nil . "copy-as-kill") . (nil . "copy"))
-            ;; Strip meaningless packages prefixes.
-            ,(cons `(nil . ,(rx line-start
-                                (or "consult-" "hel-" "helheim-" "elisp-"
-                                    "xref-" "my-")))
-                   '(nil . ""))
-            ;; Display embark specific commands literally...
-            ,(cons `(nil . ,(rx line-start
-                                (or "embark-act" "embark-dwim" "embark-become"
-                                    "embark-export" "embark-collect"
-                                    "embark-cycle" "embark-live")
-                                line-end))
-                   '(nil . nil))
-            ;; ... for other commands strip "embark-" prefix.
-            '((nil . "embark-") . (nil . "")))))
+  (setq which-key-replacement-alist
+        `(((nil . "which-key-show-next-page-no-cycle") . (nil . "wk next pg"))
+          (("RET" . nil) . ("Enter" . nil))
+          (("<backtab>" . nil) . ("S-tab" . nil))
+          ;; <left> -> left
+          ;; <C-m>  -> C-m
+          (("<\\([[:alnum:]-]+\\)>") . ("\\1"))
+          ;; ((nil . "copy-as-kill") . (nil . "copy"))
+          ;; Strip meaningless packages prefixes.
+          ,(cons `(nil . ,(rx line-start
+                              (or "consult-" "hel-" "helheim-" "elisp-"
+                                  "xref-" "my-")))
+                 '(nil . ""))
+          ;; Display embark specific commands literally...
+          ,(cons `(nil . ,(rx line-start
+                              (or "embark-act" "embark-dwim" "embark-become"
+                                  "embark-export" "embark-collect"
+                                  "embark-cycle" "embark-live")
+                              line-end))
+                 '(nil . nil))
+          ;; ... for other commands strip "embark-" prefix.
+          ((nil . "embark-") . (nil . "")))))
 
 (setup which-key-posframe
   (:install t)
