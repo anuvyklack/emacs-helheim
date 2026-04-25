@@ -36,6 +36,11 @@
   (interactive)
   (outline-hide-sublevels 2))
 
+(defun helheim-outline-show-3-sublevels ()
+  "Remain 2 top levels of headings visible."
+  (interactive)
+  (outline-hide-sublevels 3))
+
 (defun helheim-outline-mark-subtree ()
   "Mark the current subtree in an outlined document."
   (interactive)

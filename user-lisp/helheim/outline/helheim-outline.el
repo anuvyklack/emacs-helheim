@@ -40,6 +40,7 @@
         "z r"     'outline-show-all
         "z m"     'outline-hide-sublevels
         "z 2"     'helheim-outline-show-2-sublevels
+        "z 3"     'helheim-outline-show-3-sublevels
         "z p"     'helheim-outline-hide-other ; "p" for path
         "z O"     'outline-show-branches
         "z <"     'outline-promote
