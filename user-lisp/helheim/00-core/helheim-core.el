@@ -209,7 +209,7 @@ The predicate is passed as argument to `buffer-match-p', which see."
                                         (not (major-mode . image-dired-thumbnail-mode))
                                         ;; According to my measures, compiled
                                         ;; function is two times faster.
-                                        helheim--global-hl-line-buffers-pred))
+                                        helheim--global-hl-line-buffers-p))
   (global-hl-line-mode))
 
 ;;;; Display line numbers

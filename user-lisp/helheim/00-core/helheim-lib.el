@@ -64,7 +64,7 @@ Emacs magic happen.)
         (funcall orig-fun)
       (global-hl-line-unhighlight))))
 
-(defun helheim--global-hl-line-buffers-pred (buffer)
+(defun helheim--global-hl-line-buffers-p (buffer)
   "Enable current line highlighting only in special modes that are in Hel motion
 state, and temporary disable it when region is active."
   (with-current-buffer buffer
