@@ -11,10 +11,11 @@
 (require 'setup)
 (require 'helheim-lib)
 
-;; Order matters: functions will be executed in the order they appear in list.
+;; Order matters: functions will be executed in the order they are in the list.
 (setq setup-modifier-list '(helheim-setup--with-eval-after-load
                             setup-wrap-to-catch-quits
-                            helheim-setup--install-with-elpaca))
+                            helheim-setup--install-with-elpaca
+                            helheim-setup--when))
 
 ;; Remove some macros shipped with `setup'.
 (dolist (macro '( :package :with-map :autoload-this :require :global :bind
@@ -373,11 +374,18 @@ a symbol or list of symbols.")
 
 (setup-define :when
   (lambda (condition)
-    `(or ,condition
-         ,(setup-quit)))
+    (push (cons 'when condition)
+          setup-attributes)
+    nil)
   :debug '(form)
-  :repeatable t
-  :documentation "If CONDITION evaluates to nil, stop evaluating the body.")
+  :documentation
+  "Eval `setup' macro only if CONDITION evaluates to non-nil.")
+
+(defun helheim-setup--when (body _feature)
+  (if-let* ((condition (alist-get 'when setup-attributes)))
+      `(when ,condition
+         ,@(helheim-setup-unprogn body))
+    body))
 
 ;;; .
 (provide 'helheim-setup)
