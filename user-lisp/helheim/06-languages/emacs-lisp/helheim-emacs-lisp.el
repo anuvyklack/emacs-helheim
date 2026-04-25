@@ -84,15 +84,16 @@
         "C-j" 'elisp-refs-next-match
         "C-k" 'elisp-refs-prev-match
         "n"   'elisp-refs-next-match
-        "N"   'elisp-refs-prev-match)))
+        "N"   'elisp-refs-prev-match
+        "o"   'elisp-refs-visit-match-other-window)))
   ;;
-  (dolist (cmd '(elisp-refs-visit-match
-                 elisp-refs-next-match
-                 elisp-refs-prev-match))
-    (hel-advice-add cmd :around #'hel-jump-command-a)))
+  (hel-advice-add 'elisp-refs-visit-match :around #'hel-jump-command-a)
+  (hel-advice-add 'elisp-refs-next-match  :around #'hel-jump-command-a)
+  (hel-advice-add 'elisp-refs-prev-match  :around #'hel-jump-command-a))
 
-(setopt edebug-print-length 10
-        edebug-print-level 3)
+(setup edebug
+  (:setopt edebug-print-length 10
+           edebug-print-level 3))
 
 ;;;; Go to definition
 
