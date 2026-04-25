@@ -45,9 +45,9 @@
       ;; File
       "e"   'dired-do-open ;; "e" for external
       "o"   'dired-find-file-other-window
-      "g o" 'dired-find-file-other-window
+      "g o" 'dired-find-file-other-window ;; go to other window
+      "C-o" 'dired-display-file ;; show in other window
       "O"   'dired-do-find-marked-files
-      "C-o" 'dired-display-file
       "a"   'dired-find-alternate-file
       "C"   'dired-do-copy
       "M"   'dired-do-rename ;; move
@@ -157,12 +157,12 @@
                     "<backtab>" '("Cycle all" . dired-hide-all)
                     "%" '("Mark all" . dired-mark-subdir-files)
                     "i" '("Insert subdir" . dired-maybe-insert-subdir)
-                    "D" '("Remove sudir" . dired-kill-subdir)
-                    "d" '("down subdir" . dired-tree-down)
+                    "d" '("Remove sudir" . dired-kill-subdir)
+                    "l" '("goto subdir" . dired-tree-down)
                     "u" '("up subdir" . dired-tree-up)
                     "j" '("next subdir" . dired-next-subdir)
                     "k" '("prev subdir" . dired-prev-subdir)
-                    "s" '("goto subdir" . dired-goto-subdir)))
+                    "/" '("find subdir" . dired-goto-subdir)))
       "I"   'dired-maybe-insert-subdir
       ;; Comparison commands
       "="   'dired-diff
@@ -173,6 +173,7 @@
       ;; misc
       ", u" 'dired-undo ;; recover marks, killed lines or subdirs
       ", i" '("add ID" . helheim-dired-do-add-id)
+      ", I" 'dired-do-info
       "?"   'casual-dired-tmenu
       "<remap> <vc-next-action>"   'dired-vc-next-action
       ;; encryption and decryption (epa-dired)
