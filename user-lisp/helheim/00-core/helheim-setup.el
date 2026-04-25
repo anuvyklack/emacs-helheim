@@ -13,7 +13,6 @@
 
 ;; Order matters: functions will be executed in the order they appear in list.
 (setq setup-modifier-list '(helheim-setup--with-eval-after-load
-                            helheim-setup--install-with-straight
                             setup-wrap-to-catch-quits
                             helheim-setup--install-with-elpaca))
 
@@ -51,21 +50,13 @@
 
 (setup-define :straight
   (lambda (package &rest recipe)
-    (when (eq helheim-package-manager 'straight)
-      (push (cons 'straight (pcase package
-                              ('nil `(,(setup-get 'feature) :type built-in))
-                              ('t (setup-get 'feature))
-                              (_ (cons package recipe))))
-            setup-attributes))
-    nil)
+    (if (eq helheim-package-manager 'straight)
+        `(straight-use-package ',(pcase package
+                                   ('nil `(,(setup-get 'feature) :type built-in))
+                                   ('t (setup-get 'feature))
+                                   (_ (cons package recipe))))
+      nil))
   :documentation "Install PACKAGE with `straight-use-package'.")
-
-(defun helheim-setup--install-with-straight (body _feature)
-  (if-let* ((recipe (alist-get 'straight setup-attributes)))
-      `(progn
-         (straight-use-package ',recipe)
-         ,@(helheim-setup-unprogn body))
-    body))
 
 ;;;; :elpaca
 
