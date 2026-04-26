@@ -11,6 +11,7 @@
   (:global-bind "C-r" 'whisper-run))
 
 (hel-define-advice whisper--insert-text (:around (orig-fun &rest args))
+  "Select the inserted transcription text."
   (let ((deactivate-mark nil))
     (apply orig-fun args)
     (hel-normal-state)

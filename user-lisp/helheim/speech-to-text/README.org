@@ -10,7 +10,7 @@ text conversion.
 
 ** Configuration
 
-Refer to the official whisper.el [[https://github.com/natrys/whisper.el][documentation]] for advanced configurations and
+Refer to the official [[https://github.com/natrys/whisper.el][whisper.el documentation]] for advanced configurations and
 additional information.
 
 ** Usage
