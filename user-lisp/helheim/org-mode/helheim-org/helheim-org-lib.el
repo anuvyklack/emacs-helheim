@@ -152,6 +152,19 @@ Like `org-attach' but tuned for Emacs Helheim."
            (call-interactively 'org-insert-link))))
   (hel-extend-selection -1))
 
+;;; Convert markdown to org-mode
+
+;;;###autoload
+(defun +markdown-to-org-region (start end)
+  "Convert region (START, END) from Markdown to Org-mode via pandoc."
+  (interactive "r")
+  (unless (executable-find "pandoc")
+    (user-error "No pandoc executable found"))
+  (shell-command-on-region start end
+                           "pandoc --from=markdown --to=org"
+                           ;; "pandoc --from=markdown --to=org --wrap=preserve"
+                           t t))
+
 ;;; .
 (provide 'helheim-org '(lib))
 ;;; helheim-org-lib.el ends here
