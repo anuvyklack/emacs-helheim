@@ -97,6 +97,10 @@
 (require 'helheim-diff-hl)  ; git gutter
 (require 'helheim-ediff)
 
+;;; LLM
+
+(require 'helheim-agent-shell)
+
 ;;; Other modules
 
 (require 'helheim-browser) ; Synchronize online text editor with Emacs buffer

@@ -37,7 +37,6 @@
         "/") ;; `org-sparse-tree'  — moved to ,' and z/
       (:bind
         "RET" 'dired-jump ;; rebind `org-ctrl-c-ret' which is moved to ", RET"
-        "a"  'org-attach
         "i"  (cons "insert" 'helheim-org-insert-map)
         "l"  (cons "links" 'helheim-org-link-map)
         "t"  (cons "toggle"
