@@ -73,36 +73,34 @@
 
 (setup org-mem
   (:install t)
+  (:defer (:require t))
   (:setopt org-mem-do-sync-with-org-id t)
-  (:after-init org-mem-updater-mode)
-  (:require t)
   (unless org-mem-watch-dirs
     (setq org-mem-watch-dirs (list org-directory))))
 
 (setup org-node
   (:install t)
-  (:require t)
-  (load "helheim-org-node-lib" nil t)
-  (:after-init org-node-cache-mode)
-  (:setopt org-node-prefer-with-heading t
-           org-node-creation-fn #'org-node-new-file
-           org-node-file-slug-fn #'org-node-slugify-for-web
-           org-node-file-timestamp-format (concat helheim-id-format "--") ;; Denote format
-           org-node-blank-input-hint nil
-           org-node-alter-candidates t
-           org-node-affixation-fn 'helheim-org-node-append-tags
-           org-node-filter-fn 'helheim-org-node-filter-p)
-  ;; We have this information in ID.
-  (remove-hook 'org-node-creation-hook #'org-node-ensure-crtime-property)
-  ;; Open backlinks buffer in another window.
-  (add-to-list 'display-buffer-alist
-               '((major-mode . org-node-context-mode)
-                 (display-buffer-use-some-window display-buffer-pop-up-window)
-                 (inhibit-same-window . t)
-                 (body-function . select-window)))
-  ;; (set-face-attribute org-node-context-origin-title nil
-  ;;                     :inherit 'magit-section-secondary-heading)
-  )
+  (:defer (:require t))
+  (:after-load
+    (load "helheim-org-node-lib" nil t)
+    (:setopt org-node-prefer-with-heading t
+             org-node-creation-fn #'org-node-new-file
+             org-node-file-slug-fn #'org-node-slugify-for-web
+             org-node-file-timestamp-format (concat helheim-id-format "--") ;; Denote format
+             org-node-blank-input-hint nil
+             org-node-alter-candidates t
+             org-node-affixation-fn 'helheim-org-node-append-tags
+             org-node-filter-fn 'helheim-org-node-filter-p)
+    ;; We have this information in ID.
+    (remove-hook 'org-node-creation-hook #'org-node-ensure-crtime-property)
+    ;; Open backlinks buffer in another window.
+    (add-to-list 'display-buffer-alist
+                 '((major-mode . org-node-context-mode)
+                   (display-buffer-use-some-window display-buffer-pop-up-window)
+                   (inhibit-same-window . t)
+                   (body-function . select-window)))
+    (org-mem-updater-mode)
+    (org-node-cache-mode)))
 
 ;; (setup org-node-seq
 ;;   (:after org-node)
