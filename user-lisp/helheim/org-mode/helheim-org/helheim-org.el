@@ -84,7 +84,10 @@
                                       (item . nil))
            org-return-follows-link t
            org-special-ctrl-a/e t
-           org-pretty-entities t)
+           org-pretty-entities t
+           org-edit-keep-region t
+           org-preview-latex-image-directory (expand-file-name "ltximg/" user-emacs-directory)
+           org-latex-mathml-directory (expand-file-name "ltxmathml/" user-emacs-directory))
   (:after-load
     (load "helheim-org-lib" nil t)))
 
@@ -203,7 +206,6 @@ Must be set with `setopt' function!"
            org-attach-method 'mv ;; move
            org-attach-store-link-p 'attached
            org-attach-preferred-new-method 'id
-           org-attach-use-inheritance nil
            org-attach-dir-relative t
            org-attach-sync-delete-empty-dir t
            org-attach-id-to-path-function-list '(helheim-org-attach-id-ts-folder-format
