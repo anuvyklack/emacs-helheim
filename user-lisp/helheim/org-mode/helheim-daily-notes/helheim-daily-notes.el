@@ -27,10 +27,13 @@
 (hel-keymap-set mode-specific-map
   "n d" '("Daily note" . helheimg-daily-note))
 
-(with-eval-after-load 'org-keys
-  (hel-keymap-set org-mode-map :state 'normal
-    "] ]" '("Next daily note" . helheim-daily-next)
-    "[ [" '("Previous daily note" . helheim-daily-previous)))
+(add-hook 'org-mode-hook 'helheim-daily--set-keys)
+
+(defun helheim-daily--set-keys ()
+  (when (helheim-daily-note-p)
+    (hel-keymap-overriding-set :state 'normal
+      "] ]" '("Next daily note" . helheim-daily-next)
+      "[ [" '("Prev daily note" . helheim-daily-previous))))
 
 ;;; Code
 
