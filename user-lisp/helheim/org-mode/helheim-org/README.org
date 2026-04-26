@@ -1,0 +1,65 @@
+* helheim-org
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-org)
+#+end_src
+
+** Hacks
+
+- Extra padding is added to Org mode headings to make them more spacious. This
+  is done by increasing the height of the space character between the stars that
+  denotes the heading level and the heading text. Controled by
+  ~helheim-org-heading-padding~ variable.
+
+- Attach menu is prettified with faces.
+
+** Configurations
+
+- ~prettify-symbols-mode~ is enabled in Org-mode buffers. To disable selectively:
+
+  #+begin_src emacs-lisp
+  (remove-hook 'org-mode-hook 'helheim-org-prettify-todo-keywords)
+  (remove-hook 'org-mode-hook 'helheim-org-prettify-blocks)
+  #+end_src
+
+- Org ID format is configured to use an ISO 8601 timestamp — the same as [[https://protesilaos.com/emacs/denote][Denote]]:
+  #+begin_example
+  20250322T131856 → YYYYMMDDThhmmss
+  #+end_example
+
+- Attachment folders are grouped by year inside ~org-attach-id-dir~:
+  #+begin_example
+  ┌╴org-attach/
+  ╰┬╴2025/
+   ╰─╴20250322T131856/
+  #+end_example
+
+** Keybindings
+
+See [[https://github.com/anuvyklack/hel-org][hel-org]] documentation for keybindings it provides.
+
+------
+
+Keys that are worth mentioning (for others see =helheim-org-keys= file):
+
+- =z '= (~org-edit-special~) ::
+  Edit source block, table, or formula at point in a separate buffer.
+
+- =z ,= (~org-insert-structure-template~) ::
+- =z /= (~org-sparse-tree~) ::
+- =g p= (~consult-org-heading~) ::
+- =g x= (~org-open-at-point~) ::
+
+- =gn= / =gN= or =[l= / =]l= :: Jump over links
+
+- =SPC t= (=C-c t=) :: common prefix for toggable features
+
+- =, l l= :: Insert link with DWIM ("do what I mean") behavior:
+  - If URL is in clipboard — use it. Automatically fetch the page title
+    from its HTML tag and use it as link description.
+  - If selection is active — use it as link description.
+  - Fallback to ~org-insert-link~.
+
+- =, a= in Dired (~org-attach-dired-to-subtree~) ::
+  Attach files marked in the Dired buffer to a org subtree at point in the
+  other window.

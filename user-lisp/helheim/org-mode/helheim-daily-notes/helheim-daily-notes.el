@@ -1,11 +1,4 @@
-;;; helheim-daily-notes.el -*- lexical-binding: t -*-
-;;; Commentary:
-;;
-;; Daily notes is your main scratchpad. Every day you get a clean slate.
-;; It’s a modern alternative and an evolution of the traditional "Inbox" note.
-;;
-;; This package also set `org-default-notes-file' to be today's daily note.
-;;
+;;; helheim-daily-notes.el                            -*- lexical-binding: t -*-
 ;;; Code:
 
 (require 'dash)
@@ -24,8 +17,7 @@
 ;;; Keybindings
 
 ;; <leader>
-(hel-keymap-set mode-specific-map
-  "n d" '("Daily note" . helheimg-daily-note))
+(keymap-global-set "C-c n d" '("Daily note" . helheimg-daily-note))
 
 (add-hook 'org-mode-hook 'helheim-daily--set-keys)
 
@@ -57,6 +49,7 @@ for the specified date."
       (insert (format-time-string "#+title: %A, %d %b %Y\n\n" time))
       (save-buffer))))
 
+;; BUG: Stop working after update to Org-mode 9.8
 (defun helheim-daily-read-date ()
   (let* ((calendar-today-visible-hook '(helheim-daily--mark-in-calendar))
          (calendar-today-invisible-hook '(helheim-daily--mark-in-calendar))
@@ -66,7 +59,8 @@ for the specified date."
 
 (defun helheim-daily--mark-in-calendar ()
   (dolist (file (helheim-daily-list-files))
-    (-let* (((_ _ _ d m y _ _ _) (-> (file-name-nondirectory file)
+    (-let* (((_ _ _ d m y _ _ _) (-> file
+                                     (file-name-nondirectory)
                                      (file-name-sans-extension)
                                      (org-parse-time-string)))
             (date (list m d y)))

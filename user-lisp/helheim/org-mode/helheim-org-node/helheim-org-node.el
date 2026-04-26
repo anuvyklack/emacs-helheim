@@ -1,7 +1,7 @@
-;;; helheim-org-node.el -*- lexical-binding: t; no-byte-compile: t -*-
+;;; helheim-org-node.el           -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Customization
 
-(defcustom helheimg-org-node-visit-backlink-in-another-window nil
+(defcustom helheim-org-node-visit-backlink-in-another-window nil
   "When non-nil \"RET\" in backlinks buffer opens target in another window."
   :group 'helheim
   :type 'boolean
@@ -10,65 +10,55 @@
          (if value
              (advice-add 'org-node-context-visit-thing :around
                          'helheim-open-in-another-window-a)
-           ;; else
            (advice-remove 'org-node-context-visit-thing
                           'helheim-open-in-another-window-a))))
 
 ;;; Keybindings
 
-(setup org-node
-  ;; Keys available from anywhere.
+(setup org
+  ;; Keys available everywhere
   (:global-bind
-    "C-c n" (cons "notes"
-                  (define-keymap
-                    "a"   'org-agenda
-                    "n"   'org-node-find
-                    "r"   'org-node-visit-random
-                    "/"   'org-node-grep
-                    "c"   'org-capture
-                    ;; "C"   'org-capture-goto-target ; TODO: autoload
-                    ;; "j"   (cons "journal"
-                    ;;             (define-keymap
-                    ;;               "j" 'org-journal-new-entry
-                    ;;               "J" 'org-journal-new-scheduled-entry
-                    ;;               "s" 'org-journal-search-forever))
-                    "S"   'org-store-link
-                    "t"   'org-todo-list
-                    ;; "s"   'org-node-seq-dispatch
-                    "x t" 'org-mem-list-title-collisions ; "t" for title
-                    "x a" 'org-node-rename-asset-and-rewrite-links
-                    "x p" 'org-mem-list-problems
-                    "x d" 'org-mem-list-dead-id-links
-                    "x e" 'org-node-list-example
-                    "x f" 'org-node-list-files
-                    "x l" 'org-node-lint-all-files
-                    "x r" 'org-node-list-reflinks
-                    "x x" 'org-mem-reset
-                    "X"   'org-mem-reset)))
-  ;; Keys active in Org mode.
+    "C-c n n"  '("find or create node" . org-node-find)
+    "C-c n r"  '("open random node" . org-node-visit-random)
+    "C-c n /"  '("search in all nodes" . org-node-grep)
+    ;; "C-c n s"  'org-node-seq-dispatch
+    "C-c n x"  (define-keymap
+                 "t" 'org-mem-list-title-collisions ; "t" for title
+                 "a" 'org-node-rename-asset-and-rewrite-links
+                 "p" 'org-mem-list-problems
+                 "d" 'org-mem-list-dead-id-links
+                 "e" 'org-node-list-example
+                 "f" 'org-node-list-files
+                 "l" 'org-node-lint-all-files
+                 "r" 'org-node-list-reflinks
+                 "x" 'org-mem-reset))
+  ;; Keys active in Org-mode
   (with-eval-after-load 'org-keys
+    (require 'helheim-org-keys)
     (:with-keymap org-mode-map
       (:bind
-        ;; Insert
-        "C-c i i"  '("add ID" . org-node-nodeify-entry) ; "ii" - insert ID
-        "C-c i I"  '("add ID and ignore" . helheimg-org-node-create-ignored-node)
-        "C-c i n"  '("insert link to node" . org-node-insert-link) ; insert node
-        "C-c i a"  'org-node-add-alias
-        ;; Because "C-c C-q" is `org-set-tags-command'
-        "C-c i q"  'org-node-add-tags-here ;; or `org-node-add-tags'
-        ;; "C-c i q"  'org-node-set-tags ; or `org-node-set-tags'
-        ;;
-        ;; "links"
-        "C-c l t"  'org-node-insert-transclusion
-        "C-c l y"  'org-node-insert-transclusion-as-subtree
-        ;;
-        ;; "notes"
+        ;; notes
         "C-c n b"  '("backlinks buffer" . helheim-org-node-backlinks-buffer)
         "C-c n i"  '("add ID" . org-node-nodeify-entry)
         "C-c n I"  '("add ID and ignore" . helheimg-org-node-create-ignored-node)
-        "C-c n l"  '("insert link to node" . org-node-insert-link)
+        "C-c n w"  '("refile node" . org-node-refile) ;; "C-c C-w" is `org-refile'
         ;; "C-c n I"  'org-node-insert-include ;; TODO. Not yet a good command.
-        "C-c n w"  'org-node-refile)))) ;; because "C-c C-w" is `org-refile'
+        ))
+    ;; C-c i or ,i
+    (:with-keymap helheim-org-insert-map
+      (:bind
+        "i"  '("add ID" . org-node-nodeify-entry) ; "ii" - insert ID
+        "I"  '("add ID and ignore" . helheimg-org-node-create-ignored-node)
+        "a"  '("add alias" . org-node-add-alias)
+        ;; "C-c C-q" is `org-set-tags-command'
+        "q"  '("add tags" . org-node-add-tags-here)   ;; or `org-node-add-tags'
+        "Q"  '("set tags" . org-node-set-tags-here))) ;; or `org-node-set-tags'
+    ;; C-c l or ,l
+    (:with-keymap helheim-org-link-map
+      (:bind
+        "n"  '("insert link to node" . org-node-insert-link)
+        "t"  '("node transclusion" . org-node-insert-transclusion)
+        "T"  '("node transclusion as subtree" . org-node-insert-transclusion-as-subtree)))))
 
 ;;; Config
 

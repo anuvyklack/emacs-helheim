@@ -1,4 +1,4 @@
-;;; helheim-org-node-lib.el -*- lexical-binding: t -*-
+;;; helheim-org-node-lib.el                           -*- lexical-binding: t -*-
 
 (require 'org)
 (require 'org-mem)

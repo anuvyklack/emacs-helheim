@@ -1,79 +1,15 @@
-* Offline outliner and PKM powered by Org-mode and Hel
+Modules in this directory provide one of the best outliners and personal
+knowledge management systems available, powered by Org-mode and Hel.
 
-Get one of the best outliners and personal knowledge management systems on the
-market.
 - *Offline-first* — all your data belongs only to you.
 - *Unmatched editing* capabilities of any outliner available today — none of
-  existing note taking apps provides fully capable Vim emulation not to mention
-  Kakoune of Helix.
+  the existing note-taking apps provide fully capable Vim emulation, not to
+  mention Kakoune or Helix.
 - *Org-mode advantages:*
-  - Rich markup — more powerful than Markdown with LaTeX as a first-class
+  - Rich markup — more powerful than Markdown, with LaTeX as a first-class
     citizen (like HTML for Markdown).
   - Task management.
   - The best code snippet support of any outliner.
   - Tables.
 - *Bidirectional links* for seamless navigation.
-- *Daily notes* — you main scratchpad and better "Inbox".
-
-** Helheim modules
-*** =helheim-org=
-
-Configure Hel to work with Org mode, [[https://github.com/anuvyklack/hel/blob/main/docs/extensions.org#hel-org][read more about it]].
-
-Org ID format is configured after Denote to be a ISO 8601 timestamp:
-~20250322T131856~ → =year month day T hours minutes seconds=
-
-- =Space l l= :: insert link with DWIM ("do what I mean") behavior:
-  - If URL is in clipboard — use it.
-  - If selection is active — use it as link description.
-  - Automatically fetch URL title from its HTML tag.
-  - Fallback to ~org-insert-link~.
-
-**** Org Attach
-
-- =Space a= in Org mode ::
-  Attach menu. The menu is prettified.
-
-- =Space a= in Dired buffer ::
-  Attach files marked in Dired buffer to a subtree at point in the other window.
-
-**** Customization
-
-- ~helheim-org-heading-padding~ ::
-  Add extra padding to Org mode headings to make them more spacious. This is
-  done by increasing the height of the space character between the stars that
-  denotes the heading level and the heading text. See help for
-  ~set-face-attribute~ -> ~:height~ for the meaning of the value.
-
-  Must be set with ~setopt~ function!
-
-*** =helheim-org-node=
-
-Install and configure [[https://github.com/meedstrom/org-node][Org-node]] — an [[https://www.orgroam.com/][Org-roam]] alternative.
-
-Org-node keys are under =Space n= prefics.
-
-- =Space n n= :: Org-node entry point: open or create new node.
-- =Space n b= :: Backlinks buffer.
-
-**** Customization
-
-- ~helheimg-org-node-visit-backlink-in-another-window~ ::
-  When set =Enter= in backlinks buffer opens target in another window.
-  (defaults: ~nil~)
-
-*** =helheim-daily-notes=
-
-This module provides daily notes. A daily note is your main scratchpad: Every
-day you get a clean state. It’s an evolution of the traditional “Inbox” note.
-
-#+begin_quote
-A rule of thumb — if you don’t know where to put a note, don’t think about files
-or folders; just put it into your daily note. You’ll find how revealing it is.
-#+end_quote
-
-- =SPC n d= ::
-  Open today’s note. With =M-u=, interactively choose a date and open the daily
-  note for that date.
-
-- =[[= / =]]= :: Open the *previous* / *next* daily note.
+- *Daily notes* — your main scratchpad and a better "Inbox".

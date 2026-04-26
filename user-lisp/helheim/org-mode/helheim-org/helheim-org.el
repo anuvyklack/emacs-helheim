@@ -1,75 +1,4 @@
-;;; helheim-org.el -*- lexical-binding: t; no-byte-compile: t -*-
-;;; Keybindings
-
-(setup org
-  (with-eval-after-load 'org-keys
-    (:with-keymap org-mode-map
-      (:bind :state 'normal
-        "z '"  'org-edit-special
-        "z ,"  'org-insert-structure-template
-        "z /"  'org-sparse-tree
-        ;; "z n"  'org-narrow-to-subtree
-        "g i"  'consult-org-heading
-        "g x"  'org-open-at-point
-        "g n"  'org-next-link
-        "g N"  'org-previous-link
-        "] l"  'org-next-link
-        "[ l"  'org-previous-link
-        ;; <local-leader>
-        ","    (define-keymap
-                 "RET" 'org-ctrl-c-ret ;; also on "z RET"
-                 "'"   'org-edit-special
-                 ","   'org-priority
-                 "/"   'org-sparse-tree
-                 "#"   'org-update-statistics-cookies
-                 "a"   'org-attach
-                 "e"   'org-export-dispatch
-                 "i"   '("insert" . helheim-org-insert-map)
-                 "l"   '("links" . helheim-org-link-map)
-                 "o"   'org-open-at-point
-                 "p"   'yank-media
-                 "t"   'org-todo)))
-    ;; <leader>
-    (:with-keymap org-mode-map
-      (:unbind
-        "C-c '"  ;; `org-edit-special' — moved to ,' and z'
-        "C-c ,"  ;; `org-priority'     — moved to ,' and z,
-        "C-c /") ;; `org-sparse-tree'  — moved to ,' and z/
-      (:bind
-        "C-c RET"  'dired-jump ;; rebind `org-ctrl-c-ret' which is moved to ", RET"
-        "C-c i"    '("insert" . helheim-org-insert-map)
-        "C-c l"    '("links"  . helheim-org-link-map)
-        ;; Toggle
-        "C-c t i"  '("link preview" . org-link-preview)
-        "C-c t l"  '("show/hide links" . org-toggle-link-display)
-        "C-c t f"  '("Table formula debugger" . org-table-toggle-formula-debugger)
-        "C-c t o"  '("Table coordinate overlays" . org-table-toggle-coordinate-overlays)))
-    ;;
-    ;; <leader> l or <local-leader> l
-    (defvar-keymap helheim-org-link-map
-      :prefix 'helheim-org-link-map
-      "l"  '("Insert link" . org-insert-link)
-      "i"  '("Insert last stored link" . org-insert-last-stored-link) ;; "i" for insert
-      "s"  '("Store link" . org-store-link)
-      "a"  '("Insert all links" . org-insert-all-links)
-      "u"  '("Update id locations" . org-id-update-id-locations))
-    ;;
-    ;; <leader> i or <local-leader> i
-    (defvar-keymap helheim-org-insert-map
-      :prefix 'helheim-org-insert-map
-      "l"  '("Link" . org-insert-link)
-      "m"  'yank-media
-      "d"  '("Deadline" . org-deadline)
-      "s"  '("Schedule" . org-schedule)
-      "t"  '("Time stamp" . org-time-stamp)
-      "T"  '("Time stamp inactive" . org-time-stamp-inactive)
-      "Q"  '("Set tags" . org-set-tags-command))))
-
-(setup dired
-  (:after-load
-    ;; dired-mode-map
-    (:bind ", a" '("org-attach file to node" . org-attach-dired-to-subtree))))
-
+;;; helheim-org.el                -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Config
 
 (setup org
@@ -83,7 +12,12 @@
            org-pretty-entities t
            org-edit-keep-region t
            org-preview-latex-image-directory (expand-file-name "ltximg/" user-emacs-directory)
-           org-latex-mathml-directory (expand-file-name "ltxmathml/" user-emacs-directory))
+           org-latex-mathml-directory (expand-file-name "ltxmathml/" user-emacs-directory)
+           ;; Make `org-goto' (C-c C-j) command usable. But actually
+           ;; `consult-org-heading' (gp) provides the same interface but better.
+           org-goto-interface 'outline-path-completion
+           org-outline-path-complete-in-steps nil)
+  (:require helheim-org-keys)
   (:after-load
     (load "helheim-org-lib" nil t)))
 

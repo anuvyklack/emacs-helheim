@@ -1,0 +1,33 @@
+* helheim-daily-notes
+
+This module provides daily notes. A daily note is your main scratchpad: every
+day you get a clean slate. It is an evolution of the traditional "Inbox" note.
+
+#+begin_quote
+[!NOTE]
+A rule of thumb — if you don't know where to put a note, don't think about files
+or folders; just put it in your daily note. You'll find how revealing it is.
+#+end_quote
+
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-daily-notes)
+#+end_src
+
+** Hacks
+
+- ~org-default-notes-file~ is set to today's daily note, so ~org-capture~ lands
+  there for templates that do not specify a target file.
+
+** Usage
+
+- =SPC n d= ::
+  Open today's daily note. With =M-u=, interactively choose a date and open the
+  daily note for that date.
+
+- =[[= / =]]= :: Switch to the *next* / *previous* daily note.
+
+** Customization
+
+- ~helheimg-daily-directory~ ::
+  Directory where daily notes are stored. Must be set with ~setopt~.

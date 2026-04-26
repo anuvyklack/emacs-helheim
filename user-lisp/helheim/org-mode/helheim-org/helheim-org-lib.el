@@ -1,4 +1,4 @@
-;;; helheim-org-lib.el -*- lexical-binding: t -*-
+;;; helheim-org-lib.el                                -*- lexical-binding: t -*-
 
 (eval-when-compile (require 'cl-macs))
 (require 'dash)
