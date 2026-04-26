@@ -24,7 +24,7 @@
               "n"   'org-node-find
               "r"   'org-node-visit-random
               "/"   'org-node-grep
-              "c"   '("Capture" . org-capture)
+              "c"   'org-capture
               ;; "C"   'org-capture-goto-target ; TODO: autoload
               ;; "j"   (cons "journal"
               ;;             (define-keymap

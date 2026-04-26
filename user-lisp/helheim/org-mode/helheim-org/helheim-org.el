@@ -23,6 +23,7 @@
               "/"   'org-sparse-tree
               "#"   'org-update-statistics-cookies
               "a"   'org-attach
+              "e"   'org-export-dispatch
               "i"   (cons "insert" 'helheim-org-insert-map)
               "l"   (cons "links" 'helheim-org-link-map)
               "o"   'org-open-at-point
@@ -68,6 +69,8 @@
 
 (setup dired
   (:after-load
+    (:with-keymap dired-mode-map
+      (:bind ", a" 'org-attach-dired-to-subtree))
     (:with-keymap (helheim-leader-map dired-mode-map)
       (:bind "a" 'org-attach-dired-to-subtree))))
 
