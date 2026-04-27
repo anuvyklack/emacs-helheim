@@ -8,7 +8,7 @@
            whisper-translate nil
            whisper-return-cursor 'end ;; 'start
            whisper-use-threads (1- (num-processors)))
-  (:global-bind "C-r" 'whisper-run))
+  (:global-bind "M-r" 'whisper-run))
 
 (hel-define-advice whisper--insert-text (:around (orig-fun &rest args))
   "Select the inserted transcription text."

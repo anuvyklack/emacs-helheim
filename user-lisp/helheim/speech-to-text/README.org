@@ -18,7 +18,7 @@ additional information.
 On first invocation [[https://github.com/ggml-org/whisper.cpp][whisper.cpp]] engine will be installed and recognition model
 will be downloaded.
 
-- =C-r= ::
+- =M-r= ::
   - Starts recording audio.
   - Stops recording and starts transcribing.
   - Abort transcribing if it is in progress.
