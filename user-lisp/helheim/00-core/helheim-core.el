@@ -109,7 +109,7 @@
       (-lambda ((mode . icon-spec))
         (setf (alist-get mode nerd-icons-mode-icon-alist) icon-spec)))))
 
-;; `helheim-word-wrap' dependencies, which file is autoloaded, so we install
+;; `+wrap-line-mode' dependencies: its file is autoloaded, so we should install
 ;; its dependences out of it.
 (setup adaptive-wrap (:install t))
 (setup visual-fill-column (:install t))

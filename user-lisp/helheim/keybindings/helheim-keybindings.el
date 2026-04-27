@@ -64,7 +64,8 @@
               "B"   'project-list-buffers))
   "t" (cons "toggle"
             (hel-keymap-set (helheim-leader-prefix-map "t")
-              "w" '("Wrap lines" . +word-wrap-mode)
+              "v" 'visual-line-mode
+              "w" '+wrap-line-mode
               "r" '("Read only" . read-only-mode) ;; "C-x C-q"
               "$" 'set-selective-display)) ;; "C-x $"
   "s" (cons "search"

@@ -1,14 +1,13 @@
-;;; helheim-word-wrap.el -*- lexical-binding: t -*-
+;;; wrap-line.el -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;
-;; This module defines `+word-wrap-mode' minor-mode, which intelligently
-;; wraps long lines in the buffer without modifying the buffer content.
-;;
-;; Ported from DOOM Emacs.
+;; This module defines `+wrap-line-mode' — a minor-mode, which visually
+;; wraps long lines at `fill-column' in the buffer without modifying the
+;; buffer content.
 ;;
 ;;; Customization
 
-(defcustom +word-wrap-extra-indent 'double
+(defcustom +wrap-line-extra-indent 'double
   "The amount of extra indentation for wrapped code lines.
 
 `double'    indent by twice the major-mode indentation
@@ -20,31 +19,31 @@ nil       no extra indentation"
                  integer)
   :group 'helheim)
 
-(defcustom +word-wrap-ignored-modes '(fundamental-mode
+(defcustom +wrap-line-ignored-modes '(fundamental-mode
                                       so-long-mode)
-  "Major-modes where `+global-word-wrap-mode' should not enable `+word-wrap-mode'.")
+  "Major-modes where `+global-wrap-line-mode' should not enable `+wrap-line-mode'.")
 
-(defcustom +word-wrap-visual-modes '(org-mode)
-  "Major-modes where `+word-wrap-mode' should not use `adaptive-wrap-prefix-mode'.")
+(defcustom +wrap-line-visual-modes '(org-mode)
+  "Major-modes where `+wrap-line-mode' should not use `adaptive-wrap-prefix-mode'.")
 
-(defcustom +word-wrap-text-modes '(text-mode
+(defcustom +wrap-line-text-modes '(text-mode
                                    markdown-mode markdown-view-mode
                                    gfm-mode gfm-view-mode
                                    rst-mode
                                    latex-mode LaTeX-mode)
-  "Major-modes where `+word-wrap-mode' should not provide extra indentation.")
+  "Major-modes where `+wrap-line-mode' should not provide extra indentation.")
 
 ;; (when (memq 'visual-line-mode text-mode-hook)
 ;;   (remove-hook 'text-mode-hook #'visual-line-mode)
-;;   (add-hook 'text-mode-hook #'+word-wrap-mode))
+;;   (add-hook 'text-mode-hook #'+wrap-line-mode))
 
 ;;; Code
 
-(defvar-local +word-wrap--major-mode-is-text nil)
-(defvar-local +word-wrap--major-mode-indent-var nil)
+(defvar-local +wrap-line--major-mode-is-text nil)
+(defvar-local +wrap-line--major-mode-indent-var nil)
 
 ;;;###autoload
-(define-minor-mode +word-wrap-mode
+(define-minor-mode +wrap-line-mode
   "Wrap long lines in the buffer with language-aware indentation.
 
 This mode configures `adaptive-wrap', `visual-line-mode' and
@@ -54,64 +53,64 @@ gratuitously long lines, or running emacs on your wrist-phone.
 
 Wrapped lines will be indented to match the preceding line. In code buffers,
 lines which are not inside a string or comment will have additional indentation
-according to the configuration of `+word-wrap-extra-indent'."
+according to the configuration of `+wrap-line-extra-indent'."
   :init-value nil
-  (if +word-wrap-mode
+  (if +wrap-line-mode
       (progn
-        (setq +word-wrap--major-mode-is-text (memq major-mode +word-wrap-text-modes))
+        (setq +wrap-line--major-mode-is-text (memq major-mode +wrap-line-text-modes))
         (visual-line-mode 1)
         (visual-fill-column-mode 1)
         (auto-fill-mode -1)
-        (unless (memq major-mode +word-wrap-visual-modes)
+        (unless (memq major-mode +wrap-line-visual-modes)
           (when (require 'dtrt-indent nil t)
             ;; for dtrt-indent--search-hook-mapping
             ;; TODO: Generalize this?
-            (setq +word-wrap--major-mode-indent-var
+            (setq +wrap-line--major-mode-indent-var
                   (let ((indent-var (caddr (dtrt-indent--search-hook-mapping major-mode))))
                     (if (listp indent-var)
                         (car indent-var)
                       indent-var)))
             (advice-add 'adaptive-wrap-fill-context-prefix :around
-                        #'+word-wrap--adjust-extra-indent-a))
+                        #'+wrap-line--adjust-extra-indent-a))
           (adaptive-wrap-prefix-mode 1)))
     ;; else
     (visual-line-mode -1)
     (visual-fill-column-mode -1)
     (auto-fill-mode 1)
-    (unless (memq major-mode +word-wrap-visual-modes)
-      (advice-remove 'adaptive-wrap-fill-context-prefix #'+word-wrap--adjust-extra-indent-a)
+    (unless (memq major-mode +wrap-line-visual-modes)
+      (advice-remove 'adaptive-wrap-fill-context-prefix #'+wrap-line--adjust-extra-indent-a)
       (adaptive-wrap-prefix-mode -1))))
 
 ;;;###autoload
-(define-globalized-minor-mode +global-word-wrap-mode +word-wrap-mode
-  +word-wrap--initialize)
+(define-globalized-minor-mode +global-wrap-line-mode +wrap-line-mode
+  +wrap-line--initialize)
 
-(defun +word-wrap--initialize ()
-  "Turn on `+word-wrap-mode' in current buffer if appropriate."
+(defun +wrap-line--initialize ()
+  "Turn on `+wrap-line-mode' in current buffer if appropriate."
   (unless (or (eq 'special (get major-mode 'mode-class))
-              (memq major-mode +word-wrap-ignored-modes))
-    (+word-wrap-mode 1)))
+              (memq major-mode +wrap-line-ignored-modes))
+    (+wrap-line-mode 1)))
 
 (defvar adaptive-wrap-extra-indent)
 
-(defun +word-wrap--adjust-extra-indent-a (fn beg end)
-  "Contextually adjust extra word-wrap indentation."
-  (let ((adaptive-wrap-extra-indent (+word-wrap--calc-extra-indent beg)))
+(defun +wrap-line--adjust-extra-indent-a (fn beg end)
+  "Contextually adjust extra wrap-line indentation."
+  (let ((adaptive-wrap-extra-indent (+wrap-line--calc-extra-indent beg)))
     (funcall fn beg end)))
 
-(defun +word-wrap--calc-extra-indent (position)
-  "Calculate extra word-wrap indentation at POSITION."
-  (if (or +word-wrap--major-mode-is-text
+(defun +wrap-line--calc-extra-indent (position)
+  "Calculate extra wrap-line indentation at POSITION."
+  (if (or +wrap-line--major-mode-is-text
           (hel-comment-at-pos-p position)
           (hel-string-at-pos-p position))
       0
-    (pcase +word-wrap-extra-indent
-      ('double (* 2 (symbol-value +word-wrap--major-mode-indent-var)))
-      ('single (symbol-value +word-wrap--major-mode-indent-var))
+    (pcase +wrap-line-extra-indent
+      ('double (* 2 (symbol-value +wrap-line--major-mode-indent-var)))
+      ('single (symbol-value +wrap-line--major-mode-indent-var))
       ((and (pred integerp) fixed)
        fixed)
       (_ 0))))
 
 ;;; .
-(provide 'helheim-word-wrap)
-;;; helheim-word-wrap.el ends here
+(provide 'wrap-line)
+;;; wrap-line.el ends here

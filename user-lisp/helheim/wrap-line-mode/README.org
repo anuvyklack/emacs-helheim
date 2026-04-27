@@ -1,0 +1,9 @@
+* wrap-line
+
+This module defines ~+wrap-lines-mode~ — a minor-mode, which visually wraps long
+lines at ~fill-column~ in the buffer without modifying the buffer content.
+
+** Enable
+
+No need to ~require~ this module manually. The =+wrap-line-mode= is autoloaded, and
+bound to =SPC t w= (or =C-c t w=).
