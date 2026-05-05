@@ -70,13 +70,16 @@
 
 (setup avy
   (:install t)
-  (:setopt avy-keys (number-sequence ?a ?z) ;; Any lower-case letter a-z.
+  (:setopt avy-keys '( ?a ?s ?d ?f ?g ?h ?j ?k ?l    ;; middle layer
+                       ?q ?w ?e ?r ?t ?y ?u ?i ?o ?p ;; top layer
+                       ?z ?x ?c ?v ?b ?n ?m)         ;; bottom layer
            avy-style 'at-full
            avy-all-windows nil
            avy-all-windows-alt t
            avy-background t
-           ;; the unpredictability of this (when enabled) makes it a poor default
-           avy-single-candidate-jump t))
+           ;; The unpredictability of such behavior (when enabled) makes it
+           ;; a poor default.
+           avy-single-candidate-jump nil))
 
 (setup hel
   (:install hel :host github :repo "anuvyklack/hel")
