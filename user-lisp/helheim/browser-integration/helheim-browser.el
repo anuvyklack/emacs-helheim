@@ -9,7 +9,7 @@
     (atomic-chrome-start-server)
     (:setopt atomic-chrome-extension-type-list '(atomic-chrome)
              atomic-chrome-buffer-open-style 'frame
-             atomic-chrome-buffer-frame-width  80
+             atomic-chrome-buffer-frame-width  84
              atomic-chrome-buffer-frame-height 30
              atomic-chrome-frame-parameters '((alpha-background . 95)
                                               (fullscreen . nil))
