@@ -210,7 +210,7 @@ The predicate is passed as argument to `buffer-match-p', which see."
 ;;;; Display line numbers
 
 (setup display-line-numbers
-  (:hook (prog-mode-hook conf-mode-hook text-mode-hook))
+  (:hook (prog-mode-hook conf-mode-hook)) ;; text-mode-hook
   (:setopt display-line-numbers-width 3
            display-line-numbers-type t
            display-line-numbers-width-start t
