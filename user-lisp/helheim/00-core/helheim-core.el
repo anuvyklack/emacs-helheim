@@ -82,6 +82,9 @@
   (:install hel :host github :repo "anuvyklack/hel")
   (hel-mode))
 
+(setup compat
+  (:install t))
+
 (setup transient
   (:install t)
   (:setopt transient-common-command-prefix "SPC"
