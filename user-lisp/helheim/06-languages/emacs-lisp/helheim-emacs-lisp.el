@@ -80,7 +80,7 @@
 ;; `elisp-refs-special'
 ;; `elisp-refs-variable'
 (setup elisp-refs
-  (:install t)
+  ;; (:install t) ;; installed as dependency of `helpful'
   (:after-load
     (:with-keymap elisp-refs-mode-map
       (:bind
