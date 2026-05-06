@@ -1,4 +1,4 @@
-;;; helheim-core.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-core.el -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Customization
 
 (defgroup helheim nil
@@ -31,21 +31,6 @@
 (require 'helheim-lib)
 (require 'helheim-setup)
 
-;; (setup leaf
-;;   (:install t)
-;;   (:require t)
-;;   ;; leaf.el provides both `:config' and `:defer-config' keywords. However, if
-;;   ;; a keyword from `leaf-defer-keywords' appears in a declaration, `:config'
-;;   ;; is treated as `:defer-config'. I consider implicit behavior harmful, so
-;;   ;; disable it to keep full manual control over what is deferred.
-;;   (setopt leaf-defer-keywords nil)
-;;   (setopt leaf-expand-minimally t))
-;;
-;; (setup leaf-keywords
-;;   (:install t)
-;;   (:require t)
-;;   (leaf-keywords-init))
-
 ;; Compiles .el files before they are loaded with `load' or `require'.
 (setup compile-angel
   (:install t)
@@ -64,6 +49,8 @@
 (loaddefs-generate (f-directories user-lisp-directory nil t)
                    (expand-file-name ".user-lisp-autoloads.el"
                                      user-lisp-directory))
+
+;;; External dependencies
 
 (setup pcre2el (:install t))
 (setup wgrep   (:install t))
