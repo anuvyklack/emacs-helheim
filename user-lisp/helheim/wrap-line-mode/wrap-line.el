@@ -33,10 +33,6 @@ nil       no extra indentation"
                                    latex-mode LaTeX-mode)
   "Major-modes where `+wrap-line-mode' should not provide extra indentation.")
 
-;; (when (memq 'visual-line-mode text-mode-hook)
-;;   (remove-hook 'text-mode-hook #'visual-line-mode)
-;;   (add-hook 'text-mode-hook #'+wrap-line-mode))
-
 ;;; Code
 
 (defvar-local +wrap-line--major-mode-is-text nil)

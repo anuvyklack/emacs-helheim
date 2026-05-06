@@ -210,7 +210,7 @@ The predicate is passed as argument to `buffer-match-p', which see."
 ;;;; Display line numbers
 
 (setup display-line-numbers
-  (:hook (prog-mode-hook conf-mode-hook)) ;; text-mode-hook
+  (:hook (prog-mode-hook conf-mode-hook))
   (:setopt display-line-numbers-width 3
            display-line-numbers-type t
            display-line-numbers-width-start t
@@ -395,10 +395,6 @@ Use `delete-trailing-whitespace' command."
 ;; characters followed by a terminating newline".
 (setq require-final-newline t)
 
-;; Default to soft line-wrapping in text modes. It is more sensibile for text
-;; modes, even if hard wrapping is more performant.
-(add-hook 'text-mode-hook #'visual-line-mode)
-
 ;;;; Parens
 
 ;; Don't blink the paren matching the one at point, it's too distracting.
@@ -412,7 +408,7 @@ Use `delete-trailing-whitespace' command."
 
 (setup rainbow-delimiters
   (:install t)
-  (:hook (prog-mode-hook conf-mode-hook))) ; text-mode-hook
+  (:hook (prog-mode-hook conf-mode-hook)))
 
 ;;;; Prog-mode
 
@@ -420,6 +416,14 @@ Use `delete-trailing-whitespace' command."
       comment-multi-line t)
 
 (add-hook 'prog-mode-hook 'helheim-show-trailing-whitespace)
+
+;;;; Text-mode
+
+;; (setup text-mode
+;;   (:hook text-mode-hook (display-line-numbers-mode
+;;                          rainbow-delimiters-mode
+;;                          ;; visual-line-mode
+;;                          +wrap-line-mode)))
 
 ;;;; Tree-sitter
 
