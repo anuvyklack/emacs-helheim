@@ -1,1 +1,20 @@
+* helheim-agent-shell
 
+This module install and configures [[https://github.com/xenodium/agent-shell][agent-shell]] — an Emacs shell for interacting
+with LLM agents via ACP ([[https://agentclientprotocol.com][Agent Client Protocol]]).
+
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-agent-shell)
+#+end_src
+
+** Usage
+
+| Key       | Description                                              |
+|-----------+----------------------------------------------------------|
+| =SPC a RET= | Start new / switch to running ~agent-shell~ session        |
+| =SPC a n=   | Start new ~agent-shell~ session                            |
+| =SPC a w=   | Create a new git worktree and start an agent shell in it |
+| =SPC a s=   | Send selection or full buffer to ~agent-shell~ session     |
+
+For keys available in ~agent-shell~ see [[https://github.com/anuvyklack/hel-agent-shell][hel-agent-shell]] documentation.

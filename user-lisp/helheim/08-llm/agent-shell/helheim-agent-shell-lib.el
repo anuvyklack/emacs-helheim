@@ -1,4 +1,4 @@
-;;; helheim-agent-shell-lib.el -*- lexical-binding: t -*-
+;;; helheim-agent-shell-lib.el                        -*- lexical-binding: t -*-
 
 (eval-when-compile (require 'dash))
 (require 'agent-shell-ui)
