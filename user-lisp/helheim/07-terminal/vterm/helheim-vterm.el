@@ -7,6 +7,7 @@
   (setopt vterm-max-scrollback 5000)) ; instead of 1000
 
 (setup hel-vterm
+  (:install hel-vterm :host github :repo "anuvyklack/hel-vterm")
   (:after vterm)
   (:require t))
 

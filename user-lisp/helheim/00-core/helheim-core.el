@@ -79,8 +79,7 @@
            avy-single-candidate-jump t))
 
 (setup hel
-  (:install hel :host github :repo "anuvyklack/hel"
-            :files (:defaults "extensions/**/*.el"))
+  (:install hel :host github :repo "anuvyklack/hel")
   (hel-mode))
 
 (setup transient

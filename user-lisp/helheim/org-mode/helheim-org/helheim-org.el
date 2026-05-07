@@ -99,6 +99,7 @@
   (:blackout t))
 
 (setup hel-org
+  (:install hel-org :host github :repo "anuvyklack/hel-org")
   (:after org)
   (:require t))
 

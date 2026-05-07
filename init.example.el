@@ -133,7 +133,6 @@
 
 ;;; Keybindings
 
-(require 'hel-leader)
 (require 'helheim-keybindings)
 (require 'helheim-disable-isearch)
 

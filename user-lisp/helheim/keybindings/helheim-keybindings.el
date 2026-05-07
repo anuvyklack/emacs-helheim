@@ -6,7 +6,9 @@
 ;;
 ;;; General
 
-(require 'hel)
+(setup hel-leader
+  (:install hel-leader :host github :repo "anuvyklack/hel-leader")
+  (:require t))
 
 (setup helheim
   (:global-bind :state 'normal

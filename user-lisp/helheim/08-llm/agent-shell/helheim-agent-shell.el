@@ -23,6 +23,7 @@
       "z '" 'agent-shell-prompt-compose)))
 
 (setup hel-agent-shell
+  (:install hel-agent-shell :host github :repo "anuvyklack/hel-agent-shell")
   (:after agent-shell)
   (:require t))
 

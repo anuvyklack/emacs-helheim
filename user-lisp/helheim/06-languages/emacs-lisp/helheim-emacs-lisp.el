@@ -39,8 +39,11 @@
 
 ;;; Config
 
+(setup paredit
+ (:install paredit))
+
 (setup hel-paredit
-  (:install paredit)
+  (:install hel-paredit :host github :repo "anuvyklack/hel-paredit")
   (:require t)
   (:hook (emacs-lisp-mode-hook
           lisp-data-mode-hook) hel-paredit-mode))
