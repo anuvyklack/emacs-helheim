@@ -1,4 +1,4 @@
-;;; helheim-markdown.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-markdown.el -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Keybindings
 
 (setup markdown-mode
@@ -29,30 +29,32 @@
 
 (setup markdown-mode
   (:install t)
-  (:mode ("README\\.md\\'" . gfm-mode)) ;; Github Flavored Markdown
-  ;; Command to convert plain text to HTML
-  (setopt markdown-command '("pandoc" "--from=markdown" "--to=html5")
-          markdown-list-indent-width 2
-          markdown-enable-highlighting-syntax t
-          markdown-fontify-code-blocks-natively t
-          markdown-gfm-additional-languages '("sh")
-          markdown-gfm-uppercase-checkbox t)
+  (:mode ("README\\.md\\'" . gfm-mode)) ; Github Flavored Markdown
   (:hook markdown-mode-hook (helheim-markdown-mode-h
                              +wrap-line-mode))
-  (:after-load
-    (setq markdown-open-command (pcase system-type
-    ;; A sensible and simple default preamble for markdown exports that
-    ;; takes after the github asthetic (plus highlightjs syntax coloring).
-    (setq markdown-content-type "application/xhtml+xml"
-          markdown-css-paths
-          '("https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css"
-            "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/github.min.css")
-          markdown-xhtml-header-content
-          (concat "<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>"
-                   "<style> body { box-sizing: border-box; max-width: 740px; width: 100%; margin: 40px auto; padding: 0 10px; } </style>"
-                   "<script id='MathJax-script' async src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>"
-                   "<script src='https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/highlight.min.js'></script>"
-                  "<script>document.addEventListener('DOMContentLoaded', () => { document.body.classList.add('markdown-body'); document.querySelectorAll('pre[lang] > code').forEach((code) => { code.classList.add(code.parentElement.lang); }); document.querySelectorAll('pre > code').forEach((code) => { hljs.highlightBlock(code); }); });</script>"))))))
+  (:setopt markdown-list-indent-width 2
+           markdown-enable-highlighting-syntax t
+           markdown-fontify-code-blocks-natively t
+           markdown-gfm-additional-languages '("sh")
+           markdown-gfm-uppercase-checkbox t
+           ;; Command to convert markdown to HTML
+           markdown-command '("pandoc" "--from=markdown" "--to=html5")
+           markdown-open-command (pcase system-type
+                                   ('gnu/linux "xdg-open")
+                                   ('darwin "open")))
+  ;; A sensible and simple default preamble for markdown exports that
+  ;; takes after the github asthetic (plus highlightjs syntax coloring).
+  (:setopt markdown-content-type "application/xhtml+xml"
+           markdown-css-paths
+           '("https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css"
+             "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/github.min.css")
+           markdown-xhtml-header-content
+           (concat
+            "<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>"
+            "<style> body { box-sizing: border-box; max-width: 740px; width: 100%; margin: 40px auto; padding: 0 10px; } </style>"
+            "<script id='MathJax-script' async src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>"
+            "<script src='https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/highlight.min.js'></script>"
+            "<script>document.addEventListener('DOMContentLoaded', () => { document.body.classList.add('markdown-body'); document.querySelectorAll('pre[lang] > code').forEach((code) => { code.classList.add(code.parentElement.lang); }); document.querySelectorAll('pre > code').forEach((code) => { hljs.highlightBlock(code); }); });</script>")))
 
 (defun helheim-markdown-mode-h ()
   (setq tab-width 2
