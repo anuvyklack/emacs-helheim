@@ -17,10 +17,10 @@
 
 (setup embark
   (:install t)
-  (:setopt which-key-use-C-h-commands nil
-           prefix-help-command 'embark-prefix-help-command
-           ;; Display Emabark menus with Which-key.
-           embark-indicators '(+embark-which-key-indicator
+  ;; (:setopt which-key-use-C-h-commands nil)
+  ;; (setq prefix-help-command 'embark-prefix-help-command)
+  ;; Display Emabark menus with Which-key.
+  (:setopt embark-indicators '(+embark-which-key-indicator
                                embark-highlight-indicator
                                embark-isearch-highlight-indicator))
   ;; Hide the modeline of the Embark live/completions buffers.

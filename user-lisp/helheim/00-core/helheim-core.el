@@ -912,36 +912,46 @@ Use `delete-trailing-whitespace' command."
 (setup which-key
   (:after-init which-key-mode)
   (:setopt which-key-lighter nil
-           ;; Sorts by description to groups similar functions together.
-           which-key-sort-order 'which-key-description-order
+           which-key-sort-order 'which-key-key-order-alpha
            which-key-idle-delay 1.5
            which-key-idle-secondary-delay 0.25
            which-key-add-column-padding 1
            which-key-max-description-length 40
            which-key-show-remaining-keys t
-           which-key-ellipsis "…")
+           which-key-ellipsis "…"
+           which-key-allow-multiple-replacements nil)
+  ;; WARN: Following `which-key-replacement-alist' is tailored for
+  ;;   `which-key-allow-multiple-replacements' set to nil.
   (setq which-key-replacement-alist
         `(((nil . "which-key-show-next-page-no-cycle") . (nil . "wk next pg"))
-          (("RET" . nil) . ("Enter" . nil))
+          (("RET\\|<return>" . nil) . ("Enter" . nil))
           (("<backtab>" . nil) . ("S-tab" . nil))
+          ;; DEL -> Bsp
+          ;; M-DEL -> M-Bsp
+          (("\\([[:word:]-]*\\)DEL" . nil) . ("\\1Bsp" . nil))
           ;; <left> -> left
           ;; <C-m>  -> C-m
           (("<\\([[:alnum:]-]+\\)>") . ("\\1"))
           ;; ((nil . "copy-as-kill") . (nil . "copy"))
           ;; Strip meaningless packages prefixes.
           ,(cons `(nil . ,(rx line-start
-                              (or "consult-" "hel-" "helheim-" "elisp-"
+                              (or "consult-" "hel-" "helheim-"
+                                  "elisp-" "pp-" ;; elisp pretty print
                                   "xref-" "my-")))
                  '(nil . ""))
           ;; Display embark specific commands literally...
+          ;; WARN: If `which-key-allow-multiple-replacements' is t all follwing
+          ;;   settings will break and "embark-" prefix will be stripped from
+          ;;   ALL commands!
           ,(cons `(nil . ,(rx line-start
                               (or "embark-act" "embark-dwim" "embark-become"
                                   "embark-export" "embark-collect"
                                   "embark-cycle" "embark-live")
                               line-end))
                  '(nil . nil))
+          ((nil . "embark-copy-as-kill") . (nil . "copy"))
           ;; ... for other commands strip "embark-" prefix.
-          ((nil . "embark-") . (nil . "")))))
+          ((nil . "^embark-") . (nil . "")))))
 
 (setup which-key-posframe
   (:install t)
