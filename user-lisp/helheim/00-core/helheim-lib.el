@@ -144,35 +144,6 @@ The structure of INFO can be found in docstring of `posframe-show'."
           (- (+ window-top window-height)
              mode-line-height posframe-height 20))))
 
-;;; Leader maps
-
-(defun helheim-leader-prefix-map (&optional keys keymap)
-  "Return keymap that corresponds to KEY prefix inside KEYMAP."
-  (cond ((and keys keymap)
-         (helheim--leader-prefix-map (string-join (list "C-c" keys) " ")
-                                     keymap))
-        (keys
-         (helheim--leader-prefix-map keys mode-specific-map))
-        (keymap
-         (helheim-leader-map keymap))
-        (t
-         mode-specific-map)))
-
-(defun helheim-leader-map (&optional keymap)
-  "Return the keymap associated with \"C-c\" key in KEYMAP.
-If KEYMAP is not provided — return `mode-specific-map'."
-  (if keymap
-      (helheim--leader-prefix-map "C-c" keymap)
-    mode-specific-map))
-
-(defun helheim--leader-prefix-map (keys keymap)
-  (let ((map (keymap-lookup keymap keys)))
-    (if map
-        (cl-assert (keymapp map))
-      (setq map (make-sparse-keymap))
-      (keymap-set keymap keys map))
-    map))
-
 ;;; Utils
 
 (defun +original-value (symbol)

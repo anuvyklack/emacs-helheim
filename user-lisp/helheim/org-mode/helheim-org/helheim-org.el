@@ -5,73 +5,70 @@
   (with-eval-after-load 'org-keys
     (:with-keymap org-mode-map
       (:bind :state 'normal
-        "z '" 'org-edit-special
-        "z ," 'org-insert-structure-template
-        "z /" 'org-sparse-tree
-        ;; "z n" 'org-narrow-to-subtree
-        "g i" 'consult-org-heading
-        "g x" 'org-open-at-point
-        "g n" 'org-next-link
-        "g N" 'org-previous-link
-        "] l" 'org-next-link
-        "[ l" 'org-previous-link
+        "z '"  'org-edit-special
+        "z ,"  'org-insert-structure-template
+        "z /"  'org-sparse-tree
+        ;; "z n"  'org-narrow-to-subtree
+        "g i"  'consult-org-heading
+        "g x"  'org-open-at-point
+        "g n"  'org-next-link
+        "g N"  'org-previous-link
+        "] l"  'org-next-link
+        "[ l"  'org-previous-link
         ;; <local-leader>
-        "," (define-keymap
-              "RET" 'org-ctrl-c-ret ;; also on "z RET"
-              "'"   'org-edit-special
-              ","   'org-priority
-              "/"   'org-sparse-tree
-              "#"   'org-update-statistics-cookies
-              "a"   'org-attach
-              "e"   'org-export-dispatch
-              "i"   (cons "insert" 'helheim-org-insert-map)
-              "l"   (cons "links" 'helheim-org-link-map)
-              "o"   'org-open-at-point
-              "p"   'yank-media
-              "t"   'org-todo)))
+        ","    (define-keymap
+                 "RET" 'org-ctrl-c-ret ;; also on "z RET"
+                 "'"   'org-edit-special
+                 ","   'org-priority
+                 "/"   'org-sparse-tree
+                 "#"   'org-update-statistics-cookies
+                 "a"   'org-attach
+                 "e"   'org-export-dispatch
+                 "i"   '("insert" . helheim-org-insert-map)
+                 "l"   '("links" . helheim-org-link-map)
+                 "o"   'org-open-at-point
+                 "p"   'yank-media
+                 "t"   'org-todo)))
     ;; <leader>
-    (:with-keymap (helheim-leader-map org-mode-map)
+    (:with-keymap org-mode-map
       (:unbind
-        "'"  ;; `org-edit-special' — moved to ,' and z'
-        ","  ;; `org-priority'     — moved to ,' and z,
-        "/") ;; `org-sparse-tree'  — moved to ,' and z/
+        "C-c '"  ;; `org-edit-special' — moved to ,' and z'
+        "C-c ,"  ;; `org-priority'     — moved to ,' and z,
+        "C-c /") ;; `org-sparse-tree'  — moved to ,' and z/
       (:bind
-        "RET" 'dired-jump ;; rebind `org-ctrl-c-ret' which is moved to ", RET"
-        "i"  (cons "insert" 'helheim-org-insert-map)
-        "l"  (cons "links" 'helheim-org-link-map)
-        "t"  (cons "toggle"
-                   (define-keymap
-                     "i" '("link preview" . org-link-preview)
-                     "l" '("show/hide links" . org-toggle-link-display)
-                     "f" '("Table formula debugger" . org-table-toggle-formula-debugger)
-                     "o" '("Table coordinate overlays" . org-table-toggle-coordinate-overlays)))))
+        "C-c RET"  'dired-jump ;; rebind `org-ctrl-c-ret' which is moved to ", RET"
+        "C-c i"    '("insert" . helheim-org-insert-map)
+        "C-c l"    '("links"  . helheim-org-link-map)
+        ;; Toggle
+        "C-c t i"  '("link preview" . org-link-preview)
+        "C-c t l"  '("show/hide links" . org-toggle-link-display)
+        "C-c t f"  '("Table formula debugger" . org-table-toggle-formula-debugger)
+        "C-c t o"  '("Table coordinate overlays" . org-table-toggle-coordinate-overlays)))
     ;;
     ;; <leader> l or <local-leader> l
     (defvar-keymap helheim-org-link-map
       :prefix 'helheim-org-link-map
-      "l" '("Insert link" . org-insert-link)
-      "i" '("Insert last stored link" . org-insert-last-stored-link) ;; "i" for insert
-      "s" '("Store link" . org-store-link)
-      "a" '("Insert all links" . org-insert-all-links)
-      "u" '("Update id locations" . org-id-update-id-locations))
+      "l"  '("Insert link" . org-insert-link)
+      "i"  '("Insert last stored link" . org-insert-last-stored-link) ;; "i" for insert
+      "s"  '("Store link" . org-store-link)
+      "a"  '("Insert all links" . org-insert-all-links)
+      "u"  '("Update id locations" . org-id-update-id-locations))
     ;;
     ;; <leader> i or <local-leader> i
     (defvar-keymap helheim-org-insert-map
       :prefix 'helheim-org-insert-map
-      "l" '("Link" . org-insert-link)
-      "m" 'yank-media
-      "d" '("Deadline" . org-deadline)
-      "s" '("Schedule" . org-schedule)
-      "t" '("Time stamp" . org-time-stamp)
-      "T" '("Time stamp inactive" . org-time-stamp-inactive)
-      "Q" '("Set tags" . org-set-tags-command))))
+      "l"  '("Link" . org-insert-link)
+      "m"  'yank-media
+      "d"  '("Deadline" . org-deadline)
+      "s"  '("Schedule" . org-schedule)
+      "t"  '("Time stamp" . org-time-stamp)
+      "T"  '("Time stamp inactive" . org-time-stamp-inactive)
+      "Q"  '("Set tags" . org-set-tags-command))))
 
 (setup dired
   (:after-load
-    (:with-keymap dired-mode-map
-      (:bind ", a" 'org-attach-dired-to-subtree))
-    (:with-keymap (helheim-leader-map dired-mode-map)
-      (:bind "a" 'org-attach-dired-to-subtree))))
+    ;; dired-mode-map
+    (:bind ", a" '("org-attach file to node" . org-attach-dired-to-subtree))))
 
 ;;; Config
 

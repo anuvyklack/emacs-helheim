@@ -24,14 +24,11 @@
                ("typescriptlang.org" . typescript-ts-mode)
                ("jsfiddle.net" . js-ts-mode)
                ("w3schools.com" . js-ts-mode)))
-    (:with-keymap (helheim-leader-map atomic-chrome-edit-mode-map)
-      (:bind "SPC" 'atomic-chrome-close-current-buffer))
-    (:with-keymap (helheim-leader-prefix-map "t" atomic-chrome-edit-mode-map)
-      (:bind "s" '("Sync selection" . atomic-chrome-toggle-selection)))
     (:with-keymap atomic-chrome-edit-mode-map
       (:bind :state 'normal
         "Z Z" 'atomic-chrome-close-current-buffer)
       (:bind
+        "C-c t s" '("Sync selection" . atomic-chrome-toggle-selection)
         [remap save-buffers-kill-terminal] 'atomic-chrome-close-current-buffer))))
 
 ;;; .

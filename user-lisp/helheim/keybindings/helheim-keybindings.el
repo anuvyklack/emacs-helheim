@@ -1,4 +1,4 @@
-;;; helheim-keybindings.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-keybindings.el -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Commentary:
 ;;
 ;; If you want to see all key bindings in a keymap, place point (cursor) on it
@@ -25,57 +25,63 @@
 
 ;;; <Leader>
 
-(hel-keymap-set (helheim-leader-map)
-  "RET" 'dired-jump
-  "," 'switch-to-buffer
-  "/" 'consult-ripgrep ; "/" is for search in Hel
-  "d" 'dired-jump
-  "b" (cons "buffer"
-            (hel-keymap-set (helheim-leader-prefix-map "b")
-              "b" 'ibuffer-jump        ;; "<leader> bb"
-              "n" 'switch-to-buffer    ;; next key after "b"
-              "s" 'save-buffer
-              "w" 'write-file
-              "d" 'kill-current-buffer ;; also "C-w d"
-              "z" 'bury-buffer         ;; also "C-w z"
-              "g" 'revert-buffer       ;; also "C-w r"
-              "r" 'rename-buffer
-              "x" 'scratch-buffer
-              ;; Bookmarks
-              "RET" 'bookmark-jump
-              "m" 'bookmark-set
-              "M" 'bookmark-delete))
-  "f" (cons "file"
-            (hel-keymap-set (helheim-leader-prefix-map "f")
-              "b" 'switch-to-buffer
-              "f" 'find-file  ; select file in current dir or create new one
-              "/" 'consult-fd ; or `consult-find'
-              "d" 'dired
-              "l" 'locate
-              "r" '("Recent files" . recentf-open)
-              "w" 'write-file))
-  "o" (cons "open"
-            (hel-keymap-set (helheim-leader-prefix-map "o")
-              "f" 'treemacs ; from future
-              "i" 'imenu-list-smart-toggle))
-  "p" (cons "project"
-            (hel-keymap-set project-prefix-map
-              "RET" 'project-dired
-              ","   'project-switch-to-buffer
-              "/"   'project-find-regexp
-              "B"   'project-list-buffers))
-  "t" (cons "toggle"
-            (hel-keymap-set (helheim-leader-prefix-map "t")
-              "v" 'visual-line-mode
-              "w" '+wrap-line-mode
-              "r" '("Read only" . read-only-mode) ;; "C-x C-q"
-              "$" 'set-selective-display)) ;; "C-x $"
-  "s" (cons "search"
-            (hel-keymap-set search-map
-              "a" 'xref-find-apropos
-              "r" 'query-replace
-              "R" 'query-replace-regexp))
-  "v" (cons "version control" (helheim-leader-prefix-map "v")))
+(which-key-add-key-based-replacements
+  "C-c a"  "ai"
+  "C-c b"  "buffer / bookmark"
+  "C-c f"  "file"
+  "C-c o"  "open"
+  "C-c p"  "project"
+  "C-c t"  "toggle"
+  "C-c s"  "search"
+  "C-c v"  "version control")
+
+(hel-keymap-set mode-specific-map
+  "RET"   'dired-jump
+  ","     'switch-to-buffer
+  "/"     'consult-ripgrep ;; "/" is for search in Hel
+  "d"     'dired-jump
+  ;; Buffer
+  "b b"   '("ibuffer" . ibuffer-jump) ;; "<leader> bb"
+  "b n"   'switch-to-buffer ;; next key after "b"
+  "b s"   'save-buffer
+  "b w"   'write-file
+  "b d"   'kill-current-buffer ;; also "C-w d"
+  "b z"   'bury-buffer         ;; also "C-w z"
+  "b g"   'revert-buffer       ;; also "C-w r"
+  "b r"   'rename-buffer
+  "b x"   'scratch-buffer
+  ;; Bookmarks
+  "b RET" 'bookmark-jump
+  "b m"   'bookmark-set
+  "b M"   'bookmark-delete
+  ;; File
+  "f b"   'switch-to-buffer
+  "f f"   'find-file  ;; select file in current dir or create new one
+  "f /"   'consult-fd ;; or `consult-find'
+  "f d"   'dired
+  "f l"   'locate
+  "f r"   '("Recent files" . recentf-open)
+  "f w"   'write-file
+  ;; Open
+  ;; "o f"   'treemacs ; for future
+  ;; "o i"   'imenu-list-smart-toggle
+  ;; Project
+  "p"     (hel-keymap-set project-prefix-map
+            "RET" 'project-dired
+            ","   'project-switch-to-buffer
+            "/"   'project-find-regexp
+            "B"   'project-list-buffers)
+  ;; Toggle
+  "t d"   'display-line-numbers-mode
+  "t r"   'read-only-mode        ;; "C-x C-q"
+  "t v"   'visual-line-mode
+  "t w"   '+wrap-line-mode
+  "t $"   'set-selective-display ;; "C-x $"
+  ;; Search
+  "s"     (hel-keymap-set search-map
+            "a" 'xref-find-apropos
+            "r" 'query-replace
+            "R" 'query-replace-regexp))
 
 ;;; Button
 
@@ -105,8 +111,8 @@
 ;; <F1>
 (setup help
   (:with-keymap help-map
+    ;; Unclatter `help-map' to make `whick-key' useable.
     (:unbind
-      ;; Unclatter help-map to make `whick-key' useable.
       "<f1>" "C-h" "?" "<help>" ;; `help-for-help'
       "C-e"  ;; `view-external-packages' — irrelevant or outdated information
       "C-o"  ;; `describe-distribution'
@@ -145,6 +151,8 @@
   (hel-advice-add 'Info-prev-reference :before #'hel-deactivate-mark-a)
   (:after-load
     (:with-keymap Info-mode-map
+      (:bind
+        "C-c s a" 'info-apropos)
       (:bind :state 'normal
         "C-j"   'Info-next
         "C-k"   'Info-prev
@@ -167,9 +175,17 @@
         ;;
         "z i"   'Info-index
         "z I"   'Info-virtual-index
-        "C-c s a" 'info-apropos
         ;;
-        "M-h"   'Info-help))))
+        "M-h"   'Info-help
+        ;; <local-leader>
+        "," (define-keymap
+              "t" 'Info-toc
+              "i" 'Info-index
+              "I" 'Info-virtual-index
+              "m" 'Info-menu
+              "h" 'Info-history
+              "u" 'Info-history-back
+              "U" 'Info-history-forward)))))
 
 ;;; Man
 
@@ -225,6 +241,14 @@
 ;;; Repeat mode
 
 (put 'other-window 'repeat-map nil) ;; Use "." key instead.
+
+;;; tab-bar
+
+(setup tab-bar
+  (:with-keymap tab-bar-history-mode-map
+    (:unbind
+      "C-c <left>"
+      "C-c <right>")))
 
 ;;; .
 (provide 'helheim-keybindings)

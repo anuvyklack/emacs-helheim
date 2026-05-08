@@ -94,8 +94,7 @@
       "g n"     'magit-next-reference
       "g p"     'magit-previous-reference
       "g N"     'magit-previous-reference
-      "C-c C-c" 'magit-dispatch
-      "C-c SPC" 'magit-dispatch))
+      "C-c C-c" 'magit-dispatch))
   ;;
   ;; Repeat keymap
   (:with-keymap magit-reference-navigation-repeat-map

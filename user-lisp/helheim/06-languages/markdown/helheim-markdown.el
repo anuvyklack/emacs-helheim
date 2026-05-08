@@ -3,31 +3,33 @@
 
 (setup markdown-mode
   (:after-load
-    (:with-keymap markdown-mode-map
-      (:bind :state 'normal
-        ;; "<tab>"     'markdown-cycle
-        ;; "<backtab>" 'markdown-shifttab
-        ;; "RET"   'markdown-do
-        ;; "{"     'markdown-backward-paragraph
-        ;; "}"     'markdown-forward-paragraph
-        "m h"   'markdown-mark-subtree
-        "m i h" 'markdown-mark-subtree
-        "z '"   'markdown-edit-code-block
-        "z u"   'markdown-outline-up
-        "z j"   'markdown-outline-next
-        "z k"   'markdown-outline-previous
-        "C-k"   'markdown-outline-previous-same-level
-        "C-j"   'markdown-outline-next-same-level
-        "C-<up>"   'markdown-outline-previous-same-level
-        "C-<down>" 'markdown-outline-next-same-level
-        ;; "<return>" 'markdown-toggle-markup-hiding
-        "M-<up>"   'markdown-move-up
-        "M-<down>" 'markdown-move-down
-        "z ,"   'markdown-insert-gfm-code-block)))
-  (:with-keymap (helheim-leader-prefix-map "t" markdown-mode-map)
+    ;; markdown-mode-map
+    (:bind :state 'normal
+      ;; "<tab>"    'markdown-cycle
+      ;; "<backtab>" 'markdown-shifttab
+      ;; "RET"      'markdown-do
+      ;; "{"        'markdown-backward-paragraph
+      ;; "}"        'markdown-forward-paragraph
+      "m h"      'markdown-mark-subtree
+      "m i h"    'markdown-mark-subtree
+      "z '"      'markdown-edit-code-block
+      "z u"      'markdown-outline-up
+      "z j"      'markdown-outline-next
+      "z k"      'markdown-outline-previous
+      "C-k"      'markdown-outline-previous-same-level
+      "C-j"      'markdown-outline-next-same-level
+      "C-<up>"   'markdown-outline-previous-same-level
+      "C-<down>" 'markdown-outline-next-same-level
+      ;; "<return>" 'markdown-toggle-markup-hiding
+      "M-<up>"   'markdown-move-up
+      "M-<down>" 'markdown-move-down
+      "z ,"      'markdown-insert-gfm-code-block)
     (:bind
-      "l" '("show/hide links" . markdown-toggle-url-hiding)
-      "m" '("show/hide markup" . markdown-toggle-markup-hiding))))
+      ;; toggle
+      "C-c t i"  '("show/hide images" . markdown-toggle-inline-images)
+      "C-c t l"  '("show/hide links" . markdown-toggle-url-hiding)
+      "C-c t m"  '("show/hide markup" . markdown-toggle-markup-hiding)
+      "C-c t M"  '("show/hide LaTeX math" . markdown-toggle-math))))
 
 ;;; Config
 
