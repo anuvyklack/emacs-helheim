@@ -73,12 +73,13 @@
 
   (:with-keymap embark-region-map
     (:unbind
-      "u"  ;; `upcase-region'
-      "l"  ;; `downcase-region'
-      "t"  ;; `transpose-regions'
-      ";"  ;; `comment-or-uncomment-region'
-      "+"  ;; `append-to-file'
-      "n") ;; `hel-narrow-to-region-indirectly'
+      "u"  ;; `upcase-region'   - "gU" in Hel
+      "l"  ;; `downcase-region' - "gu" in Hel
+      "t"  ;; `transpose-regions' - very obscure command
+      ";"  ;; `comment-or-uncomment-region' - "gc" in hel
+      "+"  ;; `append-to-file' - legacy from a bygone era
+      "n"  ;; `narrow-to-region' - "zn" in Hel
+      "F") ;; `whitespace-cleanup-region' - moved to "w"
     (:bind
       "<left>"  'indent-rigidly
       "<right>" 'indent-rigidly
@@ -170,7 +171,7 @@
 
   (:with-keymap embark-expression-map
     (:unbind "k"
-      ;; Use `hel-paredit' instead.
+      ;; Use `hel-paredit' instead of following commands
       "r"  ;; `raise-sexp'
       "u"  ;; `backward-up-list'
       "n"  ;; `forward-list'
@@ -227,7 +228,8 @@
       "Y"   'embark-save-unicode-character)) ;; "W"
 
   (:with-keymap embark-prose-map
-    (:unbind "F"
+    (:unbind
+      "F"  ;; `whitespace-cleanup-region'
       "u"  ;; `upcase-region'
       "l") ;; `downcase-region'
     (:bind
