@@ -771,16 +771,19 @@ Use `delete-trailing-whitespace' command."
 ;;;; Calendar
 
 (setup calendar
-  (:setopt calendar-week-start-day 1)) ;; Monday
-
-(add-to-list 'display-buffer-alist
-             '((major-mode . calendar-mode)
-               ;; display-buffer-at-bottom ;; display-buffer-below-selected
-               ;; (window-height . shrink-window-if-larger-than-buffer)
-               display-buffer-in-side-window
-               (side . bottom)
-               ;; (slot . -1) ;; -1 == L  0 == Mid 1 == R
-               (body-function . select-window)))
+  (:setopt calendar-week-start-day 1) ;; Monday
+  (:hook calendar-mode-hook
+         (defun helheim-calendar-mode-h ()
+           (setq-local revert-buffer-function (lambda (&rest _)
+                                                (calendar-redraw)))))
+  (add-to-list 'display-buffer-alist
+               '((major-mode . calendar-mode)
+                 ;; display-buffer-at-bottom ;; display-buffer-below-selected
+                 ;; (window-height . shrink-window-if-larger-than-buffer)
+                 display-buffer-in-side-window
+                 (side . bottom)
+                 ;; (slot . -1) ;; -1 == L  0 == Mid 1 == R
+                 (body-function . select-window))))
 
 ;;;; Completion
 
