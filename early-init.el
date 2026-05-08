@@ -58,11 +58,6 @@
 ;; `set-language-environment' sets default-input-method, which is unwanted.
 (setq default-input-method nil)
 
-;; Increase how much is read from processes in a single chunk
-(setq read-process-output-max (* 2 1024 1024))  ; 1024kb
-
-(setq process-adaptive-read-buffering nil)
-
 ;; Don't ping things that look like domain names.
 (setq ffap-machine-p-known 'reject)
 
@@ -81,6 +76,11 @@
 (setq ad-redefinition-action 'accept)
 
 ;;; Performance
+
+(setq process-adaptive-read-buffering nil)
+
+;; Increase how much is read from processes in a single chunk
+(setq read-process-output-max (* 2 1024 1024)) ; 1024kb
 
 ;; Font compacting can be very resource-intensive, especially when rendering
 ;; icon fonts on Windows. This will increase memory usage.
