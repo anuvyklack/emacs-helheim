@@ -1,0 +1,15 @@
+* helheim-mcp-server
+
+This module installs [[https://github.com/rhblind/emacs-mcp-server][emacs-mcp-server]] — a pure Elisp MCP server for Emacs.
+
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-mcp-server)
+#+end_src
+
+See [[https://github.com/rhblind/emacs-mcp-server][emacs-mcp-server documentation]] on how to configure you agent (or ask it to
+do it itself).
+
+** Hacks
+
+- Do not ask about killing mcp-server process on exit.

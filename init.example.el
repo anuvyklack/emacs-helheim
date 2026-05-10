@@ -99,7 +99,8 @@
 
 ;;; LLM
 
-(require 'helheim-agent-shell)
+; (require 'helheim-agent-shell)
+; (require 'helheim-mcp-server)
 
 ;;; Other modules
 
