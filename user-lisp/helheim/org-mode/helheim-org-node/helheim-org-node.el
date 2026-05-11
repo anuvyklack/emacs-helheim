@@ -22,16 +22,17 @@
     "C-c n r"  '("open random node" . org-node-visit-random)
     "C-c n /"  '("search in all nodes" . org-node-grep)
     ;; "C-c n s"  'org-node-seq-dispatch
-    "C-c n x"  (define-keymap
-                 "t" 'org-mem-list-title-collisions ; "t" for title
-                 "a" 'org-node-rename-asset-and-rewrite-links
-                 "p" 'org-mem-list-problems
-                 "d" 'org-mem-list-dead-id-links
-                 "e" 'org-node-list-example
-                 "f" 'org-node-list-files
-                 "l" 'org-node-lint-all-files
-                 "r" 'org-node-list-reflinks
-                 "x" 'org-mem-reset))
+    "C-c n x"  (cons "maintenance"
+                     (define-keymap
+                       "t" 'org-mem-list-title-collisions ; "t" for title
+                       "a" 'org-node-rename-asset-and-rewrite-links
+                       "p" 'org-mem-list-problems
+                       "d" 'org-mem-list-dead-id-links
+                       "e" 'org-node-list-example
+                       "f" 'org-node-list-files
+                       "l" 'org-node-lint-all-files
+                       "r" 'org-node-list-reflinks
+                       "x" '("reset org-mem cache" . org-mem-reset))))
   ;; Keys active in Org-mode
   (with-eval-after-load 'org-keys
     (require 'helheim-org-keys)

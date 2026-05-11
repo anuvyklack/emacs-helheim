@@ -17,15 +17,15 @@
 ;;; Keybindings
 
 ;; <leader>
-(keymap-global-set "C-c n d" '("Daily note" . helheimg-daily-note))
+(keymap-global-set "C-c n d" '("open daily note" . helheimg-daily-note))
 
 (add-hook 'org-mode-hook 'helheim-daily--set-keys)
 
 (defun helheim-daily--set-keys ()
   (when (helheim-daily-note-p)
     (hel-keymap-overriding-set :state 'normal
-      "] ]" '("Next daily note" . helheim-daily-next)
-      "[ [" '("Prev daily note" . helheim-daily-previous))))
+      "] ]" '("next daily note" . helheim-daily-next)
+      "[ [" '("previous daily note" . helheim-daily-previous))))
 
 ;;; Code
 

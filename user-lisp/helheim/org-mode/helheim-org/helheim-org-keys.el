@@ -3,7 +3,7 @@
 (setup org
   (which-key-add-key-based-replacements
     "C-c n"  "notes")
-  ;; Keys available from anywhere.
+  ;; Keys available everywhere
   (:global-bind
     "C-c n a"  'org-agenda
     "C-c n c"  'org-capture
