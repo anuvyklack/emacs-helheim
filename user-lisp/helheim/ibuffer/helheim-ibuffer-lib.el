@@ -54,14 +54,14 @@
                               (1 ", 1 process")
                               (_ (format ", %d processes" procs)))))))
   (let ((filename (ibuffer-make-column-filename buffer mark)))
-    (or (if-let ((proc (get-buffer-process buffer)))
+    (or (if-let* ((proc (get-buffer-process buffer)))
             (concat (propertize (format "(%s %s)" proc (process-status proc))
                                 'font-lock-face 'italic
                                 'ibuffer-process proc)
                     (if (length> filename 0)
                         (format " %s" filename)
                       "")))
-        (if-let ((root (-some-> (project-current) (project-root))))
+        (if-let* ((root (-some-> (project-current) (project-root))))
             (let ((filename (file-relative-name filename root)))
               (if (or (member filename '("./" ".")))
                   ""
@@ -138,9 +138,9 @@ If FILES-ONLY is non-nil, only show the file-visiting buffers."
             (lambda (buffer qualifier)
               (condition-case nil
                   (with-current-buffer buffer
-                    (if-let ((dir (if-let ((filename (ibuffer-buffer-file-name)))
-                                      (file-name-directory filename)
-                                    default-directory)))
+                    (if-let* ((dir (if-let ((filename (ibuffer-buffer-file-name)))
+                                       (file-name-directory filename)
+                                     default-directory)))
                         (string-match qualifier (expand-file-name dir))))
                 (error (ibuffer-pop-filter))))))
 

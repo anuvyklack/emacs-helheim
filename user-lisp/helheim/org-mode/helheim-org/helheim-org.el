@@ -47,7 +47,7 @@
         (setopt eldoc-help-at-pt t) ;; since Emacs 31
       (define-advice org-eldoc-documentation-function (:before-until (&rest _) helheim)
         "Display link target in echo area when cursor/mouse is over it."
-        (if-let ((url (thing-at-point 'url t)))
+        (if-let* ((url (thing-at-point 'url t)))
             (format "LINK: %s" url))))
     ;; HACK Fix #2972: infinite recursion when eldoc kicks in 'org' or 'python'
     ;;   src blocks.

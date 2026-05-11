@@ -174,9 +174,9 @@ No argument or nil as argument means use the current buffer."
   (with-current-buffer (or buffer (current-buffer))
     (or (buffer-file-name)
         ;; Dired buffer
-        (if-let ((directory (pcase (bound-and-true-p dired-directory)
-                              ((and (pred stringp) dir) dir)
-                              (`(,dir . ,_) dir))))
+        (if-let* ((directory (pcase (bound-and-true-p dired-directory)
+                               ((pred stringp) dired-directory)
+                               (`(,dir . ,_) dir))))
             (expand-file-name directory))
         ;; Indirect buffer
         (if (buffer-base-buffer)
