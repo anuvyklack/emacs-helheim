@@ -40,11 +40,11 @@
 ;; Embark Org extension
 ;; --------------------
 ;; - embark-meta-map
-;;   - embark-general-map
-;;     - embark-heading-map
+;;   + embark-general-map
+;;     + embark-heading-map
 ;;       - embark-org-heading-map
-;;     - embark-org-table-cell-map
-;;     - embark-org-table-map
+;;     + embark-org-table-cell-map
+;;     + embark-org-table-map
 ;;     - embark-org-link-map
 ;;     - embark-org-src-block-map
 ;;     - embark-org-inline-src-block-map
@@ -264,14 +264,14 @@
   (:after-load
     (:with-keymap embark-org-table-cell-map
       (:unbind
+        "e"  ;; `org-table-edit-field' -- moved to ' to be aligned with z'
+        "h"  ;; `org-table-insert-hline' -- replaced with "J" / "K" keys
         ;; Use M-j / M-k instead
         "^"  ;; `org-table-move-row-up'
         "v"  ;; `org-table-move-row-down'
         ;; Use M-h / M-l instead
         "<"  ;; `org-table-move-column-left'
-        ">"  ;; `org-table-move-column-right'
-        "e"  ;; `org-table-edit-field' -- moved to ' to be aligned with z'
-        "h") ;; `org-table-insert-hline' -- replaced with "J" / "K" keys
+        ">") ;; `org-table-move-column-right'
       (:bind
         "'" 'org-table-edit-field
         "v" 'org-table-insert-column
@@ -281,10 +281,9 @@
         "K" '+org-table-insert-hline-above))
     ;;
     (:with-keymap embark-org-table-map
-      (:unbind
-        "y") ;; moved to "p"
+      (:unbind "y")
       (:bind
-        "p" 'org-table-paste-rectangle))))
+        "p" 'org-table-paste-rectangle)))) ; "y"
 
 ;;; .
 (provide 'helheim-embark '(keys))
