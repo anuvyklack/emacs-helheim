@@ -1,4 +1,4 @@
-;;; helheim-elpaca.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-elpaca.el             -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Commentary:
 ;;
 ;; Install and setup Elpaca package manager.

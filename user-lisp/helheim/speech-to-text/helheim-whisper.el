@@ -1,4 +1,4 @@
-;;; helheim-whisper.el -*- lexical-binding: t; no-byte-compile: t -*-
+;;; helheim-whisper.el            -*- lexical-binding: t; no-byte-compile: t -*-
 
 (setup whisper
   (:install whisper :host github :repo "natrys/whisper.el")

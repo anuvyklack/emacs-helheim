@@ -1,4 +1,4 @@
-;;; helheim-tab-bar.el -*- lexical-binding: t; no-byte-compile: t -*-
+;;; helheim-tab-bar.el            -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Commentary:
 ;;
 ;; Each tab represents a set of windows (like in Vim).

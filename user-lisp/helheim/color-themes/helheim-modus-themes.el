@@ -1,4 +1,4 @@
-;;; helheim-modus-themes.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-modus-themes.el       -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Code:
 
 ;; We restore this variable at the end of the file.

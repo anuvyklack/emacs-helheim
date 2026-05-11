@@ -1,4 +1,4 @@
-;;; helheim-eglot.el -*- lexical-binding: t; no-byte-compile: t -*-
+;;; helheim-eglot.el              -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Commentary:
 ;;
 ;; TODO:
@@ -18,11 +18,11 @@
         "<f2>" 'eglot-rename
         "K"    'eldoc-box-help-at-point
         "M"    'eldoc-box-help-at-point
-        "g d"  '("Definition" . xref-find-definitions)
-        "g r"  '("References" . xref-find-references)
-        "g D"  '("Declaration" . eglot-find-declaration)
-        "g t"  '("Type definition" . eglot-find-typeDefinition)
-        "g i"  '("Implementations" . eglot-find-implementation))
+        "g d"  '("definition" . xref-find-definitions)
+        "g r"  '("references" . xref-find-references)
+        "g D"  '("declaration" . eglot-find-declaration)
+        "g t"  '("type definition" . eglot-find-typeDefinition)
+        "g i"  '("implementations" . eglot-find-implementation))
       (:bind
         ;; Toggle
         "C-c t h" 'eglot-inlay-hints-mode
@@ -32,17 +32,17 @@
                       (define-keymap
                         "RET" '("LSP reconnect" . eglot-reconnect)
                         "Q"   '("LSP shutdown" . eglot-shutdown)
-                        "r"   '("Rename" . eglot-rename)
-                        "f"   '("Format" . eglot-format)
-                        "="   '("Format" . eglot-format)
-                        "a"   '("Code actions" . eglot-code-actions)
-                        "o"   '("Organize imports" . eglot-code-action-organize-imports)
-                        "q"   '("Quickfix" . eglot-code-action-quickfix)
-                        "e"   '("Refactor Extract" . eglot-code-action-extract)
-                        "i"   '("Rewrite Inline" . eglot-code-action-inline)
-                        "R"   '("Refactor Rewrite" eglot-code-action-rewrite)
-                        "t"   '("Type hierarchy" . eglot-show-type-hierarchy)
-                        "c"   '("Call hierarchy" . eglot-show-call-hierarchy)))))))
+                        "r"   '("rename" . eglot-rename)
+                        "f"   '("format" . eglot-format)
+                        "="   '("format" . eglot-format)
+                        "a"   '("code actions" . eglot-code-actions)
+                        "o"   '("organize imports" . eglot-code-action-organize-imports)
+                        "q"   '("quickfix" . eglot-code-action-quickfix)
+                        "e"   '("refactor extract" . eglot-code-action-extract)
+                        "i"   '("rewrite inline" . eglot-code-action-inline)
+                        "R"   '("refactor rewrite" eglot-code-action-rewrite)
+                        "t"   '("type hierarchy" . eglot-show-type-hierarchy)
+                        "c"   '("call hierarchy" . eglot-show-call-hierarchy)))))))
 
 (setup flymake
   (:after-load
@@ -51,8 +51,8 @@
         "] d"  '("Next diagnostic" . flymake-goto-next-error)
         "[ d"  '("Prev diagnostic" . flymake-goto-prev-error))
       (:bind
-        "C-c l d"  '("Diagnostic" . flymake-show-buffer-diagnostics)
-        "C-c l D"  '("Project diagnostic" . flymake-show-project-diagnostics)))
+        "C-c l d"  '("diagnostics" . flymake-show-buffer-diagnostics)
+        "C-c l D"  '("project diagnostics" . flymake-show-project-diagnostics)))
     ;; Flymake buffer
     (:with-keymap flymake-diagnostics-buffer-mode-map
       (:bind

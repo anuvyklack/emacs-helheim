@@ -1,4 +1,4 @@
-;;; helheim-minibuffer.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-minibuffer.el         -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Code:
 ;;; Keybindings
 

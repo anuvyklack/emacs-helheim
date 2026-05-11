@@ -1,4 +1,4 @@
-;;; helheim-deadgrep-lib.el -*- lexical-binding: t -*-
+;;; helheim-deadgrep-lib.el                           -*- lexical-binding: t -*-
 
 (eval-when-compile (require 'hel-common))
 

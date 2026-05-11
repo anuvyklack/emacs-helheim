@@ -1,4 +1,4 @@
-;;; helheim-edit-indirect.el -*- lexical-binding: t; no-byte-compile: t -*-
+;;; helheim-edit-indirect.el      -*- lexical-binding: t; no-byte-compile: t -*-
 
 (hel-keymap-global-set :state 'normal
   "z n" 'helheim-edit-region-indirect) ; replace `hel-narrow-to-region-indirectly'

@@ -1,4 +1,4 @@
-;;; helheim-outline.el -*- lexical-binding: t; no-byte-compile: t -*-
+;;; helheim-outline.el            -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Config
 
 (setup outline

@@ -1,4 +1,4 @@
-;;; helheim-ibuffer-lib.el -*- lexical-binding: t -*-
+;;; helheim-ibuffer-lib.el                            -*- lexical-binding: t -*-
 
 (eval-when-compile
   (require 'cl-lib)

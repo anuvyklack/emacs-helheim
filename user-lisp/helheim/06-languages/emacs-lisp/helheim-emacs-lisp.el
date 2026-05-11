@@ -1,4 +1,4 @@
-;;; helheim-emacs-lisp.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-emacs-lisp.el         -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Code:
 
 (require 'hel)

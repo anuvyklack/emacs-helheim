@@ -1,4 +1,4 @@
-;;; helheim-deadgrep.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-deadgrep.el           -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Config
 
 ;; (require 'hel)

@@ -1,4 +1,4 @@
-;;; helheim-notmuch-lib.el -*- lexical-binding: t -*-
+;;; helheim-notmuch-lib.el                            -*- lexical-binding: t -*-
 ;;; Code:
 
 (require 'hel)

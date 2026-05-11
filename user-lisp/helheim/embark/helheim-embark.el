@@ -1,4 +1,4 @@
-;;; helheim-embark.el -*- lexical-binding: t; no-byte-compile: t -*-
+;;; helheim-embark.el             -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Keybindings
 
 (require 'hel)

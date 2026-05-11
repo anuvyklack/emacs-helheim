@@ -1,4 +1,4 @@
-;;; helheim-ibuffer.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-ibuffer.el            -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Customization
 
 (defcustom helheim-ibuffer-not-project-buffer-filters

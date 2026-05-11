@@ -1,4 +1,4 @@
-;;; helheim-notmuch-keys.el -*- lexical-binding: t; no-byte-compile: t -*-
+;;; helheim-notmuch-keys.el       -*- lexical-binding: t; no-byte-compile: t -*-
 
 (setup notmuch
   (hel-set-initial-state 'notmuch-hello-mode  'motion)

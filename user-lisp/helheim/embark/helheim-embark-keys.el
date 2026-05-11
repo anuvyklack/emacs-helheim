@@ -1,4 +1,4 @@
-;;; helheim-embark-keys.el -*- lexical-binding: t; no-byte-compile: t -*-
+;;; helheim-embark-keys.el        -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Commentary:
 ;;
 ;; Original Embark keybindings are tailored for Emacs.

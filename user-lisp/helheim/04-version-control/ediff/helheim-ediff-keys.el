@@ -1,4 +1,4 @@
-;;; helheim-ediff-keys.el -*- lexical-binding: t -*-
+;;; helheim-ediff-keys.el                             -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;
 ;; All credit goes to the `evil-collection' package.

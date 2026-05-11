@@ -1,4 +1,4 @@
-;;; helheim-outline-lib.el -*- lexical-binding: t -*-
+;;; helheim-outline-lib.el                            -*- lexical-binding: t -*-
 
 (require 'outline)
 (require 'hel)

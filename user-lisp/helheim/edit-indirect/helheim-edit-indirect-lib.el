@@ -1,4 +1,4 @@
-;;; helheim-edit-indirect-lib.el -*- lexical-binding: t -*-
+;;; helheim-edit-indirect-lib.el                      -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;
 ;; Intorduce `helheim-edit-indirect' command, which differs from

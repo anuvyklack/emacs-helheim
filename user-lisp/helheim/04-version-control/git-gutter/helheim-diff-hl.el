@@ -1,4 +1,4 @@
-;;; helheim-diff-hl.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-diff-hl.el            -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Config
 
 (setup diff-hl

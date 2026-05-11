@@ -1,4 +1,4 @@
-;;; helheim-straight.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-straight.el           -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Commentary:
 ;;
 ;; Install and setup Straight.el package manager.

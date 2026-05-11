@@ -1,4 +1,4 @@
-;;; helheim-sh.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-sh.el                 -*- lexical-binding: t; no-byte-compile: t -*-
 
 ;; (executable-find "bash-language-server")
 ;; (executable-find "shellcheck")

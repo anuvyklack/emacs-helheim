@@ -1,4 +1,4 @@
-;;; helheim-magit.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-magit.el              -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Keybindings
 
 ;; Entry points

@@ -1,4 +1,4 @@
-;;; helheim-embark-lib.el -*- lexical-binding: t -*-
+;;; helheim-embark-lib.el                             -*- lexical-binding: t -*-
 ;;; Display Emabark menus with Which-key
 ;; From: https://github.com/oantolin/embark/wiki/Additional-Configuration#use-which-key-like-a-key-menu-prompt
 

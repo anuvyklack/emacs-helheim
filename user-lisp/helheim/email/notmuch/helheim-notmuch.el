@@ -1,4 +1,4 @@
-;;; helheim-notmuch.el -*- lexical-binding: t; no-byte-compile: t -*-
+;;; helheim-notmuch.el            -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Customizing
 
 (defcustom +notmuch-delete-tags '("+trash")

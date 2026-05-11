@@ -1,4 +1,4 @@
-;;; helheim-dired-lib.el -*- lexical-binding: t -*-
+;;; helheim-dired-lib.el                              -*- lexical-binding: t -*-
 ;;; Code:
 
 (eval-when-compile (require 'dash))

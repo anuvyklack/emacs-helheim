@@ -1,4 +1,4 @@
-;;; helheim-setup.el -*- lexical-binding: t -*-
+;;; helheim-setup.el                                  -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;
 ;; `setup' doesn't rearrange blocks of code — it is not declarative.

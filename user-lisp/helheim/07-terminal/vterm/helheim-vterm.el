@@ -1,4 +1,4 @@
-;;; helheim-vterm.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-vterm.el              -*- lexical-binding: t; no-byte-compile: t -*-
 
 (setup vterm
   (:install t)

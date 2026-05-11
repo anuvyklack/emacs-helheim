@@ -1,4 +1,4 @@
-;;; helheim-ibuffer-keys.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-ibuffer-keys.el       -*- lexical-binding: t; no-byte-compile: t -*-
 
 (require 'ibuffer)
 

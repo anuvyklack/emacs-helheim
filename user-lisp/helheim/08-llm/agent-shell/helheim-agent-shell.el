@@ -1,4 +1,4 @@
-;;; helheim-agent-shell.el -*- lexical-binding: t; no-byte-compile: t -*-
+;;; helheim-agent-shell.el        -*- lexical-binding: t; no-byte-compile: t -*-
 
 (setup agent-shell
   (:install t)

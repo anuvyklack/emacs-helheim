@@ -1,4 +1,4 @@
-;;; helheim-magit-keys.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-magit-keys.el         -*- lexical-binding: t; no-byte-compile: t -*-
 
 (require 'magit)
 

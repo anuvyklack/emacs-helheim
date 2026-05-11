@@ -1,4 +1,4 @@
-;;; helheim-disable-isearch.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-disable-isearch.el    -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Commentary:
 ;;
 ;; This module unbinds Isearch keys. Isearch doesn't play well with multiple

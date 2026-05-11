@@ -1,4 +1,4 @@
-;;; helheim-dired.el -*- lexical-binding: t; no-byte-compile: t -*-
+;;; helheim-dired.el              -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Code:
 
 (setup casual (:install t))

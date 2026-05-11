@@ -1,4 +1,4 @@
-;;; helheim-consult.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-consult.el            -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Config
 
 (setup consult

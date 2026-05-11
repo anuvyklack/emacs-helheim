@@ -1,4 +1,4 @@
-;;; helheim-ediff.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-ediff.el              -*- lexical-binding: t; no-byte-compile: t -*-
 
 (setup ediff
   (:hook ediff-keymap-setup-hook helheim-ediff-setup-keys)

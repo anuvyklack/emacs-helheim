@@ -1,4 +1,4 @@
-;;; wrap-line.el -*- lexical-binding: t -*-
+;;; wrap-line.el                                      -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;
 ;; This module defines `+wrap-line-mode' — a minor-mode, which visually

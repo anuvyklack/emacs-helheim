@@ -1,4 +1,4 @@
-;;; helheim-completion.el -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; helheim-completion.el         -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Keybindings
 
 (setup corfu

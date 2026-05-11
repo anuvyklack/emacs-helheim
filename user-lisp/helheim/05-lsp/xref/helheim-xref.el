@@ -1,4 +1,4 @@
-;;; helheim-xref.el -*- lexical-binding: t; no-byte-compile: t -*-
+;;; helheim-xref.el               -*- lexical-binding: t; no-byte-compile: t -*-
 
 (setup xref
   ;; (:install t)
