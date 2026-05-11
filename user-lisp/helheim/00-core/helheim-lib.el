@@ -162,7 +162,7 @@ HOOK should be a symbol."
   (if (local-variable-p hook)
       (append (->> (buffer-local-value hook (current-buffer))
                    (-remove-item t))
-              (default-value hook))
+              (ensure-list (default-value hook)))
     ;; else
     (ensure-list (symbol-value hook))))
 
