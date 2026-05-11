@@ -21,6 +21,7 @@
     (:bind :state 'normal
       "z '"  'org-edit-special
       "z ,"  'org-insert-structure-template
+      "z `"  'org-table-edit-field
       "z /"  'org-sparse-tree
       ;; "z n"  'org-narrow-to-subtree
       "g p"  'consult-org-heading

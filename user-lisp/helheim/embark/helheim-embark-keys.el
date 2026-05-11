@@ -252,14 +252,40 @@
       ;; `m' and `u' are used for selecting and unselecting in Dired like buffers.
       "m"   'hel-embark-select
       "u"   'hel-embark-select
-      "y"   'embark-copy-as-kill))
+      "y"   'embark-copy-as-kill)))
 
-  (with-eval-after-load 'embark-consult
+(setup embark-consult
+  (:after-load
     (:with-keymap embark-consult-rerun-map
       (:unbind "g")
       (:bind "g r" 'embark-rerun-collect-or-export))))
 
+(setup embark-org
+  (:after-load
+    (:with-keymap embark-org-table-cell-map
+      (:unbind
+        ;; Use M-j / M-k instead
+        "^"  ;; `org-table-move-row-up'
+        "v"  ;; `org-table-move-row-down'
+        ;; Use M-h / M-l instead
+        "<"  ;; `org-table-move-column-left'
+        ">"  ;; `org-table-move-column-right'
+        "e"  ;; `org-table-edit-field' -- moved to ' to be aligned with z'
+        "h") ;; `org-table-insert-hline' -- replaced with "J" / "K" keys
+      (:bind
+        "'" 'org-table-edit-field
+        "v" 'org-table-insert-column
+        "j" '+org-table-insert-row-below
+        "k" '+org-table-insert-row-above
+        "J" '+org-table-insert-hline-below
+        "K" '+org-table-insert-hline-above))
+    ;;
+    (:with-keymap embark-org-table-map
+      (:unbind
+        "y") ;; moved to "p"
+      (:bind
+        "p" 'org-table-paste-rectangle))))
+
 ;;; .
 (provide 'helheim-embark '(keys))
 ;;; helheim-embark-keys.el ends here
-

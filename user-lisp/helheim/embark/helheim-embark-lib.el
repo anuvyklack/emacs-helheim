@@ -45,6 +45,22 @@ the first target at point."
   (embark-select)
   (next-line))
 
+(defun +org-table-insert-row-above ()
+  (interactive)
+  (org-table-insert-row))
+
+(defun +org-table-insert-row-below ()
+  (interactive)
+  (org-table-insert-row t))
+
+(defun +org-table-insert-hline-above ()
+  (interactive)
+  (org-table-insert-hline t))
+
+(defun +org-table-insert-hline-below ()
+  (interactive)
+  (org-table-insert-hline))
+
 ;;; .
 (provide 'helheim-embark '(lib))
 ;;; helheim-embark-lib.el ends here
