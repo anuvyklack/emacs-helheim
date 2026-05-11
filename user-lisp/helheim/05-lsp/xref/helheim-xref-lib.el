@@ -36,11 +36,13 @@ In practice, however, `xref-find-backend' simply calls each function in
 (`cl-defgeneric' will dispatch on). In practice typical get backend function
 looks like this:
 
-  (defun eglot-xref-backend () \"Eglot xref backend.\" 'eglot)
+  (defun eglot-xref-backend ()
+    \"Eglot xref backend.\"
+    'eglot)
 
 Such functions contain no logic of their own, so Xref always picks the
-first backend in the list, and the rest are never tried.  Whoever puts
-on the lab coat first becomes the doctor.
+first backend in the list, and the rest are never tried.  Whoever first
+puts on the lab coat becomes the doctor.
 
 This command, in contrast, tries all registered backends in sequence until
 the first one succeeds in finding definitions."

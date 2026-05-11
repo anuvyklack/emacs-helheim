@@ -1,4 +1,4 @@
-;;; helheim-browser.el -*- lexical-binding: t; no-byte-compile: t -*-
+;;; helheim-browser.el     -*- lexical-binding: t; no-byte-compile: t -*-
 
 (setup atomic-chrome
   (:install atomic-chrome :host github :repo "KarimAziev/atomic-chrome")

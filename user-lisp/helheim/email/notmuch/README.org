@@ -193,7 +193,7 @@ cat $XDG_STATE_HOME/msmtp/msmtp.log
 ** Usage
 *** Open =text/html= mime part in external browser
 
-Use =v= or =.v= in a Notmuch show buffer. If you get a file not found error,
+Use =v= or =,v= in a Notmuch show buffer. If you get a file not found error,
 then on Linux you need to create =~/.mailcap= and copy into it the line from
 =/etc/mailcap= that starts with =text/html;=, with =copiousoutput= stripped.
 

@@ -1,10 +1,10 @@
 * Helheim-Browser integration
 
-This module installs and configures of the [[https://github.com/KarimAziev/chrome-emacs?tab=readme-ov-file#browser-extension][chrome-emacs]] package, which provides
+This module installs and configures [[https://github.com/KarimAziev/chrome-emacs?tab=readme-ov-file#browser-extension][chrome-emacs]] package, which provides
 bi-directional content, cursor position and scroll synchronization between
 online text editors and Emacs.
 
-You also needs to install the browser extension:
+You also need to install the browser extension:
 - [[https://chromewebstore.google.com/detail/chrome-emacs/dabdpcafiblbndpoadckibiaojbdnpjg][Chrome]]
 - [[https://addons.mozilla.org/en-US/firefox/addon/chrome-emacs/][Firefox]] 
 
