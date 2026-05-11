@@ -1,4 +1,4 @@
-;;; helheim-keybindings.el -*- lexical-binding: t; no-byte-compile: t -*-
+;;; helheim-keybindings.el        -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Commentary:
 ;;
 ;; If you want to see all key bindings in a keymap, place point (cursor) on it
