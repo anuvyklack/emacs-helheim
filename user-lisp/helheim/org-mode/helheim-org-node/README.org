@@ -40,24 +40,24 @@ Install and configure [[https://github.com/meedstrom/org-node][Org-node]] — a 
 **** Notes (=C-c n=)
 
 | =C-c n b= | Backlinks buffer for node at point                      |
-| =C-c n i= | Add ID — make a node                                   |
+| =C-c n i= | Add ID to heading — make it a node                     |
 | =C-c n I= | Add ID and =ROAM_EXCLUDE= properties — don't make a node |
-| =C-c n l= | Insert link to another node                             |
-| =C-c n w= | ~org-node-refile~                                         |
+| =C-c n w= | Refile node                                             |
 
 **** Insert (=, i=)
 
-| =, i i= | Add ID to heading — make it a node  |
-| =, i I= | Add ID and set =ROAM_EXCLUDE= property |
-| =, i n= | Insert link to another node          |
-| =, i a= | Add alias to current node            |
-| =, i q= | Add tags to current node             |
+| =, i i= | Add ID to heading — make it a node                     |
+| =, i I= | Add ID and =ROAM_EXCLUDE= properties — don't make a node |
+| =, i n= | Insert link to node                                     |
+| =, i a= | Add alias to current node                               |
+| =, i q= | Add tags to current node                                |
+| =, i Q= | Set tags of current node                                |
 
 **** Links (=, l=)
 
-| =, l n= | insert link to node                |
-| =, l t= | insert node translusion            |
-| =, l y= | insert node translusion as subtree |
+| =, l n= | Insert link to node                |
+| =, l t= | Insert node translusion            |
+| =, l y= | Insert node translusion as subtree |
 
 ** Customization
 
