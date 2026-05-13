@@ -68,7 +68,7 @@
   (unless (assq ?` hel-surround-alist)
     (push '(?` :insert (lambda ()
                          ;; If selection is linewise enclose it in tripple
-                         ;; backticks otherwise in sinlge one.
+                         ;; backticks, otherwise -- in sinlge one.
                          (if (hel-linewise-selection-p)
                              '("```\n" . "\n```")
                            '("`" . "`"))))

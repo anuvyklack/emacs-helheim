@@ -375,11 +375,11 @@ Use `delete-trailing-whitespace' command."
 ;; middle of a line.
 (setq tabify-regexp "^\t* [ \t]+")
 
-;; Continue wrapped words at whitespace, rather than in the middle of a word.
+;; Wrap lines at whitespace, rather than in the middle of a word.
 (setq-default word-wrap t)
-;; ...but don't do any wrapping by default. It's expensive. Enable
-;; `visual-line-mode' if you want soft line-wrapping. `auto-fill-mode' for hard
-;; line-wrapping.
+;; Don't wrap lines by default.
+;; - `visual-line-mode' :: soft line-wrapping
+;; - `auto-fill-mode'   :: hard line-wrapping
 (setq-default truncate-lines t)
 ;; If enabled (and `truncate-lines' was disabled), soft wrapping no longer
 ;; occurs when that window is less than `truncate-partial-width-windows'
