@@ -3,24 +3,19 @@
 Install and configure [[https://github.com/dgutov/diff-hl][diff-hl]] package which shows git-diffs indicators in the
 margin.
 
-** Enabel
+** Enable
 #+begin_src emacs-lisp
 (require 'helheim-diff-hl)
 #+end_src
 
 ** Usage
 
-Related keys are under =SPC v= prefix in ~diff-hl-command-map~ keymap.
+| =[ v= / =] v= | Go to previous / next hunk |
+| =[ V= / =] V= | Show previous / next hunk |
 
-| ~[v~ / ~]v~ | Show prev / next hunk |
+Related keys are under =SPC v= (=C-c v=) prefix.
 
-
-| ~SPC v [~ / ~SPC v ]~ | Goto prev / next hunk |
-| ~SPC v {~ / ~SPC v }~ | Show prev / next hunk |
-
-
-| ~SPC v V~ | View diff hunk at point   |
-| ~SPC v s~ | Stage diff hunk at point  |
-| ~SPC v r~ | Revert diff hunk at point |
-| ~SPC v =~ | Goto diff hunk            |
-
+| =SPC v v= | Show hunk at point   |
+| =SPC v s= | Stage hunk at point  |
+| =SPC v r= | Revert hunk at point |
+| =SPC v == | Goto hunk            |

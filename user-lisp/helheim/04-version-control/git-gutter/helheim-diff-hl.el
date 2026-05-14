@@ -38,17 +38,17 @@
         ;; "[ [" 'diff-hl-previous-hunk
         ;; "[ {" 'diff-hl-show-hunk-previous
         ;; "] }" 'diff-hl-show-hunk-next
-        "] v" 'diff-hl-show-hunk-next
-        "[ v" 'diff-hl-show-hunk-previous)
+        "] v" '("next hunk" . diff-hl-next-hunk)
+        "[ v" '("previous hunk" . diff-hl-previous-hunk)
+        "] V" '("view next hunk" . diff-hl-show-hunk-next)
+        "[ V" '("view prev hunk" . diff-hl-show-hunk-previous))
       (:bind
-        "C-c v ]" '("Next hunk" . diff-hl-next-hunk)
-        "C-c v [" '("Prev hunk" . diff-hl-previous-hunk)
-        "C-c v V" '("View hunk" . diff-hl-show-hunk)
-        "C-c v }" '("View next hunk" . diff-hl-show-hunk-next)
-        "C-c v {" '("View prev hunk" . diff-hl-show-hunk-previous)
-        "C-c v s" '("Stage hunk" . diff-hl-stage-dwim)
-        "C-c v r" '("Revert hunk" . diff-hl-revert-hunk)
-        "C-c v =" '("Goto hunk" . diff-hl-diff-goto-hunk)))))
+        "C-c v ]" '("view next hunk" . diff-hl-show-hunk-next)
+        "C-c v [" '("view prev hunk" . diff-hl-show-hunk-previous)
+        "C-c v v" '("view hunk" . diff-hl-show-hunk)
+        "C-c v s" '("stage hunk" . diff-hl-stage-dwim)
+        "C-c v r" '("revert hunk" . diff-hl-revert-hunk)
+        "C-c v =" '("goto hunk" . diff-hl-diff-goto-hunk)))))
 
 (setup diff-hl-show-hunk
   (:after-load
