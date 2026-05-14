@@ -116,9 +116,13 @@ the unwritable tidbits."
 (defun helheim-install-missing-treesit-grammars ()
   "Install all missing tree-sitter grammars."
   (interactive)
-  (cl-loop for (lang . _) in treesit-language-source-alist
-           unless (treesit-language-available-p lang)
-           do (treesit-install-language-grammar lang)))
+  (when-let* ((missing (->> treesit-language-source-alist
+                            (-map #'car)
+                            (-remove #'treesit-language-available-p)))
+              ((y-or-n-p
+                (format "Install %d missing tree-sitter grammar(s)?\n"
+                        (length missing)))))
+    (-each missing #'treesit-install-language-grammar)))
 
 (defun helheim-lsp ()
   (cond ((featurep 'helheim-eglot)

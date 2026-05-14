@@ -427,65 +427,74 @@ Use `delete-trailing-whitespace' command."
 
 ;;;; Tree-sitter
 
-(setq treesit-language-source-alist
-      '((bash       "https://github.com/tree-sitter/tree-sitter-bash"
-                    "v0.23.3")
-        ;; (bibtex     "https://github.com/latex-lsp/tree-sitter-bibtex")
-        (c          "https://github.com/tree-sitter/tree-sitter-c"
-                    "v0.21.3")
-        (cpp        "https://github.com/tree-sitter/tree-sitter-cpp")
-        (cmake      "https://github.com/uyha/tree-sitter-cmake")
-        (c-sharp    "https://github.com/tree-sitter/tree-sitter-c-sharp"
-                    "v0.23.1")
-        (css        "https://github.com/tree-sitter/tree-sitter-css"
-                    "v0.23.2")
-        (commonlisp "https://github.com/tree-sitter-grammars/tree-sitter-commonlisp"
-                    "v0.4.1")
-        (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
-        (elixir     "https://github.com/elixir-lang/tree-sitter-elixir")
-        (go         "https://github.com/tree-sitter/tree-sitter-go"
-                    "v0.23.4")
-        (gomod      "https://github.com/camdencheek/tree-sitter-go-mod"
-                    "v1.0.2")
-        (html       "https://github.com/tree-sitter/tree-sitter-html")
-        (java       "https://github.com/tree-sitter/tree-sitter-java")
-        (javascript "https://github.com/tree-sitter/tree-sitter-javascript"
-                    "v0.23.1")
-        (json       "https://github.com/tree-sitter/tree-sitter-json")
-        (latex      "https://github.com/latex-lsp/tree-sitter-latex"
-                    "v0.3.0")
-        (lua        "https://github.com/tree-sitter-grammars/tree-sitter-lua"
-                    "v0.3.0")
-        (make       "https://github.com/tree-sitter-grammars/tree-sitter-make")
-        (markdown   "https://github.com/tree-sitter-grammars/tree-sitter-markdown"
-                    "v0.3.2"
-                    "tree-sitter-markdown/src")
-        (nix        "https://github.com/nix-community/tree-sitter-nix")
-        ;; (nu         "https://github.com/nushell/tree-sitter-nu")
-        (perl       "https://github.com/ganezdragon/tree-sitter-perl")
-        (python     "https://github.com/tree-sitter/tree-sitter-python"
-                    "v0.23.6")
-        (r          "https://github.com/r-lib/tree-sitter-r")
-        (ruby       "https://github.com/tree-sitter/tree-sitter-ruby")
-        (rust       "https://github.com/tree-sitter/tree-sitter-rust"
-                    "v0.23.3")
-        (sql        "https://github.com/DerekStride/tree-sitter-sql"
-                    "gh-pages")
-        (typescript "https://github.com/tree-sitter/tree-sitter-typescript"
-                    "v0.23.2"
-                    "typescript/src")
-        (tsx        "https://github.com/tree-sitter/tree-sitter-typescript"
-                    "v0.23.2"
-                    "tsx/src")
-        (toml       "https://github.com/tree-sitter-grammars/tree-sitter-toml")
-        (yaml       "https://github.com/tree-sitter-grammars/tree-sitter-yaml")
-        (zig        "https://github.com/tree-sitter-grammars/tree-sitter-zig"
-                    "v1.1.2")))
-
 (setup treesit
   (:when (treesit-available-p))
-  (:hook emacs-startup-hook helheim-install-missing-treesit-grammars)
+  (:after-init helheim-install-missing-treesit-grammars)
   (:setopt treesit-font-lock-level 4)
+  (setq treesit-language-source-alist
+        (let ((abi<15 (< (treesit-library-abi-version) 15)))
+          `((bash       "https://github.com/tree-sitter/tree-sitter-bash"
+                        ;; "v0.23.3"
+                        )
+            ;; (bibtex     "https://github.com/latex-lsp/tree-sitter-bibtex")
+            (c          "https://github.com/tree-sitter/tree-sitter-c"
+                        ,(if abi<15 "v0.23.6" "v0.24.1"))
+            (cpp        "https://github.com/tree-sitter/tree-sitter-cpp"
+                        ,(if abi<15 "v0.23.4"))
+            (cmake      "https://github.com/uyha/tree-sitter-cmake")
+            (c-sharp    "https://github.com/tree-sitter/tree-sitter-c-sharp"
+                        ,(if abi<15 "v0.20.0" "v0.23.1"))
+            (css        "https://github.com/tree-sitter/tree-sitter-css"
+                        ,(if abi<15 "v0.23.0" "v0.23.2"))
+            (commonlisp "https://github.com/tree-sitter-grammars/tree-sitter-commonlisp"
+                        "v0.4.1")
+            (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
+            (elixir     "https://github.com/elixir-lang/tree-sitter-elixir")
+            (go         "https://github.com/tree-sitter/tree-sitter-go"
+                        ,(if abi<15 "v0.20.0" "v0.25.0"))
+            (gomod      "https://github.com/camdencheek/tree-sitter-go-mod"
+                        "v1.0.2")
+            (gowork     "https://github.com/omertuc/tree-sitter-go-work")
+            (html       "https://github.com/tree-sitter/tree-sitter-html"
+                        ,(if abi<15 "v0.23.0" "v0.23.2"))
+            (java       "https://github.com/tree-sitter/tree-sitter-java")
+            (javascript "https://github.com/tree-sitter/tree-sitter-javascript"
+                        ,(if abi<15 "v0.23.0"))
+            (json       "https://github.com/tree-sitter/tree-sitter-json")
+            (latex      "https://github.com/latex-lsp/tree-sitter-latex"
+                        "v0.3.0")
+            (lua        "https://github.com/tree-sitter-grammars/tree-sitter-lua"
+                        ,(if abi<15 "v0.3.0"))
+            (make       "https://github.com/tree-sitter-grammars/tree-sitter-make")
+            (markdown   "https://github.com/tree-sitter-grammars/tree-sitter-markdown"
+                        ,(if abi<15 "v0.4.1" "v0.5.3")
+                        "tree-sitter-markdown/src")
+            (markdown-inline
+                        "https://github.com/tree-sitter-grammars/tree-sitter-markdown"
+                        ,(if abi<15 "v0.4.1" "v0.5.3")
+                        "tree-sitter-markdown-inline/src")
+            (nix        "https://github.com/nix-community/tree-sitter-nix")
+            (perl       "https://github.com/ganezdragon/tree-sitter-perl")
+            (python     "https://github.com/tree-sitter/tree-sitter-python"
+                        ,(if abi<15 "v0.23.6" "v0.25.0"))
+            (r          "https://github.com/r-lib/tree-sitter-r")
+            (ruby       "https://github.com/tree-sitter/tree-sitter-ruby")
+            (rust       "https://github.com/tree-sitter/tree-sitter-rust"
+                        ,(if abi<15 "v0.23.2" "v0.24.2"))
+            (sql        "https://github.com/DerekStride/tree-sitter-sql"
+                        "gh-pages")
+            (typescript "https://github.com/tree-sitter/tree-sitter-typescript"
+                        "v0.23.2"
+                        "typescript/src")
+            (tsx        "https://github.com/tree-sitter/tree-sitter-typescript"
+                        "v0.23.2"
+                        "tsx/src")
+            (toml       "https://github.com/tree-sitter-grammars/tree-sitter-toml")
+            (yaml       "https://github.com/tree-sitter-grammars/tree-sitter-yaml"
+                        ,(if abi<15 "v0.7.0" "v0.7.2"))
+            (zig        "https://github.com/tree-sitter-grammars/tree-sitter-zig"
+                        ;; "v1.1.2"
+                        ))))
   ;; BUG: Emacs provides this setting in yaml-ts-mode.el, but it only works
   ;;   after the package is loaded, defeating autoloading. So, we duplicate
   ;;   them here.
