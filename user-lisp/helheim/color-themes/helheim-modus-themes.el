@@ -5,29 +5,18 @@
 (setq modus-themes-custom-auto-reload nil)
 
 (setup modus-themes
+  ;; (:install t) ; Requires Emacs 31
   (require-theme 'modus-themes)
-  (:setopt modus-themes-mixed-fonts t
-           modus-themes-variable-pitch-ui t
-           modus-themes-italic-constructs t
-           modus-themes-bold-constructs t
-           modus-themes-headings '((agenda-structure . (variable-pitch light 2.2))
-                                   (agenda-date . (variable-pitch regular 1.3))
-                                   (t . (regular 1.03)))))
-
-;; ;; Requires Emacs 31
-;; (setup modus-themes
-;;   (:install t)
-;;   (require-theme 'modus-themes)
-;;   (:setopt
-;;     ;; modus-themes-to-toggle '(modus-operandi modus-vivendi)
-;;     ;; modus-themes-to-rotate modus-themes-items
-;;     modus-themes-mixed-fonts t
-;;     modus-themes-variable-pitch-ui t
-;;     modus-themes-italic-constructs t
-;;     modus-themes-bold-constructs t
-;;     modus-themes-headings '((agenda-structure . (variable-pitch light 2.2))
-;;                             (agenda-date . (variable-pitch regular 1.3))
-;;                             (t . (regular 1.03)))))
+  (:setopt
+    ;; modus-themes-to-toggle '(modus-operandi modus-vivendi)
+    ;; modus-themes-to-rotate modus-themes-items
+    modus-themes-mixed-fonts t
+    modus-themes-variable-pitch-ui t
+    modus-themes-italic-constructs t
+    modus-themes-bold-constructs t
+    modus-themes-headings '((agenda-structure . (variable-pitch light 2.2))
+                            (agenda-date . (variable-pitch regular 1.3))
+                            (t . (regular 1.03)))))
 
 ;;; modus-operandi
 ;;;; General
@@ -104,7 +93,7 @@
 ;; Faces:
 ;; git-commit-summary
 
-;;;; Org mode
+;;;; org-mode
 
 (helheim-theme-set-faces 'modus-operandi
   '(org-verbatim :foreground "#8f0075" :background "#f5f5f5")
@@ -119,6 +108,10 @@
                          :extend t
                          :inherit fixed-pitch)
   '(org-block-end-line :inherit org-block-begin-line))
+
+;; Org-node backlinks buffer
+(helheim-theme-set-faces 'modus-operandi
+  '(org-node-context-origin-title :foreground "#731c52" :height 1.05 :extend t))
 
 ;;; modus-vivendi
 
