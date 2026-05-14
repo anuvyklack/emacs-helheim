@@ -7,7 +7,6 @@
     "C-c a n"   '("new agent-shell" . agent-shell-new-shell)
     "C-c a w"   '("new worktree agent-shell" . agent-shell-new-worktree-shell))
   (:after-load
-    (load "helheim-agent-shell-lib" nil t)
     (:global-bind
       "C-c a s" 'agent-shell-send-dwim)
     (:with-keymap agent-shell-mode-map
