@@ -3,6 +3,7 @@
 (setup mcp-server
   (:install mcp-server :host github :repo "rhblind/emacs-mcp-server"
             :files ("*.el" "tools/*.el" "mcp-wrapper.py" "mcp-wrapper.sh"))
+  (:setopt mcp-server-security-prompt-for-permissions t)
   (with-eval-after-load 'org
     (:setopt mcp-server-emacs-tools-org-allowed-roots (list org-directory)
              mcp-server-emacs-tools-org-auto-save t))
