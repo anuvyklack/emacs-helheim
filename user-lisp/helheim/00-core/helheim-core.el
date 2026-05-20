@@ -444,25 +444,25 @@ Use `delete-trailing-whitespace' command."
                         )
             ;; (bibtex     "https://github.com/latex-lsp/tree-sitter-bibtex")
             (c          "https://github.com/tree-sitter/tree-sitter-c"
-                        ,(if abi<15 "v0.23.6" "v0.24.1"))
+                        ,(if abi<15 "v0.23.6")) ;; "v0.24.1"
             (cpp        "https://github.com/tree-sitter/tree-sitter-cpp"
                         ,(if abi<15 "v0.23.4"))
             (cmake      "https://github.com/uyha/tree-sitter-cmake")
             (c-sharp    "https://github.com/tree-sitter/tree-sitter-c-sharp"
-                        ,(if abi<15 "v0.20.0" "v0.23.1"))
+                        ,(if abi<15 "v0.20.0")) ;; "v0.23.1"
             (css        "https://github.com/tree-sitter/tree-sitter-css"
-                        ,(if abi<15 "v0.23.0" "v0.23.2"))
+                        ,(if abi<15 "v0.23.0")) ;; "v0.23.2"
             (commonlisp "https://github.com/tree-sitter-grammars/tree-sitter-commonlisp"
                         "v0.4.1")
             (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
             (elixir     "https://github.com/elixir-lang/tree-sitter-elixir")
             (go         "https://github.com/tree-sitter/tree-sitter-go"
-                        ,(if abi<15 "v0.20.0" "v0.25.0"))
+                        ,(if abi<15 "v0.20.0")) ;; "v0.25.0"
             (gomod      "https://github.com/camdencheek/tree-sitter-go-mod"
                         "v1.0.2")
             (gowork     "https://github.com/omertuc/tree-sitter-go-work")
             (html       "https://github.com/tree-sitter/tree-sitter-html"
-                        ,(if abi<15 "v0.23.0" "v0.23.2"))
+                        ,(if abi<15 "v0.23.0")) ;; "v0.23.2"
             (java       "https://github.com/tree-sitter/tree-sitter-java")
             (javascript "https://github.com/tree-sitter/tree-sitter-javascript"
                         ,(if abi<15 "v0.23.0"))
@@ -473,20 +473,20 @@ Use `delete-trailing-whitespace' command."
                         ,(if abi<15 "v0.3.0"))
             (make       "https://github.com/tree-sitter-grammars/tree-sitter-make")
             (markdown   "https://github.com/tree-sitter-grammars/tree-sitter-markdown"
-                        ,(if abi<15 "v0.4.1" "v0.5.3")
+                        ,(if abi<15 "v0.4.1") ;; "v0.5.3"
                         "tree-sitter-markdown/src")
             (markdown-inline
                         "https://github.com/tree-sitter-grammars/tree-sitter-markdown"
-                        ,(if abi<15 "v0.4.1" "v0.5.3")
+                        ,(if abi<15 "v0.4.1") ;; "v0.5.3"
                         "tree-sitter-markdown-inline/src")
             (nix        "https://github.com/nix-community/tree-sitter-nix")
             (perl       "https://github.com/ganezdragon/tree-sitter-perl")
             (python     "https://github.com/tree-sitter/tree-sitter-python"
-                        ,(if abi<15 "v0.23.6" "v0.25.0"))
+                        ,(if abi<15 "v0.23.6")) ;; "v0.25.0"
             (r          "https://github.com/r-lib/tree-sitter-r")
             (ruby       "https://github.com/tree-sitter/tree-sitter-ruby")
             (rust       "https://github.com/tree-sitter/tree-sitter-rust"
-                        ,(if abi<15 "v0.23.2" "v0.24.2"))
+                        ,(if abi<15 "v0.23.2")) ;; "v0.24.2"
             (sql        "https://github.com/DerekStride/tree-sitter-sql"
                         "gh-pages")
             (typescript "https://github.com/tree-sitter/tree-sitter-typescript"
@@ -497,7 +497,7 @@ Use `delete-trailing-whitespace' command."
                         "tsx/src")
             (toml       "https://github.com/tree-sitter-grammars/tree-sitter-toml")
             (yaml       "https://github.com/tree-sitter-grammars/tree-sitter-yaml"
-                        ,(if abi<15 "v0.7.0" "v0.7.2"))
+                        ,(if abi<15 "v0.7.0")) ;; "v0.7.2"
             (zig        "https://github.com/tree-sitter-grammars/tree-sitter-zig"
                         ;; "v1.1.2"
                         ))))
@@ -506,9 +506,6 @@ Use `delete-trailing-whitespace' command."
   ;;   them here.
   (:mode ("\\.ya?ml\\'" . yaml-ts-mode)
          ("clang.format\\'" . yaml-ts-mode)))
-
-;; For backward compatibility.
-(provide 'helheim-tree-sitter)
 
 ;;;; Extra file extensions to support
 
