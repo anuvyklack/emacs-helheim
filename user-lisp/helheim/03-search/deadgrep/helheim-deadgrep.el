@@ -28,7 +28,7 @@
               (format "query: %s" deadgrep--search-term)))
 
 (hel-advice-add 'deadgrep-mode :before #'hel-deactivate-mark-a)
-(hel-advice-add 'deadgrep-mode :before #'hel-delete-all-fake-cursors)
+(hel-advice-add 'deadgrep-mode :before #'hel-disable-multiple-cursors-mode)
 
 (dolist (cmd '(deadgrep-visit-result
                deadgrep-visit-result-other-window))

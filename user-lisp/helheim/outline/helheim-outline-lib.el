@@ -9,7 +9,7 @@
 (defun helheim-outline-up-heading (count &optional invisible-ok)
   "Move up in the outline hierarchy to the parent heading."
   (interactive "p")
-  (hel-delete-all-fake-cursors)
+  (hel-disable-multiple-cursors-mode)
   (deactivate-mark)
   (hel-push-point)
   (if (outline-on-heading-p invisible-ok)
