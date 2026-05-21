@@ -5,8 +5,7 @@
 ;; (executable-find "shfmt")
 
 (setup sh-script
-  (:hook (sh-mode-hook
-          bash-ts-mode-hook) helheim-lsp)
+  (:hook sh-base-mode-hook helheim-lsp)
   (:mode ("\\.\\(?:zunit\\|env\\)\\'" . sh-mode)
          ("/bspwmrc\\'" . sh-mode))
   (add-to-list 'magic-mode-alist '("#compdef " . sh-mode))
