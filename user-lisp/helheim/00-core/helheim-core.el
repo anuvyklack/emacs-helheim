@@ -46,7 +46,8 @@
 ;; in early-init.el file because it happens too early before dependencies
 ;; are installed, and with this we also disabled autoload cookies scrapping.
 ;; So do it manually here.
-(loaddefs-generate (f-directories user-lisp-directory nil t)
+(loaddefs-generate (cons user-lisp-directory
+                         (f-directories user-lisp-directory nil t))
                    (expand-file-name ".user-lisp-autoloads.el"
                                      user-lisp-directory))
 
@@ -69,7 +70,11 @@
            avy-single-candidate-jump nil))
 
 (setup hel
-  (:install hel :host github :repo "anuvyklack/hel")
+  ;; (:install hel :host github :repo "anuvyklack/hel")
+  (:elpaca hel :repo "~/code/emacs/hel/")
+  (:straight hel :local-repo "~/code/emacs/hel/")
+  ;; :load-path "~/code/emacs/hel"
+  ;; (require 'hel)
   (hel-mode))
 
 (setup compat
@@ -218,6 +223,8 @@ The predicate is passed as argument to `buffer-match-p', which see."
            ;; Show absolute line numbers for narrowed regions to make it easier
            ;; to tell the buffer is narrowed, and where you are, exactly.
            display-line-numbers-widen t))
+
+;; (setopt indicate-empty-lines t)
 
 ;;;; Fill-Column indicator
 
@@ -381,11 +388,10 @@ Use `delete-trailing-whitespace' command."
 ;; - `visual-line-mode' :: soft line-wrapping
 ;; - `auto-fill-mode'   :: hard line-wrapping
 (setq-default truncate-lines t)
-;; If enabled (and `truncate-lines' was disabled), soft wrapping no longer
-;; occurs when that window is less than `truncate-partial-width-windows'
-;; characters wide. We don't need this, and it's extra work for Emacs otherwise,
-;; so off it goes.
-(setq truncate-partial-width-windows nil)
+;; ;; If enabled (and `truncate-lines' is disabled), soft wrapping no longer
+;; ;; occurs when that window is less than `truncate-partial-width-windows'
+;; ;; characters wide. We don't need this.
+;; (setq truncate-partial-width-windows nil)
 
 ;; This was a widespread practice in the days of typewriters, but it is obsolete
 ;; nowadays.
@@ -639,8 +645,9 @@ Use `delete-trailing-whitespace' command."
 
 ;; ;; Resolve symlinks when opening files, so that any operations are conducted
 ;; ;; from the file's true directory (like `find-file').
-;; (setq find-file-visit-truename t
-;;       vc-follow-symlinks t)
+(setq find-file-visit-truename t
+      vc-follow-symlinks t)
+;; (setq vc-follow-symlinks 'ask)
 
 ;; ;; Disable the warning "X and Y are the same file". It's fine to ignore this
 ;; ;; warning as it will redirect you to the existing buffer anyway.
@@ -855,6 +862,14 @@ Use `delete-trailing-whitespace' command."
 
 (setq image-animate-loop t
       image-auto-resize 'fit-window)
+
+;; image-mode
+(add-to-list 'display-buffer-alist
+             '((derived-mode . image-mode)
+               (display-buffer-reuse-window
+                display-buffer-use-some-window
+                display-buffer-pop-up-window)
+               (inhibit-same-window . t)))
 
 ;;;; occur-mode
 
