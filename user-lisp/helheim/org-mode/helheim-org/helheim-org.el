@@ -123,7 +123,7 @@ Must be set with `setopt' function!"
 ;;;; ID format
 
 ;; Use ISO 8601 timestamp.
-(setup org
+(setup org-id
   (:setopt org-id-method 'ts
            org-id-ts-format helheim-id-format
            org-id-link-to-org-use-id 'create-if-interactive))
@@ -147,9 +147,11 @@ Must be set with `setopt' function!"
                                                  identity)
            org-attach-auto-tag "ATTACH")
   (add-to-list 'org-tags-exclude-from-inheritance org-attach-auto-tag)
+  ;;
   (with-eval-after-load 'org-keys
     (:with-keymap org-mode-map
       (:bind [remap org-attach] 'helheim-org-attach)))
+  ;;
   (:setopt org-attach-commands
            '(((?a ?\C-a) org-attach-attach
               "Select a file and attach it to the task, using `org-attach-method'.")
@@ -193,9 +195,9 @@ directory in dired and delete from there.\n")
 
 (setup org
   (:setopt org-startup-with-inline-images t
+           org-cycle-inline-images-display t
            ;; 85% of fill-column width
-           org-image-actual-width (list (round (* 0.85 fill-column (default-font-width))))
-           org-cycle-inline-images-display t))
+           org-image-actual-width (list (round (* 0.85 fill-column (default-font-width))))))
 
 ;;;; org-cliplink
 
