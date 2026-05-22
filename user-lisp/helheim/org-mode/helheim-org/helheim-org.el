@@ -34,6 +34,9 @@
   (:after org)
   (:require t))
 
+(setup ox-html
+  (:setopt org-html-prefer-user-labels t))
+
 (setup org-eldoc
   (:install org-contrib)
   (:after org)
