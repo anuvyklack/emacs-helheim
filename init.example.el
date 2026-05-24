@@ -97,6 +97,11 @@
 (require 'helheim-diff-hl)  ; git gutter
 (require 'helheim-ediff)
 
+;;; Terminal emulators
+
+; (require 'helheim-ghostel) ; libghostty Zig library -- same as in Ghostty
+; (require 'helheim-vterm)   ; libvterm C library -- same as in Neovim
+
 ;;; LLM
 
 ; (require 'helheim-agent-shell)
