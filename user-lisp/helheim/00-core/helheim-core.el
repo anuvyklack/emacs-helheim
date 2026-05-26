@@ -466,7 +466,6 @@ Use `delete-trailing-whitespace' command."
             (java       "https://github.com/tree-sitter/tree-sitter-java")
             (javascript "https://github.com/tree-sitter/tree-sitter-javascript"
                         ,(if abi<15 "v0.23.0"))
-            (json       "https://github.com/tree-sitter/tree-sitter-json")
             (latex      "https://github.com/latex-lsp/tree-sitter-latex"
                         "v0.3.0")
             (lua        "https://github.com/tree-sitter-grammars/tree-sitter-lua"

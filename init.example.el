@@ -135,6 +135,7 @@
 ;;; Major modes
 
 (require 'helheim-emacs-lisp)
+(require 'helheim-json)
 (require 'helheim-markdown)
 (require 'helheim-sh)
 
