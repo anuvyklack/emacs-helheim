@@ -137,16 +137,18 @@ Like `org-attach' but tuned for Emacs Helheim."
 - Automatically fetch URL title from its HTML tag.
 - Fallback to `org-insert-link'."
   (interactive)
-  (let ((point-at-link (org-in-regexp org-link-any-re 1))
-        (clipboard-url (if (string-match-p "^http" (current-kill 0))
-                           (current-kill 0)))
+  (let ((point-at-link? (org-in-regexp org-link-any-re 1))
+        (clipboard-url (if-let* ((kill-ring)
+                                 (kill (current-kill 0))
+                                 ((string-match-p "^http" kill)))
+                           kill))
         (region-content (if (region-active-p)
                             (buffer-substring-no-properties (region-beginning)
                                                             (region-end)))))
-    (cond ((and region-content clipboard-url (not point-at-link))
+    (cond ((and region-content clipboard-url (not point-at-link?))
            (delete-region (region-beginning) (region-end))
            (insert (org-make-link-string clipboard-url region-content)))
-          ((and clipboard-url (not point-at-link))
+          ((and clipboard-url (not point-at-link?))
            (org-cliplink))
           (t
            (call-interactively 'org-insert-link))))
