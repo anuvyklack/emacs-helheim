@@ -4,6 +4,17 @@
 (require 'helheim-dired)
 #+end_src
 
+** Packages
+- dired
+- [[https://github.com/purcell/diredfl][diredfl]]
+- [[https://github.com/rainstormstudio/nerd-icons-dired][nerd-icons-dired]]
+- [[https://github.com/fuco1/dired-hacks][dired-narrow]]
+- [[https://github.com/fuco1/dired-hacks][dired-subtree]]
+- [[https://github.com/jsilve24/dired-copy-paste][dired-copy-paset]]
+- fd-dired
+- [[https://github.com/fuco1/dired-hacks][dired-filter]]
+- image-dired
+
 ** Hacks
 
 - Dired local minor modes (such as ~dired-hide-details-mode~, ~dired-omit-mode~,

@@ -1,0 +1,8 @@
+* helheim-outline
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-outline)
+#+end_src
+
+** Packages
+- [[https://github.com/jdtsmith/outli][outli]]

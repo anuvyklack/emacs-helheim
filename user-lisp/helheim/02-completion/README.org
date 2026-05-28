@@ -4,6 +4,11 @@
 (require 'helheim-completion)
 #+end_src
 
+** Packages
+- [[https://github.com/oantolin/orderless][orderless]]
+- [[https://github.com/minad/corfu][corfu]]
+- [[https://github.com/LuigiPiucco/nerd-icons-corfu][nerd-icons-corfu]]
+
 ** Usage
 *** When completion popup is active
 

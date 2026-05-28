@@ -4,15 +4,23 @@
 (require 'helheim-emacs-lisp)
 #+end_src
 
-** Usage
+** Packages
+- [[https://github.com/Fanael/highlight-defined][highlight-defined]]
+- [[https://github.com/anuvyklack/hel-paredit][hel-paredit]]
+- [[https://github.com/Wilfred/elisp-refs][elisp-refs]]
+- [[https://github.com/xuchunyang/elisp-demos][elisp-demos]]
 
-Configure Hel to work with Emacs Lisp, see documentation for [[https://github.com/anuvyklack/hel/blob/main/docs/extensions.org#hel-paredit][hel-paredit]]
-extension.
+** Keybindings
 
-| =K= or =M=  | Show documentation for symbol at point |
-| =, e e=   |                                        |
-| =, e f=   |                                        |
-| =, e r=   |                                        |
-| =, e B=   |                                        |
-| =, e m=   |                                        |
-| =, e RET= |                                        |
+Also see documentation of [[https://github.com/anuvyklack/hel-paredit][hel-paredit]] which provides structural editing for
+S-expressions.
+
+| =K= or =M=  | Show documentation for symbol at cursor                        |
+| =, e e=   | Evaluate sexp before cursor                                    |
+| =, e f=   | ~eval-defun~ — Evaluate top-level form around cursor            |
+| =, e r=   | Evaluate the selection. With no selection eval full buffer     |
+| =, e b=   | Evaluate the current buffer                                    |
+| =, e B=   | Byte compile the current buffer                                |
+| =, e m=   | Macroexpand the form after point                               |
+| =, e RET= | Evaluate sexp before point and print value into current buffer |
+

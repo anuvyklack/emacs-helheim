@@ -7,10 +7,14 @@ Install and cofigure [[https://github.com/dakra/ghostel][Ghostel]] — a [[https
 (require 'helheim-ghostel)
 #+end_src
 
+** Packages
+- [[https://github.com/dakra/ghostel][ghostel]]
+- [[https://github.com/anuvyklack/hel-ghostel][hel-ghostel]]
+
 ** Usage
 
 - =SPC o t= ::
   - Start a new terminal or switch to an existing one.
   - With =M-u=, always create a new terminal.
 
-See [[https://github.com/anuvyklack/hel-ghostel][hel-ghostel]] documentation for how Ghostel in integrated with Hel.
+See [[https://github.com/anuvyklack/hel-ghostel][hel-ghostel]] documentation for how Ghostel and Hel are integrates.

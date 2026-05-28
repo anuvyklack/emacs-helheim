@@ -4,6 +4,11 @@
 (require 'helheim-minibuffer)
 #+end_src
 
+** Packages
+- [[https://github.com/minad/vertico][vertico]]
+- [[https://github.com/minad/marginalia][marginalia]]
+- [[https://github.com/rainstormstudio/nerd-icons-completion][nerd-icons-completion]]
+
 ** Usage
 
 | =Space '= | Reopen last minibuffer session.                                 |

@@ -2,3 +2,4 @@
 custom.el
 var/
 .user-lisp-autoloads.el
+.agent-shell/

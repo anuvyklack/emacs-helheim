@@ -19,14 +19,14 @@
 
 (defvar-keymap helheim-elisp-eval-map
   :prefix 'helheim-elisp-eval-map
-  "e"   'pp-eval-last-sexp
+  "e"   '("eval sexp before cursor" . pp-eval-last-sexp)
   "f"   'eval-defun
-  "r"   'elisp-eval-region-or-buffer ; "C-c C-e"
-  "b"   'elisp-eval-region-or-buffer
-  "B"   'elisp-byte-compile-buffer
+  "r"   '("eval region or buffer" . elisp-eval-region-or-buffer) ; "C-c C-e"
+  "b"   'eval-buffer
+  "B"   '("byte compile buffer" . elisp-byte-compile-buffer)
   ;; "m"   'macrostep-expand
-  "m"   'emacs-lisp-macroexpand
-  "p"   'pp-macroexpand-last-sexp
+  "m"   '("macroexpand in place form after cursor" . emacs-lisp-macroexpand)
+  "p"   '("macroexpand form before cursor" . pp-macroexpand-last-sexp)
   "RET" 'eval-print-last-sexp)
 
 (setup lisp-mode

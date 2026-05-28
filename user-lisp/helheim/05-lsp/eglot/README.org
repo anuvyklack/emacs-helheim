@@ -10,6 +10,16 @@ Add the following line to your =init.el=:
 (require 'helheim-eglot)
 #+end_src
 
+** Packages
+- eglot
+- flymake
+- [[https://github.com/casouri/eldoc-box][eldoc-box]]
+- [[https://github.com/mohkale/consult-eglot/][consult-eglot]]
+- [[https://github.com/emacs-sideline/sideline][sideline]]
+  - [[https://github.com/emacs-sideline/sideline-flymake][sideline-flymake]]
+  - [[https://github.com/emacs-sideline/sideline-eglot][sideline-eglot]]
+- [[https://github.com/joaotavora/breadcrumb][breadcrumb]]
+
 ** Customization
 
 To show Flymake diagnostics only in the sideline (suppressing them from the

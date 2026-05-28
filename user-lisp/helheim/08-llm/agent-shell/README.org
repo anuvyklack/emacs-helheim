@@ -8,6 +8,10 @@ with LLM agents via ACP ([[https://agentclientprotocol.com][Agent Client Protoco
 (require 'helheim-agent-shell)
 #+end_src
 
+** Packages
+- [[https://github.com/xenodium/agent-shell][agent-shell]]
+- [[https://github.com/anuvyklack/hel-agent-shell][hel-agent-shell]]
+
 ** Usage
 
 | Key       | Description                                              |
