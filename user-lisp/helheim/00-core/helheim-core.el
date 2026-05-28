@@ -439,11 +439,7 @@ Use `delete-trailing-whitespace' command."
   (:setopt treesit-font-lock-level 4)
   (setq treesit-language-source-alist
         (let ((abi<15 (< (treesit-library-abi-version) 15)))
-          `((bash       "https://github.com/tree-sitter/tree-sitter-bash"
-                        ;; "v0.23.3"
-                        )
-            ;; (bibtex     "https://github.com/latex-lsp/tree-sitter-bibtex")
-            (c          "https://github.com/tree-sitter/tree-sitter-c"
+          `((c          "https://github.com/tree-sitter/tree-sitter-c"
                         ,(if abi<15 "v0.23.6")) ;; "v0.24.1"
             (cpp        "https://github.com/tree-sitter/tree-sitter-cpp"
                         ,(if abi<15 "v0.23.4"))
@@ -468,6 +464,7 @@ Use `delete-trailing-whitespace' command."
                         ,(if abi<15 "v0.23.0"))
             (latex      "https://github.com/latex-lsp/tree-sitter-latex"
                         "v0.3.0")
+            ;; (bibtex     "https://github.com/latex-lsp/tree-sitter-bibtex")
             (lua        "https://github.com/tree-sitter-grammars/tree-sitter-lua"
                         ,(if abi<15 "v0.3.0"))
             (make       "https://github.com/tree-sitter-grammars/tree-sitter-make")

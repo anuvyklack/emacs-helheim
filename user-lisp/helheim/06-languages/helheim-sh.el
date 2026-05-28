@@ -6,10 +6,17 @@
 
 (setup sh-script
   (:hook sh-base-mode-hook helheim-lsp)
-  (:mode ("\\.\\(?:zunit\\|env\\)\\'" . sh-mode)
-         ("/bspwmrc\\'" . sh-mode))
-  (add-to-list 'magic-mode-alist '("#compdef " . sh-mode))
-  (setf (alist-get 'sh-mode major-mode-remap-alist) 'bash-ts-mode))
+  (add-to-list 'auto-mode-alist  '("\\.\\(?:zunit\\|env\\)\\'" . sh-mode))
+  (add-to-list 'auto-mode-alist  '("/bspwmrc\\'" . sh-mode))
+  (add-to-list 'magic-mode-alist '("#compdef " . sh-mode)))
+
+(setup bash-ts-mode
+  (:when (treesit-available-p))
+  (add-to-list 'major-mode-remap-alist '(sh-mode . bash-ts-mode))
+  (add-to-list 'treesit-language-source-alist
+               '(bash "https://github.com/tree-sitter/tree-sitter-bash"
+                      ;; "v0.23.3"
+                      )))
 
 (with-eval-after-load 'consult-imenu
   (setf (alist-get 'sh-mode consult-imenu-config)
