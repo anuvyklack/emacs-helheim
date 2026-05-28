@@ -66,8 +66,6 @@
 
 (setq helheim-package-manager 'elpaca) ;; or 'straight
 (require 'helheim-core)
-(require 'helheim-minibuffer) ; Emacs alternative of command pallet
-(require 'helheim-completion)
 
 ;;; Color theme
 
@@ -80,6 +78,19 @@
 ;; their usual dark doom or modus themes when working on org-mode projects.
 ;;   You may try it with ": load-theme" then type "leuven".
 (setup leuven-theme (:install t))
+
+;;; Essentials
+
+(require 'helheim-minibuffer) ; Emacs alternative of command pallet
+(require 'helheim-completion)
+(require 'helheim-keybindings)
+(require 'helheim-disable-isearch)
+
+(require 'helheim-ibuffer)  ; Buffers menu
+(require 'helheim-dired)    ; File-manager
+(require 'helheim-embark)   ; Context-aware action menus
+(require 'helheim-outline)  ; See "Outline Mode" in Emacs manual
+(require 'helheim-tab-bar)  ; Each tab represents a set of windows, as in Vim
 
 ;;; Search
 
@@ -96,29 +107,6 @@
 (require 'helheim-magit)
 (require 'helheim-diff-hl)  ; git gutter
 (require 'helheim-ediff)
-
-;;; Terminal emulators
-
-; (require 'helheim-ghostel) ; libghostty Zig library -- same as in Ghostty
-; (require 'helheim-vterm)   ; libvterm C library -- same as in Neovim
-
-;;; LLM
-
-; (require 'helheim-agent-shell)
-; (require 'helheim-mcp-server)
-
-;;; Other modules
-
-(require 'helheim-browser) ; Synchronize online text editor with Emacs buffer
-(require 'helheim-dired)   ; File-manager
-(require 'helheim-embark)  ; Context-aware action menus
-(require 'helheim-ibuffer) ; Buffers menu
-(require 'helheim-outline) ; See "Outline Mode" in Emacs manual
-(require 'helheim-notmuch) ; Notmuch email client
-(require 'helheim-tab-bar) ; Each tab represents a set of windows, as in Vim
-(require 'helheim-whisper) ; Speech to text conversion
-; (require 'helheim-vterm) ; Terminal emulator. Requires shell-side configuration!
-; (require 'helheim-edit-indirect) ; Alternative "zn" binding
 
 ;;; Org mode
 
@@ -139,9 +127,21 @@
 (require 'helheim-markdown)
 (require 'helheim-sh)
 
-;;; Keybindings
+;;; Terminal emulators
 
-(require 'helheim-keybindings)
-(require 'helheim-disable-isearch)
+; (require 'helheim-ghostel) ; libghostty Zig library -- same as in Ghostty
+; (require 'helheim-vterm)   ; libvterm C library -- same as in Neovim
+
+;;; LLM
+
+; (require 'helheim-agent-shell)
+; (require 'helheim-mcp-server)
+
+;;; Extra ficilities
+
+; (require 'helheim-browser) ; Synchronize online text editor with Emacs buffer
+; (require 'helheim-notmuch) ; Notmuch email client
+; (require 'helheim-whisper) ; Speech to text conversion
+; (require 'helheim-edit-indirect) ; Alternative "zn" binding
 
 ;;; init.el ends here
