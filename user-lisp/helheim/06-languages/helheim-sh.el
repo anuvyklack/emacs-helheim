@@ -24,8 +24,6 @@
            :types ((?f "Function" font-lock-function-name-face)
                    (?v "Variable" font-lock-constant-face)))))
 
-(setup fish-mode (:install t))
-
 ;;; .
 (provide 'helheim-sh)
 ;;; helheim-sh.el ends here
