@@ -55,9 +55,17 @@
       "C-c t f"  '("table formula debugger" . org-table-toggle-formula-debugger)
       "C-c t o"  '("table coordinate overlays" . org-table-toggle-coordinate-overlays))
     (:unbind
-      "C-c '"    ;; `org-edit-special' — moved to ,' and z'
-      "C-c ,"    ;; `org-priority'     — moved to ,,
-      "C-c /"))) ;; `org-sparse-tree'  — moved to ,/ and z/
+      "C-c '"  ; `org-edit-special' — moved to ,' and z'
+      "C-c ,"  ; `org-priority'     — moved to ,,
+      "C-c /") ; `org-sparse-tree'  — moved to ,/ and z/
+    ;;
+    (:with-keymap org-link-navigation-repeat-map
+      (:bind
+        "n" 'org-next-link
+        "p"  nil
+        "N" 'org-previous-link
+        "]" 'org-next-link
+        "[" 'org-previous-link))))
 
 ;; <leader> l or <local-leader> l
 (defvar-keymap helheim-org-link-map
@@ -72,7 +80,7 @@
 (defvar-keymap helheim-org-insert-map
   :prefix 'helheim-org-insert-map
   "l"  '("insert link" . org-insert-link)
-  "m"  'yank-media
+  "m"  '("paste media" . yank-media)
   "d"  '("deadline" . org-deadline)
   "s"  '("schedule" . org-schedule)
   "t"  '("time stamp" . org-time-stamp)
