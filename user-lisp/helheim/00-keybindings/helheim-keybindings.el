@@ -42,14 +42,16 @@
   "d"     'dired-jump
   ;; Buffer
   "b b"   '("ibuffer" . ibuffer-jump) ;; "<leader> bb"
-  "b n"   'switch-to-buffer ;; next key after "b"
+  "b n"   'switch-to-buffer    ; next key after "b"
   "b s"   'save-buffer
-  "b w"   'write-file
-  "b d"   'kill-current-buffer ;; also "C-w d"
-  "b z"   'bury-buffer         ;; also "C-w z"
-  "b g"   'revert-buffer       ;; also "C-w r"
-  "b r"   'rename-buffer
+  "b c"   '("copy buffer's file" . bufferfile-copy)
+  "b w"   '("write buffer for file" . write-file)
+  "b d"   '("delete buffer's file" . bufferfile-delete)
+  "b g"   'revert-buffer       ; also "C-w r"
+  "b r"   '("rename buffer's file" . bufferfile-rename)
+  "b R"   'rename-buffer
   "b x"   'scratch-buffer
+  "b z"   'bury-buffer         ; also "C-w z"
   ;; Bookmarks
   "b RET" 'bookmark-jump
   "b m"   'bookmark-set
@@ -82,6 +84,15 @@
             "a" 'xref-find-apropos
             "r" 'query-replace
             "R" 'query-replace-regexp))
+
+;;; Buffer
+
+(setup bufferfile
+  (:install t)
+  (:autoload bufferfile-copy)
+  (:setopt bufferfile-verbose t
+           bufferfile-use-vc t
+           bufferfile-delete-switch-to 'parent-directory))
 
 ;;; Button
 
