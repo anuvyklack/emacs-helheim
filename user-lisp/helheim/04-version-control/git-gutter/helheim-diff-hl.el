@@ -66,12 +66,12 @@
   (:after-load
     (:with-keymap diff-hl-show-hunk-inline-transient-mode-map
       (:bind :state 'motion
-        "j"   'diff-hl-show-hunk-inline--popup-up
-        "k"   'diff-hl-show-hunk-inline--popup-down
-        "C-b" 'diff-hl-show-hunk-inline--popup-pagedown
-        "C-f" 'diff-hl-show-hunk-inline--popup-pageup
-        "C-u" 'diff-hl-show-hunk-inline--popup-pagedown
-        "C-d" 'diff-hl-show-hunk-inline--popup-pageup))))
+        "j"   'diff-hl-show-hunk-inline--popup-down
+        "k"   'diff-hl-show-hunk-inline--popup-up
+        "C-b" 'diff-hl-show-hunk-inline--popup-pageup
+        "C-f" 'diff-hl-show-hunk-inline--popup-pagedown
+        "C-u" 'diff-hl-show-hunk-inline--popup-pageup
+        "C-d" 'diff-hl-show-hunk-inline--popup-pagedown))))
 
 (define-advice diff-hl-show-hunk-inline (:after (&rest _) helheim)
   (setq diff-hl-show-hunk-inline--current-footer
