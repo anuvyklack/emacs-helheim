@@ -125,6 +125,8 @@
     ;; Unclatter `help-map' to make `whick-key' useable.
     (:unbind
       "<f1>" "C-h" "?" "<help>" ;; `help-for-help'
+      "h"    ;; `view-hello-file'
+      "C-c"  ;; `describe-copying'
       "C-e"  ;; `view-external-packages' — irrelevant or outdated information
       "C-o"  ;; `describe-distribution'
       "C-q"  ;; `help-quick-toggle' — irrelevant to us

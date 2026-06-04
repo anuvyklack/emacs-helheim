@@ -556,12 +556,7 @@ Use `delete-trailing-whitespace' command."
   (:setopt help-enable-autoload nil
            help-enable-completion-autoload nil
            help-enable-symbol-autoload nil
-           help-window-select t) ;; Focus new help windows on open.
-  (:after-load
-    (:with-keymap help-map
-      (:unbind
-        "h"       ;; `view-hello-file'
-        "C-c")))) ;; `describe-copying'
+           help-window-select t)) ;; Focus new help windows on open.
 
 (setup helpful
   (:install t)
