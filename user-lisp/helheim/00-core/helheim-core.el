@@ -397,6 +397,12 @@ Use `delete-trailing-whitespace' command."
 ;; characters followed by a terminating newline".
 (setq require-final-newline t)
 
+;; Don’t break after a one-letter word preceded by a whitespace character
+(add-hook 'fill-nobreak-predicate #'fill-single-char-nobreak-p)
+
+;; Don’t break after the first word of a sentence or before the last
+(add-hook 'fill-nobreak-predicate #'fill-single-word-nobreak-p)
+
 ;;;; Parens
 
 ;; Don't blink the paren matching the one at point, it's too distracting.
