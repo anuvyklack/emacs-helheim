@@ -89,7 +89,7 @@
 
 (setup bufferfile
   (:install t)
-  (:autoload bufferfile-copy)
+  (:command bufferfile-copy)
   (:setopt bufferfile-verbose t
            bufferfile-use-vc t
            bufferfile-delete-switch-to 'parent-directory))

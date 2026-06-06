@@ -832,7 +832,7 @@ Use `delete-trailing-whitespace' command."
 ;; Automatically truncate compilation buffers so they don't accumulate too
 ;; much data and bog down the rest of Emacs.
 (setup comint
-  (:autoload comint-truncate-buffer)
+  (:command comint-truncate-buffer)
   (:hook compilation-filter-hook comint-truncate-buffer))
 
 ;;;; Eldoc

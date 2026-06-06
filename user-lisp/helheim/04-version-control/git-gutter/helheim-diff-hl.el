@@ -3,10 +3,10 @@
 
 (setup diff-hl
   (:install t)
-  (:autoload diff-hl-stage-current-hunk
-             diff-hl-revert-hunk
-             diff-hl-next-hunk
-             diff-hl-previous-hunk)
+  (:command diff-hl-stage-current-hunk
+            diff-hl-revert-hunk
+            diff-hl-next-hunk
+            diff-hl-previous-hunk)
   (setopt diff-hl-show-staged-changes nil
           diff-hl-show-hunk-function 'diff-hl-show-hunk-inline
           diff-hl-show-hunk-inline-smart-lines nil)

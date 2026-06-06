@@ -69,9 +69,9 @@
 
 (setup dired-copy-paste
   (:install dired-copy-paste :host github :repo "jsilve24/dired-copy-paste")
-  (:autoload dired-copy-paste-do-copy
-             dired-copy-paste-do-cut
-             dired-copy-paste-do-paste))
+  (:command dired-copy-paste-do-copy
+            dired-copy-paste-do-cut
+            dired-copy-paste-do-paste))
 
 (setup fd-dired (:install t))
 

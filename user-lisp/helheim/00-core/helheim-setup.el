@@ -352,9 +352,9 @@ a symbol or list of symbols.")
     \(setup foo
       \(:blackout \(foo-mode . \" Foo\"))  =>  \(blackout 'foo-mode \" Foo\")")
 
-;;; :autoload
+;;; :command
 
-(setup-define :autoload
+(setup-define :command
   (lambda (command)
     `(autoload ,command ,(format "%s" (setup-get 'feature)) nil t))
   :ensure '(func)
