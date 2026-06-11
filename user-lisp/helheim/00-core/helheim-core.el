@@ -70,11 +70,7 @@
            avy-single-candidate-jump nil))
 
 (setup hel
-  ;; (:install hel :host github :repo "anuvyklack/hel")
-  (:elpaca hel :repo "~/code/emacs/hel/")
-  (:straight hel :local-repo "~/code/emacs/hel/")
-  ;; :load-path "~/code/emacs/hel"
-  ;; (require 'hel)
+  (:install hel :host github :repo "anuvyklack/hel")
   (hel-mode))
 
 (setup compat
