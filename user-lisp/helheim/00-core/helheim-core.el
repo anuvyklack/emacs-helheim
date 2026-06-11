@@ -499,11 +499,12 @@ Use `delete-trailing-whitespace' command."
             (zig        "https://github.com/tree-sitter-grammars/tree-sitter-zig"
                         ;; "v1.1.2"
                         ))))
-  ;; BUG: Emacs provides this setting in yaml-ts-mode.el, but it only works
-  ;;   after the package is loaded, defeating autoloading. So, we duplicate
-  ;;   them here.
-  (:mode ("\\.ya?ml\\'" . yaml-ts-mode)
-         ("clang.format\\'" . yaml-ts-mode)))
+  (:mode
+   ;; BUG: Emacs provides this setting in yaml-ts-mode.el, but it only works
+   ;;   after the package is loaded, defeating autoloading. So, we duplicate
+   ;;   them here.
+   ("\\.ya?ml\\'" . yaml-ts-mode)
+   ("clang.format\\'" . yaml-ts-mode)))
 
 ;;;; Extra file extensions to support
 

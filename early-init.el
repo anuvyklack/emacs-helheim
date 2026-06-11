@@ -82,14 +82,14 @@
 ;; Increase how much is read from processes in a single chunk
 (setq read-process-output-max (* 2 1024 1024)) ; 1024kb
 
-;; Font compacting can be very resource-intensive, especially when rendering
-;; icon fonts on Windows. This will increase memory usage.
+;; Font compacting can be very resource-intensive.
+;; Disable it in cost of increasing memory usage.
 (setq inhibit-compacting-font-caches t)
 
 (when (and (not (daemonp))
            (not noninteractive))
-  ;; Resizing the Emacs frame can be costly when changing the font. Disable this
-  ;; to improve startup times with fonts larger than the system default.
+  ;; Resizing the Emacs frame can be costly when changing the font. Disable
+  ;; this to improve startup times with fonts larger than the system default.
   (setq frame-resize-pixelwise t)
 
   ;; Without this, Emacs will try to resize itself to a specific column size

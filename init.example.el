@@ -81,7 +81,7 @@
 
 ;;; Essentials
 
-(require 'helheim-minibuffer) ; Emacs alternative of command pallet
+(require 'helheim-minibuffer) ; Emacs version of command palette
 (require 'helheim-completion)
 (require 'helheim-keybindings)
 (require 'helheim-disable-isearch)
@@ -129,8 +129,8 @@
 
 ;;; Terminal emulators
 
-; (require 'helheim-ghostel) ; libghostty Zig library -- same as in Ghostty
-; (require 'helheim-vterm)   ; libvterm C library -- same as in Neovim
+; (require 'helheim-ghostel) ; based on libghostty (Zig) -- same as in Ghostty
+; (require 'helheim-vterm)   ; based on libvterm (C) -- same as in Neovim
 
 ;;; LLM
 

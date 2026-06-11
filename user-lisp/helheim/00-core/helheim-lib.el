@@ -4,7 +4,7 @@
 (eval-when-compile (require 'cl-macs))
 (require 'dash)
 
-;;; Customize color themes
+;;; Color themes customization
 ;;
 ;; Just load the theme you want with `load-theme' function. Thats all. You may
 ;; use it interactively: press ":" (Hel) or "M-x" (Emacs) and type `load-theme'.

@@ -158,7 +158,7 @@ Like `org-attach' but tuned for Emacs Helheim."
 
 ;;;###autoload
 (defun +markdown-to-org-region (start end)
-  "Convert region (START, END) from Markdown to Org-mode via pandoc."
+  "Convert region (START, END) from Markdown to Org-mode using pandoc."
   (interactive "r")
   (unless (executable-find "pandoc")
     (user-error "No pandoc executable found"))
