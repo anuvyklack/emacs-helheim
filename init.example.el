@@ -89,6 +89,7 @@
 (require 'helheim-ibuffer)  ; Buffers menu
 (require 'helheim-dired)    ; File-manager
 (require 'helheim-embark)   ; Context-aware action menus
+(require 'helheim-modeline) ; Normal people call this "status line"
 (require 'helheim-outline)  ; See "Outline Mode" in Emacs manual
 (require 'helheim-tab-bar)  ; Each tab represents a set of windows, as in Vim
 

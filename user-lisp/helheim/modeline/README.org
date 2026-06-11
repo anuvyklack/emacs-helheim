@@ -1,0 +1,18 @@
+* helheim-modeline
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-modeline)
+#+end_src
+
+** Packages
+- [[https://github.com/seagle0128/doom-modeline][doom-modeline]]
+
+** Customization
+
+- Configure font used in modeline:
+  #+begin_src emacs-lisp
+  (let ((spec (font-spec :family "Noto Sans" :size 13.9 :weight 'normal)))
+    (set-face-font 'mode-line spec)
+    (set-face-font 'mode-line-active spec)
+    (set-face-font 'mode-line-inactive spec))
+  #+end_src

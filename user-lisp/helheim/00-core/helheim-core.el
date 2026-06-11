@@ -94,9 +94,8 @@
 
 (setup nerd-icons
   (:install t)
-  (:setopt nerd-icons-scale-factor 0.95)
   (:after-load
-    ;; Add some icons
+    ;; Add some missing icons
     (-each '((fundamental-mode nerd-icons-faicon "nf-fa-file_o" :face nerd-icons-dsilver)
              (deadgrep-mode nerd-icons-faicon "nf-fa-search"))
       (-lambda ((mode . icon-spec))
