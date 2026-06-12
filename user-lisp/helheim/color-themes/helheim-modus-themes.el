@@ -26,7 +26,6 @@
 
 (helheim-theme-set-faces 'modus-operandi
   '(region :background "#d9eaff") ;; #c0deff
-  ;; '(region :background "#d7e7f9") ;; #c0deff
   '(help-key-binding :foreground "#0000b0" :background "grey96"
                      :box (:line-width (-1 . -1) :color "grey80")
                      :inherit fixed-pitch))
@@ -57,8 +56,6 @@
 ;;;; avy
 
 (helheim-theme-set-faces 'modus-operandi
-  ;; '(avy-lead-face   :background "#ffd15b" :foreground "black" :weight bold)
-  ;; '(avy-lead-face-0 :background "#ffc9d3" :foreground "black" :weight bold)
   '(avy-lead-face   :background "#7feaff" :foreground "black" :weight bold)
   '(avy-lead-face-0 :background "#ffaaff" :foreground "black" :weight bold))
 
@@ -69,7 +66,7 @@
   '(diff-hl-delete :background "#f3b5af")
   '(diff-hl-insert :background "#b2e8be"))
 
-;;;; Search: isearch, occur...
+;;;; Search: isearch, occur, etc
 
 (helheim-theme-set-faces 'modus-operandi
   '(lazy-highlight :background "#f4ede2"
@@ -117,7 +114,11 @@
 
 (helheim-theme-set-faces 'modus-vivendi
   '(cursor :background "white")
-  '(region :background "#4c5967"))
+  '(hel-normal-state-fake-cursor :background "#6fe5ff")
+  '(hel-insert-state-fake-cursor :background "#6fe5ff")
+  '(default :foreground "#f1f1f1" :background "#000000")
+  ;; '(region :foreground "#e5e5e5" :background "#294e63")
+  '(region :background "#294e63"))
 
 ;;; .
 ;; Restore original value.
