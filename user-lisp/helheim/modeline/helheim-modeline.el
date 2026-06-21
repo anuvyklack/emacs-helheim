@@ -3,7 +3,7 @@
 (setup doom-modeline
   (:install t)
   ;; Varables should be set before package is loaded.
-  (:setopt doom-modeline-check 'auto ;; 'simple
+  (:setopt doom-modeline-buffer-file-name-style 'relative-from-project ;; 'auto
            doom-modeline-major-mode-icon nil
            doom-modeline-position-column-line-format '("%c:%l")
            doom-modeline-total-line-number nil
