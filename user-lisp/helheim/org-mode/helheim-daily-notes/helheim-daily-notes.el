@@ -65,7 +65,7 @@ for the specified date."
                                      (org-parse-time-string)))
             (date (list m d y)))
       (when (calendar-date-is-visible-p date)
-        (calendar-mark-visible-date date 'hel-mode-line-cursors-indicator)))))
+        (calendar-mark-visible-date date 'lazy-highlight)))))
 
 (defun helheim-daily-list-files ()
   "List all files recursively in `helheimg-daily-directory' sorted by date."
