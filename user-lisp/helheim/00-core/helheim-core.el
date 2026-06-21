@@ -774,6 +774,11 @@ Use `delete-trailing-whitespace' command."
 ;; Prevent truncation of long function names in `imenu' listings.
 (setq imenu-max-item-length 160)
 
+;;;; Isearch
+
+(setopt isearch-lazy-count t
+        isearch-lazy-highlight 'all-windows)
+
 ;;;; Calendar
 
 (setup calendar
