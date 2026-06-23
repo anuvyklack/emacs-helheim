@@ -73,10 +73,10 @@ If THEME is currently active changes takes effect immediatly.
       (global-hl-line-unhighlight))))
 
 (defun helheim--global-hl-line-buffers-p (buffer)
-  "Enable current line highlighting only in special modes that are in Hel motion
+  "Enable current line highlighting only in special modes that are in Hel Emacs
 state, and temporary disable it when region is active."
   (with-current-buffer buffer
-    (and (eq hel-state 'motion)
+    (and (eq hel-state 'emacs)
          (not (use-region-p)))))
 
 (defun helheim-make-hashed-backup-file-name-a (orig-fun file)

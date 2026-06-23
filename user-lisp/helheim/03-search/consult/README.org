@@ -21,7 +21,7 @@ a smooth start.
   A universal line-by-line search within the current buffer. Mnemonic: =/= is the
   search key in Hel Normal state (following Vim). Binding it to =C-/= makes it
   accessable both in editing buffers (in Hel Normal state) and in special
-  buffers (in Hel Motion state).
+  buffers (in Hel Emacs state).
 
 - =Space /= (~consult-ripgrep~) ::
   Search in current project with ripgrep and show results in minibuffer.
@@ -36,7 +36,7 @@ a smooth start.
 - =i= ::
   In practically all buffers with search results: ~grep-mode~, ~deadgrep-mode~,
   ~occur-mode~, you can switch to Insert state for editing original files directly
-  from a search results buffer. To switch back to Motion state use =ZZ= or =zx= or
+  from a search results buffer. To switch back to Emacs state use =ZZ= or =zx= or
   =C-c C-c=.
 
   The only place where it doesn't work is Xref buffer (~xref--xref-buffer-mode~).

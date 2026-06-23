@@ -26,7 +26,7 @@
         "m i h"   'helheim-outline-mark-subtree
         "m o"     'helheim-outline-mark-subtree ; "o" is for outline
         "m i o"   'helheim-outline-mark-subtree)
-      (:bind :state '(normal motion)
+      (:bind :state '(normal emacs)
         "z <tab>"     'outline-cycle
         "z <backtab>" 'outline-cycle-buffer
         "z <return>"  'outline-insert-heading

@@ -7,7 +7,7 @@
           ediff-window-setup-function #'ediff-setup-windows-plain
           ;; ediff-keep-variants nil
           )
-  (hel-set-initial-state 'ediff-mode 'motion))
+  (hel-set-initial-state 'ediff-mode 'emacs))
 
 ;;; Restore windows configuration after quitting ediff
 

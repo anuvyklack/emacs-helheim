@@ -174,7 +174,7 @@
     (:with-keymap Info-mode-map
       (:bind
         "C-c s a" 'info-apropos)
-      (:bind :state 'motion
+      (:bind :state 'emacs
         "i"     'hel-normal-state)
       (:bind :state 'normal
         "C-j"   'Info-next

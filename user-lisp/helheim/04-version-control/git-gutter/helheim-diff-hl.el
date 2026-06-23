@@ -53,7 +53,7 @@
 (setup diff-hl-show-hunk
   (:after-load
     (:with-keymap diff-hl-show-hunk-map
-      (:bind :state 'motion
+      (:bind :state 'emacs
         "["   'diff-hl-show-hunk-previous
         "]"   'diff-hl-show-hunk-next)
       (:bind
@@ -65,7 +65,7 @@
 (setup diff-hl-show-hunk-inline
   (:after-load
     (:with-keymap diff-hl-show-hunk-inline-transient-mode-map
-      (:bind :state 'motion
+      (:bind :state 'emacs
         "j"   'diff-hl-show-hunk-inline--popup-down
         "k"   'diff-hl-show-hunk-inline--popup-up
         "C-b" 'diff-hl-show-hunk-inline--popup-pageup

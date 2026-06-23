@@ -1,12 +1,12 @@
 ;;; helheim-notmuch-keys.el       -*- lexical-binding: t; no-byte-compile: t -*-
 
 (setup notmuch
-  (hel-set-initial-state 'notmuch-hello-mode  'motion)
+  (hel-set-initial-state 'notmuch-hello-mode  'emacs)
   (add-hook 'notmuch-hello-mode-hook #'hel-switch-to-normal-state-in-field-widget)
 
-  (hel-set-initial-state 'notmuch-search-mode 'motion)
-  (hel-set-initial-state 'notmuch-tree-mode   'motion)
-  (hel-set-initial-state 'notmuch-show-mode   'motion)
+  (hel-set-initial-state 'notmuch-search-mode 'emacs)
+  (hel-set-initial-state 'notmuch-tree-mode   'emacs)
+  (hel-set-initial-state 'notmuch-show-mode   'emacs)
 
   (setq notmuch-tagging-keys
         `(("a" notmuch-archive-tags "Archive")

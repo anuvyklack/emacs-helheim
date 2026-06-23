@@ -12,7 +12,7 @@
 ;;;###autoload
 (defun helheim-ediff-setup-keys ()
   "Setup Ediff keys."
-  (hel-keymap-set ediff-mode-map :state 'motion
+  (hel-keymap-set ediff-mode-map :state 'emacs
     "d"   'ediff-jump-to-difference
     "H"   'ediff-toggle-hilit
     "j"   'ediff-next-difference
@@ -32,11 +32,11 @@
     "u c" 'ediff-restore-diff)
   (unless (or ediff-3way-comparison-job
               (eq ediff-split-window-function 'split-window-vertically))
-    (hel-keymap-set ediff-mode-map :state 'motion
+    (hel-keymap-set ediff-mode-map :state 'emacs
       "l" 'ediff-copy-A-to-B
       "h" 'ediff-copy-B-to-A))
   ;; (hel-update-active-keymaps)
-  (hel-motion-state))
+  (hel-emacs-state))
 
 ;;;; Help message
 

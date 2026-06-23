@@ -27,7 +27,7 @@
               "F" 'tab-detach)))     ; Move current tab to new frame.
 
 (with-eval-after-load 'tab-bar
-  (hel-keymap-set tab-bar-mode-map :state '(normal motion)
+  (hel-keymap-set tab-bar-mode-map :state '(normal emacs)
     ;; "C-<tab>" and "C-S-<tab>" are bound by deafult.
     "] t" 'tab-next
     "[ t" 'tab-previous)

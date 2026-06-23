@@ -3,7 +3,7 @@
 ;;; Keybindings
 
 (setup vertico
-  (:global-bind :state '(normal motion)
+  (:global-bind :state '(normal emacs)
     "C-c '"   '("vertico last session" . vertico-repeat)
     "C-c \""  '("vertico select session" . vertico-repeat-select))
   (:with-keymap minibuffer-local-map

@@ -45,7 +45,7 @@
 ;;; Keybindings
 
 (setup consult
-  (:global-bind :state '(normal motion)
+  (:global-bind :state '(normal emacs)
     "C-/" 'consult-line                 ; "/" is for search
     "C-?" 'consult-line-multi)          ; "C-S-/"
 

@@ -8,7 +8,7 @@
   ;; `magit-mode-map' is the common parent keymap for all other Magit keymaps.
   (:with-keymap magit-mode-map
     (:unbind "g" "z")
-    (:bind :state '(motion normal)
+    (:bind :state '(emacs normal)
       "C-w p" 'magit-toggle-buffer-lock) ;; <leader><leader>
     (:bind
       "C-<return>" 'magit-visit-thing
@@ -19,7 +19,7 @@
       "+"       'magit-diff-more-context
       "-"       'magit-diff-less-context
       "0"       'magit-diff-default-context
-      ;; Use the default Hel motion commands instead of `magit-next-line'
+      ;; Use the default Hel Emacs commands instead of `magit-next-line'
       ;; and `magit-previous-line', because they are surprisingly slow and
       ;; make little sense, since we have toggle selection on "v".
       "j"       'next-line
@@ -169,7 +169,7 @@
 (setup magit-blame
   (add-hook 'magit-blame-mode-hook (defun helheim-magit-blame-h ()
                                      (if magit-blame-mode
-                                         (hel-motion-state)
+                                         (hel-emacs-state)
                                        (hel-normal-state))))
   (:with-keymap magit-blame-read-only-mode-map
     (:unbind "SPC" "S-SPC" "DEL") ;; "C-m"
@@ -327,7 +327,7 @@ with the key bindings used in Magit."
 (setup with-editor
   (:after-load
     (:with-keymap with-editor-mode-map
-      (:bind :state '(normal motion)
+      (:bind :state '(normal emacs)
         "Z Z"  'with-editor-finish
         "Z Q"  'with-editor-cancel))))
 

@@ -193,7 +193,7 @@ The predicate is passed as argument to `buffer-match-p', which see."
 (setup hl-line
   (:setopt global-hl-line-sticky-flag 'window ;; Emacs 31
            ;; I want current line highlighting only in special modes that are in
-           ;; Hel motion state, and temporary disable it when region is active.
+           ;; Hel Emacs state, and temporary disable it when region is active.
            ;; In text editing modes disable it, because it interferes with Hel
            ;; selections.
            global-hl-line-buffers '(and (or (derived-mode . special-mode)
