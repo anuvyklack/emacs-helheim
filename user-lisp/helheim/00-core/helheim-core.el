@@ -6,7 +6,12 @@
   :prefix 'helheim-)
 
 (defcustom helheim-package-manager 'straight
-  "Which package manager Helheim will use."
+  "Package manager Helheim will use to install packages.
+Supported values:
+- `elpaca'
+- `straight'
+
+Must be set before `helheim-core' is loaded!"
   :type '(radio (symbol :tag "elpaca"      'elpaca)
                 (symbol :tag "straight.el" 'straight))
   :group 'helheim)
@@ -54,9 +59,9 @@
 
 (setup avy
   (:install t)
-  (:setopt avy-keys '( ?a ?s ?d ?f ?g ?h ?j ?k ?l    ;; middle layer
-                       ?q ?w ?e ?r ?t ?y ?u ?i ?o ?p ;; top layer
-                       ?z ?x ?c ?v ?b ?n ?m)         ;; bottom layer
+  (:setopt avy-keys '( ?a ?s ?d ?f ?g ?h ?j ?k ?l    ; middle layer
+                       ?q ?w ?e ?r ?t ?y ?u ?i ?o ?p ; top layer
+                       ?z ?x ?c ?v ?b ?n ?m)         ; bottom layer
            avy-style 'at-full
            avy-all-windows nil
            avy-all-windows-alt t

@@ -2,7 +2,6 @@
 ;;; Code:
 
 (setup modus-themes
-  ;; (:install t) ; Requires Emacs 31
   (require-theme 'modus-themes)
   ;; Obsolet since 5.0.0
   (setq modus-themes-custom-auto-reload nil)

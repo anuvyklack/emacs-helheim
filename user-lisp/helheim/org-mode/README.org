@@ -1,15 +1,17 @@
-Modules in this directory provide one of the best outliners and personal
-knowledge management systems available, powered by Org-mode and Hel.
+Modules in this directory provide one of the best outliner and personal
+knowledge management systems fully preconfigured.
 
-- *Offline-first* — all your data belongs only to you.
-- *Unmatched editing* capabilities of any outliner available today — none of
-  the existing note-taking apps provide fully capable Vim emulation, not to
-  mention Kakoune or Helix.
-- *Org-mode advantages:*
-  - Rich markup — more powerful than Markdown, with LaTeX as a first-class
-    citizen (like HTML for Markdown).
-  - Task management.
-  - The best code snippet support of any outliner.
-  - Tables.
+- *Offline-first* — your data belongs to you.
+- *Unmatched editing capabilities* — no note app offers fully capable
+  Helix/Kakoune-style editing of your notes.
+- *Rich markup* — Org-mode is more powerful than Markdown, the best
+  code-snippet support around, task management, and tables with multiline
+  cells and Excel-like formulas.
+- *File attachments* on outline nodes — usable as a personal filesystem.
 - *Bidirectional links* for seamless navigation.
 - *Daily notes* — your main scratchpad and a better "Inbox".
+
+For me, Org-mode with bidirectional links (provided by [[https://www.orgroam.com/][Org-roam]] or [[https://github.com/meedstrom/org-node][Org-node]]),
+daily notes, and the ability to [[https://orgmode.org/manual/Attachments.html][attach files]] to outline nodes split life into
+"before" and "after": the first knowledge system I've kept for more than three
+years instead of abandoning in weeks.

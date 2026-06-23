@@ -1,14 +1,14 @@
 ;;; init.el -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Fonts
 ;;
-;; Set up fonts before anything else so error messages during startup were
-;; readable.
+;; Set up fonts before anything else so error messages during startup
+;; were readable.
 ;;
-;; Place cursor before the character and press “ga” to see information about it.
-;; Press "<F1> k ga" to find out which command is bound to "ga".
+;; Press "ga" to see information about the character at the position, font used,
+;; faces, overlays, etc. (Press "<F1> k ga" to find out which command is bound
+;; to "ga".)
 
-(setopt use-default-font-for-symbols t)
-(let* ((font "Cascadia Code")
+(let* ((font "Cascadia Code") ;; <- replace with you font
        (spec (font-spec :family font :size 13.0 :weight 'normal)))
   (set-face-font 'default spec)
   (set-face-font 'fixed-pitch spec)
@@ -106,12 +106,12 @@
 ;;; Version control
 
 (require 'helheim-magit)
-(require 'helheim-diff-hl)  ; git gutter
+(require 'helheim-diff-hl)  ; git gutter indicators
 (require 'helheim-ediff)
 
 ;;; Org mode
 
-;; Following variables must be set before `org' is loaded!
+;; These variables must be set before `org' is loaded!
 (setopt org-directory (expand-file-name "~/notes/")
         ;; Which modules to load.
         ;; Place cursor on variable and press "M" to see all possible values.

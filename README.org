@@ -1,0 +1,247 @@
+* Helheim Emacs
+
+#+html: <a href="https://www.gnu.org/software/emacs/"><img alt="GNU Emacs" src="https://img.shields.io/badge/GNU%20Emacs-29.1%2B-7F5AB6?logo=gnuemacs&logoColor=white"></a>
+#+html: <a href="LICENSE"><img alt="License: GPLv3" src="https://img.shields.io/badge/license-GPLv3-blue"></a>
+
+https://github.com/user-attachments/assets/09d1a77d-2a3e-4cae-a005-e69ae03e5a7e
+
+#+begin_quote
+*This is the realm of Hel*
+#+end_quote
+
+Helheim is an Emacs configuration framework built around [[https://github.com/anuvyklack/hel][Hel]] — a [[https://helix-editor.com/][Helix]]
+emulation layer for Emacs. You get Kakoune/Helix-style selection → action
+modal editing with multiple cursors + the entire Emacs ecosystem.
+
+Helheim is modular to the core. Every folder in ~user-lisp/~ is a module; you
+~require~ only what you want.
+
+** Highlights
+
+- Selection → action modal editing + multiple cursors, smooth-scrolling.
+
+- Sane defaults + treesitter configuration.
+
+- [[file:user-lisp/helheim/05-lsp/xref/README.org][Xref]] is patched to try all registered backends in sequence until one
+  succeeds, with [[https://github.com/jacktasia/dumb-jump][Dumb Jump]] as a universal fallback.
+
+- [[file:user-lisp/helheim/org-mode/README.org][Org-mode]] fully preconfigured as personal knowledge management system
+  with [[file:user-lisp/helheim/org-mode/helheim-org-node/README.org][bidirectional links]] and [[file:user-lisp/helheim/org-mode/helheim-daily-notes/README.org][daily notes]].
+
+- Ibuffer, done right. Buffers are grouped by project, then by file-tree
+  depth, with paths relative to the project root. Special buffers and
+  out-of-project buffers are separated, and Denote IDs are stripped
+  from names. A picture is worth a thousand words.
+  
+  #+html: <img src="https://github.com/user-attachments/assets/9a74b442-c1ae-4e64-b1fa-3fc3b323998f" width="60%">
+
+** Modular architecture
+
+Every folder in =user-lisp/= is added to the ~load-path~, all Elisp files are
+byte-compiled and scraped for =;;;###autoload= cookies. ~require~ only the modules
+you need in your =init.el=.
+
+Run =: prepare-user-lisp= to rescan =user-lisp/= after adding content at runtime.
+With ~universal-argument~ (=M-u : prepare-user-lisp=) it recompiles all files and
+rebuilds the =.user-lisp-autoloads.el= file with autoload cookies.
+
+#+begin_quote
+[!NOTE]
+This is an Emacs 31 feature backported to Helheim.
+#+end_quote
+
+*** Modules
+
+Every entry in ~user-lisp/helheim/~ is a self-contained module, ~require~ only
+what you need.
+
+- UI
+  - [[file:user-lisp/helheim/modeline/README.org][modeline]] — status-line
+  - [[file:user-lisp/helheim/tab-bar/README.org][tab-bar]] — Each tab is a window layout, like in Vim
+
+- Essentials
+  - [[file:user-lisp/helheim/01-minibuffer/README.org][minibuffer]] — [[https://github.com/minad/vertico][Vertico]] + [[https://github.com/minad/marginalia][Marginalia]]
+  - [[file:user-lisp/helheim/02-completion/README.org][completion]] — [[https://github.com/oantolin/orderless][Orderless]] + [[https://github.com/minad/corfu][Corfu]] + [[https://github.com/minad/cape][Cape]]
+  - [[file:user-lisp/helheim/embark/README.org][embark]] — A keyboard-driven analogue of a right-click context menu.
+  - [[file:user-lisp/helheim/dired/README.org][dired]] — File manager
+  - [[file:user-lisp/helheim/ibuffer/README.org][ibuffer]] — Buffers menu
+
+- Search
+  - [[file:user-lisp/helheim/03-search/consult/README.org][consult]] — Search commands with preview
+  - [[file:user-lisp/helheim/03-search/deadgrep/README.org][deadgrep]] — A friendly ripgrep interface
+
+- Version control
+  - [[file:user-lisp/helheim/04-version-control/magit/README.org][magit]] — Magit with keys adopted for Hel
+  - [[file:user-lisp/helheim/04-version-control/git-gutter/README.org][git-gutter]] — Git gutter indicators
+  - [[file:user-lisp/helheim/04-version-control/ediff/README.org][ediff]] — 2-way and 3-way diffs
+
+- IDE
+  - [[file:user-lisp/helheim/05-lsp/eglot/README.org][eglot]] — Eglot + Flymake: built-in LSP client + diagnostics                  
+  - [[file:user-lisp/helheim/05-lsp/xref/README.org][xref]]  — Go-to-definition
+
+- [[file:user-lisp/helheim/org-mode/helheim-org/README.org][Org-mode]]
+  - [[file:user-lisp/helheim/org-mode/helheim-org-node/README.org][org-node]] — personal knowledge management (Org-roam alternative)
+  - [[file:user-lisp/helheim/org-mode/helheim-daily-notes/README.org][daily-notes]] — Daily scratchpad / Inbox                  
+
+- Terminal emulators
+  - [[file:user-lisp/helheim/07-terminal/ghostel/README.org][ghostel]] — based on =libghostty= same as used in Ghostty
+  - [[file:user-lisp/helheim/07-terminal/vterm/README.org][vterm]] — based on libvterm same as in Neovim
+
+- LLM
+  - [[file:user-lisp/helheim/08-llm/agent-shell/README.org][agent-shell]] — Shell for coding agents inside Emacs        
+  - [[file:user-lisp/helheim/08-llm/mcp-server/README.org][mcp-server]] — MCP server exposing Emacs to LLMs
+
+- Misc
+  - [[file:user-lisp/helheim/email/notmuch/README.org][notmuch]] — Notmuch email client
+  - [[file:user-lisp/helheim/browser-integration/README.org][browser-integration]] — Edit browser text fields in Emacs (GhostText)
+  - [[file:user-lisp/helheim/speech-to-text/README.org][speech-to-text]] — speech-to-text conversion with whisper.el
+
+** Installation
+
+GNU Emacs 29.1 or later is required.
+
+1. Install *Symbols Nerd Font* from [[https://www.nerdfonts.com/][nerdfonts.com]]. It contains only the icon
+   glyphs — Emacs can map individual code points to it, so you keep your own
+   text font and still get Nerd Icons.
+
+2. If you want just to try Helheim, clone it into any directory:
+   #+begin_src sh
+   git clone https://github.com/anuvyklack/helheim-emacs.git ~/.config/helheim-emacs
+   #+end_src
+
+   Or clone to the standard =~/.config/emacs= if you want Emacs to load it automatically.
+   #+begin_src sh
+   git clone https://github.com/anuvyklack/helheim-emacs.git ~/.config/emacs
+   #+end_src
+
+3. Rename ~init.example.el~ to ~init.el~.
+
+4. Run Emacs. Passing the path to config explicitly if it is not standard:
+   #+begin_src emacs-lisp
+   emacs --maximize --init-dir ~/.config/helheim-emacs &
+   #+end_src
+
+#+begin_quote
+[!IMPORTANT]
+~init.example.el~ sets the default font to [[https://github.com/microsoft/cascadia-code][Cascadia Code]]. Install it or swap
+to a font you prefer.
+#+end_quote
+
+#+begin_quote
+[!IMPORTANT]
+Hel uses =U+2000= (EN QUAD) for secondary cursors by default. It should be bound
+to a variable-pitch font.
+#+end_quote
+
+** Configuration
+*** Package manager
+
+Helheim supports two package managers:
+  - [[https://github.com/radian-software/straight.el][straight]] — (default) mature, stable, lock-file support.
+  - [[https://github.com/progfolio/elpaca][elpaca]] — younger, asynchronous, much faster,
+    [[https://github.com/progfolio/elpaca/issues/447][lock file is not fully supported yet]]
+
+See the ~helheim-package-manager~ variable.
+
+*** Keybindings
+
+Helheim uses =Space= as the leader key, but the Emacs native leader key is =C-c=.
+=Space= emulates a =C-c= press internally with the [[https://github.com/anuvyklack/hel-leader][hel-leader]] package (see its
+README because it also emulates =C-x=, =C-c C-…=, =M-…= and =C-M-…=).
+
+#+begin_quote
+[!IMPORTANT]
+If you want to create a keybinding under the leader prefix, bind under =C-c=.
+#+end_quote
+
+Example:
+#+begin_src emacs-lisp
+(keymap-global-set "C-c RET" 'dired-jump)
+#+end_src
+
+*** Color themes management
+
+Emacs color themes management is quite tedious:
+
+- Which function should you use to properly activate a color theme:
+  ~load-theme~ or ~enable-theme~?
+- How to customize faces for a specific theme? By default you can only use the
+  ~customize~ interface, and all face overrides are global — if you switch
+  themes, the overrides persist.
+- How do you switch themes on the fly? It’s not easy. Loading a new theme
+  doesn’t disable the previous one, leaving multiple themes enabled
+  simultaneously.
+
+Helheim takes care of all of these problems:
+- Use ~load-theme~ either interactively or programmatically to load and
+  activate the theme you want.
+
+- Use ~helheim-theme-set-faces~ to customize faces for a specific theme. If the
+  theme is currently enabled, the changes will be applied immediately.
+
+#+begin_src emacs-lisp
+(helheim-theme-set-faces 'modus-operandi
+  '(region :background "#d9eaff")
+  '(help-key-binding :foreground "#0000b0" :background "grey96"
+                     :box (:line-width (-1 . -1) :color "grey80")
+                     :inherit fixed-pitch))
+#+end_src
+
+To apply your customizations without restarting Emacs: place the cursor after
+the closing parenthesis and evaluate the form with =,ee= (Emacs native: =C-x C-e=).
+
+** Usage
+
+#+begin_quote
+[!IMPORTANT]
+~universal-argument~ is rebound to =M-u= since =C-u= is used for scrolling.
+#+end_quote
+
+#+begin_quote
+[!TIP]
+Bind =Caps Lock= to =Esc=, and configure =Space= to tap+hold behavior: =Space= on
+tap and =Ctrl= on hold. You can use any of these tools: [[https://github.com/pqrs-org/Karabiner-Elements][kanata]], [[https://github.com/pqrs-org/Karabiner-Elements][kmonad]],
+[[https://github.com/pqrs-org/Karabiner-Elements][keyd]] (Linux), [[https://github.com/pqrs-org/Karabiner-Elements][Karabiner-Elements]] (Mac).
+#+end_quote
+
+** The story behind Helheim
+
+I wasted an unreasonable amount of time and effort trying to adapt other
+editors to my preferences. It started with Sublime Text, then Atom (which I really
+liked), then VS Code (which I never liked), then Neovim, Emacs + Evil, VS
+Code again, then Doom Emacs. I also tried Helix and Zed. I liked one thing
+in one editor and something else in another.
+
+I wanted a keyboard-driven modal editor, multiple cursors, smooth scrolling,
+Lisp (I would prefer Common Lisp, but Emacs Lisp is better than nothing).
+
+Eventually, I decided that enough was enough — it's easier to implement
+all the things I want by myself. After all, if Linus Torvalds can maintain
+his own [[https://github.com/torvalds/uemacs][MicroEmacs]], why can’t I? That’s how Hel and Helheim were born.
+
+Helheim started as a thin config to try Hel. It has since grown into
+a full-featured framework.
+
+Someone might say that I’m continuing to tune yet another editor — Emacs
+this time — but I would disagree. Emacs is not a text editor; it’s a Lisp
+machine with a terminal emulator (which is unfortunate, since [[https://andreyor.st/posts/2023-07-11-emacs-gui-library/][I would prefer
+a full-fledged GUI]]).
+
+** Contributing
+
+Helheim aims to become a community project one day. The most useful things
+you can do:
+
+- *Share it.* A post about Helheim on your blog or social media brings new
+  people to Emacs — and that's the whole point.
+
+- *Write or improve a module.* The modular architecture makes it easy to add
+  support for a package or major mode. PRs welcome.
+
+- *Improve the docs.* If something is unclear, open an issue — I struggle to
+  guess what's obvious versus what needs explaining, and your confusion is
+  the best signal.
+
+- *Support development.* Hel and Helheim were built on an old laptop with
+  a cracked screen, instead of grinding LeetCode. If they're useful to you,
+  you can donate via [[https://www.paypal.me/anuvyklack][PayPal]]. Every bit is appreciated.
