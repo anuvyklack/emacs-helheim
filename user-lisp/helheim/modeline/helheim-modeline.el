@@ -28,18 +28,7 @@
   (:require t)
   ;; Don't show tab number in modeline.
   (doom-modeline-remove-segment 'workspace-name 'all)
-  (doom-modeline-mode)
-  ;;
-  ;; TODO: Check if it can be replaced with just:
-  ;;   (:hook magit-log-mode mode-line-invisible-mode)
-  ;; `mode-line-invisible-mode' was added in Emacs 31
-  (when (<= 31 emacs-major-version)
-    (:hook magit-mode-hook
-           (defun +modeline-hide-in-non-status-buffer-h ()
-             "Show minimal modeline in magit-status buffer, no modeline elsewhere."
-             (if (eq major-mode 'magit-status-mode)
-                 (doom-modeline-set-modeline 'magit)
-               (mode-line-invisible-mode))))))
+  (doom-modeline-mode))
 
 ;; Use main font in modeline.
 (set-face-font 'mode-line          (face-font 'fixed-pitch))
