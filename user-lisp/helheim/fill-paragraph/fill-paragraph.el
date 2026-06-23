@@ -6,7 +6,7 @@
 ;;
 ;;; Code:
 
-(require 'hel-common)
+(require 'hel-lib)
 
 (defvar +flex-fill-paragraph-column nil
   "Last fill column used in command `+flex-fill-paragraph'.")

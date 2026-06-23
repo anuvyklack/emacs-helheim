@@ -1,6 +1,6 @@
 ;;; helheim-deadgrep-lib.el                           -*- lexical-binding: t -*-
 
-(eval-when-compile (require 'hel-common))
+(eval-when-compile (require 'hel-lib))
 
 (declare-function deadgrep-visit-result-other-window "deadgrep")
 (declare-function deadgrep-forward-match "deadgrep")
