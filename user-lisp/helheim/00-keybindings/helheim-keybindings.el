@@ -156,6 +156,14 @@
                   "f" 'which-key-show-full-keymap
                   "k" 'which-key-show-keymap)))))
 
+;;; HTML
+
+(setup sgml-mode
+  (:after-load
+    (:with-keymap html-mode-map
+      (:unbind "C-c C-m")
+      (:bind "C-c C-<m>" #'html-paragraph))))
+
 ;;; Info
 
 (setup info
