@@ -201,6 +201,8 @@ directory in dired and delete from there.\n")
 
 (setup org-cliplink
   (:install t)
+  (:command org-cliplink-retrieve-title-synchronously
+            org-cliplink-org-mode-link-transformer)
   (:setopt org-cliplink-max-length nil
            org-cliplink-ellipsis "…")
   (with-eval-after-load 'org-keys

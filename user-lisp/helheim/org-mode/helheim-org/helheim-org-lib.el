@@ -128,28 +128,39 @@ Like `org-attach' but tuned for Emacs Helheim."
 ;;; org-cliplink
 
 (declare-function org-cliplink "org-cliplink")
+(declare-function org-cliplink-retrieve-title-synchronously "org-cliplink")
+(declare-function org-cliplink-org-mode-link-transformer "org-cliplink")
 
 ;; Based on https://xenodium.com/emacs-dwim-do-what-i-mean/
-(defun helheim-org-insert-link ()
+(hel-define-command helheim-org-insert-link ()
   "Like `org-insert-link' but with some \"do what i mean\" behavior.
 - If URL is in clipboard — use it.
 - If selection is active — use it as link description.
 - Automatically fetch URL title from its HTML tag.
 - Fallback to `org-insert-link'."
+  :multiple-cursors t
   (interactive)
-  (let ((point-at-link? (org-in-regexp org-link-any-re 1))
+  (let ((deactivate-mark nil)
+        (point-at-link? (org-in-regexp org-link-any-re 1))
         (clipboard-url (if-let* ((kill-ring)
                                  (kill (current-kill 0))
                                  ((string-match-p "^http" kill)))
                            kill))
-        (region-content (if (region-active-p)
+        (region-content (if (use-region-p)
                             (buffer-substring-no-properties (region-beginning)
                                                             (region-end)))))
     (cond ((and region-content clipboard-url (not point-at-link?))
            (delete-region (region-beginning) (region-end))
            (insert (org-make-link-string clipboard-url region-content)))
           ((and clipboard-url (not point-at-link?))
-           (org-cliplink))
+           (set-mark (point))
+           (if hel-multiple-cursors-mode
+               ;; With multiple cursors fetch each title synchronously.
+               (insert (org-cliplink-org-mode-link-transformer
+                        clipboard-url
+                        (org-cliplink-retrieve-title-synchronously clipboard-url)))
+             ;; else
+             (org-cliplink)))
           (t
            (call-interactively 'org-insert-link))))
   (hel-extend-selection -1))
