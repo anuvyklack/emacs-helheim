@@ -4,6 +4,16 @@
 (eval-when-compile (require 'cl-macs))
 (require 'dash)
 
+;;; Update Helheim
+
+(defun helheim-regenerate-autoloads ()
+  "Rescan `user-lisp-directory' for autoload cookies and regenarate autoloads file."
+  (interactive)
+  (loaddefs-generate (cons user-lisp-directory
+                           (f-directories user-lisp-directory nil t))
+                     (expand-file-name ".user-lisp-autoloads.el"
+                                       user-lisp-directory)))
+
 ;;; Color themes customization
 ;;
 ;; Just load the theme you want with `load-theme' function. Thats all. You may

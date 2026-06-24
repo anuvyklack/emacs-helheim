@@ -42,14 +42,10 @@
   (blackout 'compile-angel-on-load-mode)
   (compile-angel-on-load-mode))
 
-;; We disabled byte-compilation by setting `user-lisp-auto-scrape' to nil
-;; in early-init.el file because it happens too early before dependencies
-;; are installed, and with this we also disabled autoload cookies scrapping.
-;; So do it manually here.
-(loaddefs-generate (cons user-lisp-directory
-                         (f-directories user-lisp-directory nil t))
-                   (expand-file-name ".user-lisp-autoloads.el"
-                                     user-lisp-directory))
+;; We disable byte-compilation by setting `user-lisp-auto-scrape' to nil in
+;; early-init.el, because it runs too early, before dependencies are installed.
+;; This also disables autoload cookie scanning, so we perform it manually here.
+(helheim-regenerate-autoloads)
 
 ;;; External dependencies
 
