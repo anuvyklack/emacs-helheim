@@ -51,6 +51,11 @@
 (elpaca 'blackout)
 (elpaca-wait)
 
+(defalias 'helheim-update     #'elpaca-pull)
+(defalias 'helheim-update-all #'elpaca-pull-all)
+(add-to-list 'elpaca-log-command-queries
+             '((helheim-update helheim-update-all) . "#latest #unique"))
+
 ;;; .
 (provide 'helheim-elpaca)
 ;;; helheim-elpaca.el ends here

@@ -29,6 +29,9 @@
 
 (defalias 'elpaca-wait #'ignore)
 
+(defalias 'helheim-update     #'straight-pull-package)
+(defalias 'helheim-update-all #'straight-pull-all)
+
 ;;; .
 (provide 'helheim-straight)
 ;;; helheim-straight.el ends here

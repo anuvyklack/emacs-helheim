@@ -24,8 +24,8 @@
 ;;; Package management
 
 (pcase helheim-package-manager
-  ('straight (require 'helheim-straight))
-  ('elpaca   (require 'helheim-elpaca)))
+  ('elpaca   (require 'helheim-elpaca))
+  ('straight (require 'helheim-straight)))
 (require 'dash)
 (require 'f)
 (require 'helheim-lib)
