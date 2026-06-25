@@ -21,11 +21,14 @@
     (add-to-list 'project-kill-buffer-conditions '(derived-mode . ghostel-mode))
     (keymap-set project-prefix-map "t" 'ghostel-project)
     (when-let* ((idx (-elem-index '(project-eshell "Eshell") project-switch-commands)))
-      (cl-callf ->> project-switch-commands
-        (-insert-at (1+ idx) '(ghostel-project "Terminal"))))))
+      (setq project-switch-commands
+            (-insert-at (1+ idx) '(ghostel-project "Terminal")
+                        project-switch-commands)))))
 
 (setup hel-ghostel
-  (:install hel-ghostel :host github :repo "anuvyklack/hel-ghostel")
+  ;; (:install hel-ghostel :host github :repo "anuvyklack/hel-ghostel")
+  (:elpaca hel-ghostel :repo "~/code/emacs/hel-ghostel/")
+  (:straight hel-ghostel :local-repo "~/code/emacs/hel-ghostel/")
   (:after ghostel)
   (:require t))
 
