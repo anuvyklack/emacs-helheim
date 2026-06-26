@@ -462,8 +462,6 @@ Use `delete-trailing-whitespace' command."
             (latex      "https://github.com/latex-lsp/tree-sitter-latex"
                         "v0.3.0")
             ;; (bibtex     "https://github.com/latex-lsp/tree-sitter-bibtex")
-            (lua        "https://github.com/tree-sitter-grammars/tree-sitter-lua"
-                        ,(if abi<15 "v0.3.0"))
             (make       "https://github.com/tree-sitter-grammars/tree-sitter-make")
             (markdown   "https://github.com/tree-sitter-grammars/tree-sitter-markdown"
                         ,(if abi<15 "v0.4.1") ;; "v0.5.3"
