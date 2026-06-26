@@ -509,7 +509,6 @@ Use `delete-trailing-whitespace' command."
 ;;;; Editing files with very long lines
 
 (setup so-long
-  (:install t)
   (:require t)
   (:after-init global-so-long-mode)
   ;;
