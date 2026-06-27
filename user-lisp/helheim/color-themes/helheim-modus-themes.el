@@ -1,12 +1,11 @@
 ;;; helheim-modus-themes.el       -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Code:
 
-;; We restore this variable at the end of the file.
-(setq modus-themes-custom-auto-reload nil)
-
 (setup modus-themes
   ;; (:install t) ; Requires Emacs 31
   (require-theme 'modus-themes)
+  ;; Obsolet since 5.0.0
+  (setq modus-themes-custom-auto-reload nil)
   (:setopt
     ;; modus-themes-to-toggle '(modus-operandi modus-vivendi)
     ;; modus-themes-to-rotate modus-themes-items
@@ -121,8 +120,5 @@
   '(region :background "#294e63"))
 
 ;;; .
-;; Restore original value.
-(setq modus-themes-custom-auto-reload t)
-
 (provide 'helheim-modus-themes)
 ;;; helheim-modus-themes.el ends here
