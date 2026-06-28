@@ -22,19 +22,19 @@
 ;; If you want to customize particular theme use `helheim-theme-set-faces'.
 ;; You may enable you customizations imediatly without restarting Emacs place
 ;; the cursor right after the closing bracket and evaluate the form with
-;; "SPC e e" (Hel) or "C-x C-e" (Emacs).
+;; ",ee" (Hel) or "C-x C-e" (Emacs).
 
-(advice-add 'load-theme :around 'helheim-load-theme-a)
+(define-advice load-theme (:before (&rest _) helheim)
+  "Disable all enabled themes before loading a new one."
+  (-each custom-enabled-themes #'disable-theme))
 
-(defun helheim-load-theme-a (orig-fun theme &optional no-confirm no-enable)
-  "Disable all other themes, load and enable THEME and all customizations made
-with `helheim-theme-set-faces'."
-  (-each custom-enabled-themes #'disable-theme)
-  (funcall orig-fun theme no-confirm no-enable)
-  (when-let* ((faces (alist-get theme helheim-themes-faces)))
-    (apply #'custom-theme-set-faces theme faces))
-  (unless no-enable
-    (enable-theme theme)))
+(add-hook 'enable-theme-functions 'helheim-apply-theme-faces -90)
+
+(defun helheim-apply-theme-faces (theme)
+  "Apply helheim face overrides for THEME on top of its own faces."
+  (when-let* ((faces (alist-get theme helheim-themes-faces))
+              ((custom-theme-p theme)))
+    (apply #'custom-theme-set-faces theme faces)))
 
 (defvar helheim-themes-faces nil
   "Per theme faces overrides made by `helheim-theme-set-faces'.
@@ -45,23 +45,21 @@ Alist of the form:
    (theme2 . ((face1 . specs)
               (face2 . specs))))")
 
-;; TODO: write docstring
 (defun helheim-theme-set-faces (theme &rest specs)
-  "Set FACE for THEME.
-See `helheim/color-themes/helheim-modus-themes.el' for examples how to use
-this function. (Place cursor somewhere inside path and press \"gf\" to let
-Emacs magic happen.)
+  "Register face attribute overrides for THEME.
 
-\(fn THEME [(FACE . SPECS)])"
+Each element of SPECS is a list (FACE :ATTR VALUE ...) naming a face
+and its attribute plist — the same format `set-face-attribute' accepts.
+
+If THEME is currently active changes takes effect immediatly.
+
+\(fn THEME (FACE :ATTR VALUE ...) ...)"
   (declare (indent 1))
   (-each specs (-lambda ((face . spec))
                  (setf (->> helheim-themes-faces
                             (alist-get theme)
                             (alist-get face))
                        `(((t ,@spec))))))
-  (when (memq theme custom-known-themes)
-    (apply #'custom-theme-set-faces theme
-           (alist-get theme helheim-themes-faces)))
   (when (memq theme custom-enabled-themes)
     (enable-theme theme)))
 
