@@ -142,6 +142,14 @@
 (setq eval-expression-print-length nil
       eval-expression-print-level nil)
 
+(setq which-func-update-delay 1.0)
+
+;; Omit the load average from `display-time-mode'.
+(setq display-time-default-load-average nil)
+
+;; Avoid automatic frame resizing when changing the global text scale.
+(setq global-text-scale-adjust-resizes-frames nil)
+
 ;;;; Mouse
 
 ;; middle-click paste at point, not at click
@@ -345,7 +353,16 @@ Use `delete-trailing-whitespace' command."
            mouse-wheel-progressive-speed nil))
 
 ;;; Text editing
-;;;; Misc
+;;;; Clipboard
+
+;; Preserve the system clipboard before Emacs delete/kill operations.
+;;
+;; By default, deleting text in Emacs overwrites your system clipboard.
+;; For example, if you copy a link from a browser, switch to Emacs, and delete
+;; some text, your copied link is lost. This setting fixes that by pushing the
+;; clipboard contents into your paste history right before the deletion,
+;; ensuring external data remains retrievable via `hel-paste-pop'.
+(setq save-interprogram-paste-before-kill t)
 
 ;; Remove duplicates from the kill ring to reduce clutter.
 (setq kill-do-not-save-duplicates t)
@@ -397,6 +414,9 @@ Use `delete-trailing-whitespace' command."
 
 ;; Don’t break after the first word of a sentence or before the last
 (add-hook 'fill-nobreak-predicate #'fill-single-word-nobreak-p)
+
+;; Don't break lines inside hidden text.
+(setq fill-nobreak-invisible t)
 
 ;;;; Parens
 
@@ -537,6 +557,12 @@ Use `delete-trailing-whitespace' command."
 ;; to make you never lose bookmarks if Emacs crashes.
 (setq bookmark-save-flag 1)
 
+;;;; Security
+
+;; Say gpg-agent to redirect all Pinentry queries to the caller, so Emacs can
+;; query passphrase through the minibuffer, instead of external Pinentry program
+(setq epg-pinentry-mode 'loopback)
+
 ;;;; Custom
 
 (setup custom
@@ -581,6 +607,7 @@ Use `delete-trailing-whitespace' command."
 (minibuffer-depth-indicate-mode)
 
 (setq resize-mini-windows 'grow-only
+      max-mini-window-height 0.33
       history-delete-duplicates t)
 
 ;; Keep the cursor out of the read-only portions of the minibuffer.
@@ -817,6 +844,37 @@ Use `delete-trailing-whitespace' command."
                 try-complete-lisp-symbol-partially
                 try-complete-lisp-symbol))))
 
+;;;;; dabbrev
+
+(setup dabbrev
+  (:setopt dabbrev-upcase-means-case-search t
+           dabbrev-ignored-buffer-modes '( archive-mode image-mode docview-mode
+                                           pdf-view-mode tags-table-mode))
+  (:setopt dabbrev-ignored-buffer-regexps
+           '(;; Buffers starting with a space (internal/temporary buffers).
+             "\\` "
+             ;; Tags files: ETAGS, GTAGS, RTAGS, TAGS, e?tags, GPATH, including
+             ;; numbered variants like <123>.
+             "\\(?:\\(?:[EG]?\\|GR\\)TAGS\\|e?tags\\|GPATH\\)\\(<[0-9]+>\\)?")))
+
+;;;;; abbrev
+
+;; Keep `abbrev_defs' under `user-emacs-directory'. Otherwise it defaults to
+;; ~/.emacs.d/abbrev_defs regardless of our redirection.
+(setup abbrev
+  (:setopt abbrev-file-name (locate-user-emacs-file "abbrev_defs")
+           save-abbrevs 'silently))
+
+;;;; Spell checking
+
+;; Don't display a message for each word when checking the whole buffer.
+;; This markedly improves `flyspell' performance.
+(setq flyspell-issue-message-flag nil
+      flyspell-issue-welcome-flag nil)
+
+;; Save the personal dictionary without confirmation.
+(setq ispell-silently-savep t)
+
 ;;;; Comint (COMmand INTerpreter)
 
 (setq ansi-color-for-comint-mode t
@@ -913,6 +971,11 @@ Use `delete-trailing-whitespace' command."
 ;;   (:after-load
 ;;     ;; vc-annotate-mode-map
 ;;     (:bind [remap quit-window] #'kill-current-buffer)))
+
+;;;; Diff
+
+;; Move the +/- indicators into the fringe for cleaner-looking diffs.
+(setq diff-font-lock-prettify t)
 
 ;;;; Which-Key
 

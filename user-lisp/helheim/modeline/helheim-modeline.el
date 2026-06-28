@@ -34,6 +34,7 @@
 (set-face-font 'mode-line          (face-font 'fixed-pitch))
 (set-face-font 'mode-line-active   (face-font 'fixed-pitch))
 (set-face-font 'mode-line-inactive (face-font 'fixed-pitch))
+(set-face-font 'header-line        (face-font 'fixed-pitch))
 
 ;;; .
 (provide 'helheim-modeline)
