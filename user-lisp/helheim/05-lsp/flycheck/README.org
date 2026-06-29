@@ -1,0 +1,36 @@
+* helheim-flycheck
+** Enable
+
+Add the following line to your =init.el=:
+#+begin_src emacs-lisp
+(require 'helheim-flycheck)
+#+end_src
+
+** Packages
+
+- [[https://github.com/flycheck/flycheck][flycheck]]
+
+** Hacks
+
+- Flycheck is hacked to reveal (open if folded) and highlight error region
+  on jumping to it either with =[d= / =]d= or from flycheck buffer.
+
+- Flycheck diagnostics are passed through Eldoc, allowing them to be
+  combined with other messages instead of overriding them.
+
+** Keybindings
+
+| =[d= / =]d= | previous / next diagnostics        |
+| =SPC d d= | open buffer with diagnostics list  |
+| =SPC d c= | Run checkers in current buffer     |
+| =SPC d C= | Remove all diagnostics from buffer |
+| =SPC d x= | Disable selected checker           |
+| =SPC d ?= | Describe selected checker          |
+| =SPC d y= | Copy diagnostics message           |
+
+*** Flycheck buffer
+
+| =f= | set filter   |
+| =F= | reset filter |
+
+

@@ -892,6 +892,8 @@ Use `delete-trailing-whitespace' command."
 
 ;;;; Compile
 
+(setq next-error-message-highlight t)
+
 (setq compilation-ask-about-save nil ; save all buffers on `compile' without asking
       compilation-always-kill t ; kill compilation process before starting another
       compilation-scroll-output 'first-error)

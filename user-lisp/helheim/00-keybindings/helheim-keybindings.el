@@ -28,6 +28,7 @@
 (which-key-add-key-based-replacements
   "C-c a"  "ai"
   "C-c b"  "buffer / bookmark"
+  "C-c d"  "diagnostic"
   "C-c f"  "file"
   "C-c o"  "open"
   "C-c p"  "project"
@@ -39,7 +40,6 @@
   "RET"   'dired-jump
   ","     'switch-to-buffer
   "/"     'consult-ripgrep ;; "/" is for search in Hel
-  "d"     'dired-jump
   ;; Buffer
   "b b"   '("ibuffer" . ibuffer-jump) ;; "<leader> bb"
   "b n"   'switch-to-buffer    ; next key after "b"

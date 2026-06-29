@@ -101,7 +101,11 @@
 ;;; IDE
 
 (require 'helheim-xref)     ; Go to definition framework
-(require 'helheim-eglot)    ; Built-in LSP client
+
+(require 'helheim-eglot)    ; eglot + flymake (both built-in)
+;; or
+;; (require 'helheim-flycheck) ; Diagnostics
+;; (require 'helheim-lsp-mode) ; Lsp-mode
 
 ;;; Version control
 

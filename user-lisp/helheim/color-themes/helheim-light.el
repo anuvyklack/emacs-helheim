@@ -646,12 +646,23 @@
 
 (helheim-theme-set-faces 'ef-light
   '(flycheck-error :underline (:style wave :color "#d63a44"))
-  '(flycheck-fringe-error :inherit error :background "#ffd5ea")
-  '(flycheck-fringe-info :inherit success :background "#d0efda")
-  '(flycheck-fringe-warning :inherit warning :background "#ffeabb")
-  ;; '(flycheck-info :inherit ef-themes-underline-info)
-  ;; '(flycheck-warning)
-  )
+  '(flycheck-fringe-error   :background "#ffd5ea" :inherit error)
+  '(flycheck-fringe-info    :background "#d0efda" :inherit success)
+  '(flycheck-fringe-warning :background "#ffeabb" :inherit warning)
+  '(flycheck-verify-select-checker :box (:style released-button))
+  ;; error list
+  '(flycheck-error-list-error   :inherit error)
+  '(flycheck-error-list-warning :inherit warning)
+  '(flycheck-error-list-info    :inherit success)
+  ;; flycheck-error-list-line-number
+  ;; flycheck-error-list-column-number
+  '(flycheck-error-list-filename :inherit mode-line-buffer-id :bold nil)
+  '(flycheck-error-list-id :inherit font-lock-type-face)
+  '(flycheck-error-list-id-with-explainer :box (:style released-button)
+                                          :inherit flycheck-error-list-id)
+  '(flycheck-error-list-checker-name :inherit font-lock-function-name-face)
+  ;; flycheck-error-list-error-message
+  '(flycheck-error-list-highlight :background "#fff2d9" :extend t))
 
 ;;; flymake
 

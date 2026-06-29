@@ -28,13 +28,12 @@ Helheim is modular to the core. Every folder in ~user-lisp/~ is a module; you
 - [[file:user-lisp/helheim/org-mode/README.org][Org-mode]] fully preconfigured as personal knowledge management system
   with [[file:user-lisp/helheim/org-mode/helheim-org-node/README.org][bidirectional links]] and [[file:user-lisp/helheim/org-mode/helheim-daily-notes/README.org][daily notes]].
 
-#+html: <img src="https://github.com/user-attachments/assets/9a74b442-c1ae-4e64-b1fa-3fc3b323998f" width="60%" align="right">
-
 - Ibuffer, done right. Buffers are grouped by project, then by file-tree
   depth, with paths relative to the project root. Special buffers and
   out-of-project buffers are separated, and Denote IDs are stripped
   from names. A picture is worth a thousand words.
 
+#+html: <img src="https://github.com/user-attachments/assets/9a74b442-c1ae-4e64-b1fa-3fc3b323998f" width="60%" align="right">
 #+html: <br clear="both">
 
 ** Modular architecture
@@ -78,19 +77,20 @@ what you need.
   - [[file:user-lisp/helheim/04-version-control/ediff/README.org][ediff]] — 2-way and 3-way diffs
 
 - IDE
-  - [[file:user-lisp/helheim/05-lsp/eglot/README.org][eglot]] — Eglot + Flymake: built-in LSP client + diagnostics                  
-  - [[file:user-lisp/helheim/05-lsp/xref/README.org][xref]]  — Go-to-definition
+  - [[file:user-lisp/helheim/05-lsp/eglot/README.org][eglot + flymake]] — LSP client and diagnostics  built-in into Emacs 
+  - [[file:user-lisp/helheim/05-lsp/lsp-mode/README.org][lsp-mode + flycheck]] — external LSP client and diagnostics packages
+  - [[file:user-lisp/helheim/05-lsp/xref/README.org][xref]] — Go-to-definition
 
 - [[file:user-lisp/helheim/org-mode/helheim-org/README.org][Org-mode]]
   - [[file:user-lisp/helheim/org-mode/helheim-org-node/README.org][org-node]] — personal knowledge management (Org-roam alternative)
-  - [[file:user-lisp/helheim/org-mode/helheim-daily-notes/README.org][daily-notes]] — Daily scratchpad / Inbox                  
+  - [[file:user-lisp/helheim/org-mode/helheim-daily-notes/README.org][daily-notes]] — Daily scratchpad / Inbox
 
 - Terminal emulators
   - [[file:user-lisp/helheim/07-terminal/ghostel/README.org][ghostel]] — based on =libghostty= same as used in Ghostty
   - [[file:user-lisp/helheim/07-terminal/vterm/README.org][vterm]] — based on libvterm same as in Neovim
 
 - LLM
-  - [[file:user-lisp/helheim/08-llm/agent-shell/README.org][agent-shell]] — Shell for coding agents inside Emacs        
+  - [[file:user-lisp/helheim/08-llm/agent-shell/README.org][agent-shell]] — Shell for coding agents inside Emacs
   - [[file:user-lisp/helheim/08-llm/mcp-server/README.org][mcp-server]] — MCP server exposing Emacs to LLMs
 
 - Misc

@@ -4,7 +4,7 @@
 (eval-when-compile (require 'cl-macs))
 (require 'dash)
 
-;;; Update Helheim
+;;; Commands
 
 (defun helheim-regenerate-autoloads ()
   "Rescan `user-lisp-directory' for autoload cookies and regenarate autoloads file."

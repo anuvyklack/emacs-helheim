@@ -1,0 +1,17 @@
+* helheim-lsp-mode
+** Enable
+
+Add the following line to your =init.el=:
+#+begin_src emacs-lisp
+(require 'helheim-lsp-mode)
+#+end_src
+
+** Packages
+
+- [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]]
+  - [[https://github.com/emacs-lsp/lsp-ui][lsp-ui]]
+- [[https://github.com/gagbo/consult-lsp][consult-lsp]]
+
+** Keybindings
+
+| =K= or =M= | show documentation at point |
