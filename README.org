@@ -28,12 +28,14 @@ Helheim is modular to the core. Every folder in ~user-lisp/~ is a module; you
 - [[file:user-lisp/helheim/org-mode/README.org][Org-mode]] fully preconfigured as personal knowledge management system
   with [[file:user-lisp/helheim/org-mode/helheim-org-node/README.org][bidirectional links]] and [[file:user-lisp/helheim/org-mode/helheim-daily-notes/README.org][daily notes]].
 
+#+html: <img src="https://github.com/user-attachments/assets/9a74b442-c1ae-4e64-b1fa-3fc3b323998f" width="60%" align="right">
+
 - Ibuffer, done right. Buffers are grouped by project, then by file-tree
   depth, with paths relative to the project root. Special buffers and
   out-of-project buffers are separated, and Denote IDs are stripped
   from names. A picture is worth a thousand words.
-  
-  #+html: <img src="https://github.com/user-attachments/assets/9a74b442-c1ae-4e64-b1fa-3fc3b323998f" width="60%">
+
+#+html: <br clear="both">
 
 ** Modular architecture
 
