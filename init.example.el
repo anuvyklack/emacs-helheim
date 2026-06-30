@@ -123,6 +123,7 @@
 
 ;;; Major modes
 
+(require 'helheim-cpp)
 (require 'helheim-emacs-lisp)
 (require 'helheim-json)
 (require 'helheim-markdown)

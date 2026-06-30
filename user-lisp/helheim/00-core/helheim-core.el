@@ -466,7 +466,6 @@ Use `delete-trailing-whitespace' command."
                         ,(if abi<15 "v0.23.6")) ;; "v0.24.1"
             (cpp        "https://github.com/tree-sitter/tree-sitter-cpp"
                         ,(if abi<15 "v0.23.4"))
-            (cmake      "https://github.com/uyha/tree-sitter-cmake")
             (c-sharp    "https://github.com/tree-sitter/tree-sitter-c-sharp"
                         ,(if abi<15 "v0.20.0")) ;; "v0.23.1"
             (css        "https://github.com/tree-sitter/tree-sitter-css"
