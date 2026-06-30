@@ -141,6 +141,19 @@ the unwritable tidbits."
         ((featurep 'helheim-lsp-mode)
          (lsp-deferred))))
 
+;;; Window managment
+
+(defun +display-buffer-based-on-window-count (buffer alist)
+  "Display BUFFER based on the windows count.
+
+  1 or 2    -> open in another window
+  3 or more -> open in the current window
+
+ALIST is the usual `display-buffer' action alist."
+  (if (length< (window-list nil 'no-minibuffer) 3)
+      (display-buffer-pop-up-window buffer alist)
+    (display-buffer-same-window buffer alist)))
+
 (defun +posframe-poshandler-window-bottom-right-corner-with-padding (info)
   "Posframe's position handler.
 The structure of INFO can be found in docstring of `posframe-show'."

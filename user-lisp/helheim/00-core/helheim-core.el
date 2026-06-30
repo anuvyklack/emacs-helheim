@@ -596,14 +596,17 @@ Use `delete-trailing-whitespace' command."
     [remap describe-variable] 'helpful-variable
     [remap describe-command]  'helpful-command
     [remap describe-key]      'helpful-key
-    [remap describe-symbol]   'helpful-symbol)
-  ;; Open links to functions, variables and symbols in helpful buffer in the
-  ;; same window.
-  (add-to-list 'display-buffer-alist
-               '((derived-mode . helpful-mode)
-                 (display-buffer-reuse-mode-window display-buffer-pop-up-window)
-                 (mode . helpful-mode)
-                 (body-function . select-window))))
+    [remap describe-symbol]   'helpful-symbol))
+
+(add-to-list 'display-buffer-alist
+             '((or (derived-mode . help-mode)
+                   (derived-mode . helpful-mode)
+                   (derived-mode . Info-mode))
+               (display-buffer-reuse-mode-window
+                +display-buffer-based-on-window-count
+                display-buffer-use-some-window)
+               (mode help-mode helpful-mode Info-mode)
+               (body-function . select-window)))
 
 ;;;; Minibuffer
 
