@@ -44,9 +44,9 @@
   "b b"   '("ibuffer" . ibuffer-jump) ;; "<leader> bb"
   "b n"   'switch-to-buffer    ; next key after "b"
   "b s"   'save-buffer
-  "b c"   '("copy buffer's file" . bufferfile-copy)
-  "b w"   '("write buffer for file" . write-file)
-  "b d"   '("delete buffer's file" . bufferfile-delete)
+  "b c"   '("copy buffers file" . bufferfile-copy)
+  "b w"   '("write buffer to file" . write-file)
+  "b d"   '("delete buffers file" . bufferfile-delete)
   "b g"   'revert-buffer       ; also "C-w r"
   "b r"   '("rename buffer's file" . bufferfile-rename)
   "b R"   'rename-buffer
