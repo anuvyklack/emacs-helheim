@@ -908,8 +908,7 @@ Use `delete-trailing-whitespace' command."
 
 (setup eldoc
   (:blackout t)
-  (:setopt eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly
-           eldoc-help-at-pt t))
+  (:setopt eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly))
 
 (add-hook 'edebug-mode-hook
           (defun +edebug-inhibit-eldoc-h ()

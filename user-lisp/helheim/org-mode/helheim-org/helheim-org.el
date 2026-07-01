@@ -43,9 +43,10 @@
   (:require t)
   (:setopt org-eldoc-breadcrumb-separator " → ")
   (:after-load
-    ;; Show target for link at point. Since Emacs 31 Eldoc supports this
-    ;; natively via `eldoc-help-at-pt' option.
-    (when (< emacs-major-version 31)
+    ;; Show target for link at point.
+    (if (<= 31 emacs-major-version)
+        (add-hook 'org-mode-hook (lambda () (setq-local eldoc-help-at-pt t)))
+      ;; Emacs version < 31
       (define-advice org-eldoc-documentation-function (:before-until (&rest _) helheim)
         "Display link target in echo area when cursor/mouse is over it."
         (if-let* ((url (thing-at-point 'url t)))
