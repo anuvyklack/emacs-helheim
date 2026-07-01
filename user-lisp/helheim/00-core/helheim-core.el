@@ -908,9 +908,16 @@ Use `delete-trailing-whitespace' command."
 
 (setup eldoc
   (:blackout t)
-  (:setopt eldoc-help-at-pt t
-           eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly))
-;; eldoc-documentation-functions
+  (:setopt eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly
+           eldoc-help-at-pt t))
+
+(add-hook 'edebug-mode-hook
+          (defun +edebug-inhibit-eldoc-h ()
+            "Disable Eldoc during Edebug session so it doesn't clobber the result."
+            ;; Edebug prints its stepping result (\"Result: ...\") to the echo
+            ;; area with a plain `message', which is not an Eldoc backend, so
+            ;; Eldoc's function-argument hint clobbers it.
+            (eldoc-mode (if edebug-mode -1 1))))
 
 ;;;; image-mode
 
