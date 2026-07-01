@@ -19,6 +19,9 @@ Install and configure [[https://github.com/meedstrom/org-node][Org-node]] — a 
 
 - ~org-agenda-files~ list is auto generated from the all files containing =TODO= nodes.
 
+- The backlinks buffer is displayed in another window when the frame contains
+  one or two windows, if more — it is displayed in the current window.
+
 ** Usage
 *** Keys available everywhere
 

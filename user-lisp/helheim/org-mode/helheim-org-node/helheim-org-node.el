@@ -85,12 +85,6 @@
              org-node-filter-fn 'helheim-org-node-filter-p)
     ;; We have this information in ID.
     (remove-hook 'org-node-creation-hook #'org-node-ensure-crtime-property)
-    ;; Open backlinks buffer in another window.
-    (add-to-list 'display-buffer-alist
-                 '((major-mode . org-node-context-mode)
-                   (display-buffer-use-some-window display-buffer-pop-up-window)
-                   (inhibit-same-window . t)
-                   (body-function . select-window)))
     (add-hook 'org-mem-post-full-scan-functions #'helheim-set-agenda-files)
     (org-mem-updater-mode)
     (org-node-cache-mode)))
@@ -113,7 +107,15 @@
 (setup org-node-backlink
   (:setopt org-node-backlink-do-drawers t
            org-node-backlink-drawer-formatter 'helheim-org-node-backlink-format)
-  (:after-init org-node-backlink-mode))
+  (:after-init org-node-backlink-mode)
+  ;; Display backlinks buffer in another window.
+  (add-to-list 'display-buffer-alist
+               '((major-mode . org-node-context-mode)
+                 (display-buffer-reuse-mode-window
+                  +display-buffer-based-on-window-count
+                  display-buffer-use-some-window)
+                 (inhibit-same-window . t)
+                 (body-function . select-window))))
 
 ;;;; Backlinks buffer
 
