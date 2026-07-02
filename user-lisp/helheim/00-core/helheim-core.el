@@ -600,8 +600,7 @@ Use `delete-trailing-whitespace' command."
 
 (add-to-list 'display-buffer-alist
              '((or (derived-mode . help-mode)
-                   (derived-mode . helpful-mode)
-                   (derived-mode . Info-mode))
+                   (derived-mode . helpful-mode))
                (display-buffer-reuse-mode-window
                 +display-buffer-based-on-window-count
                 display-buffer-use-some-window)
