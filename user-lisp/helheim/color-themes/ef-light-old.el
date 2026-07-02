@@ -1276,6 +1276,17 @@
   '(orderless-match-face-3 :inherit bold :foreground "#b6532f"))
 
 ;;; org
+
+(helheim-theme-set-faces 'ef-light
+  '(org-level-1 :foreground "#2c4ab0" :height 1.03)  ; original "#4f54aa"
+  '(org-level-2 :foreground "#96197a" :height 1.03)  ; original "#ba35af"
+  '(org-level-3 :foreground "#145688" :height 1.03)  ; original "#1f77bb"
+  '(org-level-4 :foreground "#883b3b" :height 1.03)  ; original "#b65050"
+  '(org-level-5 :foreground "#4d3ac3" :height 1.03)  ; original "#6052cf"
+  '(org-level-6 :foreground "#a20b55" :height 1.03)  ; original "#d51272"
+  '(org-level-7 :foreground "#00603c" :height 1.03)  ; original "#008858"
+  '(org-level-8 :foreground "#7b4617" :height 1.03)) ; original "#a45f22"
+
 (helheim-theme-set-faces 'ef-light
   '(org-agenda-calendar-daterange :foreground "#397a70")
   '(org-agenda-calendar-event :foreground "#397a70")
@@ -1325,14 +1336,6 @@
   '(org-indent :inherit (fixed-pitch org-hide))
   '(org-imminent-deadline :inherit bold :foreground "#d3303a")
   '(org-latex-and-related :foreground "#008858")
-  '(org-level-1 :foreground "#2c4ab0" :height 1.02) ; original "#4f54aa"
-  '(org-level-2 :foreground "#96197a" :height 1.02) ; original "#ba35af"
-  '(org-level-3 :foreground "#145688" :height 1.02) ; original "#1f77bb"
-  '(org-level-4 :foreground "#883b3b" :height 1.02) ; original "#b65050"
-  '(org-level-5 :foreground "#4d3ac3" :height 1.02) ; original "#6052cf"
-  '(org-level-6 :foreground "#a20b55" :height 1.02) ; original "#d51272"
-  '(org-level-7 :foreground "#00603c" :height 1.02) ; original "#008858"
-  '(org-level-8 :foreground "#7b4617" :height 1.02) ; original "#a45f22"
   '(org-link :inherit link)
   '(org-list-dt :inherit bold)
   '(org-macro :inherit fixed-pitch :foreground "#008858")
