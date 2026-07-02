@@ -1351,7 +1351,7 @@
   '(org-special-keyword :inherit (shadow fixed-pitch))
   '(org-table :inherit fixed-pitch :foreground "#397a70")
   '(org-table-header :inherit (bold org-table))
-  '(org-tag :foreground "#61756c")
+  '(org-tag :foreground "#61756c" :height 0.9)
   '(org-tag-group :inherit (bold org-tag))
   '(org-target :underline t)
   '(org-time-grid :foreground "#68759f")
