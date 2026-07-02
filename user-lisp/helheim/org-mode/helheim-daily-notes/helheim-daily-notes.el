@@ -46,7 +46,8 @@ for the specified date."
          (exist (file-exists-p file)))
     (find-file file)
     (unless exist
-      (insert (format-time-string "#+title: %A, %d %b %Y\n\n" time))
+      (insert (format-time-string "#+title:    %A, %d %b %Y" time) ?\n
+              "#+category: daily" ?\n ?\n)
       (save-buffer))))
 
 ;; BUG: Stop working after update to Org-mode 9.8
