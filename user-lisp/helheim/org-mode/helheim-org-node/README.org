@@ -9,13 +9,15 @@ Install and configure [[https://github.com/meedstrom/org-node][Org-node]] — a 
 
 ** Hacks
 
-- Nodes with an =:IGNORE:= or =:ROAM_EXCLUDE:= property are ignored by org-node
-  commands.
-
 - New files use the [[https://protesilaos.com/emacs/denote][Denote]] naming convention:
   #+begin_example
   20250322T131856--my-node-title.org
   #+end_example
+
+- Nodes with an =:IGNORE:= or =:ROAM_EXCLUDE:= property are ignored by org-node
+  commands.
+
+- ~org-agenda-files~ list is auto generated from the all files containing =TODO= nodes.
 
 ** Usage
 *** Keys available everywhere

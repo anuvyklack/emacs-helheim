@@ -91,6 +91,7 @@
                    (display-buffer-use-some-window display-buffer-pop-up-window)
                    (inhibit-same-window . t)
                    (body-function . select-window)))
+    (add-hook 'org-mem-post-full-scan-functions #'helheim-set-agenda-files)
     (org-mem-updater-mode)
     (org-node-cache-mode)))
 

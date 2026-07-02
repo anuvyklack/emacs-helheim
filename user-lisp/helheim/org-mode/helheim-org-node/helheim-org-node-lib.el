@@ -1,5 +1,6 @@
 ;;; helheim-org-node-lib.el                           -*- lexical-binding: t -*-
 
+(require 'dash)
 (require 'org)
 (require 'org-mem)
 
@@ -32,6 +33,9 @@ ID and DESC are link id and description, TIME a Lisp time value."
   (goto-char (point-max))
   (insert "\n"))
 
+(defvar org-node-context-main-buffer)
+(declare-function org-node-context--refresh "org-node-context")
+
 (defun helheim-org-node-backlinks-buffer ()
   "Show backlinks buffer for the node at point.
 Org-node native command is `org-node-context-dwim'."
@@ -55,6 +59,55 @@ Org-node native command is `org-node-context-dwim'."
         (apply orig-fun args))
     ;; else
     (apply orig-fun args)))
+
+;;; Auto generate agenda files list
+
+(defcustom helheim-org-mem-agenda-ignored-file-p
+  'helheim-org-mem-agenda-ignored-file-default-p
+  "The predicate that should return non-nil if FILE should not be included
+into `org-agenda-files'."
+  :type 'function
+  :group 'helheim)
+
+(defcustom helheim-org-mem-agenda-entry-p
+  'helheim-org-mem-agenda-entry-default-p
+  "The predicate that should return non-nil if file containing ENTRY should
+be included into `org-agenda-files'."
+  :type 'function
+  :group 'helheim)
+
+(defun helheim-org-mem-agenda-ignored-file-default-p (file)
+  "Return non-nil if FILE should not be included into `org-agenda-files'.
+Exclude files with:
+
+- word \"archive\" somewhere in their path like: \"*.org_archive\" or
+  \"*archive/2025.org\".
+
+- #+category: ignore"
+  (or (string-search "archive" file)
+      (-> (alist-get "CATEGORY" (org-mem-file-keywords file) nil nil #'string=)
+          (-first-item)
+          (string= "ignore"))))
+
+(defun helheim-org-mem-agenda-entry-default-p (entry)
+  "Return non-nil if file containing ENTRY should be included into
+`org-agenda-files'."
+  (or (org-mem-entry-active-timestamps entry)
+      (and (not (org-mem-entry-closed entry))
+           (or (and (org-mem-entry-todo-state entry)
+                    (not (member (org-mem-entry-todo-state entry)
+                                 '("MAYBE" "READ" "DONE"))))
+               (org-mem-entry-scheduled entry)
+               (org-mem-entry-deadline entry)))))
+
+(defun helheim-set-agenda-files (&rest _)
+  "Auto generate `org-agenda-files' list."
+  (setq org-agenda-files
+        (-filter (lambda (file)
+                   (and (not (funcall helheim-org-mem-agenda-ignored-file-p file))
+                        (-find helheim-org-mem-agenda-entry-p
+                               (org-mem-entries-in file))))
+                 (org-mem-all-files))))
 
 ;;; Commands
 
