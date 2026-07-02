@@ -17,7 +17,7 @@
 ;;; Keybindings
 
 ;; <leader>
-(keymap-global-set "C-c n d" '("open daily note" . helheimg-daily-note))
+(keymap-global-set "C-c n d" '("daily note" . helheimg-daily-note))
 
 (add-hook 'org-mode-hook 'helheim-daily--set-keys)
 

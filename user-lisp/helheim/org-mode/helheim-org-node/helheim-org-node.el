@@ -48,11 +48,9 @@
     ;; "C-c i" or ",i"
     (:with-keymap helheim-org-insert-map
       (:bind
+        "a"  '("add alias" . org-node-add-alias)
         "i"  '("add ID" . org-node-nodeify-entry) ; "ii" - insert ID
         "I"  '("add ID and ignore" . helheimg-org-node-create-ignored-node)
-        "n"  '("insert link to node" . org-node-insert-link)
-        "a"  '("add alias" . org-node-add-alias)
-        ;; "C-c C-q" is `org-set-tags-command'
         "q"  '("add tags" . org-node-add-tags-here)   ;; or `org-node-add-tags'
         "Q"  '("set tags" . org-node-set-tags-here))) ;; or `org-node-set-tags'
     ;; "C-c l" or ",l"

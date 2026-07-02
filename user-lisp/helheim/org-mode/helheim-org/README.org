@@ -13,15 +13,6 @@
 
 - Attach menu is prettified with faces.
 
-** Configurations
-
-- ~prettify-symbols-mode~ is enabled in Org-mode buffers. To disable selectively:
-
-  #+begin_src emacs-lisp
-  (remove-hook 'org-mode-hook 'helheim-org-prettify-todo-keywords)
-  (remove-hook 'org-mode-hook 'helheim-org-prettify-blocks)
-  #+end_src
-
 - Org ID format is configured to use an ISO 8601 timestamp — the same as [[https://protesilaos.com/emacs/denote][Denote]]:
   #+begin_example
   20250322T131856 → YYYYMMDDThhmmss
@@ -34,9 +25,20 @@
    ╰─╴20250322T131856/
   #+end_example
 
-** Keybindings
+** Customization
 
-See [[https://github.com/anuvyklack/hel-org][hel-org]] documentation for keybindings it provides.
+- ~prettify-symbols-mode~ is enabled in Org-mode buffers. To disable remove
+  the coresponding hook:
+
+  #+begin_src emacs-lisp
+  (remove-hook 'org-mode-hook 'helheim-org-prettify-todo-keywords)
+  (remove-hook 'org-mode-hook 'helheim-org-prettify-blocks)
+  #+end_src
+
+** Keybindings
+*** Org-mode buffer
+
+Also see [[https://github.com/anuvyklack/hel-org][hel-org]] documentation for keybindings it provides.
 
 ------
 
@@ -63,3 +65,95 @@ Keys that are worth mentioning (for others see =helheim-org-keys= file):
 - =, a= in Dired (~org-attach-dired-to-subtree~) ::
   Attach files marked in the Dired buffer to a org subtree at point in the
   other window.
+
+*** Keys available everywhere
+
+| =SPC n n= | Open or create a node                     |
+| =SPC n b= | Backlinks buffer for current node         |
+| =SPC n r= | Open random node                          |
+| =SPC n /= | Search across all files known to org-node |
+
+**** Org-node Maintenance
+
+| =SPC n x x= | Reset org-mem cache                      |
+| =SPC n x t= | List nodes with duplicate titles         |
+| =SPC n x d= | List dead (broken) ID links              |
+| =SPC n x p= | List ~org-mem~ problems                    |
+| =SPC n x l= | Run ~org-lint~ on all known Org files      |
+| =SPC n x f= | List all node files                      |
+| =SPC n x r= | List reflinks                            |
+| =SPC n x a= | Rename asset file and update links to it |
+
+*** Org-mode buffer
+
+| =g n= / =g N= or =[l= / =]l= | jump over links   |
+| =g x=                  | ~org-open-at-point~ |
+| =z RET=                | ~org-ctrl-c-ret~    |
+
+-----------------------------
+
+| =, RET= | ~org-ctrl-c-ret~                                                      |
+| =, ,=   | ~org-insert-structure-template~                                       |
+| =, '=   | Edit source block, table, or formula at point in a separate buffer. |
+| =, /=   | ~org-sparse-tree~                                                     |
+| =, #=   | ~org-update-statistics-cookies~                                       |
+| =, p=   | ~org-paste-special~                                                   |
+| =, a=   | Attachment dispatcher                                               |
+| =, e=   | Expoft dispatcher                                                   |
+| =, t=   | Rotate =TODO= state                                                   |
+| =, y=   | Copy the selection the same as it displayed on the screen.          |
+
+**** Notes (=C-c n=)
+
+| =SPC n b= | Backlinks buffer for node at point                      |
+| =SPC n i= | Add ID to heading — make it a node                     |
+| =SPC n I= | Add ID and =ROAM_EXCLUDE= properties — don't make a node |
+| =SPC n w= | Refile node                                             |
+
+**** Insert (=, i=)
+
+| =, i ,= | ~org-priority~                                            |
+| =, i a= | Add alias to current node                               |
+| =, i e= | ~org-set-effort~                                          |
+| =, i n= | ~org-add-note~                                            |
+| =, i m= | ~yank-media~                                              |
+| =, i i= | Add ID to heading — make it a node                     |
+| =, i I= | Add ID and =ROAM_EXCLUDE= properties — don't make a node |
+| =, i p= | Set nodes property                                      |
+| =, i q= | Add tags to current node                                |
+| =, i Q= | Set tags of current node                                |
+
+| =, i t= | Insert a time stamp            |
+| =, i T= | Insert an inactive time stamp. |
+| =, i d= | Insert =DEADLINE=                |
+| =, i s= | Insert =SCHEDULE=                |
+
+**** Links (=, l=)
+
+| =, l n= | Insert link to node                     |
+| =, l t= | Insert node translusion                 |
+| =, l y= | Insert node translusion as subtree      |
+| =, l s= | Store a link to the current location    |
+| =, l a= | ~org-insert-all-links~                    |
+| =, l u= | Update all ID locations — repare links |
+
+**** Node (=, n=) — subtree
+
+| =, n a= | ~org-toggle-archive-tag~            |
+| =, n c= | ~org-clone-subtree-with-time-shift~ |
+
+**** Toggle (=SPC t=)
+
+| =SPC t i= | ~org-link-preview~                     |
+| =SPC t l= | ~org-toggle-link-display~              |
+| =SPC t f= | ~org-table-toggle-formula-debugger~    |
+| =SPC t o= | ~org-table-toggle-coordinate-overlays~ |
+
+*** Agenda buffer
+
+| Helheim | Org       | Command                  |
+|---------+-----------+--------------------------|
+| =j= / =k=   | =down= / =up= |                          |
+| =c=       | =k=         | ~org-agenda-capture~       |
+| =C=       | =c=         | ~org-agenda-goto-calendar~ |
+|         | =C=         | ~org-agenda-convert-date~  |

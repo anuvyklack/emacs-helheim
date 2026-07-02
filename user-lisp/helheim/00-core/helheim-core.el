@@ -206,11 +206,12 @@ The predicate is passed as argument to `buffer-match-p', which see."
                                             (derived-mode . compilation-mode)
                                             ;; Follow major modes doesn't inherit
                                             ;; from `special-mode'.
-                                            (major-mode . dired-mode)
-                                            (major-mode . notmuch-search-mode)
-                                            (major-mode . notmuch-tree-mode)
-                                            (major-mode . notmuch-show-mode))
-                                        (not (major-mode . image-dired-thumbnail-mode))
+                                            (derived-mode . dired-mode)
+                                            (derived-mode . org-agenda-mode)
+                                            (derived-mode . notmuch-search-mode)
+                                            (derived-mode . notmuch-tree-mode)
+                                            (derived-mode . notmuch-show-mode))
+                                        (not (derived-mode . image-dired-thumbnail-mode))
                                         ;; According to my measures, compiled
                                         ;; function is two times faster.
                                         helheim--global-hl-line-buffers-p))

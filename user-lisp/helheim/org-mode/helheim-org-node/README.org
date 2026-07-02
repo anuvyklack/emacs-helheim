@@ -22,47 +22,10 @@ Install and configure [[https://github.com/meedstrom/org-node][Org-node]] — a 
 - The backlinks buffer is displayed in another window when the frame contains
   one or two windows, if more — it is displayed in the current window.
 
-** Usage
-*** Keys available everywhere
+** Keybindings
 
-| =SPC n n= | Open or create a node                     |
-| =SPC n b= | Backlinks buffer for current node         |
-| =SPC n r= | Open random node                          |
-| =SPC n /= | Search across all files known to org-node |
-
-**** Maintenance
-
-| =SPC n x x= | Reset org-mem cache                      |
-| =SPC n x t= | List nodes with duplicate titles         |
-| =SPC n x d= | List dead (broken) ID links              |
-| =SPC n x p= | List ~org-mem~ problems                    |
-| =SPC n x l= | Run ~org-lint~ on all known Org files      |
-| =SPC n x f= | List all node files                      |
-| =SPC n x r= | List reflinks                            |
-| =SPC n x a= | Rename asset file and update links to it |
-
-*** Keys in Org-mode buffers
-**** Notes (=C-c n=)
-
-| =C-c n b= | Backlinks buffer for node at point                      |
-| =C-c n i= | Add ID to heading — make it a node                     |
-| =C-c n I= | Add ID and =ROAM_EXCLUDE= properties — don't make a node |
-| =C-c n w= | Refile node                                             |
-
-**** Insert (=, i=)
-
-| =, i i= | Add ID to heading — make it a node                     |
-| =, i I= | Add ID and =ROAM_EXCLUDE= properties — don't make a node |
-| =, i n= | Insert link to node                                     |
-| =, i a= | Add alias to current node                               |
-| =, i q= | Add tags to current node                                |
-| =, i Q= | Set tags of current node                                |
-
-**** Links (=, l=)
-
-| =, l n= | Insert link to node                |
-| =, l t= | Insert node translusion            |
-| =, l y= | Insert node translusion as subtree |
+The keys defined by this module are included in the general list in the
+helheim-org module's README.
 
 ** Customization
 
