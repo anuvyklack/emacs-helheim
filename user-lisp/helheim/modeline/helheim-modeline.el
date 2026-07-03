@@ -31,10 +31,12 @@
   (doom-modeline-mode))
 
 ;; Use main font in modeline.
-(set-face-font 'mode-line          (face-font 'fixed-pitch))
-(set-face-font 'mode-line-active   (face-font 'fixed-pitch))
-(set-face-font 'mode-line-inactive (face-font 'fixed-pitch))
-(set-face-font 'header-line        (face-font 'fixed-pitch))
+(dolist (face '( mode-line
+                 mode-line-active
+                 mode-line-inactive
+                 header-line
+                 header-line-inactive))
+  (set-face-font face (face-font 'fixed-pitch)))
 
 ;;; .
 (provide 'helheim-modeline)
