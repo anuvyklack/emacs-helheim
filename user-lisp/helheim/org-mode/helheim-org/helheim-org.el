@@ -91,21 +91,19 @@ Must be set with `setopt' function!"
                         helheim-org-prettify-todo-keywords
                         helheim-org-prettify-blocks))
   (:setopt org-todo-keywords
-           '((sequence "SOMEDAY" "TODO" "IN-PROGRESS" "WAIT" "|"
-                       "DONE" "ARCHIVED" "CANCELLED")
-             (sequence "READ" "IN-PROGRESS" "|" "DONE"))))
+           '((sequence "MAYBE" "TODO" "NEXT" "WAIT" "|" "DONE" "CANCELLED")
+             (sequence "READ" "NEXT" "|" "DONE"))))
 
 (defun helheim-org-prettify-todo-keywords ()
   "Beautify org mode \"todo\" keywords using `prettify-symbols-mode'."
   (cl-callf append prettify-symbols-alist
-    '(("SOMEDAY"     . ?󰒅) ; 󰔌
-      ("TODO"        . ?󰄱) ; 󰝣
-      ("IN-PROGRESS" . ?󰡖) ; 󱗝 󰜄 󰤌
-      ("WAIT"        . ?)
-      ("DONE"        . ?󰄵) ; 󰱒
-      ("ARCHIVED"    . ?󱈎)
-      ("CANCELLED"   . ?󰅘)
-      ("READ"        . ?󰃃))))
+    '(("MAYBE"     . ?󰒅) ; 󰔌
+      ("TODO"      . ?󰄱) ; 󰝣
+      ("NEXT"      . ?󰡖) ; 󱗝
+      ("WAIT"      . ?)
+      ("DONE"      . ?󰄵) ; 󰱒 
+      ("CANCELLED" . ?󰅘)
+      ("READ"      . ?󰃃))))
 
 (defun helheim-org-prettify-blocks ()
   "Beautify org mode block keywords using `prettify-symbols-mode'."
