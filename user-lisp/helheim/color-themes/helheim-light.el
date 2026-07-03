@@ -1,15 +1,14 @@
-;;; ef-light-old.el -*- lexical-binding: t; no-byte-compile: t -*-
+;;; helheim-light.el -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Commentary:
 ;;
-;; This package restores the original `el-light' theme faces from before the
-;; ef-themes 2.0 update.
+;; Emacs color scheme that is based on `el-light' theme faces before the
+;; ef-themes 2.0 update with some customizations.
+;;
+;; The symbol you need to pass to `load-theme' is still `ef-light'!
 ;;
 ;;; Code:
 
 (setup ef-themes
-  ;; (:install ef-themes :host github :repo "anuvyklack/ef-themes" :wait t)
-  ;; (:setopt ef-themes-mixed-fonts t
-  ;;          ef-themes-variable-pitch-ui t)
   (:install ef-themes :wait t)
   (:setopt modus-themes-mixed-fonts t
            modus-themes-variable-pitch-ui t
@@ -1789,5 +1788,5 @@
 (load-theme 'ef-light t)
 
 ;;; .
-(provide 'ef-light-old)
-;;; ef-light-old.el end here
+(provide 'helheim-light)
+;;; helheim-light.el end here
