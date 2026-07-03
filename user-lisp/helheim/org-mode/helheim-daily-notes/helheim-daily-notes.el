@@ -3,6 +3,8 @@
 
 (require 'dash)
 (require 'hel)
+(require 'org)
+(require 'calendar)
 
 ;;; Customization
 
@@ -50,7 +52,6 @@ for the specified date."
               "#+category: daily" ?\n ?\n)
       (save-buffer))))
 
-;; BUG: Stop working after update to Org-mode 9.8
 (defun helheim-daily-read-date ()
   (let* ((calendar-today-visible-hook '(helheim-daily--mark-in-calendar))
          (calendar-today-invisible-hook '(helheim-daily--mark-in-calendar))
