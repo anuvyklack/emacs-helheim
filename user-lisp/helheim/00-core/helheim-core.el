@@ -353,7 +353,7 @@ Use `delete-trailing-whitespace' command."
 ;;;;; Scrolling with mouse wheel and touchpad
 
 (setup ultra-scroll
-  (:install ultra-scroll :host github :repo "jdtsmith/ultra-scroll")
+  (:install t)
   (:after-init ultra-scroll-mode)
   (:setopt mouse-wheel-tilt-scroll t ; Scroll horizontally with mouse side wheel.
            mouse-wheel-progressive-speed nil))
