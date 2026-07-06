@@ -1,4 +1,4 @@
-;;; helheim-light.el -*- lexical-binding: t; no-byte-compile: t -*-
+;;; helheim-ef-light.el -*- lexical-binding: t; no-byte-compile: t -*-
 ;;; Commentary:
 ;;
 ;; Emacs color scheme that is based on `el-light' theme faces before the
@@ -1799,5 +1799,5 @@
 (load-theme 'ef-light t)
 
 ;;; .
-(provide 'helheim-light)
-;;; helheim-light.el end here
+(provide 'helheim-ef-light)
+;;; helheim-ef-light.el end here
