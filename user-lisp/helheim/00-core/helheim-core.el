@@ -56,6 +56,7 @@ Must be set before `helheim-core' is loaded!"
 
 (setup pcre2el (:install t))
 (setup wgrep   (:install t))
+(setup ultra-scroll (:install t))
 
 (setup avy
   (:install t)
