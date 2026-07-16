@@ -3,7 +3,7 @@
 
 (setup corfu
   (:after-load
-    (:with-keymap corfu-map
+    (:keymap corfu-map
       (:bind
         "<tab>"     'corfu-next
         "<backtab>" 'corfu-previous ;; S-<tab>
@@ -74,7 +74,7 @@
   (:hook global-corfu-mode-hook corfu-popupinfo-mode)
   (:setopt corfu-popupinfo-delay '(0.8 . 0.5))
   (:after-load
-    (:with-keymap corfu-popupinfo-map
+    (:keymap corfu-popupinfo-map
       (:bind "C-<i>" 'corfu-popupinfo-toggle))))
 
 (setup nerd-icons-corfu

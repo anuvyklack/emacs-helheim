@@ -36,8 +36,8 @@
     ;; Rerunning checks on every newline is a mote excessive.
     (delq 'new-line flycheck-check-syntax-automatically)
     ;;
-    (:with-keymap flycheck-mode-map
-      (:bind :state 'normal
+    (:keymap flycheck-mode-map
+      (:bind :state normal
         "] d"  '("Next diagnostic" . flycheck-next-error)
         "[ d"  '("Prev diagnostic" . flycheck-previous-error))
       (:bind
@@ -55,7 +55,7 @@
         "C-c d i"   'flycheck-manual
         "C-c d v"   'flycheck-verify-setup
         "C-c d V"   'flycheck-version))
-    (:with-keymap flycheck-error-list-mode-map
+    (:keymap flycheck-error-list-mode-map
       (:bind
         "j"   'flycheck-error-list-next-error
         "k"   'flycheck-error-list-previous-error

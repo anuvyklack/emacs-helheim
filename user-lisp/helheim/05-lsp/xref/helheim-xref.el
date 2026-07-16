@@ -1,8 +1,7 @@
 ;;; helheim-xref.el               -*- lexical-binding: t; no-byte-compile: t -*-
 
 (setup xref
-  ;; (:install t)
-  (:built-in)
+  (:install nil)
   (:setopt xref-search-program 'ripgrep ;; or 'ugrep
            xref-auto-jump-to-first-definition 'show
            xref-prompt-for-identifier nil

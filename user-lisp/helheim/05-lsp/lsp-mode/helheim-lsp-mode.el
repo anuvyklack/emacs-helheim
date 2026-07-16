@@ -10,8 +10,8 @@
   (:after-load
     (lsp-enable-which-key-integration)
     (:hook hel-insert-state-exit-hook +lsp-close-signature)
-    (:with-keymap lsp-mode-map
-      (:bind :state 'normal
+    (:keymap lsp-mode-map
+      (:bind :state normal
         "K"     'lsp-describe-thing-at-point
         "M"     'lsp-describe-thing-at-point)
       (:bind
@@ -35,7 +35,7 @@
 (setup consult-lsp
   (:install t)
   (:after lsp-mode)
-  (:with-keymap lsp-mode-map
+  (:keymap lsp-mode-map
     (:bind [remap xref-find-apropos] 'consult-lsp-symbols)))
 
 ;;; .

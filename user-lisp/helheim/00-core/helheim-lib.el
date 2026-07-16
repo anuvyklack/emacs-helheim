@@ -3,6 +3,7 @@
 
 (eval-when-compile (require 'cl-macs))
 (require 'dash)
+(require 'f)
 
 ;;; Commands
 

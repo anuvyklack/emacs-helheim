@@ -6,7 +6,7 @@
 
 ;; All original keys are overriden!
 (setup dired
-  (:with-keymap dired-mode-map
+  (:keymap dired-mode-map
     (:unbind
       ;; Upper case keys
       "A" "E" "G" "H" "Q" "T" "R" "Y" "W"
@@ -243,7 +243,7 @@
 
 (setup image-dired
   (:after-load
-    (:with-keymap image-dired-thumbnail-mode-map
+    (:keymap image-dired-thumbnail-mode-map
       (:unbind "w")
       (:bind
         "n"   'image-dired-display-next

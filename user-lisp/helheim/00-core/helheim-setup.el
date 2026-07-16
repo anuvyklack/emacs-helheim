@@ -1,138 +1,382 @@
-;;; helheim-setup.el                                  -*- lexical-binding: t -*-
+;;; helheim-setup.el -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;
-;; `setup' doesn't rearrange blocks of code — it is not declarative.
+;; `helheim-setup' doesn't rearrange blocks of code — it is not declarative.
 ;; It is just a syntax sugar macros.
+;;
+;; It allows create local macros that are exist only withing the scope
+;; of `helheim-setup'. A form in the body whose car is a keyword from
+;; `helheim-setup-macros' and expanded in place by `macroexpand-all',
+;; while all other forms passed through untouched.
+;;
+;; Use `helheim-setup-define' to define new keywords.
 ;;
 ;;; Code:
 
 (eval-when-compile (require 'cl-macs))
 (require 'dash)
-(require 'setup)
 (require 'helheim-lib)
 
-;; Order matters: functions will be executed in the order they are in the list.
-(setq setup-modifier-list '(helheim-setup--with-eval-after-load
-                            setup-wrap-to-catch-quits
-                            helheim-setup--install-with-elpaca
-                            helheim-setup--when))
-
-;; Remove some macros shipped with `setup'.
-(dolist (macro '( :package :with-map :autoload-this :require :global :bind
-                  :unbind :rebind :bind-into :hook :hook-into :bind-to :option
-                  :if-package :if-feature :only-if :file-match :when-loaded))
-  (assq-delete-all macro setup-macros))
-
-;;; utils
+;;; Utils
 
 (defsubst helheim-setup-unprogn (body)
-  "`macroexp-unprogn' BODY and delete all `nil' items from it."
+  "`macroexp-unprogn' BODY and delete all nil items from it."
   (->> (macroexp-unprogn body)
        (delete (list nil))
        (delq nil)))
 
-;;; package managers
+(defsubst helheim-setup--unquote (form)
+  "Strip a leading `\\='' (`quote') or `#\\='' (`function') from FORM."
+  (if (memq (car-safe form) '(quote function))
+      (cadr form)
+    form))
+
+(defun helheim-setup--split-keyword-args (args)
+  "Split ARGS list into keyword-value pairs and remaining arguments.
+Returns a cons cell (PLIST . REST) where:
+PLIST is a list with keyword-value pairs from the beginning of ARGS list;
+REST contains all other elements."
+  (let (plist)
+    (while (keywordp (car-safe args))
+      (cl-callf plist-put plist (car args) (cadr args))
+      (cl-callf cddr args)) ; advance by 2
+    (cons plist args)))
+
+;;; The expander
+
+(defvar helheim-setup-macros nil
+  "Alist of (KEYWORD . EXPANDER) used as a `macroexpand-all' environment.")
+
+(defvar helheim-setup--context nil
+  "Alist holding the context of the `helheim-setup' form being expanded.
+Keyword macros can extend it with `helheim-setup--expand', and read from
+it with `helheim-setup-context'. Bound only during macro expansion.")
+
+(defvar helheim-setup--wrappers nil
+  "Alist of (KIND . VALUE) requests to wrap the body of a `helheim-setup' form.
+A keyword whose job is to enclose the whole body (like `:when',
+`:after', `:elpaca') cannot expand in place, so the process is
+two-phase:
+  1. The macro pushes a request here and expands to nil.
+  2. The counterpart `helheim-setup--wrap-KIND' function, once the body is
+     expanded, looks up its own KIND here and wraps the body if it finds
+     a request.
+
+Bound only during macro expansion.")
+
+(defmacro helheim-setup--expand (body context)
+  "Expand BODY with CONTEXT prepended to the expansion context.
+CONTEXT is an alist of (KEY . VALUE) pairs."
+  (declare (indent 1))
+  `(let ((helheim-setup--context (append ,context helheim-setup--context)))
+     (helheim-setup--expand-1 ,body)))
+
+(defun helheim-setup--expand-1 (body)
+  "Expand keyword macros from `helheim-setup-macros' in BODY."
+  (macroexpand-all (macroexp-progn body)
+                   (append helheim-setup-macros
+                           macroexpand-all-environment)))
+
+(defun helheim-setup-context (key)
+  "Return the value of KEY in the context of the `helheim-setup' form."
+  (or (alist-get key helheim-setup--context)
+      (error "helheim-setup: cannot deduce %S from context" key)))
+
+;;; Defining keywords
+
+(defmacro helheim-setup-define (name args &rest body)
+  "Define NAME as a `helheim-setup'-local macro.
+
+This is a `defmacro' for macros that exist only within the scope of
+a `helheim-setup' form, and takes the same arguments `defmacro' does.
+
+The `declare' form, besides standart `indent' and `debug' keys, accepts:
+
+  (repeatable t)  Apply the expander to each successive group of arguments,
+                  the group size being the number of arguments in ARGS.
+                  ARGS must therefore be fixed-arity: neither `&optional'
+                  nor `&rest' can appear in it.
+
+\(fn NAME (ARGS...) [DOCSTRING] [DECL] BODY...)"
+  (declare (indent defun)
+           (doc-string 3)
+           (debug ( &define sexp lambda-list
+                    [&optional stringp]
+                    [&optional ("declare" &rest sexp)]
+                    def-body)))
+  (let ((docstring (if (stringp (car body))
+                       (pop body)))
+        (repeatable nil)
+        (properties nil))
+    (pcase (car body)
+      (`(declare . ,declarations)
+       (pop body)
+       (dolist (declaration declarations)
+         (pcase declaration
+           (`(indent ,value)
+            (push `(put ,name 'lisp-indent-function ',value) properties))
+           (`(debug ,value)
+            (push `(put ,name 'edebug-form-spec ',value) properties))
+           (`(repeatable ,value)
+            (unless (eq value t)
+              (error "helheim-setup-define: `repeatable' takes only t, got %S in %S"
+                     value name))
+            (setq repeatable t))
+           (_
+            (error "helheim-setup-define: unknown declaration %S in %S"
+                   declaration name))))))
+    (let ((expander `(lambda ,args ,@body)))
+      (when repeatable
+        (-let [(arity . max-arity) (func-arity expander)]
+          (when (zerop arity)
+            (error "helheim-setup-define: %S is `repeatable' but takes no arguments"
+                   name))
+          (unless (eql arity max-arity) ;; max-arity can be symbol 'many
+            (error "helheim-setup-define: %S is `repeatable' but its arglist is not fixed-arity: %S"
+                   name args))
+          (setq expander `(helheim-setup--make-repeatable ,expander ,arity))))
+      `(progn
+         (setf (alist-get ,name helheim-setup-macros) ,expander)
+         ;; Record where the keyword was defined, so "gd" (native "M-.")
+         ;; on it inside a `helheim-setup' form jumps here.
+         (put ,name 'helheim-setup-definition-file
+              (or load-file-name buffer-file-name))
+         ,@(when docstring
+             `((put ,name 'helheim-setup-documentation ,docstring)))
+         ,@(nreverse properties)
+         ,name))))
+
+(defun helheim-setup--make-repeatable (expander n)
+  "Return an expander applying EXPANDER to each successive group of N arguments."
+  (lambda (&rest args)
+    (unless (zerop (mod (length args) n))
+      (error "helheim-setup: number of arguments is not a multiple of %d" n))
+    (macroexp-progn
+     (->> args
+          (-partition n)
+          (-map (lambda (group)
+                  (apply expander group)))))))
+
+(defun helheim-setup--xref-def-function (symbol)
+  "Return an elisp xref location for SYMBOL if it is a `helheim-setup' keyword.
+Registered on `elisp-xref-find-def-functions' so that \\[xref-find-definitions]
+on a keyword inside a `helheim-setup' form jumps to its `helheim-setup-define'."
+  (require 'elisp-mode)
+  (if-let* (((assq symbol helheim-setup-macros))
+            (file (get symbol 'helheim-setup-definition-file)))
+       (list (elisp--xref-make-xref nil symbol file))))
+
+(add-to-list 'elisp-xref-find-def-functions
+             #'helheim-setup--xref-def-function)
+
+;;; The macro
+
+(defmacro helheim-setup (name &rest body)
+  "Configure the feature or package NAME.
+
+A form in BODY whose car is a keyword from `helheim-setup-macros' is
+expanded in place. Any other form is passed through untouched.
+
+NAME is a feature symbol. The default context is derived from it: the
+mode is NAME, or NAME-mode unless NAME already ends in `-mode', the
+keymap is MODE-map and the hook is MODE-hook.
+
+\(fn NAME &rest BODY)"
+  (declare (indent 1)
+           (debug (sexp &rest sexp)))
+  (unless (symbolp name)
+    (error "helheim-setup: NAME must be a symbol, got %S" name))
+  (let* ((mode (if (string-suffix-p "-mode" (symbol-name name))
+                   name
+                 (intern (format "%s-mode" name))))
+         (helheim-setup--context
+          `((feature . ,name)
+            (mode . ,mode)
+            (hook . ,(intern (format "%s-hook" mode)))
+            (keymap . ,(intern (format "%s-map" mode)))))
+         (helheim-setup--wrappers nil)
+         ;; Bind the two dynamic variables above *before* the body is
+         ;; expanded — `let*' sequencing is doing real work here, the
+         ;; expanders run inside their dynamic extent.
+         (body (helheim-setup--expand-1 body)))
+    ;; Innermost first: `:after' sits closest to the body, `:when' outermost.
+    (->> body
+         (helheim-setup--wrap-after)
+         (helheim-setup--wrap-elpaca)
+         (helheim-setup--wrap-when))))
+
+(put 'helheim-setup 'function-documentation '(helheim-setup--make-docstring))
+
+(defun helheim-setup--make-docstring ()
+  "Return the docstring for `helheim-setup'."
+  (with-temp-buffer
+    ;; Read the docstring from the function object, not the symbol, because
+    ;; the symbol's `function-documentation' is this very function, so
+    ;; `(documentation 'helheim-setup)' is a recursion.
+    (insert (documentation (symbol-function 'helheim-setup) 'raw)
+            "\n\n")
+    (when helheim-setup-macros
+      (insert "Within BODY, the following context-local keyword macros are defined:")
+      (fill-paragraph)
+      (dolist (keyword (->> helheim-setup-macros
+                            (reverse)
+                            (-map #'-first-item)))
+        (insert "\n" (make-separator-line) "\n"
+                (or (get keyword 'helheim-setup-documentation)
+                    "No documentation."))))
+    (buffer-string)))
+
+(defalias 'setup 'helheim-setup
+  "Compatibility alias for `helheim-setup'.
+Helheim used to build on the `setup.el' package and its `setup' macro;
+the expander is now our own. The name is kept so existing configurations
+keep working.")
+
+;; Indentation and edebug specs live on the symbol and do not follow an alias.
+(put 'setup 'lisp-indent-function 1)
+(put 'setup 'edebug-form-spec '(sexp &rest sexp))
+
+;;; :install
 ;;;; :install
 
-(setup-define :install
-  (lambda (package &rest recipe)
-    (pcase helheim-package-manager
-      ('straight `(:straight ,package ,@recipe))
-      ('elpaca   `(:elpaca ,package ,@recipe))))
-  :documentation
-  "Install PACKAGE using package manager specified in `helheim-package-manager'.")
+(helheim-setup-define :install (package &rest recipe)
+  "\(:install PACKAGE &rest RECIPE)
 
-(setup-define :built-in
-  (lambda ()
-    '(:install nil))
-  :documentation "Use built-in version of package.")
+Install PACKAGE using package manager specified in `helheim-package-manager'.
+RECIPE should be written in Elpaca's recipe dialect."
+  (pcase helheim-package-manager
+    ('elpaca   `(:elpaca ,package ,@recipe))
+    ('straight `(:straight ,package
+                 ,@(helheim-setup--elpaca-recipe-to-straight recipe)))))
+
+(defun helheim-setup--elpaca-recipe-to-straight (recipe)
+  "Translate the Elpaca RECIPE plist into its Straight equivalent.
+Currently only `:repo' translates to `:local-repo' when PATH is a local
+filesystem path. Straight reserves `:repo' for the remote."
+  (unless (zerop (mod (length recipe) 2))
+    (error "helheim-setup: recipe is not a property list: %S" recipe))
+  (->> recipe
+       (-partition 2)
+       (-mapcat (-lambda ((key value))
+                  (if (and (eq key :repo)
+                           (helheim-setup--local-repo-p value))
+                      (list :local-repo value)
+                    (list key value))))))
+
+(defun helheim-setup--local-repo-p (repo)
+  "Return non-nil if REPO is a local filesystem path."
+  (and (stringp repo)
+       (string-match-p "\\`[/~]" repo)))
 
 ;;;; :straight
 
-(setup-define :straight
-  (lambda (package &rest recipe)
-    (if (eq helheim-package-manager 'straight)
-        `(straight-use-package ',(pcase package
-                                   ('nil `(,(setup-get 'feature) :type built-in))
-                                   ('t (setup-get 'feature))
-                                   (_ (cons package recipe))))
-      nil))
-  :documentation "Install PACKAGE with `straight-use-package'.")
+(helheim-setup-define :straight (package &rest recipe)
+  "\(:straight PACKAGE &rest RECIPE)
+
+Install PACKAGE with `straight-use-package'."
+  (if (eq helheim-package-manager 'straight)
+      `(straight-use-package ',(pcase package
+                                 ('nil `(,(helheim-setup-context 'feature)
+                                         :type built-in))
+                                 ('t (helheim-setup-context 'feature))
+                                 (_ (cons package recipe))))
+    nil))
 
 ;;;; :elpaca
 
-(setup-define :elpaca
-  (lambda (package &rest recipe)
-    (when (eq helheim-package-manager 'elpaca)
-      (push (cons 'elpaca (cond ((eq package 't)
-                                 (setup-get 'feature))
-                                (recipe
-                                 (cons package recipe))
-                                (t package)))
-            setup-attributes))
-    nil)
-  :documentation "Install PACKAGE with `elpaca'.")
+(helheim-setup-define :elpaca (package &rest recipe)
+  "\(:elpaca PACKAGE &rest RECIPE)
 
-(defun helheim-setup--install-with-elpaca (body _feature)
-  (if-let* ((recipe (alist-get 'elpaca setup-attributes)))
+Install PACKAGE with `elpaca'."
+  (when (eq helheim-package-manager 'elpaca)
+    (push (cons 'elpaca (cond ((eq package 't)
+                               (helheim-setup-context 'feature))
+                              (recipe
+                               (cons package recipe))
+                              (t package)))
+          helheim-setup--wrappers))
+  nil)
+
+(defun helheim-setup--wrap-elpaca (body)
+  "Wrap BODY in an `elpaca' form if `:elpaca' recorded a recipe."
+  (if-let* ((recipe (alist-get 'elpaca helheim-setup--wrappers)))
       `(elpaca ',recipe ,@(helheim-setup-unprogn body))
     body))
 
-;;; :setopt
-
-(setup-define :setopt
-  (lambda (variable value)
-    (cl-assert (symbolp variable) nil "Attempting to set a non-symbol: %s" value)
-    `(helheim-setopt ',variable ,value))
-  :debug '(setq)
-  :indent 0
-  :repeatable t
-  :documentation
-  "Set VARIABLE to VALUE only if it hasn’t already been changed.
-This macro is for internal use in Helheim to prevent user settings from
-being overwritten by Helheim defaults. The Elpaca package manager is
-asynchronous, so user settings in `init.el' are applied before Helheim
-sets its defaults in `elpaca' macros. Use `setopt' for your custom
-settings.")
-
-(defun helheim-setopt (variable value)
-  "Set VARIABLE to VALUE only if it hasn’t been already changed."
-  (cond ((not (boundp variable))
-         (set-default variable value))
-        ((equal (symbol-value variable)
-                (+original-value variable))
-         (funcall (or (get variable 'custom-set)
-                      #'set-default)
-                  variable value))))
-
 ;;; :require
 
-(setup-define :require
-  (lambda (feature)
-    `(require ',(if (eq feature t)
-                    (setup-get 'feature)
-                  feature)))
-  :repeatable t
-  :documentation "Try to require FEATURE, or stop evaluating body.")
+(helheim-setup-define :require (feature)
+  "\(:require &rest FEATURES)
 
-;;; :config
+Require FEATURE."
+  (declare (repeatable t))
+  `(require ',(if (eq feature t)
+                  (helheim-setup-context 'feature)
+                feature)))
 
-(setup-define :config
-  (lambda (&rest body)
-    (macroexp-progn body))
-  :debug '(setup)
-  :indent 0
-  :documentation "Evaluate BODY after the current feature has been loaded.")
+;;; :when
+
+(helheim-setup-define :when (condition)
+  "\(:when CONDITION)
+
+Eval `helheim-setup' macro body only if CONDITION evaluates to non-nil."
+  (declare (debug (form)))
+  (push (cons 'when condition)
+        helheim-setup--wrappers)
+  nil)
+
+(defun helheim-setup--wrap-when (body)
+  "Wrap BODY in a `when' form if `:when' recorded a condition."
+  (if-let* ((condition (alist-get 'when helheim-setup--wrappers)))
+      `(when ,condition
+         ,@(helheim-setup-unprogn body))
+    body))
+
+;;; :after
+
+(helheim-setup-define :after (&rest features)
+  "\(:after &rest FEATURES)
+
+Evaluate current `helheim-setup' macro body after all the FEATURES will been
+loaded."
+  (push `(after . ,features) helheim-setup--wrappers)
+  nil)
+
+(defun helheim-setup--wrap-after (body)
+  "Wrap BODY in a `with-eval-after-load' for each feature `:after' recorded."
+  (dolist (feature (reverse (alist-get 'after helheim-setup--wrappers)))
+    (setq body `(with-eval-after-load ',feature
+                  ,@(helheim-setup-unprogn body))))
+  body)
+
+;;; :after-init
+
+(helheim-setup-define :after-init (&rest body)
+  "\(:after-init &rest BODY)
+
+Eval BODY in `after-init-hook'. If Elpaca package manager is used — eval in
+`elpaca-after-init-hook' instead. BODY can be a symbol, a lambda, or any number
+or forms that will be wrapped in lambda in this case."
+  (declare (indent 0))
+  (let ((hook (pcase helheim-package-manager
+                ('straight 'after-init-hook)
+                ('elpaca   'elpaca-after-init-hook)))
+        (func (pcase (car body)
+                ((pred symbolp) `#',(car body))
+                (`(lambda . ,_) (car body))
+                (_  `(lambda () ,@body)))))
+    `(add-hook ',hook ,func)))
 
 ;;; :after-load
 
-(setup-define :after-load
-  (lambda (&rest body)
-    (macroexp-progn body))
-  :debug '(setup)
-  :after-loaded t
-  :indent 0
-  :documentation "Evaluate BODY after the current feature has been loaded.")
+(helheim-setup-define :after-load (&rest body)
+  "\(:after-load &rest BODY)
+
+Evaluate BODY after the current feature has been loaded."
+  (declare (indent 0)
+           (debug (setup)))
+  `(with-eval-after-load ',(helheim-setup-context 'feature)
+     ,@body))
 
 ;;; :defer
 
@@ -150,13 +394,13 @@ Set this to 0 to load all deferred packages immediately at `after-init-hook'.")
   (declare (indent 0))
   (push task helheim-deferred-tasks))
 
-(setup-define :defer
-  (lambda (&rest body)
-    `(helheim-defer (lambda () ,@body)))
-  :debug '(setup)
-  :indent 0
-  :documentation
-  "Evaluate BODY when Emacs is idle for DELAY seconds after startup.")
+(helheim-setup-define :defer (&rest body)
+  "\(:defer &rest BODY)
+
+Evaluate BODY when Emacs is idle for DELAY seconds after startup."
+  (declare (indent 0)
+           (debug (setup)))
+  `(helheim-defer (lambda () ,@body)))
 
 (add-hook 'emacs-startup-hook 'helheim-schedule-deferred-tasks 99)
 
@@ -179,213 +423,234 @@ Set this to 0 to load all deferred packages immediately at `after-init-hook'.")
       (run-with-idle-timer helheim-deferred-task-timeout nil
                            'helheim--eval-deferred-tasks (cdr tasks)))))
 
-;;; :after
+;;; :setopt
 
-(setup-define :after
-  (lambda (&rest features)
-    (push `(after . ,features) setup-attributes)
-    nil)
-  :documentation
-  "Evaluate current `setup' macro body after all the FEATURES will been loaded.")
+(helheim-setup-define :setopt (variable value)
+  "\(:setopt &rest [VARIABLE VALUE]...)
 
-(defun helheim-setup--with-eval-after-load (body _feature)
-  "Wrap BODY in `with-eval-after-load' form."
-  (dolist (feature (nreverse (alist-get 'after setup-attributes)))
-    (setq body `(with-eval-after-load ',feature
-                  ,@(helheim-setup-unprogn body))))
-  body)
+Set VARIABLE to VALUE only if it hasn’t already been changed.
+This macro is for internal use in Helheim to prevent user settings from
+being overwritten by Helheim defaults. The Elpaca package manager is
+asynchronous, so user settings in `init.el' are applied before Helheim
+sets its defaults in `elpaca' macros. Use `setopt' for your custom
+settings."
+  (declare (indent 0)
+           (debug (setq))
+           (repeatable t))
+  (cl-assert (symbolp variable) nil "Attempting to set a non-symbol: %s" value)
+  `(helheim-setopt ',variable ,value))
+
+(defun helheim-setopt (variable value)
+  "Set VARIABLE to VALUE only if it hasn’t been already changed."
+  (cond ((not (boundp variable))
+         (set-default variable value))
+        ((equal (symbol-value variable)
+                (+original-value variable))
+         (funcall (or (get variable 'custom-set)
+                      #'set-default)
+                  variable value))))
 
 ;;; :hook
 
-(setup-define :hook
-  (lambda (hooks &optional functions)
-    (or functions (setq functions (setup-get 'mode)))
-    (cond ((memq (car-safe functions) '(lambda defun))
-           (cond ((symbolp hooks)
-                  `(add-hook ',hooks ,functions))
-                 ((proper-list-p hooks)
-                  (cl-with-gensyms (fun)
-                    `(let ((,fun ,functions))
-                       ,@(cl-loop for hook in hooks
-                                  collect `(add-hook ',hook ,fun)))))))
-          ((or (proper-list-p hooks)
-               (proper-list-p functions))
-           `(progn
-              ,@(->> (-table-flat #'list (ensure-list hooks) (ensure-list functions))
-                     (-map (-lambda ((hook func))
-                             `(add-hook ',hook ',func))))))
-          (t
-           `(add-hook ',hooks ',functions))))
-  :documentation
-  "Add FUNCTIONS to HOOKS.
-This macro can map many. Also it accepts lambda form.")
+(helheim-setup-define :hook (hooks &optional functions)
+  "\(:hook HOOKS &optional FUNCTIONS)
 
-;;; :after-init
+Add FUNCTIONS to HOOKS.
+This macro can map many. Also it accepts lambda form."
+  (unless functions
+    (setq functions (helheim-setup-context 'mode)))
+  (cond ((memq (car-safe functions) '(lambda defun))
+         (cond ((symbolp hooks)
+                `(add-hook ',hooks ,functions))
+               ((proper-list-p hooks)
+                (cl-with-gensyms (fun)
+                  `(let ((,fun ,functions))
+                     ,@(cl-loop for hook in hooks
+                                collect `(add-hook ',hook ,fun)))))))
+        ((or (proper-list-p hooks)
+             (proper-list-p functions))
+         `(progn
+            ,@(->> (-table-flat #'list (ensure-list hooks)
+                                (ensure-list functions))
+                   (-map (-lambda ((hook func))
+                           `(add-hook ',hook ',func))))))
+        (t
+         `(add-hook ',hooks ',functions))))
 
-(setup-define :after-init
-  (lambda (&rest body)
-    (let ((hook (pcase helheim-package-manager
-                  ('straight 'after-init-hook)
-                  ('elpaca   'elpaca-after-init-hook)))
-          (func (pcase (car body)
-                  ((pred symbolp) `#',(car body))
-                  (`(lambda . ,_) (car body))
-                  (_  `(lambda () ,@body)))))
-      `(add-hook ',hook ,func)))
-  :indent 0
-  :documentation
-  "Eval BODY in `after-init-hook'. If Elpaca package manager is used — eval in
-`elpaca-after-init-hook' instead. BODY can be a symbol, a lambda, or any number
-or forms that will be wrapped in lambda in this case.")
+;;; :keymap
 
-;;; :with-keymap
+(helheim-setup-define :keymap (keymap &rest body)
+  "\(:keymap KEYMAP &rest BODY)
 
-(setup-define :with-keymap
-  (lambda (keymap &rest body)
-    (macroexp-let2 symbolp map keymap
-      (setup-bind body (map map))))
-  :debug '(sexp setup)
-  :indent 1
-  :documentation
-  "Change the KEYMAP that BODY will bind to.
-KEYMAP can be any form that evaluates to keymap.")
+Bind the current keymap for BODY to KEYMAP.
+KEYMAP is an unquoted keymap symbol, or an unquoted list of them.  When a
+list is given, BODY is expanded once per map, so nested `:bind' / `:unbind'
+forms bind into every map named.
 
-(setup-define :with-keymaps
-  (lambda (keymaps &rest body)
+This mirrors the `:keymap' vocabulary of hel-collection's `hel-set-keys',
+so `:keymap', `:bind' and `:unbind' behave identically in Helheim
+`helheim-setup' forms and hel-collection mode files."
+  (declare (indent 1)
+           (debug (sexp setup)))
+  (let ((maps (ensure-list keymap)))
+    (unless (-all-p #'symbolp maps)
+      (error "helheim-setup: `:keymap' takes a symbol or a list of them, got %S"
+             keymap))
     (macroexp-progn
-     (cl-loop for map in keymaps
-              collect (setup-bind body (map map)))))
-  :debug '([&rest symbol] setup)
-  :indent 1
-  :documentation
-  "For each item in KEYMAPS expand BODY with current keymap bound to it.
-KEYMAPS should be an unquoted list of symbols.")
+     (-map (lambda (map)
+             (helheim-setup--expand body `((keymap . ,map))))
+           maps))))
+
+;;;; :with-keymap (OBSOLETE)
+;; These macros will be removed in future versions. Use `:keymap' instead.
+
+(helheim-setup-define :with-keymap (keymap &rest body)
+  "\(:with-keymap KEYMAP &rest BODY)
+
+Change the KEYMAP that BODY will bind to.
+KEYMAP can be any form that evaluates to keymap.
+
+Obsolete: use `:keymap' instead, which unifies this with `:with-keymaps'
+and matches hel-collection's vocabulary.  Kept for backward compatibility."
+  (declare (indent 1)
+           (debug (sexp setup)))
+  (macroexp-let2 symbolp map keymap
+    (helheim-setup--expand body `((keymap . ,map)))))
+
+(helheim-setup-define :with-keymaps (keymaps &rest body)
+  "\(:with-keymaps KEYMAPS &rest BODY)
+
+For each item in KEYMAPS expand BODY with current keymap bound to it.
+KEYMAPS should be an unquoted list of symbols.
+
+Obsolete: use `:keymap' instead, which accepts a symbol or a list of them.
+Kept for backward compatibility."
+  (declare (indent 1)
+           (debug ([&rest symbol] setup)))
+  (macroexp-progn
+   (-map (lambda (map)
+           (helheim-setup--expand body `((keymap . ,map))))
+         keymaps)))
 
 ;;; :bind
 
-(setup-define :bind
-  (lambda (&rest args)
-    (cl-loop for key in-ref args by #'cddr
-             when (vectorp key)
-             do (setf key (key-description key)))
-    `(hel-keymap-set ,(setup-get 'map) ,@args))
-  :indent 'defun
-  :documentation
+(helheim-setup-define :bind (&rest args)
   "\(:bind [:state STATE] &rest [KEY DEFINITION]...)
 
 Bind KEYs to DEFINITIONs in current keymap.
 
-STATE is an optional keyword argument that specifies the Hel state in which the
-keybindings will be active. Can be a symbol or list of symbols.
+STATE is an optional keyword argument that specifies the Hel state
+in which the keybindings will be active. Can be a symbol or list of
+symbols.
 
-KEY and DEFINITION arguments are like those in `keymap-set'.")
+KEY and DEFINITION arguments are like those in `keymap-set'."
+  (declare (indent defun))
+  (-let [((&plist :state) . bindings) (helheim-setup--split-keyword-args args)]
+    (cl-loop for key in-ref bindings by #'cddr
+             when (vectorp key)
+             do (setf key (key-description key)))
+    `(hel-keymap-set ,(helheim-setup-context 'keymap)
+       ,@(if state `(:state ',(helheim-setup--unquote state)))
+       ,@bindings)))
 
-(setup-define :unbind
-  (lambda (&rest keys)
-    `(hel-keymap-set ,(setup-get 'map)
-       ,@(cl-loop for key in keys
-                  collect key
-                  collect nil)))
-  :indent 'defun
-  :documentation
+(helheim-setup-define :unbind (&rest args)
   "\(:unbind [:state STATE] &rest KEYS)
 
 Remove KEYS bindings from current keymap.
 
-STATE is an optional keyword argument that specifies the Hel state. Can be
-a symbol or list of symbols.")
+STATE is an optional keyword argument that specifies the Hel state.
+Can be a symbol or list of symbols."
+  (declare (indent defun))
+  (-let [((&plist :state) . keys) (helheim-setup--split-keyword-args args)]
+    `(hel-keymap-set ,(helheim-setup-context 'keymap)
+       ,@(if state `(:state ',(helheim-setup--unquote state)))
+       ,@(-mapcat (lambda (key)
+                    (when (vectorp key)
+                      (setq key (key-description key)))
+                    (list key nil))
+                  keys))))
 
 ;;; :global-bind
 
-(setup-define :global-bind
-  (lambda (&rest args)
-    (cl-loop for key in-ref args by #'cddr
-             when (vectorp key)
-             do (setf key (key-description key)))
-    `(hel-keymap-global-set ,@args))
-  :indent 'defun
-  :documentation
+(helheim-setup-define :global-bind (&rest args)
   "\(:global-bind [:state STATE] &rest [KEY DEFINITION]...)
 
 STATE is an optional keyword argument that specifies the Hel state in which the
-keybindings will be active. Can be a symbol or list of symbols.")
+keybindings will be active. Can be a symbol or list of symbols."
+  (declare (indent defun))
+  (-let [((&plist :state) . bindings) (helheim-setup--split-keyword-args args)]
+    (cl-loop for key in-ref bindings by #'cddr
+             when (vectorp key)
+             do (setf key (key-description key)))
+    `(hel-keymap-global-set
+       ,@(if state `(:state ',(helheim-setup--unquote state)))
+       ,@bindings)))
 
-(setup-define :global-unbind
-  (lambda (&rest keys)
-    `(hel-keymap-global-set ,@(cl-loop for key in keys
-                                       collect key
-                                       collect nil)))
-  :indent 'defun
-  :documentation
+(helheim-setup-define :global-unbind (&rest args)
   "\(:global-unbind [:state STATE] &rest KEYS)
 
 Remove KEYS bindings from current keymap.
 
-STATE is an optional keyword argument that specifies the Hel state. Can be
-a symbol or list of symbols.")
+STATE is an optional keyword argument that specifies the Hel state.
+Can be a symbol or list of symbols."
+  (declare (indent defun))
+  (-let [((&plist :state) . keys) (helheim-setup--split-keyword-args args)]
+    `(hel-keymap-global-set
+       ,@(if state `(:state ',(helheim-setup--unquote state)))
+       ,@(-mapcat (lambda (key)
+                    (when (vectorp key)
+                      (setq key (key-description key)))
+                    (list key nil))
+                  keys))))
 
 ;;; :blackout
 
-(setup-define :blackout
-  (lambda (&rest args)
-    (or args (setq args '(t)))
-    `(with-eval-after-load ',(setup-get 'feature)
-       ,@(cl-loop for arg in args
-                  collect (pcase arg
-                            ('t
-                             `(blackout ',(setup-get 'mode)))
-                            ((and (pred symbolp) mode)
-                             `(blackout ',mode ))
-                            ((and (pred stringp) replacement)
-                             `(blackout ',(setup-get 'mode) ,replacement))
-                            (`(,mode . ,replacement)
-                             `(blackout ',mode ,replacement))))))
-  :documentation
-  "Do not display MODE in the mode line.
+(helheim-setup-define :blackout (&rest args)
+  "\(:blackout &rest ARGS)
 
-    \(setup foo
+Do not display MODE in the mode line.
+
+    \(helheim-setup foo
       (:blackout t))                   =>  \(blackout 'foo-mode nil)
 
-    \(setup foo
+    \(helheim-setup foo
       (:blackout \" Foo\"))              =>  \(blackout 'foo-mode \" Foo\")
 
-    \(setup foo
-      \(:blackout \(foo-mode . \" Foo\"))  =>  \(blackout 'foo-mode \" Foo\")")
+    \(helheim-setup foo
+      \(:blackout \(foo-mode . \" Foo\"))  =>  \(blackout 'foo-mode \" Foo\")"
+  (or args (setq args '(t)))
+  `(with-eval-after-load ',(helheim-setup-context 'feature)
+     ,@(cl-loop for arg in args
+                collect (pcase arg
+                          ('t
+                           `(blackout ',(helheim-setup-context 'mode)))
+                          ((and (pred symbolp) mode)
+                           `(blackout ',mode))
+                          ((and (pred stringp) replacement)
+                           `(blackout ',(helheim-setup-context 'mode) ,replacement))
+                          (`(,mode . ,replacement)
+                           `(blackout ',mode ,replacement))))))
 
 ;;; :command
 
-(setup-define :command
-  (lambda (command)
-    `(autoload ,command ,(format "%s" (setup-get 'feature)) nil t))
-  :ensure '(func)
-  :repeatable t
-  :documentation "Autoload COMMAND.")
+(helheim-setup-define :command (command)
+  "\(:command &rest COMMANDS)
+
+Autoload COMMAND from the current feature."
+  (declare (repeatable t))
+  `(autoload ',(helheim-setup--unquote command)
+     ,(format "%s" (helheim-setup-context 'feature))
+     nil t))
 
 ;;; :mode
 
-(setup-define :mode
-  (lambda (cons-cell)
-    `(add-to-list 'auto-mode-alist ',cons-cell))
-  :debug '(form)
-  :repeatable t
-  :documentation "Add cons-cell to `auto-mode-alist'.")
+(helheim-setup-define :mode (cons-cell)
+  "\(:mode &rest CONS-CELLS)
 
-;;; :when
-
-(setup-define :when
-  (lambda (condition)
-    (push (cons 'when condition)
-          setup-attributes)
-    nil)
-  :debug '(form)
-  :documentation
-  "Eval `setup' macro only if CONDITION evaluates to non-nil.")
-
-(defun helheim-setup--when (body _feature)
-  (if-let* ((condition (alist-get 'when setup-attributes)))
-      `(when ,condition
-         ,@(helheim-setup-unprogn body))
-    body))
+Add CONS-CELL to `auto-mode-alist'."
+  (declare (debug (form))
+           (repeatable t))
+  `(add-to-list 'auto-mode-alist ',cons-cell))
 
 ;;; .
 (provide 'helheim-setup)

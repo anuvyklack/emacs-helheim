@@ -45,11 +45,11 @@
 ;;; Keybindings
 
 (setup consult
-  (:global-bind :state '(normal emacs)
+  (:global-bind :state (normal emacs)
     "C-/" 'consult-line                 ; "/" is for search
     "C-?" 'consult-line-multi)          ; "C-S-/"
 
-  (:global-bind :state 'normal
+  (:global-bind :state normal
     "g o" 'consult-imenu
     "g O" 'consult-imenu-multi
     "g p" 'consult-outline
@@ -58,11 +58,11 @@
     "g e" 'consult-compile-error
     "g <return>" 'consult-goto-line)
 
-  (:with-keymap minibuffer-local-map
+  (:keymap minibuffer-local-map
     (:bind "C-r" 'consult-history))     ; like in shell
 
   ;; <leader> s
-  (:with-keymap search-map
+  (:keymap search-map
     (:bind
       "f" 'consult-fd ;; or `consult-find'
       "l" 'consult-locate
@@ -74,7 +74,7 @@
       "u" 'consult-focus-lines))
 
   ;; <leader> p
-  (:with-keymap project-prefix-map
+  (:keymap project-prefix-map
     (:bind "b" 'consult-project-buffer))
 
   ;; "C-x" bindings are in `ctl-x-map'

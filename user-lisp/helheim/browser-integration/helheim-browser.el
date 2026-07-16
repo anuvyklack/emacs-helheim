@@ -24,8 +24,8 @@
                ("typescriptlang.org" . typescript-ts-mode)
                ("jsfiddle.net" . js-ts-mode)
                ("w3schools.com" . js-ts-mode)))
-    (:with-keymap atomic-chrome-edit-mode-map
-      (:bind :state 'normal
+    (:keymap atomic-chrome-edit-mode-map
+      (:bind :state normal
         "Z Z" 'atomic-chrome-close-current-buffer)
       (:bind
         "C-c t s" '("Sync selection" . atomic-chrome-toggle-selection)

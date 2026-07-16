@@ -5,7 +5,7 @@
 ;; TODO: Duplicate all keys, so user doesn’t need to look up the original
 ;;   bindings and mentally merge them with these.
 (setup ibuffer
-  (:with-keymap ibuffer-mode-map
+  (:keymap ibuffer-mode-map
     (:unbind "h" "l")
     (:bind
       "C-c f f" 'ibuffer-find-file

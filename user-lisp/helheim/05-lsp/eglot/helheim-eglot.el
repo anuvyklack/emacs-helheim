@@ -9,12 +9,12 @@
 ;;; Keybindings
 
 (setup eglot
-  (:with-keymap prog-mode-map
+  (:keymap prog-mode-map
     (:bind
       "C-c l RET" 'eglot))
   (:after-load
-    (:with-keymap eglot-mode-map
-      (:bind :state 'normal
+    (:keymap eglot-mode-map
+      (:bind :state normal
         "<f2>" 'eglot-rename
         "K"    'eldoc-box-help-at-point
         "M"    'eldoc-box-help-at-point
@@ -46,15 +46,15 @@
 
 (setup flymake
   (:after-load
-    (:with-keymap flymake-mode-map
-      (:bind :state 'normal
+    (:keymap flymake-mode-map
+      (:bind :state normal
         "] d"  '("Next diagnostic" . flymake-goto-next-error)
         "[ d"  '("Prev diagnostic" . flymake-goto-prev-error))
       (:bind
         "C-c l d"  '("diagnostics" . flymake-show-buffer-diagnostics)
         "C-c l D"  '("project diagnostics" . flymake-show-project-diagnostics)))
     ;; Flymake buffer
-    (:with-keymap flymake-diagnostics-buffer-mode-map
+    (:keymap flymake-diagnostics-buffer-mode-map
       (:bind
         "RET"      'flymake-goto-diagnostic
         "S-RET"    'flymake-show-diagnostic
@@ -65,7 +65,7 @@
 ;;; Config
 
 (setup flymake
-  (:built-in)
+  (:install nil)
   (:hook prog-mode-hook flymake-mode)
   (setopt flymake-mode-line-lighter nil
           flymake-show-diagnostics-at-end-of-line nil
@@ -75,10 +75,11 @@
 ;;   (:install t)
 ;;   (:hook flymake-mode-hook flymake-popon-mode))
 
-(setup jsonrpc (:built-in))
+(setup jsonrpc
+  (:install nil))
 
 (setup eglot
-  (:built-in)
+  (:install nil)
   (require 'helheim-markdown) ;; For on hover documentation formatting.
   (:hook eglot-managed-mode-hook hel-update-active-keymaps)
   (setopt
@@ -109,7 +110,7 @@
 (setup consult-eglot
   (:install t)
   (:after eglot)
-  (:with-keymap eglot-mode-map
+  (:keymap eglot-mode-map
     (:bind "<remap> <xref-find-apropos>" 'consult-eglot-symbols)))
 
 (setup sideline

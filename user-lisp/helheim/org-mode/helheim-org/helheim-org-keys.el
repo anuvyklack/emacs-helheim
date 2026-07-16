@@ -19,8 +19,8 @@
     )
   ;; Keys active in org-mode buffers
   (:after-load
-    (:with-keymap org-mode-map
-      (:bind :state 'normal
+    (:keymap org-mode-map
+      (:bind :state normal
         "z '"  'org-edit-special
         "z ,"  'org-insert-structure-template
         "z `"  'org-table-edit-field
@@ -97,7 +97,7 @@
         "C-c ,"   ;; `org-priority'     — moved to ,i,
         "C-c /")) ;; `org-sparse-tree'  — moved to ,/ and z/
     ;;
-    (:with-keymap org-link-navigation-repeat-map
+    (:keymap org-link-navigation-repeat-map
       (:bind
         "n" 'org-next-link
         "p"  nil
@@ -107,16 +107,16 @@
 
 (setup dired
   (:after-load
-    ;; `dired-mode-map'
-    (:bind
-      ", a" '("org-attach file to node" . org-attach-dired-to-subtree))))
+    (:keymap dired-mode-map
+      (:bind
+        ", a" '("org-attach file to node" . org-attach-dired-to-subtree)))))
 
 ;;; Agenda
 
 (setup org-agenda
   (hel-set-initial-state 'org-agenda-mode 'emacs)
   (:after-load
-    (:with-keymap org-agenda-mode-map
+    (:keymap org-agenda-mode-map
       (:unbind
         "," ;; org-priority — moved to ",,"
         "g" ;; org-agenda-redo-all — moved to "C-w r"

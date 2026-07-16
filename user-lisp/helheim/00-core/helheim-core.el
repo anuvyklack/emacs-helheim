@@ -121,10 +121,10 @@ Must be set before `helheim-core' is loaded!"
 (setup edit-indirect
   (:install t)
   (:after-load
-    ;; edit-indirect-mode-map
-    (:bind :state 'normal
-      "Z Z" 'edit-indirect-commit
-      "Z Q" 'edit-indirect-abort)))
+    (:keymap edit-indirect-mode-map
+      (:bind :state normal
+        "Z Z" 'edit-indirect-commit
+        "Z Q" 'edit-indirect-abort))))
 
 (elpaca-wait)
 
@@ -785,7 +785,6 @@ Use `delete-trailing-whitespace' command."
 (setup saveplace
   (:setopt save-place-limit 600)
   (:after-init save-place-mode)
-  ;; :config
   ;; (setq save-place-file (locate-user-emacs-file "saveplace"))
   )
 
@@ -955,8 +954,7 @@ Use `delete-trailing-whitespace' command."
 ;;;; project.el
 
 (setup project
-  ;; (:install t)
-  (:built-in)
+  (:install nil)
   (:setopt project-vc-extra-root-markers '(".project")
            project-vc-merge-submodules nil
            project-kill-buffers-display-buffer-list t
@@ -991,8 +989,8 @@ Use `delete-trailing-whitespace' command."
 
 ;; (setup vc-annotate
 ;;   (:after-load
-;;     ;; vc-annotate-mode-map
-;;     (:bind [remap quit-window] #'kill-current-buffer)))
+;;     (:keymap vc-annotate-mode-map
+;;       (:bind [remap quit-window] #'kill-current-buffer))))
 
 ;;;; Diff
 

@@ -1,14 +1,14 @@
-* The ~setup~ macro
+* The ~helheim-setup~ macro
 
-Helheim configures packages with heavily modified [[https://elpa.gnu.org/packages/setup.html][setup]] macro: most default
-keywords are removed and replace with custom ones.
+Helheim configures packages with ~helheim-setup~, defined
+in ~user-lisp/helheim/00-core/helheim-setup.el~.
 
-"Explicit is better than implicit." Unlike ~use-package~, the ~setup~ macro is
-not declarative — it does not rearrange code blocks.
+"Explicit is better than implicit." Unlike ~use-package~, the ~helheim-setup~
+macro is not declarative — it does not rearrange code blocks.
 
 It is just syntactic sugar[fn:1]. In the most basic case
 #+begin_src emacs-lisp
-(setup FEATURE
+(helheim-setup FEATURE
   body ...)
 #+end_src
 is the same as
@@ -17,40 +17,59 @@ is the same as
   body ...)
 #+end_src
 
-It was created, out of tiredness finding out that something doesn't work
-because of obscure ~use-package~ macro expansion. Internally, it
-calls ~macroexpand-all~ with a custom ENVIRONMENT, allowing macros to be
-defined only within the scope of the ~setup~ form.
+It was created, out of tiredness finding out that something doesn't work because
+of obscure ~use-package~ macro expansion. Internally, it calls ~macroexpand-all~
+with a custom ENVIRONMENT, allowing macros to be defined only within the scope
+of the ~helheim-setup~ form.
 
 #+begin_src emacs-lisp
-(setup FEATURE
+(helheim-setup FEATURE
   (:keyword arg ...)
   body ...)
 #+end_src
 
+The rule is one line long, and it holds at every level of the body:
+
+- car is a *keyword* → looked up in ~helheim-setup-macros~ and expanded in place.
+- car is *anything else* → plain imperative Lisp, passed through untouched.
+
 To see how a form expands, place the cursor after its closing paren and press =,ep=.
+
+** Relationship to setup.el
+
+Helheim used to build on the [[https://elpa.gnu.org/packages/setup.html][setup.el]] package, with most of its keywords
+removed and replaced by custom ones. The expander is now Helheim's own and
+setup.el is no longer a dependency.
+
+What was adopted is the *design*, not the library: keyword-in-car forms as
+context-local macros, expanded through a ~macroexpand-all~ environment. The
+extension API is the one [[https://github.com/anuvyklack/hel-collection][hel-collection]].
+
+~setup~ remains an alias for ~helheim-setup~, so an ~init.el~ written against the
+old name keeps working.
 
 ** Quick reference
 
 | Keyword        | Purpose                                            |
 |----------------+----------------------------------------------------|
-| ~:install~       | Install via the active package manager             |
-| ~:setopt~        | Set a variable only if the user has not changed it |
 | ~:require~       | ~(require 'FEATURE)~                                 |
+| ~:install~       | Install via the active package manager             |
+| ~:elpaca~        | Install with Elpaca specifically                   |
+| ~:straight~      | Install with straight.el specifically              |
 | ~:when~          | Guard the entire form on a condition               |
 | ~:after~         | Wrap body in ~with-eval-after-load~ for a feature    |
 | ~:after-load~    | Same, but for the /current/ feature                  |
-| ~:blackout~      | Hide a minor mode from the mode line               |
-| ~:command~       | Declare an ~autoload~ for a command                  |
 | ~:after-init~    | Run body in ~after-init-hook~                        |
 | ~:defer~         | Evaluate body when Emacs is idle after startup     |
-| ~:hook~          | ~add-hook~; accepts many-to-many mapping             |
-| ~:with-keymap~   | Change the keymap body binds into                  |
-| ~:with-keymaps~  | Repeat body for a list of keymaps                  |
+| ~:setopt~        | Set a variable only if the user has not changed it |
+| ~:keymap~        | Set the keymap (or keymaps) body binds into        |
 | ~:bind~          | Bind keys in the current keymap                    |
 | ~:unbind~        | Remove bindings from the current keymap            |
 | ~:global-bind~   | Bind keys globally                                 |
 | ~:global-unbind~ | Remove global bindings                             |
+| ~:hook~          | ~add-hook~; accepts many-to-many mapping             |
+| ~:blackout~      | Hide a minor mode from the mode line               |
+| ~:command~       | Declare an ~autoload~ for a command                  |
 | ~:mode~          | Add an entry to ~auto-mode-alist~                    |
 
 ** Package installation
@@ -59,18 +78,18 @@ To see how a form expands, place the cursor after its closing paren and press =,
 #+begin_src emacs-lisp
 (:install PACKAGE &rest RECIPE)
 (:install t)   ; install the feature itself
-(:install nil) ; do not install (same as :built-in)
+(:install nil) ; do not install
 #+end_src
 
 Dispatches to the package manager configured in ~helheim-package-manager~
-(~'elpaca~ or ~'straight~). When ~PACKAGE~ is ~t~, the feature name is used as the
+(~elpaca~ or ~straight~). When ~PACKAGE~ is ~t~, the feature name is used as the
 package name.
 
 #+begin_src emacs-lisp
-(setup orderless
+(helheim-setup orderless
   (:install t)) ; install `orderless'
 
-(setup hel-leader
+(helheim-setup hel-leader
   (:install hel-leader :host github :repo "anuvyklack/hel-leader"))
 #+end_src
 
@@ -92,21 +111,21 @@ targeting a specific manager is intentional.
          VARIABLE VALUE ...)
 #+end_src
 
-Sets ~VARIABLE~ to ~VALUE~ only if the user has not already changed it from its
-original default. This is Helheim's mechanism for supplying sensible
-defaults without clobbering user settings — even when Elpaca runs package
-config closures asynchronously, after ~init.el~ has already run.
+Sets ~VARIABLE~ to ~VALUE~ only if the user has not already changed it from
+its original default. This is Helheim's mechanism for supplying sensible
+defaults without clobbering user settings.
 
 #+begin_src emacs-lisp
-(setup corfu
+(helheim-setup corfu
   (:install t)
   (:setopt corfu-auto t
            corfu-auto-delay 0.24
            corfu-cycle t))
 #+end_src
 
-Do /not/ use ~:setopt~ in your own ~init.el~; use plain ~setopt~ there. ~:setopt~ is
-for Helheim module defaults.
+Do /not/ use ~:setopt~ in your own ~init.el~, it is for Helheim module defaults,
+use plain ~setopt~ there.
+
 
 ** Loading and timing
 *** ~:require~
@@ -116,10 +135,10 @@ for Helheim module defaults.
 (:require t) ; require the current feature
 #+end_src
 
-Emits ~(require 'FEATURE)~. Use ~t~ to require the feature named in the ~setup~ call.
+Emits ~(require 'FEATURE)~. Use ~t~ to require the feature named in the ~helheim-setup~ call.
 
 #+begin_src emacs-lisp
-(setup hel-leader
+(helheim-setup hel-leader
   (:install hel-leader :host github :repo "anuvyklack/hel-leader")
   (:require t))
 #+end_src
@@ -131,23 +150,15 @@ Emits ~(require 'FEATURE)~. Use ~t~ to require the feature named in the ~setup~ 
 (:after FEATURE1 FEATURE2)
 #+end_src
 
-Defers the entire ~setup~ body until another ~FEATURE~ (or all list of features) have
-been loaded.
+Defers the entire ~helheim-setup~ body until another ~FEATURE~ (or all list of
+features) have been loaded.
 
 #+begin_src emacs-lisp
-(setup vertico-directory
+(helheim-setup vertico-directory
   (:after vertico)
   (:require t)
   (:hook rfn-eshadow-update-overlay-hook vertico-directory-tidy))
-
-(setup nerd-icons-completion
-  (:install t)
-  (:after marginalia)
-  (nerd-icons-completion-mode))
 #+end_src
-
-Note: ~:after~ applies to the whole ~setup~ form. Use ~:after-load~
-when only /part/ of the form should be deferred.
 
 *** ~:after-load~
 
@@ -156,15 +167,13 @@ when only /part/ of the form should be deferred.
   BODY ...)
 #+end_src
 
-Wraps ~BODY~ in ~(with-eval-after-load 'CURRENT-FEATURE ...)~. Use this when you
-need some code (like a global mode call) to run immediately while deferring
-other code (like keymap bindings) until the package is actually loaded.
+Wraps ~BODY~ in ~(with-eval-after-load 'CURRENT-FEATURE ...)~.
 
 #+begin_src emacs-lisp
-(setup corfu
+(helheim-setup corfu
   (global-corfu-mode) ; runs immediately
   (:after-load
-    (:with-keymap corfu-map
+    (:keymap corfu-map
       (:bind "<tab>" 'corfu-next
              "RET"   'corfu-insert))))
 #+end_src
@@ -188,33 +197,25 @@ expands to
   BODY ...)
 #+end_src
 
-Schedules ~BODY~ to run when Emacs has been idle for
-~helheim-initial-deferred-task-timeout~ seconds after startup
-(default: 2s). Subsequent deferred tasks each wait an additional
-~helheim-deferred-task-timeout~ seconds (default: 0.75s).
+Schedules ~BODY~ to run when Emacs has been idle
+for ~helheim-initial-deferred-task-timeout~ seconds after startup
+(default: 2s). Subsequent deferred tasks each wait an
+additional ~helheim-deferred-task-timeout~ seconds (default: 0.75s).
 
 Use this for optional setup that should not slow down Emacs startup.
 
 #+begin_src emacs-lisp
-(setup some-package
+(helheim-setup some-package
   (:install t)
   (:defer
     (some-package-mode 1)))
-#+end_src
-
-expands to:
-
-#+begin_src emacs-lisp
-(elpaca 'some-package
-  (helheim-defer #'(lambda ()
-                     (some-package-mode 1))))
 #+end_src
 
 *** ~:after-init~
 
 #+begin_src emacs-lisp
 (:after-init symbol)
-(:after-init BODY ...)
+(:after-init BODY...)
 (:after-init (lambda () …))
 #+end_src
 
@@ -223,10 +224,10 @@ active package manager). ~BODY~ can be a function symbol, a lambda, or arbitrary
 forms that will wrapped in a lambda.
 
 #+begin_src emacs-lisp
-(setup vertico
+(helheim-setup vertico
   (:install t)
   (:after-init vertico-mode)
-  (:after-init BODY ...))
+  (:after-init ...))
 #+end_src
 
 expands to
@@ -234,7 +235,7 @@ expands to
 #+begin_src emacs-lisp
 (elpaca 'vertico
   (add-hook 'elpaca-after-init-hook #'vertico-mode)
-  (add-hook 'elpaca-after-init-hook #'(lambda () body ...)))
+  (add-hook 'elpaca-after-init-hook #'(lambda () ...)))
 #+end_src
  
 ** ~:hook~
@@ -251,18 +252,18 @@ Adds functions to hooks. Accepts many-to-many mappings: if either argument
 is a list, all combinations are registered.
 
 #+begin_src emacs-lisp
-(setup corfu-history
+(helheim-setup corfu-history
   (:hook global-corfu-mode-hook corfu-history-mode))
 
-(setup cape
+(helheim-setup cape
   (:install t)
   (:hook completion-at-point-functions (cape-dabbrev cape-file
                                         cape-elisp-block cape-history)))
 
-(setup hel-paredit
+(helheim-setup hel-paredit
   (:hook (emacs-lisp-mode-hook lisp-data-mode-hook) hel-paredit-mode))
 
-(setup prog-mode
+(helheim-setup prog-mode
   (:hook prog-mode-hook (lambda () (setq-local line-move-visual nil))))
 #+end_src
 
@@ -272,24 +273,23 @@ Helheim key-binding keywords call ~hel-keymap-set~ and ~hel-keymap-global-set~
 (from [[https://github.com/anuvyklack/hel][Hel]]) instead of the standard ~keymap-set~. This means they accept an
 optional ~:state~ argument that scopes bindings to a specific Hel modal state.
 
-*** ~:with-keymap~ / ~:with-keymaps~
+*** ~:keymap~
 
 #+begin_src emacs-lisp
-(:with-keymap KEYMAP
+(:keymap KEYMAP
   BODY ...)
 
-(:with-keymaps (KEYMAP1 KEYMAP2 ...)
+(:keymap (KEYMAP1 KEYMAP2 ...)
   BODY ...)
 #+end_src
 
-Changes the keymap that inner ~:bind~ / ~:unbind~ calls target.
-~KEYMAP~ can be any form that evaluates to a keymap.
-~:with-keymaps~ repeats ~BODY~ for every keymap in the list.
+Changes the keymap that inner ~:bind~ / ~:unbind~ calls target. ~KEYMAP~ is
+an unquoted keymap symbol, or an unquoted list of them.
 
 #+begin_src emacs-lisp
-(setup corfu
+(helheim-setup corfu
   (:after-load
-    (:with-keymap corfu-map
+    (:keymap corfu-map
       (:bind
         "<tab>" 'corfu-next
         "RET"   'corfu-insert
@@ -307,8 +307,8 @@ the one set by ~:with-keymap~). ~KEY~ and ~DEFINITION~ follow ~keymap-set~ conve
 ~:state~ (optional) restricts the binding to a Hel modal state or a list of states.
 
 #+begin_src emacs-lisp
-(:with-keymap agent-shell-mode-map
-  (:bind :state 'normal
+(:keymap agent-shell-mode-map
+  (:bind :state normal
     "z '" 'agent-shell-prompt-compose)
   (:bind
     "C-c RET" 'dired-jump))
@@ -332,11 +332,11 @@ Binds ~KEY~ → ~DEFINITION~ in the global keymap. Accepts the same
 optional ~:state~ as ~:bind~.
 
 #+begin_src emacs-lisp
-(setup helheim
-  (:global-bind :state 'normal
+(helheim-setup helheim
+  (:global-bind :state normal
     "z SPC" 'cycle-spacing
     "z ."   'set-fill-prefix)
-  (:global-bind :state 'insert
+  (:global-bind :state insert
     "C-/"   'hippie-expand)
   (:global-bind
     [remap keyboard-quit] 'helheim-keyboard-quit
@@ -351,7 +351,7 @@ optional ~:state~ as ~:bind~.
 
 Removes ~KEY~ bindings from the global keymap.
 
-** ~:blackout~ — Mode line
+** ~:blackout~ — modeline managment
 
 #+begin_src emacs-lisp
 (:blackout t)                          ; hide current feature's mode
@@ -364,10 +364,10 @@ Hides a minor mode from the mode line using the [[https://github.com/raxod502/bl
 Multiple ~:blackout~ arguments may be combined in one call.
 
 #+begin_src emacs-lisp
-(setup org-indent
+(helheim-setup org-indent
   (:blackout t))
 
-(setup outline
+(helheim-setup outline
   (:blackout outline-mode
              outline-minor-mode))
 #+end_src
@@ -379,11 +379,11 @@ Multiple ~:blackout~ arguments may be combined in one call.
 (:command COMMAND ...)
 #+end_src
 
-Generates an ~autoload~ declaration for each ~COMMAND~, so the
-function is available interactively before the package loads.
+Generates an ~autoload~ declaration for each ~COMMAND~, so the function is
+available interactively before the package loads.
 
 #+begin_src emacs-lisp
-(setup org-cliplink
+(helheim-setup org-cliplink
   (:install t)
   (:command org-cliplink-retrieve-title-synchronously
             org-cliplink-org-mode-link-transformer))
@@ -398,10 +398,10 @@ function is available interactively before the package loads.
 Adds the cons cell to ~auto-mode-alist~. Repeatable.
 
 #+begin_src emacs-lisp
-(setup json-mode
+(helheim-setup json-mode
   (:mode ("\\.js\\(?:on\\|[hl]int\\(?:rc\\)?\\)\\'" . json-mode)))
 
-(setup markdown-mode
+(helheim-setup markdown-mode
   (:mode ("README\\.md\\'" . gfm-mode)))
 #+end_src
 
@@ -411,11 +411,11 @@ Adds the cons cell to ~auto-mode-alist~. Repeatable.
 (:when CONDITION)
 #+end_src
 
-Guards the entire ~setup~ body: no code runs unless ~CONDITION~ evaluates to non-nil
-at load time. Place ~:when~ before other keywords so the guard is obvious.
+Guards the entire ~helheim-setup~ body: no code runs unless ~CONDITION~ evaluates to
+non-nil at load time. Place ~:when~ before other keywords so the guard is obvious.
 
 #+begin_src emacs-lisp
-(setup bash-ts-mode
+(helheim-setup bash-ts-mode
   (:when (treesit-available-p))
   (add-to-list 'major-mode-remap-alist '(sh-mode . bash-ts-mode)))
 #+end_src
@@ -423,4 +423,4 @@ at load time. Place ~:when~ before other keywords so the guard is obvious.
 * Footnotes
 
 [fn:1] The exeptions are ~:when~, ~:after~ and ~:elpaca~ which are enclose the
-whole ~setup~ form in their constructions.
+whole ~helheim-setup~ form in their constructions.

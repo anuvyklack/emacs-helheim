@@ -6,11 +6,11 @@
 ;;; Keybindings
 
 (setup elisp-mode
-  (:with-keymaps (emacs-lisp-mode-map
-                  lisp-interaction-mode-map)
+  (:keymap (emacs-lisp-mode-map
+            lisp-interaction-mode-map)
     (:bind
       "C-c e"   '("eval" . helheim-elisp-eval-map)) ;; <leader>
-    (:bind :state 'normal
+    (:bind :state normal
       ", e"     '("eval" . helheim-elisp-eval-map) ;; <localleader>
       "K"       'helpful-at-point ;; after Vim
       "M"       'helpful-at-point
@@ -30,8 +30,8 @@
   "RET" 'eval-print-last-sexp)
 
 (setup lisp-mode
-  (:with-keymap lisp-data-mode-map
-    (:bind :state 'normal
+  (:keymap lisp-data-mode-map
+    (:bind :state normal
       "K"   'helpful-at-point
       "M"   'helpful-at-point)))
 
@@ -82,7 +82,7 @@
 (setup elisp-refs
   ;; (:install t) ;; installed as dependency of `helpful'
   (:after-load
-    (:with-keymap elisp-refs-mode-map
+    (:keymap elisp-refs-mode-map
       (:bind
         "C-j" 'elisp-refs-next-match
         "C-k" 'elisp-refs-prev-match
@@ -115,9 +115,8 @@
   (other-window-prefix)
   (helheim-elisp-find-definitions))
 
-(dolist (cmd '(helheim-elisp-find-definitions
-               helheim-elisp-find-definitions-other-window))
-  (hel-advice-add cmd :around #'hel-jump-command-a))
+(hel-advice-add 'helheim-elisp-find-definitions :around #'hel-jump-command-a)
+(hel-advice-add 'helheim-elisp-find-definitions-other-window :around #'hel-jump-command-a)
 
 ;;; .
 (provide 'helheim-emacs-lisp)

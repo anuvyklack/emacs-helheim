@@ -9,8 +9,8 @@
   (:after-load
     (:global-bind
       "C-c a s" 'agent-shell-send-dwim)
-    (:with-keymap agent-shell-mode-map
-      (:bind :state 'normal
+    (:keymap agent-shell-mode-map
+      (:bind :state normal
         "z '" 'agent-shell-prompt-compose)
       (:bind
         "C-c RET" 'dired-jump))))

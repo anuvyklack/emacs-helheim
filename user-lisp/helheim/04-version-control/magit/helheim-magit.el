@@ -45,7 +45,7 @@
 
 (setup project
   (:after-load
-    (:with-keymap project-prefix-map
+    (:keymap project-prefix-map
       (:bind "v" 'helheim-project-magit))
     ;; In `project-switch-project' dispatch replace VC-Dir with Magit.
     (when-let* ((index (-elem-index '(project-vc-dir "VC-Dir")

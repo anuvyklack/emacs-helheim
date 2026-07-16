@@ -47,7 +47,6 @@
 (elpaca 'dash)
 (elpaca 'f)
 (elpaca 's)
-(elpaca 'setup)
 (elpaca 'blackout)
 (elpaca-wait)
 

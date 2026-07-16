@@ -26,7 +26,7 @@
   (setq notmuch-tag-jump-reverse-key "m")
 
   (set-keymap-parent notmuch-common-keymap special-mode-map)
-  (:with-keymap notmuch-common-keymap
+  (:keymap notmuch-common-keymap
     (:unbind "g" "G" "j" "z" "?")
     (:bind
       "C-c RET" '("Sync email" . notmuch-poll-and-refresh-this-buffer) ;; leader
@@ -58,11 +58,11 @@
       "="     'notmuch-refresh-this-buffer
       "M-="   'notmuch-refresh-all-buffers))
 
-  (:with-keymap notmuch-hello-mode-map
+  (:keymap notmuch-hello-mode-map
     (:bind
       "m"     'notmuch-jump-search)) ;; "m" for jump menu
 
-  (:with-keymap notmuch-search-mode-map
+  (:keymap notmuch-search-mode-map
     (:unbind "SPC" "b" "l")
     (:bind
       "RET"   'notmuch-search-show-thread
@@ -105,7 +105,7 @@
       ", r"   '("Reply" . notmuch-search-reply-to-thread-sender)
       ", R"   '("Reply all" . notmuch-search-reply-to-thread)))
 
-  (:with-keymap notmuch-tree-mode-map
+  (:keymap notmuch-tree-mode-map
     (:unbind "z")
     (:bind
       "RET"   'notmuch-tree-show-message
@@ -160,7 +160,7 @@
       "s"     'notmuch-tree-to-tree
       "E"     'notmuch-tree-resume-message))
 
-  (:with-keymap notmuch-show-mode-map
+  (:keymap notmuch-show-mode-map
     (:unbind "h" "j" "k" "l" "c" "t")
     (:bind
       ;; "M-RET" 'notmuch-show-open-or-close-all
@@ -236,7 +236,7 @@
       "C-c t h" '("Notmuch headers visibility" . notmuch-show-toggle-visibility-headers)
       "C-c t i" '("Notmuch thread indentation" . notmuch-show-toggle-thread-indentation)))
 
-  (:with-keymap notmuch-show-stash-map
+  (:keymap notmuch-show-stash-map
     (:unbind "?")
     (:bind
       "c"     '("Copy CC field" . notmuch-show-stash-cc)
@@ -252,7 +252,7 @@
       "L"     'notmuch-show-stash-mlarchive-link-and-go
       "G"     'notmuch-show-stash-git-send-email))
 
-  (:with-keymap notmuch-show-part-map
+  (:keymap notmuch-show-part-map
     (:unbind "?")
     (:bind
       "s"     '("Save part" . notmuch-show-save-part)

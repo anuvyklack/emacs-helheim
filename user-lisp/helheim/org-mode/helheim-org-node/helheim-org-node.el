@@ -36,7 +36,7 @@
   ;; Keys active in Org-mode
   (with-eval-after-load 'org-keys
     (require 'helheim-org-keys)
-    (:with-keymap org-mode-map
+    (:keymap org-mode-map
       (:bind
         ;; notes
         "C-c n b"  '("backlinks buffer" . helheim-org-node-backlinks-buffer)
@@ -46,7 +46,7 @@
         ;; "C-c n I"  'org-node-insert-include ;; TODO. Not yet a good command.
         ))
     ;; "C-c i" or ",i"
-    (:with-keymap helheim-org-insert-map
+    (:keymap helheim-org-insert-map
       (:bind
         "a"  '("add alias" . org-node-add-alias)
         "i"  '("add ID" . org-node-nodeify-entry) ; "ii" - insert ID
@@ -54,7 +54,7 @@
         "q"  '("add tags" . org-node-add-tags-here)   ;; or `org-node-add-tags'
         "Q"  '("set tags" . org-node-set-tags-here))) ;; or `org-node-set-tags'
     ;; "C-c l" or ",l"
-    (:with-keymap helheim-org-link-map
+    (:keymap helheim-org-link-map
       (:bind
         "n"  '("insert link to node" . org-node-insert-link)
         "t"  '("node transclusion" . org-node-insert-transclusion)

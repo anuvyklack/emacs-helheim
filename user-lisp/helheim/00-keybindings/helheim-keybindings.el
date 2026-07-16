@@ -11,10 +11,10 @@
   (:require t))
 
 (setup helheim
-  (:global-bind :state 'normal
+  (:global-bind :state normal
     "z SPC" 'cycle-spacing
     "z ."   'set-fill-prefix)
-  (:global-bind :state 'insert
+  (:global-bind :state insert
     "C-/"   'hippie-expand)
   (:global-bind
     [remap keyboard-quit] 'helheim-keyboard-quit ; "C-g"
@@ -105,8 +105,8 @@
 (setup cus-edit
   (hel-set-initial-state 'Custom-mode 'normal)
   (:after-load
-    (:with-keymap custom-mode-map
-      (:bind :state 'normal
+    (:keymap custom-mode-map
+      (:bind :state normal
         "z j" 'widget-forward
         "z k" 'widget-backward
         "z u" 'Custom-goto-parent
@@ -121,9 +121,16 @@
 
 (setup sgml-mode
   (:after-load
-    (:with-keymap html-mode-map
+    (:keymap html-mode-map
       (:unbind "C-c C-m")
       (:bind "C-c C-<m>" #'html-paragraph))))
+
+;;; Info
+
+(setup info
+  (:after-load
+    (:keymap Info-mode-map
+      (:bind "C-c s a" 'info-apropos))))
 
 ;;; Repeat mode
 
@@ -132,10 +139,11 @@
 ;;; tab-bar
 
 (setup tab-bar
-  (:with-keymap tab-bar-history-mode-map
-    (:unbind
-      "C-c <left>"
-      "C-c <right>")))
+  (:after-load
+    (:keymap tab-bar-history-mode-map
+      (:unbind
+        "C-c <left>"
+        "C-c <right>"))))
 
 ;;; .
 (provide 'helheim-keybindings)

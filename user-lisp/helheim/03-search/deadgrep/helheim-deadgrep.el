@@ -4,7 +4,7 @@
 (setup deadgrep
   (:install t)
   ;; <leader> ss — deadgrep entry point
-  (:with-keymap search-map
+  (:keymap search-map
     (:bind "s" 'deadgrep))
   ;; (:hook deadgrep-mode-hook next-error-follow-minor-mode)
   )

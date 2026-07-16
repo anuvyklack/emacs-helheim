@@ -3,7 +3,7 @@
 
 (setup org
   (:install t)
-  ;; (:built-in)
+  ;; (:install nil)
   (:setopt org-insert-heading-respect-content nil
            org-M-RET-may-split-line '((default . t)
                                       (item . nil))
@@ -146,7 +146,7 @@ Must be set with `setopt' function!"
   (add-to-list 'org-tags-exclude-from-inheritance org-attach-auto-tag)
   ;;
   (with-eval-after-load 'org-keys
-    (:with-keymap org-mode-map
+    (:keymap org-mode-map
       (:bind [remap org-attach] 'helheim-org-attach)))
   ;;
   (:setopt org-attach-commands
@@ -205,7 +205,7 @@ directory in dired and delete from there.\n")
   (:setopt org-cliplink-max-length nil
            org-cliplink-ellipsis "…")
   (with-eval-after-load 'org-keys
-    (:with-keymap org-mode-map
+    (:keymap org-mode-map
       (:bind [remap org-insert-link] 'helheim-org-insert-link))))
 
 ;;; .

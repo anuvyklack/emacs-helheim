@@ -3,10 +3,10 @@
 ;;; Keybindings
 
 (setup vertico
-  (:global-bind :state '(normal emacs)
+  (:global-bind :state (normal emacs)
     "C-c '"   '("vertico last session" . vertico-repeat)
     "C-c \""  '("vertico select session" . vertico-repeat-select))
-  (:with-keymap minibuffer-local-map
+  (:keymap minibuffer-local-map
     (:bind "M-a" 'marginalia-cycle)))
 
 ;;; Config
@@ -34,7 +34,7 @@
   ;; Cleans up path when moving directories with shadowed paths syntax, e.g.
   ;; cleans ~/foo/bar/// to /, and ~/foo/bar/~/ to ~/.
   (:hook rfn-eshadow-update-overlay-hook vertico-directory-tidy)
-  (:with-keymap vertico-directory-map
+  (:keymap vertico-directory-map
     (:bind "C-h" 'vertico-directory-up)))
 
 (setup marginalia

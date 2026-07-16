@@ -5,8 +5,8 @@
   (:mode ("\\.js\\(?:on\\|[hl]int\\(?:rc\\)?\\)\\'" . json-mode))
   (:hook json-mode-local-vars-hook helheim-lsp)
   (:after-load
-    (:with-keymap json-mode-map
-      (:bind :state 'normal
+    (:keymap json-mode-map
+      (:bind :state normal
         "," (define-keymap
               "p" '("Copy path" . json-mode-show-path)
               "t" 'json-toggle-boolean
