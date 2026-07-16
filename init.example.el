@@ -84,7 +84,6 @@
 (require 'helheim-minibuffer) ; Emacs version of command palette
 (require 'helheim-completion)
 (require 'helheim-keybindings)
-(require 'helheim-disable-isearch)
 
 (require 'helheim-ibuffer)  ; Buffers menu
 (require 'helheim-dired)    ; File-manager

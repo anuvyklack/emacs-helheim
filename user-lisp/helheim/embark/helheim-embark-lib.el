@@ -1,4 +1,4 @@
-;;; helheim-embark-lib.el                             -*- lexical-binding: t -*-
+;;; helheim-embark-lib.el -*- lexical-binding: t -*-
 ;;; Display Emabark menus with Which-key
 ;; From: https://github.com/oantolin/embark/wiki/Additional-Configuration#use-which-key-like-a-key-menu-prompt
 
@@ -33,33 +33,6 @@ targets."
   (which-key--hide-popup-ignore-command)
   (let ((embark-indicators (remq #'+embark-which-key-indicator embark-indicators)))
     (apply fn args)))
-
-;;; Commands
-
-(defun hel-embark-select ()
-  "Add or remove the target from the current buffer's selection.
-You can act on all selected targets at once with `embark-act-all'.
-When called from outside `embark-act' this command will select
-the first target at point."
-  (interactive)
-  (embark-select)
-  (next-line))
-
-(defun +org-table-insert-row-above ()
-  (interactive)
-  (org-table-insert-row))
-
-(defun +org-table-insert-row-below ()
-  (interactive)
-  (org-table-insert-row t))
-
-(defun +org-table-insert-hline-above ()
-  (interactive)
-  (org-table-insert-hline t))
-
-(defun +org-table-insert-hline-below ()
-  (interactive)
-  (org-table-insert-hline))
 
 ;;; .
 (provide 'helheim-embark '(lib))

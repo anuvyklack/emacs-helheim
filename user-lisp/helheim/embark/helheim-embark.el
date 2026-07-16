@@ -29,8 +29,7 @@
                  nil
                  (window-parameters (mode-line-format . none))))
   (:after-load
-    (load "helheim-embark-lib" nil t)
-    (load "helheim-embark-keys" nil t)))
+    (load "helheim-embark-lib" nil t)))
 
 (setup embark-consult
   (:install t)

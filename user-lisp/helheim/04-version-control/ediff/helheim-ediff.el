@@ -1,15 +1,6 @@
-;;; helheim-ediff.el              -*- lexical-binding: t; no-byte-compile: t -*-
-
-(setup ediff
-  (:hook ediff-keymap-setup-hook helheim-ediff-setup-keys)
-  (setopt ediff-diff-options "-w" ;; turn off whitespace checking
-          ediff-split-window-function #'split-window-horizontally
-          ediff-window-setup-function #'ediff-setup-windows-plain
-          ;; ediff-keep-variants nil
-          )
-  (hel-set-initial-state 'ediff-mode 'emacs))
-
-;;; Restore windows configuration after quitting ediff
+;;; helheim-ediff.el -*- lexical-binding: t; no-byte-compile: t -*-
+;;; Code:
+;;;; Restore windows configuration after quitting ediff
 
 (let (wconf) ; Private variable shared by two functions.
   ;;

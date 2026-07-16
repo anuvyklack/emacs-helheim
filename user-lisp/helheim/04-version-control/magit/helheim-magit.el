@@ -27,8 +27,7 @@
   (:hook magit-process-mode-hook goto-address-mode)
   ;; The mode-line isn't useful in these popups and take up valuable screen
   ;; estate, so free it up.
-  (:hook magit-popup-mode-hook hide-mode-line-mode)
-  (load "helheim-magit-keys" nil t))
+  (:hook magit-popup-mode-hook hide-mode-line-mode))
 
 (setup git-modes (:install t))
 

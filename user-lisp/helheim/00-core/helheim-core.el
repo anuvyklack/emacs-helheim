@@ -75,6 +75,12 @@ Must be set before `helheim-core' is loaded!"
   (:install hel :host github :repo "anuvyklack/hel")
   (hel-mode))
 
+(setup hel-collection
+  (:install hel-collection
+            :host github :repo "anuvyklack/hel-collection"
+            :files (:defaults "modes"))
+  (hel-collection-init))
+
 (setup compat
   (:install t))
 
