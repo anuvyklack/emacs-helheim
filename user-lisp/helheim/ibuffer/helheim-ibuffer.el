@@ -39,14 +39,14 @@
   (:hook ibuffer-mode-hook ibuffer-auto-mode) ; Automatically update Ibuffer.
   ;; Project filter groups
   (progn
-    (setopt ibuffer-maybe-show-predicates '(helheim-ibuffer-maybe-show-p))
+    (setq ibuffer-maybe-show-predicates '(helheim-ibuffer-maybe-show-p))
     (advice-add 'ibuffer-generate-filter-groups
                 :before #'helheim-ibuffer-update-project-filter-groups)
     ;; <leader> b b
     (define-advice ibuffer-jump (:after (&optional _other-window) helheim)
       (ibuffer-switch-to-saved-filter-groups "Project"))
     ;; <leader> p C-b
-    (setopt project-buffers-viewer 'helheim-ibuffer-project-buffers))
+    (setq project-buffers-viewer 'helheim-ibuffer-project-buffers))
   (:after-load
     (load "helheim-ibuffer-lib" nil t)
     (load "helheim-ibuffer-keys" nil t)
