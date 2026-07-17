@@ -45,7 +45,10 @@ Must be set before `helheim-core' is loaded!"
     '("/init.el"
       "/custom.el"))
   (blackout 'compile-angel-on-load-mode)
-  (compile-angel-on-load-mode))
+  ;; Start compile-angel only after Elpaca has finished, so its just-in-time
+  ;; byte-compilation doesn't pile onto Elpaca's own source builds during
+  ;; a fresh install.
+  (:after-init compile-angel-on-load-mode))
 
 ;; We disable byte-compilation by setting `user-lisp-auto-scrape' to nil in
 ;; early-init.el, because it runs too early, before dependencies are installed.
