@@ -87,8 +87,8 @@ CONTEXT is an alist of (KEY . VALUE) pairs."
 (defmacro helheim-setup-define (name args &rest body)
   "Define NAME as a `helheim-setup'-local macro.
 
-This is a `defmacro' for macros that exist only within the scope of
-a `helheim-setup' form, and takes the same arguments `defmacro' does.
+This is a `cl-defmacro' for macros that exist only within the scope of
+a `helheim-setup' form, and takes the same arguments `cl-defmacro' does.
 
 The `declare' form, besides standart `indent' and `debug' keys, accepts:
 
@@ -126,15 +126,17 @@ The `declare' form, besides standart `indent' and `debug' keys, accepts:
             (error "helheim-setup-define: unknown declaration %S in %S"
                    declaration name))))))
     (let ((expander `(lambda ,args ,@body)))
-      (when repeatable
-        (-let [(arity . max-arity) (func-arity expander)]
-          (when (zerop arity)
-            (error "helheim-setup-define: %S is `repeatable' but takes no arguments"
-                   name))
-          (unless (eql arity max-arity) ;; max-arity can be symbol 'many
-            (error "helheim-setup-define: %S is `repeatable' but its arglist is not fixed-arity: %S"
-                   name args))
-          (setq expander `(helheim-setup--make-repeatable ,expander ,arity))))
+      (if repeatable
+          (-let [(arity . max-arity) (func-arity expander)]
+            (when (zerop arity)
+              (error "helheim-setup-define: %S is `repeatable' but takes no arguments"
+                     name))
+            (unless (eql arity max-arity) ;; max-arity can be symbol 'many
+              (error "helheim-setup-define: %S is `repeatable' but its arglist is not fixed-arity: %S"
+                     name args))
+            (setq expander `(helheim-setup--make-repeatable ,expander ,arity)))
+        ;; Else allow expander supports full Common Lisp arguments conventions
+        (setq expander `(cl-function ,expander)))
       `(progn
          (setf (alist-get ,name helheim-setup-macros) ,expander)
          ;; Record where the keyword was defined, so "gd" (native "M-.")
