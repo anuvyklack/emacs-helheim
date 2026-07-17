@@ -45,43 +45,17 @@
         ", t"   '("rotate todo state" . org-todo)
         ", y"   'org-copy-visible
         ;; "v"
-        ", l"   (cons "links"
-                      (progn
-                        (defvar-keymap helheim-org-link-map
-                          :prefix 'helheim-org-link-map
-                          "l"  '("insert link" . org-insert-link)
-                          "i"  '("insert last stored link" . org-insert-last-stored-link) ;; "i" for insert
-                          "s"  '("store link" . org-store-link)
-                          "a"  '("insert all links" . org-insert-all-links)
-                          "u"  '("update id locations" . org-id-update-id-locations))
-                        helheim-org-link-map))
-        ", i"   (cons "insert"
-                      (progn
-                        (defvar-keymap helheim-org-insert-map
-                          :prefix 'helheim-org-insert-map
-                          ","  'org-priority
-                          "e"  'org-set-effort
-                          "l"  '("insert link" . org-insert-link)
-                          "n"  'org-add-note
-                          "m"  '("paste media" . yank-media)
-                          "p"  'org-set-property
-                          ;; timestamp
-                          "t"  '("time stamp" . org-time-stamp)
-                          "T"  '("inactive time stamp" . org-time-stamp-inactive)
-                          "d"  '("deadline" . org-deadline)
-                          "s"  '("schedule" . org-schedule)
-                          ;; tags
-                          "q"  '("set tags" . org-set-tags-command))
-                        helheim-org-insert-map))
-        ", n" (cons "node"
-                    (define-keymap
-                      "a"  'org-toggle-archive-tag ;; C-c C-x a
-                      "c"  'org-clone-subtree-with-time-shift))
-        ", p" 'org-paste-special
-        ", x" (cons "other"
-                    (define-keymap
-                      "<"  'org-agenda-set-restriction-lock       ;; C-c C-x <
-                      ">"  'org-agenda-remove-restriction-lock))) ;; C-c C-x >
+        ", l"   (cons "links" helheim-org-link-map)
+        ", i"   (cons "insert" helheim-org-insert-map)
+        ", n"   (cons "node"
+                      (define-keymap
+                        "a"  'org-toggle-archive-tag ;; C-c C-x a
+                        "c"  'org-clone-subtree-with-time-shift))
+        ", p"   'org-paste-special
+        ", x"   (cons "other"
+                      (define-keymap
+                        "<"  'org-agenda-set-restriction-lock       ;; C-c C-x <
+                        ">"  'org-agenda-remove-restriction-lock))) ;; C-c C-x >
       ;; <leader>
       (:bind
         "C-c RET"  'dired-jump ;; rebind `org-ctrl-c-ret' which is moved to ", RET"
@@ -104,6 +78,30 @@
         "N" 'org-previous-link
         "]" 'org-next-link
         "[" 'org-previous-link))))
+
+(defvar-keymap helheim-org-link-map
+  :prefix 'helheim-org-link-map
+  "l"  '("insert link" . org-insert-link)
+  "i"  '("insert last stored link" . org-insert-last-stored-link) ;; "i" for insert
+  "s"  '("store link" . org-store-link)
+  "a"  '("insert all links" . org-insert-all-links)
+  "u"  '("update id locations" . org-id-update-id-locations))
+
+(defvar-keymap helheim-org-insert-map
+  :prefix 'helheim-org-insert-map
+  ","  'org-priority
+  "e"  'org-set-effort
+  "l"  '("insert link" . org-insert-link)
+  "n"  'org-add-note
+  "m"  '("paste media" . yank-media)
+  "p"  'org-set-property
+  ;; timestamp
+  "t"  '("time stamp" . org-time-stamp)
+  "T"  '("inactive time stamp" . org-time-stamp-inactive)
+  "d"  '("deadline" . org-deadline)
+  "s"  '("schedule" . org-schedule)
+  ;; tags
+  "q"  '("set tags" . org-set-tags-command))
 
 (setup dired
   (:after-load
