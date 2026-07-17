@@ -208,6 +208,14 @@ directory in dired and delete from there.\n")
     (:keymap org-mode-map
       (:bind [remap org-insert-link] 'helheim-org-insert-link))))
 
+;;;; agenda
+
+(add-hook 'org-agenda-mode-hook
+          (defun helheim-org-agenda-mode-h ()
+            ;; Use "C-w r" to revert org agenda buffer.
+            (setq-local revert-buffer-function (lambda (&rest _)
+                                                 (org-agenda-redo)))))
+
 ;;; .
 (provide 'helheim-org)
 ;;; helheim-org.el ends here

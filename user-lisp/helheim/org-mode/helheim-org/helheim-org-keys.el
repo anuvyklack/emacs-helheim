@@ -172,6 +172,7 @@
         "O"   'org-agenda-clock-out
         "X"   'org-agenda-clock-cancel
         "g J" 'org-agenda-clock-goto
+        "g r" 'org-agenda-redo
 
         ;; Bulk actions
         "m"  'org-agenda-bulk-mark
