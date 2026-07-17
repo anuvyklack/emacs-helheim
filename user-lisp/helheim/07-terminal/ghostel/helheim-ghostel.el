@@ -26,7 +26,7 @@
                         project-switch-commands)))))
 
 (setup hel-ghostel
-  (:install hel-ghostel :host github :repo "anuvyklack/hel-ghostel")
+  (:install hel-ghostel :host github :repo "helheim-emacs/hel-ghostel")
   (:after ghostel)
   (:require t))
 

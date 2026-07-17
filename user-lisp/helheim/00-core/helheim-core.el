@@ -75,12 +75,12 @@ Must be set before `helheim-core' is loaded!"
            avy-single-candidate-jump nil))
 
 (setup hel
-  (:install hel :host github :repo "anuvyklack/hel")
+  (:install hel :host github :repo "helheim-emacs/hel")
   (hel-mode))
 
 (setup hel-collection
   (:install hel-collection
-            :host github :repo "anuvyklack/hel-collection"
+            :host github :repo "helheim-emacs/hel-collection"
             :files (:defaults "modes"))
   (hel-collection-init))
 

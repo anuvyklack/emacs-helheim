@@ -7,7 +7,7 @@
 ;;; General
 
 (setup hel-leader
-  (:install hel-leader :host github :repo "anuvyklack/hel-leader")
+  (:install hel-leader :host github :repo "helheim-emacs/hel-leader")
   (:require t))
 
 (setup helheim

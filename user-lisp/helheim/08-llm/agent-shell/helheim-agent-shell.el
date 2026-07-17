@@ -16,7 +16,7 @@
         "C-c RET" 'dired-jump))))
 
 (setup hel-agent-shell
-  (:install hel-agent-shell :host github :repo "anuvyklack/hel-agent-shell")
+  (:install hel-agent-shell :host github :repo "helheim-emacs/hel-agent-shell")
   (:after agent-shell)
   (:require t))
 

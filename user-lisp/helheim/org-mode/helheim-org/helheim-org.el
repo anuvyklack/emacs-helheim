@@ -30,7 +30,7 @@
   (:blackout t))
 
 (setup hel-org
-  (:install hel-org :host github :repo "anuvyklack/hel-org")
+  (:install hel-org :host github :repo "helheim-emacs/hel-org")
   (:after org)
   (:require t))
 

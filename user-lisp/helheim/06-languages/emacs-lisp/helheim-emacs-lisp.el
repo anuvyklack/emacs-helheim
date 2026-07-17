@@ -43,7 +43,7 @@
  (:install paredit))
 
 (setup hel-paredit
-  (:install hel-paredit :host github :repo "anuvyklack/hel-paredit")
+  (:install hel-paredit :host github :repo "helheim-emacs/hel-paredit")
   (:require t)
   (:hook (emacs-lisp-mode-hook
           lisp-data-mode-hook) hel-paredit-mode))
