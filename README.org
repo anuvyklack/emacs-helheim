@@ -63,13 +63,10 @@ what you need.
 - Essentials
   - [[file:user-lisp/helheim/01-minibuffer/README.org][minibuffer]] — [[https://github.com/minad/vertico][Vertico]] + [[https://github.com/minad/marginalia][Marginalia]]
   - [[file:user-lisp/helheim/02-completion/README.org][completion]] — [[https://github.com/oantolin/orderless][Orderless]] + [[https://github.com/minad/corfu][Corfu]] + [[https://github.com/minad/cape][Cape]]
+  - [[file:user-lisp/helheim/03-search/README.org][search]] — [[https://github.com/minad/consult][Consult]] + [[https://github.com/Wilfred/deadgrep][Deadgrep]]
   - [[file:user-lisp/helheim/embark/README.org][embark]] — A keyboard-driven analogue of a right-click context menu.
   - [[file:user-lisp/helheim/dired/README.org][dired]] — File manager
   - [[file:user-lisp/helheim/ibuffer/README.org][ibuffer]] — Buffers menu
-
-- Search
-  - [[file:user-lisp/helheim/03-search/consult/README.org][consult]] — Search commands with preview
-  - [[file:user-lisp/helheim/03-search/deadgrep/README.org][deadgrep]] — A friendly ripgrep interface
 
 - Version control
   - [[file:user-lisp/helheim/04-version-control/magit/README.org][magit]] — Magit with keys adopted for Hel

@@ -81,16 +81,17 @@
 
 ;;; Essentials
 
-(require 'helheim-minibuffer) ; Emacs version of command palette
-(require 'helheim-completion)
+(require 'helheim-minibuffer) ; Vertico + Marginalia
+(require 'helheim-completion) ; Corfu + Orderless + Cape
+(require 'helheim-search)     ; Consult + Deadgrep
 (require 'helheim-keybindings)
 
-(require 'helheim-ibuffer)  ; Buffers menu
-(require 'helheim-dired)    ; File-manager
-(require 'helheim-embark)   ; Context-aware action menus
-(require 'helheim-modeline) ; Normal people call this "status line"
-(require 'helheim-outline)  ; See "Outline Mode" in Emacs manual
-(require 'helheim-tab-bar)  ; Each tab represents a set of windows, as in Vim
+(require 'helheim-ibuffer)    ; Buffers menu
+(require 'helheim-dired)      ; File-manager
+(require 'helheim-embark)     ; Context-aware action menus
+(require 'helheim-modeline)   ; Normal people call this "status line"
+(require 'helheim-outline)    ; See "Outline Mode" in Emacs manual
+(require 'helheim-tab-bar)    ; Each tab represents a set of windows, as in Vim
 
 ;;; Search
 

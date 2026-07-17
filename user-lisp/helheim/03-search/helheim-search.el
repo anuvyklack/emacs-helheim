@@ -1,5 +1,5 @@
-;;; helheim-consult.el            -*- lexical-binding: t; no-byte-compile: t -*-
-;;; Config
+;;; helheim-search.el -*- lexical-binding: t; no-byte-compile: t -*-
+;;; Consult
 
 (setup consult
   (:install t)
@@ -15,8 +15,8 @@
            ;; Note: The author of Consult, does not recommend aggressive values.
            ;; Read: https://github.com/minad/consult/discussions/951
            ;;
-           ;; However, the author of minimal-emacs.d uses following parameters to
-           ;; achieve immediate feedback from Consult.
+           ;; However, the author of minimal-emacs.d uses following parameters
+           ;; to achieve immediate feedback from Consult.
            ;; consult-async-input-debounce 0.02
            ;; consult-async-input-throttle 0.05
            ;; consult-async-refresh-delay  0.02
@@ -42,12 +42,12 @@
     (consult-customize consult-theme
                        :preview-key '(:debounce 0.5 any))))
 
-;;; Keybindings
+;;;; Keybindings
 
 (setup consult
   (:global-bind :state (normal emacs)
-    "C-/" 'consult-line                 ; "/" is for search
-    "C-?" 'consult-line-multi)          ; "C-S-/"
+    "C-/" 'consult-line        ; "/" is for search
+    "C-?" 'consult-line-multi) ; "C-S-/"
 
   (:global-bind :state normal
     "g o" 'consult-imenu
@@ -59,7 +59,7 @@
     "g <return>" 'consult-goto-line)
 
   (:keymap minibuffer-local-map
-    (:bind "C-r" 'consult-history))     ; like in shell
+    (:bind "C-r" 'consult-history)) ; like in shell
 
   ;; <leader> s
   (:keymap search-map
@@ -67,7 +67,7 @@
       "f" 'consult-fd ;; or `consult-find'
       "l" 'consult-locate
       "g" 'consult-grep
-      "v" 'consult-git-grep             ; "v" for VC
+      "v" 'consult-git-grep ; "v" for VC
       "/" 'consult-ripgrep
       "i" 'consult-info
       "k" 'consult-keep-lines
@@ -100,5 +100,15 @@
     [remap yank-pop]                      'consult-yank-pop
     [remap locate]                        'consult-locate))
 
-(provide 'helheim-consult)
-;;; helheim-consult.el ends here
+;;; Deadgrep
+
+(setup deadgrep
+  (:install t)
+  (:keymap search-map
+    (:bind "s" 'deadgrep)) ;; <leader> ss
+  ;; (:hook deadgrep-mode-hook next-error-follow-minor-mode)
+  )
+
+;;; .
+(provide 'helheim-search)
+;;; helheim-search.el ends here

@@ -1,16 +1,15 @@
-* helheim-consult
+* helheim-searhc
+** Enable
+#+begin_src emacs-lisp
+(require 'helheim-search)
+#+end_src* Enable
+
+** Consult
 [[https://github.com/minad/consult][
 Consult]] package provides a set of search and preview commands.
 
-** Enable
-#+begin_src emacs-lisp
-(require 'helheim-consult)
-#+end_src
-
-** Usage
-
-A few keybinding highlights from my day-to-day usage, to provide inspiration and
-a smooth start.
+A few keybinding highlights from my day-to-day usage, to provide inspiration
+and a smooth start.
 
 - =g RET= (~consult-goto-line~) :: Read line number and jump to it.
 
@@ -18,9 +17,9 @@ a smooth start.
 - =g M= (~consult-global-mark~) :: Global jump list.
 
 - =C-/= (~consult-line~) ::
-  A universal line-by-line search within the current buffer. Mnemonic: =/= is the
-  search key in Hel Normal state (following Vim). Binding it to =C-/= makes it
-  accessable both in editing buffers (in Hel Normal state) and in special
+  A universal line-by-line search within the current buffer. Mnemonic: =/= is
+  the search key in Hel Normal state (following Vim). Binding it to =C-/= makes
+  it accessable both in editing buffers (in Hel Normal state) and in special
   buffers (in Hel Emacs state).
 
 - =Space /= (~consult-ripgrep~) ::
@@ -41,5 +40,15 @@ a smooth start.
 
   The only place where it doesn't work is Xref buffer (~xref--xref-buffer-mode~).
 
+** Deadgrep
+
+- =SPC s s= :: Start a ripgrep search.
+
+*** Automatically show preveiw in other window
+
+If you want a preview in other window follows your moves in deadgrep buffer:
+#+begin_src emacs-lisp
+(add-hook 'deadgrep-mode-hook #'next-error-follow-minor-mode)
+#+end_src
 
 
