@@ -1,4 +1,4 @@
-;;; helheim-agent-shell.el        -*- lexical-binding: t; no-byte-compile: t -*-
+;;; helheim-agent-shell.el -*- lexical-binding: t; no-byte-compile: t -*-
 
 (setup agent-shell
   (:install t)
@@ -11,14 +11,10 @@
       "C-c a s" 'agent-shell-send-dwim)
     (:keymap agent-shell-mode-map
       (:bind :state normal
+        ", ," 'agent-shell-prompt-compose
         "z '" 'agent-shell-prompt-compose)
       (:bind
         "C-c RET" 'dired-jump))))
-
-(setup hel-agent-shell
-  (:install hel-agent-shell :host github :repo "helheim-emacs/hel-agent-shell")
-  (:after agent-shell)
-  (:require t))
 
 ;;;; Display buffer logic
 
