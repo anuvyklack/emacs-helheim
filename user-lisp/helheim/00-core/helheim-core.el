@@ -338,7 +338,7 @@ Use `delete-trailing-whitespace' command."
 
 ;; Why is `jit-lock-stealth-time' nil by default?
 ;; https://lists.gnu.org/archive/html/help-gnu-emacs/2022-02/msg00352.html
-(setq jit-lock-stealth-time 1.25 ; Calculate fonts when idle for 1.25 seconds
+(setq jit-lock-stealth-time 0.75 ; Calculate fonts when idle for N seconds
       jit-lock-stealth-nice 0.5  ; Seconds between font locking
       jit-lock-chunk-size 4096)
 
