@@ -12,7 +12,7 @@
 
 (setup bash-ts-mode
   (:when (treesit-available-p))
-  (add-to-list 'major-mode-remap-alist '(sh-mode . bash-ts-mode))
+  (add-to-list 'major-mode-remap-defaults '(sh-mode . bash-ts-mode))
   (:treesit bash "https://github.com/tree-sitter/tree-sitter-bash"
     ;; :revision "v0.23.3"
     ))

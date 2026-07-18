@@ -417,7 +417,7 @@ non-nil at load time. Place ~:when~ before other keywords so the guard is obviou
 #+begin_src emacs-lisp
 (helheim-setup bash-ts-mode
   (:when (treesit-available-p))
-  (add-to-list 'major-mode-remap-alist '(sh-mode . bash-ts-mode)))
+  (add-to-list 'major-mode-remap-defaults '(sh-mode . bash-ts-mode)))
 #+end_src
 
 * Footnotes

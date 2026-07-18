@@ -20,7 +20,7 @@
   (:when (treesit-available-p))
   (:treesit json "https://github.com/tree-sitter/tree-sitter-json")
   (:hook json-ts-mode-local-vars-hook helheim-lsp)
-  (add-to-list 'major-mode-remap-alist '(json-mode . json-ts-mode)))
+  (add-to-list 'major-mode-remap-defaults '(json-mode . json-ts-mode)))
 
 ;;; .
 (provide 'helheim-json)

@@ -1,8 +1,8 @@
 ;;; helheim-cpp.el -*- lexical-binding: t; no-byte-compile: t -*-
 
 (setup c-ts-mode
-  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+  (add-to-list 'major-mode-remap-defaults '(c-mode . c-ts-mode))
+  (add-to-list 'major-mode-remap-defaults '(c++-mode . c++-ts-mode))
   (:hook ( c-mode-hook c++-mode-hook
            c-ts-mode-hook c++-ts-mode-hook)
          helheim-lsp)
