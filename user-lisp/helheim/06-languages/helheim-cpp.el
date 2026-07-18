@@ -12,9 +12,9 @@
     ;; Set line comment style.
     (c-ts-mode-toggle-comment-style -1)))
 
-(when (< emacs-major-version 31)
-  (add-to-list 'treesit-language-source-alist
-               '(cmake "https://github.com/uyha/tree-sitter-cmake")))
+(setup cmake
+  (when (< emacs-major-version 31)
+    (:treesit cmake "https://github.com/uyha/tree-sitter-cmake")))
 
 (setup lsp-mode
   (:after-load

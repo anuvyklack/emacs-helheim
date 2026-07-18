@@ -13,10 +13,9 @@
 (setup bash-ts-mode
   (:when (treesit-available-p))
   (add-to-list 'major-mode-remap-alist '(sh-mode . bash-ts-mode))
-  (add-to-list 'treesit-language-source-alist
-               '(bash "https://github.com/tree-sitter/tree-sitter-bash"
-                      ;; "v0.23.3"
-                      )))
+  (:treesit bash "https://github.com/tree-sitter/tree-sitter-bash"
+    ;; :revision "v0.23.3"
+    ))
 
 (with-eval-after-load 'consult-imenu
   (setf (alist-get 'sh-mode consult-imenu-config)

@@ -479,6 +479,44 @@ This macro can map many. Also it accepts lambda form."
         (t
          `(add-hook ',hooks ',functions))))
 
+;;; :treesit
+
+(helheim-setup-define :treesit (language &rest recipe)
+  "\(:treesit LANG RECIPE)
+
+Install tree-sitter grammar for LANGUAGE. The RECIPE follows
+`treesit-language-source-alist' keywords syntax introduced in Emacs 31:
+
+    (URL [KEYWORD VALUE]...)
+
+RECIPE keywords:
+
+  `:revision'       The Git tag or branch of the desired version, defaulting
+                  to the latest default branch.
+
+  `:commit'         If non-nil, checkout this commit hash after cloning the repo.
+                  COMMIT has precedence over REVISION if both are non-nil.
+
+  `:source-dir'     Relative subdirectory in the repository in which the
+                  grammar's parser.c file resides, defaulting to \"src\".
+
+  `:copy-queries'   When non-nil specifies whether to copy the files in the
+                  \"queries\" directory from the source directory to the
+                  installation directory.
+
+  `:cc'             C compiler, default is \"cc\"
+
+  `:c++'            C++ compiler, default is \"c++\""
+  (declare (indent defun))
+  (let ((recipe (if (< emacs-major-version 31)
+                    (-let [(url . (&plist :revision :source-dir :cc :c++)) recipe]
+                      (list url revision source-dir cc c++))
+                  recipe)))
+    `(with-eval-after-load 'treesit
+       (cl-symbol-macrolet ((val (alist-get ',language treesit-language-source-alist)))
+         (unless val
+           (setf val (list ',language ,@recipe)))))))
+
 ;;; :keymap
 
 (helheim-setup-define :keymap (keymap &rest body)

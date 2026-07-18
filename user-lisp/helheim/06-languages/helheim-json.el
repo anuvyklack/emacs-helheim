@@ -18,8 +18,7 @@
 
 (setup json-ts-mode
   (:when (treesit-available-p))
-  (add-to-list 'treesit-language-source-alist
-               '(json "https://github.com/tree-sitter/tree-sitter-json"))
+  (:treesit json "https://github.com/tree-sitter/tree-sitter-json")
   (:hook json-ts-mode-local-vars-hook helheim-lsp)
   (add-to-list 'major-mode-remap-alist '(json-mode . json-ts-mode)))
 
