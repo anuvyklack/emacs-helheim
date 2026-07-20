@@ -4,6 +4,7 @@
 (setup markdown-mode
   (:install t)
   (:mode ("README\\.md\\'" . gfm-mode)) ; Github Flavored Markdown
+  (:hook markdown-mode-hook +wrap-line-mode)
   (:setopt markdown-list-indent-width 2
            markdown-enable-highlighting-syntax t
            markdown-fontify-code-blocks-natively t
@@ -41,8 +42,7 @@
                              ;; backticks, otherwise -- in sinlge one.
                              (if (hel-linewise-selection-p)
                                  '("```\n" . "\n```")
-                               '("`" . "`")))))))
-  (:hook markdown-mode-hook +wrap-line-mode))
+                               '("`" . "`"))))))))
 
 (define-advice markdown-match-generic-metadata (:override (&rest  _)
                                                 disable-metadata-fontification)
@@ -90,7 +90,7 @@ See https://github.com/jrblevin/markdown-mode/issues/328."
 (setup markdown-ts-mode ;; 31+ only
   (:when (and (<= 31 emacs-major-version)
               (treesit-available-p)))
-  ;;
+  ;; Tree-sitter
   (add-to-list 'major-mode-remap-defaults '(markdown-mode . markdown-ts-mode))
   (add-to-list 'major-mode-remap-defaults '(gfm-mode . markdown-ts-mode))
   (:treesit markdown
@@ -103,6 +103,7 @@ See https://github.com/jrblevin/markdown-mode/issues/328."
     :source-dir "tree-sitter-markdown-inline/src")
   ;;
   (:command markdown-ts-mode)
+  (:hook markdown-ts-mode-hook +wrap-line-mode)
   (:hook markdown-ts-mode-hook
          (defun helheim-markdown-ts-mode-h ()
            (setq-local tab-width 2
