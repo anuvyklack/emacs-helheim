@@ -36,6 +36,7 @@
         ", RET" 'org-ctrl-c-ret ;; also on "z RET"
         ", |"   'org-table-create-or-convert-from-region
         ", '"   'org-edit-special
+        ", ."   'org-edit-special
         ", ,"   'org-insert-structure-template
         ", /"   'org-sparse-tree
         ", #"   'org-update-statistics-cookies
