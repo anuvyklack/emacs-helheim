@@ -523,13 +523,14 @@ RECIPE keywords:
   "\(:keymap KEYMAP &rest BODY)
 
 Bind the current keymap for BODY to KEYMAP.
-KEYMAP is an unquoted keymap symbol, or an unquoted list of them.  When a
-list is given, BODY is expanded once per map, so nested `:bind' / `:unbind'
-forms bind into every map named.
 
-This mirrors the `:keymap' vocabulary of hel-collection's `hel-set-keys',
-so `:keymap', `:bind' and `:unbind' behave identically in Helheim
-`helheim-setup' forms and hel-collection mode files."
+KEYMAP is an unquoted keymap symbol, or an unquoted list of them.
+When a list is given, BODY is expanded once per map, so nested
+`:bind' / `:unbind' forms bind into every map named.
+
+This mirrors the `:keymap' vocabulary of `hel-collection-setup', so
+`:keymap',`:bind' and `:unbind' behave identically in hel-collection
+and in Helheim."
   (declare (indent 1)
            (debug (sexp setup)))
   (let ((maps (ensure-list keymap)))
