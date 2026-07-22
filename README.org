@@ -71,7 +71,6 @@ what you need.
 - Version control
   - [[file:user-lisp/helheim/04-version-control/magit/README.org][magit]] — Magit with keys adopted for Hel
   - [[file:user-lisp/helheim/04-version-control/git-gutter/README.org][git-gutter]] — Git gutter indicators
-  - [[file:user-lisp/helheim/04-version-control/ediff/README.org][ediff]] — 2-way and 3-way diffs
 
 - IDE
   - [[file:user-lisp/helheim/05-lsp/eglot/README.org][eglot + flymake]] — LSP client and diagnostics  built-in into Emacs 

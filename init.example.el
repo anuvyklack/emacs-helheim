@@ -111,7 +111,6 @@
 
 (require 'helheim-magit)
 (require 'helheim-diff-hl)  ; git gutter indicators
-(require 'helheim-ediff)
 
 ;;; Org mode
 
