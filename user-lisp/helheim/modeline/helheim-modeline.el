@@ -30,13 +30,12 @@
   (doom-modeline-remove-segment 'workspace-name 'all)
   (doom-modeline-mode))
 
-;; Use main font in modeline.
-(dolist (face '( mode-line
-                 mode-line-active
-                 mode-line-inactive
-                 header-line
-                 header-line-inactive))
-  (set-face-font face (face-font 'fixed-pitch)))
+(when-let* ((font (face-font 'fixed-pitch)))
+  (set-face-font 'mode-line            font)
+  (set-face-font 'mode-line-active     font)
+  (set-face-font 'mode-line-inactive   font)
+  (set-face-font 'header-line          font)
+  (set-face-font 'header-line-inactive font))
 
 ;;; .
 (provide 'helheim-modeline)
