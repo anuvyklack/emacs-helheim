@@ -347,19 +347,6 @@ Use `delete-trailing-whitespace' command."
 (add-hook 'hel-insert-state-enter-hook (lambda () (setq jit-lock-defer-time 0.25)))
 (add-hook 'hel-insert-state-exit-hook  (lambda () (setq jit-lock-defer-time 0)))
 
-;;;;; Smooth scrolling
-
-;; `hel-scrolling' is based on `pixel-scroll' and uses its settings
-(setup pixel-scroll
-  (:setopt pixel-scroll-precision-large-scroll-height 20.0
-           ;; The duration of smooth scrolling.
-           pixel-scroll-precision-interpolation-total-time 0.3
-           ;; Enable smooth scrolling with PageDown and PageUp keys
-           pixel-scroll-precision-interpolate-page t)
-  (:global-bind
-    [remap scroll-up-command]   'pixel-scroll-interpolate-down
-    [remap scroll-down-command] 'pixel-scroll-interpolate-up))
-
 ;;;;; Scrolling with mouse wheel and touchpad
 
 (setup ultra-scroll
