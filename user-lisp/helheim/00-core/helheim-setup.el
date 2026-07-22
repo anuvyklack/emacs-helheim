@@ -515,7 +515,7 @@ RECIPE keywords:
     `(with-eval-after-load 'treesit
        (cl-symbol-macrolet ((val (alist-get ',language treesit-language-source-alist)))
          (unless val
-           (setf val (list ',language ,@recipe)))))))
+           (setf val (list ,@recipe)))))))
 
 ;;; :keymap
 
