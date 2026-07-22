@@ -205,10 +205,10 @@ tap and =Ctrl= on hold. You can use any of these tools: [[https://github.com/pqr
 ** The story behind Helheim
 
 I wasted an unreasonable amount of time and effort trying to adapt other
-editors to my preferences. It started with Sublime Text, then Atom (which I really
-liked), then VS Code (which I never liked), then Neovim, Emacs + Evil, VS
-Code again, then Doom Emacs. I also tried Helix and Zed. I liked one thing
-in one editor and something else in another.
+editors to my preferences. It started with Sublime Text, then Atom (which
+I really liked), then VS Code (which I never liked), then Neovim, Emacs +
+Evil, VS Code again, then Doom Emacs. I also tried Helix and Zed. I liked
+one thing in one editor and something else in another.
 
 I wanted a keyboard-driven modal editor, multiple cursors, smooth scrolling,
 Lisp (I would prefer Common Lisp, but Emacs Lisp is better than nothing).

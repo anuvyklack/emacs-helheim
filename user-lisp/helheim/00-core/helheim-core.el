@@ -945,7 +945,7 @@ Use `delete-trailing-whitespace' command."
 (add-hook 'edebug-mode-hook
           (defun +edebug-inhibit-eldoc-h ()
             "Disable Eldoc during Edebug session so it doesn't clobber the result."
-            ;; Edebug prints its stepping result (\"Result: ...\") to the echo
+            ;; Edebug prints its stepping result ("Result: ...") to the echo
             ;; area with a plain `message', which is not an Eldoc backend, so
             ;; Eldoc's function-argument hint clobbers it.
             (eldoc-mode (if edebug-mode -1 1))))

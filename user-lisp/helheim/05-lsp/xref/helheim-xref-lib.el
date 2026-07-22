@@ -33,7 +33,7 @@ selects an appropriate one.
 
 In practice, however, `xref-find-backend' simply calls each function in
 `xref-backend-functions' in order until it finds one that returns a symbol
-(`cl-defgeneric' will dispatch on). In practice typical get backend function
+\(`cl-defgeneric' will dispatch on). In practice typical get backend function
 looks like this:
 
   (defun eglot-xref-backend ()
