@@ -35,7 +35,8 @@
   (set-face-font 'mode-line-active     font)
   (set-face-font 'mode-line-inactive   font)
   (set-face-font 'header-line          font)
-  (set-face-font 'header-line-inactive font))
+  (when (<= 31 emacs-major-version)
+    (set-face-font 'header-line-inactive font)))
 
 ;;; .
 (provide 'helheim-modeline)
