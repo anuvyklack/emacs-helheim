@@ -1,7 +1,9 @@
 * [Unreleased]
 ** Added
 
-- [[file:user-lisp/helheim/snippets/][helehim-snippets]] module
+- [[file:user-lisp/helheim/snippets/README.org][helehim-snippets]] module
+
+- [[file:user-lisp/helheim/latex/README.org][helheim-latex]] module
 
 - =SPC y y= — Copy =path:line= a reference to selected lines.
 

@@ -64,7 +64,8 @@
         "C-c t i"  'org-link-preview
         "C-c t l"  '("show links targets" . org-toggle-link-display)
         "C-c t f"  '("table formula debugger" . org-table-toggle-formula-debugger)
-        "C-c t o"  '("table coordinate overlays" . org-table-toggle-coordinate-overlays))
+        "C-c t o"  '("table coordinate overlays" . org-table-toggle-coordinate-overlays)
+        "C-c t l"  '("latex preview" . org-latex-preview))
       (:unbind
         "C-c '"   ;; `org-edit-special' — moved to ,' and z'
         "C-c ,"   ;; `org-priority'     — moved to ,i,

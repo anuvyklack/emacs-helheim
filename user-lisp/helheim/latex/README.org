@@ -1,0 +1,150 @@
+* helheim-latex — fast LaTeX-math entry in Org mode
+
+Typing math in Org notes: CDLaTeX for key-triggered insertion, a small set
+of snippets that expand as you type, smart =$=, matrix entry, and inline
+previews that toggle themselves.
+
+** Requirements
+
+- ~xelatex~ (TeX Live) — compiles the fragments.
+- ~dvisvgm~ — turns them into resolution-independent SVGs.
+
+AUCTeX is installed as a dependency: Org's ~org-cdlatex-mode~ needs
+~texmathp~ from it.
+
+** Preview
+
+~org-fragtog~ toggles each fragment: with the cursor *on* it you see the
+LaTeX source, with the cursor *away* the rendered SVG. Previews are on
+at file open and cached by fragment hash.
+
+Toggle one manually with =SPC t l=; a prefix argument (=C-u=) previews
+a wider scope.
+
+** Fast typing math
+*** CDLaTeX
+
+Active inside LaTeX fragments (~org-cdlatex-mode~).
+
+- =`= plus a letter inserts a symbol: =`a= → ~\alpha~, =`L= → ~\Lambda~,
+  =`8= → ~\infty~. Wait half a second and a hint window pops up. Press =`=
+  two or three times for deeper symbol layers.
+
+- ='= applies a modifier to the character before point: ='^= → ~\hat{}~,
+  ='-= → ~\bar{}~, ='>= → ~\vec{}~, ='.= → ~\dot{}~, ='~= → ~\tilde{}~,
+  ='b= → ~\mathbf{}~, ='c= → ~\mathcal{}~. Waiting pops up a hint window.
+  The full table is ~cdlatex-math-modify-alist-comb~.
+
+- =_= and =^= insert ~_{}~ and ~^{}~ with point inside.
+
+- Environment templates expand with =TAB=: type =equ= then =TAB= for an
+  ~equation~ environment, or =env= / =beg= for a prompt. =TAB= then jumps
+  between the fields. This works while the Corfu popup is open — =TAB=
+  expands the keyword before point instead of picking a candidate.
+
+*** Snippets that expand as you type
+
+No trigger key. They fire only inside math, so prose is never touched.
+
+| Type  | Expands to |
+|-------+------------|
+| =sr=    | ~^{2}~       |
+| =cb=    | ~^{3}~       |
+| =ooo=   | ~\infty~          |
+| =->=    | ~\to~          |
+| =!==    | ~\neq~          |
+| =>==    | ~\geq~          |
+| =<==    | ~\leq~          |
+| =EE=    | ~\exists~          |
+| =AA=    | ~\forall~          |
+| =inn=   | ~\in~          |
+| =notin= | ~\notin~          |
+
+**** Fractions — =//=
+
+=//= looks at what comes before it and fills the numerator.
+=‸= denotes where point ends up.
+
+| Before =//=  | Result               | Why                              |
+|------------+----------------------+----------------------------------|
+| (nothing)  | ~\frac{‸}{}~           | empty template                   |
+| =ab=         | ~\frac{ab}{‸}~         | word                             |
+| =x^2=        | ~\frac{x^2}{‸}~        | chains through ~^~ and ~_~           |
+| =a_{ij}=     | ~\frac{a_{ij}}{‸}~     |                                  |
+| =\alpha=          | ~\frac{\alpha}{‸}~          | macro taken whole                |
+| =\mathbf{v}= | ~\frac{\mathbf{v}}{‸}~ | macro and its brace group        |
+| =(a+b)=      | ~\frac{a+b}{‸}~        | redundant outer brackets dropped |
+
+With an active region, the region becomes the numerator.
+
+The trigger is =//=, not single =/=, so =dx/dt= stays typeable inside math.
+
+**** Automatic subscripts
+
+Inside math, a digit (or =ii= / =jj= / =nn= / =kk=) typed after a single
+letter becomes a subscript, and further characters extend it:
+
+| Type  | Result   |
+|-------+----------|
+| =x1=    | ~x_1~      |
+| =x12=   | ~x_{12}~   |
+| =x1234= | ~x_{1234}~ |
+| =xjj=   | ~x_j~      |
+| =x^25=  | ~x^{25}~   |
+
+**** Sized delimiters — ~\left( \right)~
+
+Doubling a delimiter inside math inserts a ~\left…\right~ pair with point
+between them:
+
+| Type | Inserts            |
+|------+--------------------|
+| =((=   | ~\left( ‸ \right)~   |
+| =[[=   | ~\left[ ‸ \right]~   |
+| ={{=   | ~\left\{ ‸ \right\}~ |
+
+and =||=, which gives ~\left|~ … ~\right|~. The trigger is doubled so a single =(=
+stays a plain paren. =<<= is left out: it is more often wanted as ~\ll~.
+
+To wrap text you have *already* typed, use the =ml= prefixed keys below.
+
+*** Smart =$=
+
+In insert state, =$= inserts or toggles math delimiters:
+- first =$= produces ~\(\)~ (inline math)
+- second =$= promotes it to ~\[ \]~ (display math)
+
+*** Matrices
+
+There are two ways to insert matrix:
+
+1. Typing =mlm= inserts a matrix template and opens an orgtbl-style grid;
+   fill it and press =SPC SCP= (=C-c C-c=) to convert it to an amsmath matrix.
+
+2. Type =bmat=, =pmat=, =smat= or =mat= /inside/ math environment and pressing =TAB=.
+
+** Keys
+
+In Org buffers, normal state, under the =ml= prefix:
+
+| Key   | Does                       |
+|-------+----------------------------|
+| =m l l= | insert a LaTeX environment |
+| =m l m= | start a matrix             |
+| =m l $= | insert math delimiters     |
+| =m l ?= | CDLaTeX command help       |
+
+The remaining keys — =(= =)= =[= =]= ={= =}= =<= =>= and =|= — all run one command, which
+reads the delimiter from the key that invoked it:
+
+- *Inside math* it inserts a sized ~\left…\right~ pair. An opening
+  character (=(= =[= ={= =<=) puts each delimiter on a line of its own;
+  a closing one (=)= =]= =}= =>= and =|=) keeps the pair on one line.
+- *Outside math* it opens a math fragment instead:
+  - =(= or =)= gives inline math ~\( \)~,
+  - =[= or =]= gives display math ~\[ \]~.
+
+With an active region it surrounds the region — select with a motion, then
+wrap. Inside math with no region it surrounds the TeX object right before
+point, so =x^2= becomes ~\left( x^2 \right)~. With neither, it inserts an
+empty pair and leaves point inside.

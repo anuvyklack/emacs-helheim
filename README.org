@@ -81,6 +81,7 @@ what you need.
 - [[file:user-lisp/helheim/org-mode/helheim-org/README.org][Org-mode]]
   - [[file:user-lisp/helheim/org-mode/helheim-org-node/README.org][org-node]] — personal knowledge management (Org-roam alternative)
   - [[file:user-lisp/helheim/org-mode/helheim-daily-notes/README.org][daily-notes]] — Daily scratchpad / Inbox
+  - [[file:user-lisp/helheim/latex/README.org][latex]] — fast LaTeX-math typing in Org mode
 
 - Terminal emulators
   - [[file:user-lisp/helheim/07-terminal/ghostel/README.org][ghostel]] — based on =libghostty= same as used in Ghostty
