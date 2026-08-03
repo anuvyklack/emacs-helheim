@@ -1298,6 +1298,11 @@
   '(org-level-8 :foreground "#7b4617" :height 1.03)) ; original "#a45f22"
 
 (helheim-theme-set-faces 'ef-light
+  '(org-node-context-origin-title :foreground "salmon4" :extend t)
+  ;; '(org-node-context-origin-title :inherit magit-section-secondary-heading)
+  )
+
+(helheim-theme-set-faces 'ef-light
   '(org-agenda-calendar-daterange :foreground "#397a70")
   '(org-agenda-calendar-event :foreground "#397a70")
   '(org-agenda-calendar-sexp :inherit (italic org-agenda-calendar-event))
@@ -1793,10 +1798,6 @@
   '(ztreep-expand-sign-face :inherit shadow)
   '(ztreep-header-face :inherit bold :foreground "#008858")
   '(ztreep-node-count-children-face :inherit (shadow italic)))
-
-;;; Load `ef-light' theme
-
-(load-theme 'ef-light t)
 
 ;;; .
 (provide 'helheim-ef-light)
