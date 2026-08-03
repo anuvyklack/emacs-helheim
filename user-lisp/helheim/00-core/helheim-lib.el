@@ -172,16 +172,6 @@ The structure of INFO can be found in docstring of `posframe-show'."
 
 ;;; Utils
 
-(defun +original-value (symbol)
-  "Return the original value for SYMBOL, if any."
-  ;; The code is taken from the `helpful' package. I have no idea why it’s
-  ;; written this way, but the original author seems to be a very proficient
-  ;; Elisp hacker.
-  (let ((orig-val-expr (get symbol 'standard-value)))
-    (if (consp orig-val-expr)
-        (ignore-errors
-          (eval (car orig-val-expr))))))
-
 (defun +hook-values (hook)
   "Return list with all local and global elements of the HOOK.
 HOOK should be a symbol."

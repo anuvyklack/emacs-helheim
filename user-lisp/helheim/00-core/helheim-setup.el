@@ -447,7 +447,7 @@ settings."
   (cond ((not (boundp variable))
          (set-default variable value))
         ((equal (symbol-value variable)
-                (+original-value variable))
+                (ignore-errors (custom--standard-value variable)))
          (funcall (or (get variable 'custom-set)
                       #'set-default)
                   variable value))))
