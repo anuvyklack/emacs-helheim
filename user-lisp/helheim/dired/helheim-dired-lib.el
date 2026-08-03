@@ -114,31 +114,39 @@ If file already has ID — do nothing."
   (interactive nil dired-mode)
   (dolist (file (dired-get-marked-files))
     (unless (helheim-dired-file-id file)
-      (let* ((filename (file-name-nondirectory file))
-             (id (helheim-dired-generate-file-id file))
-             (newname (format "%s--%s" id filename)))
-        (rename-file file newname))))
+      (helheim-file-add-id file)))
   (dired-revert))
 
 ;;;###autoload
-(defun helheim-dired-file-id (filepath)
+(defun helheim-dired-file-id (file)
   "Return FILE's ID if it has one."
-  (let ((filename (file-name-nondirectory filepath)))
+  (let ((filename (file-name-nondirectory file)))
     (if (string-match helheim-file-id-regexp filename)
         (match-string-no-properties 1 filename))))
 
-;;;###autoload
-(defun helheim-dired-generate-file-id (filepath)
-  "Return ID based on FILE creation time."
-  (let* ((created (helheim-dired--file-creation-time filepath))
-         (modified (file-attribute-modification-time (file-attributes filepath)))
-         (time (if (time-less-p created modified)
-                   created modified)))
-    (format-time-string helheim-id-format time)))
+(defun helheim-file-add-id (file)
+  "Prepende FILE name with timebased ID.
+FILE should be absolute filepath. The ID is based on FILE creation time.
+If ID is taken, bump it one second until free one."
+  (let* ((dir (file-name-directory file))
+         (filename (file-name-nondirectory file))
+         (time (let ((created (helheim-dired--file-creation-time file))
+                     (modified (helheim-dired--file-modification-time file)))
+                 (if (time-less-p created modified)
+                     created
+                   modified)))
+         newname)
+    (while (file-exists-p
+            (setq newname (-> (format "%s--%s"
+                                      (format-time-string helheim-id-format time)
+                                      filename)
+                              (expand-file-name dir))))
+      (cl-callf time-add time 1))
+    (rename-file file newname)))
 
-(defun helheim-dired--file-creation-time (filepath)
+(defun helheim-dired--file-creation-time (file)
   "Return the FILE creation time using the `stat' from coreutils."
-  (-> (process-lines "stat" "--format=%w" filepath)
+  (-> (process-lines "stat" "--format=%w" file)
       (car)
       (parse-time-string)
       (encode-time)))
