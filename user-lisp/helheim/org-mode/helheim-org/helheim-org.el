@@ -214,11 +214,14 @@ directory in dired and delete from there.\n")
 
 ;;;; agenda
 
-(add-hook 'org-agenda-mode-hook
-          (defun helheim-org-agenda-mode-h ()
-            ;; Use "C-w r" to revert org agenda buffer.
-            (setq-local revert-buffer-function (lambda (&rest _)
-                                                 (org-agenda-redo)))))
+(setup org-agenda
+  ;; Depth 90 to run after anything that changes tags appearence.
+  (add-hook 'org-agenda-finalize-hook #'helheim-org-agenda-align-tags-h 90)
+  (:hook org-agenda-mode-hook
+         (defun helheim-org-agenda-mode-h ()
+           ;; Use "C-w r" to revert org agenda buffer.
+           (setq-local revert-buffer-function (lambda (&rest _)
+                                                (org-agenda-redo))))))
 
 ;;; .
 (provide 'helheim-org)

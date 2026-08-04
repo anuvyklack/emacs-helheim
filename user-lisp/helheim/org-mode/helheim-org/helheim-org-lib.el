@@ -180,6 +180,44 @@ Like `org-attach' but tuned for Emacs Helheim."
            (call-interactively 'org-insert-link))))
   (hel-extend-selection -1))
 
+;;; Agenda tag alignment
+
+(defvar org-agenda-tags-column)
+
+;;;###autoload
+(defun helheim-org-agenda-align-tags-h ()
+  "Align the tag by pixel, not by column.
+`org-agenda-align-tags' pads the tag with space characters and counts them in
+columns, which assumes every glyph on the line is `default-font-width' wide.
+This function meant to be run in `org-agenda-finalize-hook' after everything
+that changes how the tags are drawn (like `org-pretty-tags') and align them
+pixel perfect."
+  (let ((inhibit-read-only t))
+    (save-excursion
+      (save-match-data
+        (goto-char (point-min))
+        (while (re-search-forward org-tag-group-re nil t)
+          (let* ((beg (match-beginning 1))
+                 (end (match-end 1))
+                 (width (string-pixel-width (buffer-substring beg end)))
+                 (align (cond ((eq org-agenda-tags-column 'auto)
+                               `(- right (,width)))
+                              ((< org-agenda-tags-column 0)
+                               `(- ,(abs org-agenda-tags-column) (,width)))
+                              (t org-agenda-tags-column)))
+                 (props (-doto (copy-sequence (text-properties-at beg))
+                          (plist-put 'face nil)
+                          (plist-put 'display nil)
+                          (plist-put 'cursor-sensor-functions nil))))
+            (goto-char beg)
+            (delete-region (save-excursion (skip-chars-backward " \t") (point))
+                           beg)
+            (insert (apply #'propertize " " props)
+                    (apply #'propertize " "
+                           (-doto (copy-sequence props)
+                             (plist-put 'display `(space :align-to ,align)))))
+            (goto-char (line-end-position))))))))
+
 ;;; Convert markdown to org-mode
 
 ;;;###autoload
