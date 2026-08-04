@@ -89,10 +89,14 @@ Must be set with `setopt' function!"
   ;;   (remove-hook 'org-mode-hook 'helheim-org-prettify-todo-keywords)
   (:hook org-mode-hook (prettify-symbols-mode
                         helheim-org-prettify-todo-keywords
-                        helheim-org-prettify-blocks))
+                        helheim-org-prettify-blocks
+                        helheim-org-local-variables-h))
   (:setopt org-todo-keywords
            '((sequence "MAYBE" "TODO" "NEXT" "WAIT" "|" "DONE" "CANCELLED")
              (sequence "READ" "NEXT" "|" "DONE"))))
+
+(defun helheim-org-local-variables-h ()
+  (setq prettify-symbols-compose-predicate #'helheim-org-prettify-compose-p))
 
 (defun helheim-org-prettify-todo-keywords ()
   "Beautify org mode \"todo\" keywords using `prettify-symbols-mode'."

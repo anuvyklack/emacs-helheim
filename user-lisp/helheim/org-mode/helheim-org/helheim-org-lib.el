@@ -31,6 +31,21 @@ heading fontification."
           ((eq n 3) 'helheim-org-heading-padding-face)
           (t (unless org-level-color-stars-only face)))))
 
+;;; Prettify symbols mode
+
+(defun helheim-org-prettify-compose-p (start end _match)
+  "Like `prettify-symbols-default-compose-p', but ignore strings.
+The default predicate refuses to compose anything for which `syntax-ppss'
+reports that point is inside a string or comment. If you have an
+unmatched quote, everything after the last quote in the buffer will be
+treated as being inside a string and will be displayed unprettified."
+  (let ((syntaxes-beg (if (memq (char-syntax (char-after start)) '(?w ?_))
+                          '(?w ?_) '(?. ?\\)))
+        (syntaxes-end (if (memq (char-syntax (char-before end)) '(?w ?_))
+                          '(?w ?_) '(?. ?\\))))
+    (not (or (memq (char-syntax (or (char-before start) ?\s)) syntaxes-beg)
+             (memq (char-syntax (or (char-after end) ?\s)) syntaxes-end)))))
+
 ;;; org-attach
 
 (defun helheim-org-attach-id-ts-folder-format (id)
