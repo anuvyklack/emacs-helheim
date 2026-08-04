@@ -113,7 +113,13 @@
                   +display-buffer-based-on-window-count
                   display-buffer-use-some-window)
                  (inhibit-same-window . t)
-                 (body-function . select-window))))
+                 (body-function . select-window)))
+  ;; BUG: https://github.com/meedstrom/org-node/issues/180
+  ;; TODO: remove when will be fixed
+  (advice-add 'org-node-backlink--fix-nearby-drawer :around
+              'helheim-org-node-inhibit-auto-fill-a)
+  (advice-add 'org-node-backlink--add-to-drawer :around
+              'helheim-org-node-inhibit-auto-fill-a))
 
 ;;;; Backlinks buffer
 

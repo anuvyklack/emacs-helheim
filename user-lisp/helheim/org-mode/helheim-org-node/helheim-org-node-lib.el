@@ -26,6 +26,11 @@ ID and DESC are link id and description, TIME a Lisp time value."
   (concat "- " (org-link-make-string (concat "id:" id)
                                      (org-link-display-format desc))))
 
+(defun helheim-org-node-inhibit-auto-fill-a (orig-fun &rest args)
+  "Fix for https://github.com/meedstrom/org-node/issues/180"
+  (let ((auto-fill-function nil))
+    (apply orig-fun args)))
+
 ;;; Backlinks buffer
 
 (defun helheim-org-node-context--add-empty-line-at-eob ()
