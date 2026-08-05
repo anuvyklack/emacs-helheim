@@ -46,8 +46,8 @@
         ", t"   '("rotate todo state" . org-todo)
         ", y"   'org-copy-visible
         ;; "v"
-        ", l"   (cons "links" helheim-org-link-map)
-        ", i"   (cons "insert" helheim-org-insert-map)
+        ", l"   '("links" . helheim-org-link-map)
+        ", i"   '("insert" . helheim-org-insert-map)
         ", n"   (cons "node"
                       (define-keymap
                         "a"  'org-toggle-archive-tag ;; C-c C-x a
