@@ -30,12 +30,21 @@
   (-each custom-enabled-themes #'disable-theme))
 
 (add-hook 'enable-theme-functions 'helheim-apply-theme-faces -90)
+(add-hook 'enable-theme-functions 'helheim-refontify-buffers 90)
 
 (defun helheim-apply-theme-faces (theme)
   "Apply helheim face overrides for THEME on top of its own faces."
   (when-let* ((faces (alist-get theme helheim-themes-faces))
               ((custom-theme-p theme)))
     (apply #'custom-theme-set-faces theme faces)))
+
+(defun helheim-refontify-buffers (&rest _)
+  "Mark every font-locked buffer for refontification."
+  (-each (buffer-list)
+    (lambda (buffer)
+      (with-current-buffer buffer
+        (when font-lock-mode
+          (font-lock-flush))))))
 
 (defvar helheim-themes-faces nil
   "Per theme faces overrides made by `helheim-theme-set-faces'.
