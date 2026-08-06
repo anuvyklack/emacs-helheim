@@ -140,7 +140,21 @@ the unwritable tidbits."
               ((y-or-n-p
                 (format "Install %d missing tree-sitter grammar(s)?\n"
                         (length missing)))))
-    (-each missing #'treesit-install-language-grammar)))
+    (let (failed)
+      (-each missing (lambda (language)
+                       (condition-case err
+                           (treesit-install-language-grammar language)
+                         (error
+                          (push (cons language (error-message-string err))
+                                failed)))))
+      (when failed
+        (let ((msg (concat (format "Failed to install %d tree-sitter grammar(s):\n"
+                                   (length failed))
+                           (->> (nreverse failed)
+                                (-map (-lambda ((language . message))
+                                        (format "  %s: %s" language message)))
+                                (s-join "\n")))))
+          (display-warning 'helheim msg :error))))))
 
 (defun helheim-lsp ()
   (cond ((featurep 'helheim-eglot)
