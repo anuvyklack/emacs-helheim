@@ -576,12 +576,7 @@ Kept for backward compatibility."
   "\(:bind [:state STATE] &rest [KEY DEFINITION]...)
 
 Bind KEYs to DEFINITIONs in current keymap.
-
-STATE is an optional keyword argument that specifies the Hel state
-in which the keybindings will be active. Can be a symbol or list of
-symbols.
-
-KEY and DEFINITION arguments are like those in `keymap-set'."
+See `hel-keymap-set'for arguments."
   (declare (indent defun))
   (-let [((&plist :state) . bindings) (helheim-setup--split-keyword-args args)]
     (cl-loop for key in-ref bindings by #'cddr
