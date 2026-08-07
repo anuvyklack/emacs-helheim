@@ -10,8 +10,7 @@
 
 (setup eglot
   (:keymap prog-mode-map
-    (:bind
-      "C-c l RET" 'eglot))
+    (:bind "C-c l RET" 'eglot))
   (:after-load
     (:keymap eglot-mode-map
       (:bind :state normal

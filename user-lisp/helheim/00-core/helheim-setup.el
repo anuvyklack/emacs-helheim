@@ -472,8 +472,7 @@ This macro can map many. Also it accepts lambda form."
         ((or (proper-list-p hooks)
              (proper-list-p functions))
          `(progn
-            ,@(->> (-table-flat #'list (ensure-list hooks)
-                                (ensure-list functions))
+            ,@(->> (-table-flat #'list (ensure-list hooks) (ensure-list functions))
                    (-map (-lambda ((hook func))
                            `(add-hook ',hook ',func))))))
         (t
