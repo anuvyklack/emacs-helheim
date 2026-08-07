@@ -106,8 +106,8 @@ The `declare' form, besides standart `indent' and `debug' keys, accepts:
                     def-body)))
   (let ((docstring (if (stringp (car body))
                        (pop body)))
-        (repeatable nil)
-        (properties nil))
+        repeatable
+        properties)
     (pcase (car body)
       (`(declare . ,declarations)
        (pop body)
@@ -118,22 +118,16 @@ The `declare' form, besides standart `indent' and `debug' keys, accepts:
            (`(debug ,value)
             (push `(put ,name 'edebug-form-spec ',value) properties))
            (`(repeatable ,value)
-            (unless (eq value t)
-              (error "helheim-setup-define: `repeatable' takes only t, got %S in %S"
-                     value name))
-            (setq repeatable t))
+            (setq repeatable value))
            (_
-            (error "helheim-setup-define: unknown declaration %S in %S"
-                   declaration name))))))
+            (error "helheim-setup-define: unknown declaration %S in %S" declaration name))))))
     (let ((expander `(lambda ,args ,@body)))
       (if repeatable
           (-let [(arity . max-arity) (func-arity expander)]
             (when (zerop arity)
-              (error "helheim-setup-define: %S is `repeatable' but takes no arguments"
-                     name))
+              (error "helheim-setup-define: %S is `repeatable' but takes no arguments" name))
             (unless (eql arity max-arity) ;; max-arity can be symbol 'many
-              (error "helheim-setup-define: %S is `repeatable' but its arglist is not fixed-arity: %S"
-                     name args))
+              (error "helheim-setup-define: %S is `repeatable' but its arglist is not fixed-arity: %S" name args))
             (setq expander `(helheim-setup--make-repeatable ,expander ,arity)))
         ;; Else allow expander supports full Common Lisp arguments conventions
         (setq expander `(cl-function ,expander)))
@@ -523,21 +517,17 @@ RECIPE keywords:
 
 Use KEYMAP for all nested `:bind' and `:unbind' forms. KEYMAP is an
 unquoted keymap symbol, or an unquoted list of them. When a list is
-given, BODY is expanded once per map, so nested `:bind' / `:unbind'
-forms bind into every map named."
+given, every nested `:bind' / `:unbind' binds into every map named.
+
+BODY is expanded once, not once per map: the fan-out over the maps lives
+in `:bind' / `:unbind' themselves. Imperative Lisp in BODY is therefore
+emitted once, whatever KEYMAP names."
   (declare (indent 1)
            (debug (sexp setup)))
   (let ((maps (ensure-list keymap)))
     (unless (-all-p #'symbolp maps)
       (error "helheim-setup: `:keymap' takes a symbol or a list of them, got %S" keymap))
-    (-each body
-      (lambda (form)
-        (unless (memq (car-safe form) '(:bind :unbind))
-          (error "helheim-setup: `:keymap' takes only `:bind' and `:unbind' forms, got %S" form))))
-    (macroexp-progn
-     (-map (lambda (map)
-             (helheim-setup--expand body `((keymap . ,map))))
-           maps))))
+    (helheim-setup--expand body `((keymap . ,maps)))))
 
 ;;;; :with-keymap (OBSOLETE)
 ;; These macros will be removed in future versions. Use `:keymap' instead.
@@ -565,10 +555,7 @@ Obsolete: use `:keymap' instead, which accepts a symbol or a list of them.
 Kept for backward compatibility."
   (declare (indent 1)
            (debug ([&rest symbol] setup)))
-  (macroexp-progn
-   (-map (lambda (map)
-           (helheim-setup--expand body `((keymap . ,map))))
-         keymaps)))
+  (helheim-setup--expand body `((keymap . ,keymaps))))
 
 ;;; :bind
 
@@ -576,15 +563,21 @@ Kept for backward compatibility."
   "\(:bind [:state STATE] &rest [KEY DEFINITION]...)
 
 Bind KEYs to DEFINITIONs in current keymap.
-See `hel-keymap-set'for arguments."
+See `hel-keymap-set'for arguments.
+
+When the enclosing `:keymap' named several maps, this is where the
+fan-out happens: one `hel-keymap-set' call per map."
   (declare (indent defun))
   (-let [((&plist :state) . bindings) (helheim-setup--split-keyword-args args)]
     (cl-loop for key in-ref bindings by #'cddr
              when (vectorp key)
              do (setf key (key-description key)))
-    `(hel-keymap-set ,(helheim-setup-context 'keymap)
-       ,@(if state `(:state ',(helheim-setup--unquote state)))
-       ,@bindings)))
+    (macroexp-progn
+     (-map (lambda (map)
+             `(hel-keymap-set ,map
+                ,@(if state `(:state ',(helheim-setup--unquote state)))
+                ,@bindings))
+           (ensure-list (helheim-setup-context 'keymap))))))
 
 (helheim-setup-define :unbind (&rest args)
   "\(:unbind [:state STATE] &rest KEYS)
@@ -595,13 +588,16 @@ STATE is an optional keyword argument that specifies the Hel state.
 Can be a symbol or list of symbols."
   (declare (indent defun))
   (-let [((&plist :state) . keys) (helheim-setup--split-keyword-args args)]
-    `(hel-keymap-set ,(helheim-setup-context 'keymap)
-       ,@(if state `(:state ',(helheim-setup--unquote state)))
-       ,@(-mapcat (lambda (key)
-                    (when (vectorp key)
-                      (setq key (key-description key)))
-                    (list key nil))
-                  keys))))
+    (macroexp-progn
+     (-map (lambda (map)
+             `(hel-keymap-set ,map
+                ,@(if state `(:state ',(helheim-setup--unquote state)))
+                ,@(-mapcat (lambda (key)
+                             (when (vectorp key)
+                               (setq key (key-description key)))
+                             (list key nil))
+                           keys)))
+           (ensure-list (helheim-setup-context 'keymap))))))
 
 ;;; :global-bind
 
@@ -635,6 +631,20 @@ Can be a symbol or list of symbols."
                       (setq key (key-description key)))
                     (list key nil))
                   keys))))
+
+;;; :initial-state
+
+(helheim-setup-define :initial-state (mode state)
+  "\(:initial-state MODE STATE)
+
+Start major MODE in the Hel STATE.
+
+Spelled and behaving exactly as in `hel-collection-setup', so a form
+can be moved between hel-collection and Helheim unchanged."
+  (declare (indent defun)
+           (debug (sexp sexp)))
+  `(hel-set-initial-state ',(helheim-setup--unquote mode)
+                          ',(helheim-setup--unquote state)))
 
 ;;; :blackout
 
