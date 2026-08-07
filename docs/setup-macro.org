@@ -41,10 +41,6 @@ Helheim used to build on the [[https://elpa.gnu.org/packages/setup.html][setup.e
 removed and replaced by custom ones. The expander is now Helheim's own and
 setup.el is no longer a dependency.
 
-What was adopted is the *design*, not the library: keyword-in-car forms as
-context-local macros, expanded through a ~macroexpand-all~ environment. The
-extension API is the one [[https://github.com/anuvyklack/hel-collection][hel-collection]].
-
 ~setup~ remains an alias for ~helheim-setup~, so an ~init.el~ written against the
 old name keeps working.
 
@@ -125,7 +121,6 @@ defaults without clobbering user settings.
 
 Do /not/ use ~:setopt~ in your own ~init.el~, it is for Helheim module defaults,
 use plain ~setopt~ there.
-
 
 ** Loading and timing
 *** ~:require~
@@ -268,11 +263,6 @@ is a list, all combinations are registered.
 #+end_src
 
 ** Key bindings
-
-Helheim key-binding keywords call ~hel-keymap-set~ and ~hel-keymap-global-set~
-(from [[https://github.com/anuvyklack/hel][Hel]]) instead of the standard ~keymap-set~. This means they accept an
-optional ~:state~ argument that scopes bindings to a specific Hel modal state.
-
 *** ~:keymap~
 
 #+begin_src emacs-lisp
@@ -283,8 +273,9 @@ optional ~:state~ argument that scopes bindings to a specific Hel modal state.
   BODY ...)
 #+end_src
 
-Changes the keymap that inner ~:bind~ / ~:unbind~ calls target. ~KEYMAP~ is
-an unquoted keymap symbol, or an unquoted list of them.
+Use the KEYMAP for all nested ~:bind~ and ~:unbind~ forms. ~KEYMAP~ is an unquoted
+keymap symbol, or an unquoted list of them. ~BODY~ can consists only of ~:bind~
+and ~:unbind~ forms.
 
 #+begin_src emacs-lisp
 (helheim-setup corfu
@@ -302,9 +293,9 @@ an unquoted keymap symbol, or an unquoted list of them.
 (:bind [:state STATE] KEY DEFINITION ...)
 #+end_src
 
-Binds ~KEY~ → ~DEFINITION~ pairs in the /current/ keymap (the feature's own map, or
-the one set by ~:with-keymap~). ~KEY~ and ~DEFINITION~ follow ~keymap-set~ conventions.
-~:state~ (optional) restricts the binding to a Hel modal state or a list of states.
+Binds ~KEY~ → ~DEFINITION~ pairs in the current ~:keymap~. ~KEY~ and ~DEFINITION~
+follow ~keymap-set~ conventions. ~:state~ (optional) restricts the binding to
+a Hel modal state or a list of states.
 
 #+begin_src emacs-lisp
 (:keymap agent-shell-mode-map

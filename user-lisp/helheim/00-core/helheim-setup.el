@@ -522,21 +522,19 @@ RECIPE keywords:
 (helheim-setup-define :keymap (keymap &rest body)
   "\(:keymap KEYMAP &rest BODY)
 
-Bind the current keymap for BODY to KEYMAP.
-
-KEYMAP is an unquoted keymap symbol, or an unquoted list of them.
-When a list is given, BODY is expanded once per map, so nested
-`:bind' / `:unbind' forms bind into every map named.
-
-This mirrors the `:keymap' vocabulary of `hel-collection-setup', so
-`:keymap',`:bind' and `:unbind' behave identically in hel-collection
-and in Helheim."
+Use KEYMAP for all nested `:bind' and `:unbind' forms. KEYMAP is an
+unquoted keymap symbol, or an unquoted list of them. When a list is
+given, BODY is expanded once per map, so nested `:bind' / `:unbind'
+forms bind into every map named."
   (declare (indent 1)
            (debug (sexp setup)))
   (let ((maps (ensure-list keymap)))
     (unless (-all-p #'symbolp maps)
-      (error "helheim-setup: `:keymap' takes a symbol or a list of them, got %S"
-             keymap))
+      (error "helheim-setup: `:keymap' takes a symbol or a list of them, got %S" keymap))
+    (-each body
+      (lambda (form)
+        (unless (memq (car-safe form) '(:bind :unbind))
+          (error "helheim-setup: `:keymap' takes only `:bind' and `:unbind' forms, got %S" form))))
     (macroexp-progn
      (-map (lambda (map)
              (helheim-setup--expand body `((keymap . ,map))))
