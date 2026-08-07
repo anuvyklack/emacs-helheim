@@ -529,34 +529,6 @@ emitted once, whatever KEYMAP names."
       (error "helheim-setup: `:keymap' takes a symbol or a list of them, got %S" keymap))
     (helheim-setup--expand body `((keymap . ,maps)))))
 
-;;;; :with-keymap (OBSOLETE)
-;; These macros will be removed in future versions. Use `:keymap' instead.
-
-(helheim-setup-define :with-keymap (keymap &rest body)
-  "\(:with-keymap KEYMAP &rest BODY)
-
-Change the KEYMAP that BODY will bind to.
-KEYMAP can be any form that evaluates to keymap.
-
-Obsolete: use `:keymap' instead, which unifies this with `:with-keymaps'
-and matches hel-collection's vocabulary.  Kept for backward compatibility."
-  (declare (indent 1)
-           (debug (sexp setup)))
-  (macroexp-let2 symbolp map keymap
-    (helheim-setup--expand body `((keymap . ,map)))))
-
-(helheim-setup-define :with-keymaps (keymaps &rest body)
-  "\(:with-keymaps KEYMAPS &rest BODY)
-
-For each item in KEYMAPS expand BODY with current keymap bound to it.
-KEYMAPS should be an unquoted list of symbols.
-
-Obsolete: use `:keymap' instead, which accepts a symbol or a list of them.
-Kept for backward compatibility."
-  (declare (indent 1)
-           (debug ([&rest symbol] setup)))
-  (helheim-setup--expand body `((keymap . ,keymaps))))
-
 ;;; :bind
 
 (helheim-setup-define :bind (&rest args)
