@@ -171,7 +171,10 @@ on a keyword inside a `helheim-setup' form jumps to its `helheim-setup-define'."
   "Configure the feature or package NAME.
 
 A form in BODY whose car is a keyword from `helheim-setup-macros' is
-expanded in place. Any other form is passed through untouched.
+expanded in place, at any depth: BODY is walked by `macroexpand-all', so
+a keyword nested inside a `when', a `let' or a `with-eval-after-load'
+expands just as one written at the top of BODY does. Data behind `quote'
+is left alone. Any other form is passed through untouched.
 
 NAME is a feature symbol. The default context is derived from it: the
 mode is NAME, or NAME-mode unless NAME already ends in `-mode', the

@@ -33,6 +33,19 @@ The rule is one line long, and it holds at every level of the body:
 - car is a *keyword* → looked up in ~helheim-setup-macros~ and expanded in place.
 - car is *anything else* → plain imperative Lisp, passed through untouched.
 
+"Every level" is literal: the body is walked by ~macroexpand-all~ with the
+keyword table as its macro environment, so a keyword nested inside a ~when~, a
+~let~ or a ~with-eval-after-load~ expands exactly like one written at the top of
+the body. Data behind ~quote~ is left alone.
+
+#+begin_src emacs-lisp
+(helheim-setup diff-mode
+  (:after-load
+    (when (<= 31 emacs-major-version)
+      (:keymap diff-mode-read-only-map
+        (:bind "u" 'diff-undo)))))
+#+end_src
+
 To see how a form expands, place the cursor after its closing paren and press =,ep=.
 
 ** Relationship to setup.el
@@ -63,6 +76,7 @@ old name keeps working.
 | ~:unbind~        | Remove bindings from the current keymap            |
 | ~:global-bind~   | Bind keys globally                                 |
 | ~:global-unbind~ | Remove global bindings                             |
+| ~:initial-state~ | Start a major mode in a given Hel state            |
 | ~:hook~          | ~add-hook~; accepts many-to-many mapping             |
 | ~:blackout~      | Hide a minor mode from the mode line               |
 | ~:command~       | Declare an ~autoload~ for a command                  |
@@ -274,8 +288,12 @@ is a list, all combinations are registered.
 #+end_src
 
 Use the KEYMAP for all nested ~:bind~ and ~:unbind~ forms. ~KEYMAP~ is an unquoted
-keymap symbol, or an unquoted list of them. ~BODY~ can consists only of ~:bind~
-and ~:unbind~ forms.
+keymap symbol, or an unquoted list of them. ~BODY~ is ordinary ~helheim-setup~
+body — keywords, plain Lisp, or both.
+
+When ~KEYMAP~ names several maps, ~BODY~ is expanded *once*, not once per map:
+each ~:bind~ / ~:unbind~ fans out over the maps itself. So imperative Lisp in
+~BODY~ runs once however many maps are named.
 
 #+begin_src emacs-lisp
 (helheim-setup corfu
@@ -341,6 +359,23 @@ optional ~:state~ as ~:bind~.
 #+end_src
 
 Removes ~KEY~ bindings from the global keymap.
+
+*** ~:initial-state~
+
+#+begin_src emacs-lisp
+(:initial-state MODE STATE)
+#+end_src
+
+Start major ~MODE~ in the Hel ~STATE~, via ~hel-set-initial-state~. Both
+arguments are unquoted symbols.
+
+#+begin_src emacs-lisp
+(helheim-setup deadgrep
+  (:initial-state deadgrep-mode emacs))
+#+end_src
+
+It needs nothing loaded — ~hel-set-initial-state~ only records a mode → state
+mapping — so it belongs *outside* ~:after-load~.
 
 ** ~:blackout~ — modeline managment
 
