@@ -65,6 +65,7 @@ old name keeps working.
 | ~:install~       | Install via the active package manager             |
 | ~:elpaca~        | Install with Elpaca specifically                   |
 | ~:straight~      | Install with straight.el specifically              |
+| ~:treesit~       | Register a tree-sitter grammar for a language      |
 | ~:when~          | Guard the entire form on a condition               |
 | ~:after~         | Wrap body in ~with-eval-after-load~ for a feature    |
 | ~:after-load~    | Same, but for the /current/ feature                  |
@@ -113,28 +114,6 @@ package name.
 Manager-specific install keywords. Prefer ~:install~ for portability; use
 these only when a recipe is meaningfully different between managers or when
 targeting a specific manager is intentional.
-
-** ~:setopt~ — Variable defaults
-
-#+begin_src emacs-lisp
-(:setopt VARIABLE VALUE
-         VARIABLE VALUE ...)
-#+end_src
-
-Sets ~VARIABLE~ to ~VALUE~ only if the user has not already changed it from
-its original default. This is Helheim's mechanism for supplying sensible
-defaults without clobbering user settings.
-
-#+begin_src emacs-lisp
-(helheim-setup corfu
-  (:install t)
-  (:setopt corfu-auto t
-           corfu-auto-delay 0.24
-           corfu-cycle t))
-#+end_src
-
-Do /not/ use ~:setopt~ in your own ~init.el~, it is for Helheim module defaults,
-use plain ~setopt~ there.
 
 ** Loading and timing
 *** ~:require~
@@ -247,6 +226,28 @@ expands to
   (add-hook 'elpaca-after-init-hook #'(lambda () ...)))
 #+end_src
  
+** ~:setopt~ — Variable defaults
+
+#+begin_src emacs-lisp
+(:setopt VARIABLE VALUE
+         VARIABLE VALUE ...)
+#+end_src
+
+Sets ~VARIABLE~ to ~VALUE~ only if the user has not already changed it from
+its original default. This is Helheim's mechanism for supplying sensible
+defaults without clobbering user settings.
+
+#+begin_src emacs-lisp
+(helheim-setup corfu
+  (:install t)
+  (:setopt corfu-auto t
+           corfu-auto-delay 0.24
+           corfu-cycle t))
+#+end_src
+
+Do /not/ use ~:setopt~ in your own ~init.el~ — it is for Helheim module defaults.
+Use plain ~setopt~ there.
+
 ** ~:hook~
 
 #+begin_src emacs-lisp
@@ -274,6 +275,58 @@ is a list, all combinations are registered.
 
 (helheim-setup prog-mode
   (:hook prog-mode-hook (lambda () (setq-local line-move-visual nil))))
+#+end_src
+
+** ~:treesit~
+
+#+begin_src emacs-lisp
+(:treesit LANGUAGE URL [KEYWORD VALUE]...)
+#+end_src
+
+Registers a tree-sitter grammar for ~LANGUAGE~ in ~treesit-language-source-alist~,
+leaving an entry that is already there alone. The recipe uses the keyword
+syntax introduced in Emacs 31.
+
+- Keywords:
+
+  - ~:revision~ ::
+    The Git tag or branch of the desired version, defaulting to the latest
+    default branch.
+
+  - ~:commit~ ::
+    If non-nil, checkout this commit hash after cloning the repo. COMMIT has
+    precedence over REVISION if both are non-nil.
+
+  - ~:source-dir~ ::
+    Relative subdirectory in the repository in which the grammar's parser.c
+    file resides, defaulting to "src".
+
+  - ~:copy-queries~ ::
+    When non-nil specifies whether to copy the files in the "queries"
+    directory from the source directory to the installation directory.
+
+  - ~:cc~ :: C compiler, default is "cc"
+  - ~:c++~ :: C++ compiler, default is "c++"
+
+** ~:blackout~ — modeline managment
+
+#+begin_src emacs-lisp
+(:blackout t)                          ; hide current feature's mode
+(:blackout MODE-SYMBOL)                ; hide a named mode
+(:blackout " Lighter")                 ; replace lighter for current mode
+(:blackout (MODE-SYMBOL . " Lighter")) ; named mode with replacement
+#+end_src
+
+Hides a minor mode from the mode line using the [[https://github.com/raxod502/blackout][blackout]] package.
+Multiple ~:blackout~ arguments may be combined in one call.
+
+#+begin_src emacs-lisp
+(helheim-setup org-indent
+  (:blackout t))
+
+(helheim-setup outline
+  (:blackout outline-mode
+             outline-minor-mode))
 #+end_src
 
 ** Key bindings
@@ -377,27 +430,6 @@ arguments are unquoted symbols.
 It needs nothing loaded — ~hel-set-initial-state~ only records a mode → state
 mapping — so it belongs *outside* ~:after-load~.
 
-** ~:blackout~ — modeline managment
-
-#+begin_src emacs-lisp
-(:blackout t)                          ; hide current feature's mode
-(:blackout MODE-SYMBOL)                ; hide a named mode
-(:blackout " Lighter")                 ; replace lighter for current mode
-(:blackout (MODE-SYMBOL . " Lighter")) ; named mode with replacement
-#+end_src
-
-Hides a minor mode from the mode line using the [[https://github.com/raxod502/blackout][blackout]] package.
-Multiple ~:blackout~ arguments may be combined in one call.
-
-#+begin_src emacs-lisp
-(helheim-setup org-indent
-  (:blackout t))
-
-(helheim-setup outline
-  (:blackout outline-mode
-             outline-minor-mode))
-#+end_src
-
 ** Autoloads and file associations
 *** ~:command~
 
@@ -448,5 +480,5 @@ non-nil at load time. Place ~:when~ before other keywords so the guard is obviou
 
 * Footnotes
 
-[fn:1] The exeptions are ~:when~, ~:after~ and ~:elpaca~ which are enclose the
-whole ~helheim-setup~ form in their constructions.
+[fn:1] The exceptions are ~:when~, ~:after~ and ~:elpaca~, which enclose the
+whole ~helheim-setup~ form in their own constructions.

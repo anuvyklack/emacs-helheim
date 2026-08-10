@@ -1,8 +1,8 @@
 ;;; helheim-setup.el -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;
-;; `helheim-setup' doesn't rearrange blocks of code — it is not declarative.
-;; It is just a syntax sugar macros.
+;; `helheim-setup' does not rearrange blocks of code — it is not declarative,
+;; just syntactic sugar.
 ;;
 ;; It allows create local macros that are exist only withing the scope
 ;; of `helheim-setup'. A form in the body whose car is a keyword from
@@ -90,7 +90,7 @@ CONTEXT is an alist of (KEY . VALUE) pairs."
 This is a `cl-defmacro' for macros that exist only within the scope of
 a `helheim-setup' form, and takes the same arguments `cl-defmacro' does.
 
-The `declare' form, besides standart `indent' and `debug' keys, accepts:
+The `declare' form, besides the standard `indent' and `debug' keys, accepts:
 
   (repeatable t)  Apply the expander to each successive group of arguments,
                   the group size being the number of arguments in ARGS.
