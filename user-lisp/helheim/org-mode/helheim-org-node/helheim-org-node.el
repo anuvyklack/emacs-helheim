@@ -51,8 +51,7 @@
         "a"  '("add alias" . org-node-add-alias)
         "i"  '("add ID" . org-node-nodeify-entry) ; "ii" - insert ID
         "I"  '("add ID and ignore" . helheimg-org-node-create-ignored-node)
-        "q"  '("add tags" . org-node-add-tags-here)   ;; or `org-node-add-tags'
-        "Q"  '("set tags" . org-node-set-tags-here))) ;; or `org-node-set-tags'
+        "q"  '("add tags" . org-node-set-tags-here))) ;; or `org-node-add-tags'
     ;; "C-c l" or ",l"
     (:keymap helheim-org-link-map
       (:bind
