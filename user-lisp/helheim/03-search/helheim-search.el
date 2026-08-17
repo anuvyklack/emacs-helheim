@@ -73,10 +73,6 @@
       "k" 'consult-keep-lines
       "u" 'consult-focus-lines))
 
-  ;; <leader> p
-  (:keymap project-prefix-map
-    (:bind "b" 'consult-project-buffer))
-
   ;; "C-x" bindings are in `ctl-x-map'
   (:global-bind
     "C-x b"   'consult-buffer
@@ -99,6 +95,11 @@
     [remap switch-to-buffer-other-frame]  'consult-buffer-other-frame
     [remap yank-pop]                      'consult-yank-pop
     [remap locate]                        'consult-locate))
+
+(setup project
+  (:after-load
+    (:keymap project-prefix-map
+      (:bind "b" 'consult-project-buffer)))) ;; <leader> p b
 
 ;;; Deadgrep
 
