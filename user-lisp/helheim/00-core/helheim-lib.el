@@ -165,6 +165,51 @@ the unwritable tidbits."
         ((featurep 'helheim-lsp-mode)
          (lsp-deferred))))
 
+;;; File reference
+
+(defun +file-reference ()
+  "Return a `path:line' reference to the selected lines."
+  (let* ((file (or (+buffer-file-name)
+                   (user-error "Buffer is not visiting a file")))
+         (path (abbreviate-file-name file)))
+    (if (not (use-region-p))
+        path
+      (let ((first-line (line-number-at-pos (region-beginning) t))
+            ;; A line selection ends at the beginning of the line that follows
+            ;; the last selected line — Emacs needs that to highlight a line to
+            ;; its full width.  That trailing line is not part of the selection
+            ;; and must not be counted.
+            (last-line (save-excursion
+                         (goto-char (region-end))
+                         (if (bolp)
+                             (1- (line-number-at-pos nil t))
+                           (line-number-at-pos nil t)))))
+        (if (<= last-line first-line)
+            (format "%s:%d" path first-line)
+          (format "%s:%d-%d" path first-line last-line))))))
+
+(defun +copy-file-reference ()
+  "Copy a `path:line' reference to the selected lines into `kill-ring'."
+  (interactive)
+  (let ((reference (+file-reference)))
+    (kill-new reference)
+    (message "%s" reference)))
+
+(defun +copy-code-with-reference ()
+  "Copy the selected lines as a markdown code block under a `path:line' reference."
+  (interactive)
+  (unless (use-region-p)
+    (user-error "No selection"))
+  (let ((reference (+file-reference))
+        (language (->> (symbol-name major-mode)
+                       (string-remove-suffix "-mode")
+                       (string-remove-suffix "-ts")))
+        (code (-> (buffer-substring-no-properties (region-beginning)
+                                                  (region-end))
+                  (string-trim-right))))
+    (kill-new (format "%s\n```%s\n%s\n```" reference language code))
+    (message "%s" reference)))
+
 ;;; Window managment
 
 (defun +display-buffer-based-on-window-count (buffer alist)

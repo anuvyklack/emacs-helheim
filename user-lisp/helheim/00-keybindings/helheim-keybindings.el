@@ -34,7 +34,8 @@
   "C-c p"  "project"
   "C-c t"  "toggle"
   "C-c s"  "search"
-  "C-c v"  "version control")
+  "C-c v"  "version control"
+  "C-c y"  "copy")
 
 (hel-keymap-set mode-specific-map
   "RET"   'dired-jump
@@ -79,6 +80,9 @@
   "t v"   'visual-line-mode
   "t w"   '+wrap-line-mode
   "t $"   'set-selective-display ;; "C-x $"
+  ;; Copy
+  "y y"   '("copy file reference" . +copy-file-reference)
+  "y c"   '("copy code with reference" . +copy-code-with-reference)
   ;; Search
   "s"     (hel-keymap-set search-map
             "a" 'xref-find-apropos
