@@ -80,7 +80,6 @@
 (setup eglot
   (:install nil)
   (require 'helheim-markdown) ;; For on hover documentation formatting.
-  (:hook eglot-managed-mode-hook hel-update-active-keymaps)
   (setopt
    ;; A setting of nil or 0 means Eglot will not block the UI at all, allowing
    ;; Emacs to remain fully responsive, although LSP features will only become
