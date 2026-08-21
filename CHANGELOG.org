@@ -1,7 +1,11 @@
 * [Unreleased]
 ** Added
-- =C-c y y= — Copy =path:line= a reference to selected lines.
-- =C-c y c= — Copy the selected lines as a markdown code block under
+
+- [[file:user-lisp/helheim/snippets/][helehim-snippets]] module
+
+- =SPC y y= — Copy =path:line= a reference to selected lines.
+
+- =SPC y c= — Copy the selected lines as a markdown code block under
   a =path:line= reference.
 
 * [0.3.1]

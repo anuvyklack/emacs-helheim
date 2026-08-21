@@ -101,6 +101,7 @@
 ;;; IDE
 
 (require 'helheim-xref)     ; Go to definition framework
+(require 'helheim-snippets) ; Snippets engine
 
 (require 'helheim-eglot)    ; eglot + flymake (both built-in)
 ;; or

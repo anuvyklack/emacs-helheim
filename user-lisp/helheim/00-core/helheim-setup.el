@@ -427,12 +427,9 @@ Evaluate BODY when Emacs is idle for DELAY seconds after startup."
 (helheim-setup-define :setopt (variable value)
   "\(:setopt &rest [VARIABLE VALUE]...)
 
-Set VARIABLE to VALUE only if it hasn’t already been changed.
-This macro is for internal use in Helheim to prevent user settings from
-being overwritten by Helheim defaults. The Elpaca package manager is
-asynchronous, so user settings in `init.el' are applied before Helheim
-sets its defaults in `elpaca' macros. Use `setopt' for your custom
-settings."
+Set VARIABLE to VALUE only if it hasn’t already been changed. This macro is
+for internal use in Helheim to prevent user settings from being overwritten
+by Helheim defaults. Use `setopt' for your custom settings."
   (declare (indent 0)
            (debug (setq))
            (repeatable t))

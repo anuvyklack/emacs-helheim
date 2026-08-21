@@ -1,0 +1,29 @@
+* helheim-snippets
+
+Install and setup [[https://github.com/minad/tempel][Tempel]] snippets engine.
+
+** Enable
+
+Add the following line to your =init.el=:
+#+begin_src emacs-lisp
+(require 'helheim-snippets)
+#+end_src
+
+For basic snippets you can install [[https://github.com/Crandel/tempel-collection][tempel-collection]]. It is not installed by
+default because not everyone needs all its snippets.
+
+** Packages
+- [[https://github.com/minad/tempel][tempel]] - the snippets engine
+
+** Writing snippets
+
+Put your snippets into [[file:~/.config/emacs/templates][templates]] file. See the [[https://github.com/minad/tempel][Tempel README]] for the full
+syntax, and [[https://github.com/Crandel/tempel-collection][tempel-collection]] for ready-made templates.
+
+** Keybindings
+
+Type =/= where a word begins and the Corfu popup lists every template of
+the current major mode.
+
+| =C-c i i= | pick a template by name from a list   |
+| =C-c i c= | complete a template name before point |

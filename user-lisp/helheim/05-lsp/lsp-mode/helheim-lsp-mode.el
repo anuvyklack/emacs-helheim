@@ -1,5 +1,14 @@
 ;;; helheim-lsp-mode.el -*- lexical-binding: t; no-byte-compile: t -*-
 
+;; LSP servers use TextMate snippets format -- "print(${1:value})" -- and
+;; lsp-mode expands them by calling `yas-expand-snippet'. So YASnippet is
+;; installed but not enabled, because lsp-mode loads it itself, on the first
+;; snippet it has to expand.
+(setup yasnippet
+  (:install t)
+  (:setopt yas-snippet-dirs nil
+           yas-verbosity 2))
+
 (setup lsp-mode
   (:install t)
   (:setopt lsp-keymap-prefix "C-c l"

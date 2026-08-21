@@ -76,6 +76,7 @@ what you need.
   - [[file:user-lisp/helheim/05-lsp/eglot/README.org][eglot + flymake]] — LSP client and diagnostics  built-in into Emacs 
   - [[file:user-lisp/helheim/05-lsp/lsp-mode/README.org][lsp-mode + flycheck]] — external LSP client and diagnostics packages
   - [[file:user-lisp/helheim/05-lsp/xref/README.org][xref]] — Go-to-definition
+  - [[file:user-lisp/helheim/snippets/README.org][snippets engine]]
 
 - [[file:user-lisp/helheim/org-mode/helheim-org/README.org][Org-mode]]
   - [[file:user-lisp/helheim/org-mode/helheim-org-node/README.org][org-node]] — personal knowledge management (Org-roam alternative)
