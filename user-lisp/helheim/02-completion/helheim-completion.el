@@ -10,6 +10,7 @@
         "M-<tab>"   'corfu-expand
         "RET"       'corfu-insert
         "M-SPC"     'corfu-insert-separator
+        "C-<m>"     '+corfu-move-to-minibuffer
         ;;
         "C-h"       'corfu-info-documentation
         "C-l"       'corfu-complete
@@ -94,7 +95,7 @@
 ;;; Commands
 
 (defun +corfu-move-to-minibuffer ()
-  "Move list of candidates to your choice of minibuffer completion UI."
+  "Move Corfu completion session to the minibuffer."
   (interactive)
   (pcase completion-in-region--data
     (`(,beg ,end ,table ,pred ,extras)
@@ -103,5 +104,8 @@
            (completion-cycling nil))
        (consult-completion-in-region beg end table pred)))))
 
+(add-to-list 'corfu-continue-commands #'+corfu-move-to-minibuffer)
+
+;;; .
 (provide 'helheim-completion)
 ;;; helheim-completion.el ends here

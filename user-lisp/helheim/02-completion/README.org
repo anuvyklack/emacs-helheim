@@ -23,3 +23,4 @@
 | =M-Space=    | Insert space without aborting completion                                  |
 | =C-l=        | Insert selected candidate or expands the common prefix of all candidates. |
 | =C-i= or =C-h= | Show documentation for current candidate.                                 |
+| =C-m=        | Move completion session to the minibuffer.                                |
