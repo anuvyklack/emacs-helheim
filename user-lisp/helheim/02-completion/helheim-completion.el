@@ -24,7 +24,9 @@
         "M-j"       'corfu-next
         "M-k"       'corfu-previous
         "C-n"       'corfu-next
-        "C-p"       'corfu-previous))))
+        "C-p"       'corfu-previous)
+      (:bind :state normal
+        "<escape>"  'corfu-quit))))
 
 ;;; Config
 
