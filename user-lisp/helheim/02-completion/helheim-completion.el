@@ -45,10 +45,8 @@
 
 (setup corfu
   (:install t)
-  (:setopt tab-always-indent 'complete
-           tab-first-completion 'word
-           ;; Disable Ispell completion function. As an alternative try `cape-dict'.
-           text-mode-ispell-word-completion nil)
+  ;; Disable Ispell completion function. As an alternative try `cape-dict'.
+  (:setopt text-mode-ispell-word-completion nil)
   (:setopt global-corfu-minibuffer t
            corfu-auto t
            corfu-auto-delay 0.24
