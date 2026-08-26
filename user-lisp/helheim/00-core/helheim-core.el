@@ -57,9 +57,7 @@ Must be set before `helheim-core' is loaded!"
 
 ;;; External dependencies
 
-(setup pcre2el (:install t))
-(setup wgrep   (:install t))
-(setup ultra-scroll (:install t))
+(setup wgrep (:install t))
 
 (setup avy
   (:install t)
@@ -75,7 +73,7 @@ Must be set before `helheim-core' is loaded!"
            avy-single-candidate-jump nil))
 
 (setup hel
-  (:install hel :host github :repo "helheim-emacs/hel")
+  (:install t)
   (hel-mode))
 
 (setup hel-collection
