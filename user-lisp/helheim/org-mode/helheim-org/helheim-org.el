@@ -16,7 +16,8 @@
            ;; Make `org-goto' (C-c C-j) command usable. But actually
            ;; `consult-org-heading' (gp) provides the same interface but better.
            org-goto-interface 'outline-path-completion
-           org-outline-path-complete-in-steps nil)
+           org-outline-path-complete-in-steps nil
+           org-cycle-emulate-tab nil) ; don't insert TAB in non-insert state
   (:require helheim-org-keys)
   (:after-load
     (load "helheim-org-lib" nil t)))
