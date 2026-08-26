@@ -10,6 +10,11 @@
   - [[https://github.com/LuigiPiucco/nerd-icons-corfu][nerd-icons-corfu]]
 - [[https://github.com/minad/cape][cape]]
 
+** Hacks
+
+- ~+corfu-inhibit-auto-functions~ is introduced as a hook containing
+  predicates that suppress the appearance of the ~corfu-auto~ popup.
+
 ** Usage
 *** When completion popup is active
 

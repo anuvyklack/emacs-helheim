@@ -44,6 +44,14 @@
                                        )
            orderless-component-separator #'orderless-escapable-split-on-space))
 
+(defcustom +corfu-inhibit-auto-functions nil
+  "Predicates that suppress Corfu completion popup appearance.
+Each function takes no argument and runs at the point where `corfu-auto'
+is about to open the popup. When any of them returns non-nil, the popup
+does not appear."
+  :type 'hook
+  :group 'corfu)
+
 (setup corfu
   (:install t)
   ;; Disable Ispell completion function. As an alternative try `cape-dict'.
@@ -63,8 +71,13 @@
            ;; common editors.
            ;;   - t :: non-inserting preview
            corfu-preview-current 'insert
-           corfu-preselect 'prompt
-           corfu-on-exact-match nil) ;; Handling of exact matches.
+           corfu-on-exact-match nil ; Handling of exact matches.
+           corfu-preselect 'prompt)
+  ;; `corfu-auto' offers no predicate of its own. Both paths that open the
+  ;; automatic popup — the zero-delay one and the timer — go through this
+  ;; function, so one advice covers both.
+  (advice-add 'corfu-auto--complete-deferred
+              :before-while #'+corfu-inhibit-auto-completion-a)
   (global-corfu-mode))
 
 (setup corfu-history
@@ -91,20 +104,6 @@
                                         cape-file
                                         cape-elisp-block
                                         cape-history)))
-
-;;; Commands
-
-(defun +corfu-move-to-minibuffer ()
-  "Move Corfu completion session to the minibuffer."
-  (interactive)
-  (pcase completion-in-region--data
-    (`(,beg ,end ,table ,pred ,extras)
-     (let ((completion-extra-properties extras)
-           (completion-cycle-threshold nil)
-           (completion-cycling nil))
-       (consult-completion-in-region beg end table pred)))))
-
-(add-to-list 'corfu-continue-commands #'+corfu-move-to-minibuffer)
 
 ;;; .
 (provide 'helheim-completion)
