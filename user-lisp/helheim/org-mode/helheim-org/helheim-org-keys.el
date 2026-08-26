@@ -34,18 +34,16 @@
         "[ l"  'org-previous-link
         ;; <local-leader>
         ", RET" 'org-ctrl-c-ret ;; also on "z RET"
-        ", |"   'org-table-create-or-convert-from-region
+        "m ,"   'org-insert-structure-template
         ", '"   'org-edit-special
-        ", ."   'org-edit-special
-        ", ,"   'org-insert-structure-template
+        ", ,"   'org-edit-special
+        ", |"   'org-table-create-or-convert-from-region
         ", /"   'org-sparse-tree
         ", #"   'org-update-statistics-cookies
         ", a"   'org-attach
         ", e"   'org-export-dispatch
         ;; ", o"   'org-open-at-point
         ", t"   '("rotate todo state" . org-todo)
-        ", y"   'org-copy-visible
-        ;; "v"
         ", l"   '("links" . helheim-org-link-map)
         ", i"   '("insert" . helheim-org-insert-map)
         ", n"   (cons "node"
@@ -60,8 +58,8 @@
       ;; <leader>
       (:bind
         "C-c RET"  'dired-jump ;; rebind `org-ctrl-c-ret' which is moved to ", RET"
-        "C-c i"    '("insert" . helheim-org-insert-map)
         "C-c l"    '("links"  . helheim-org-link-map)
+        "C-c y v"  'org-copy-visible
         ;; Toggle
         "C-c t i"  'org-link-preview
         "C-c t l"  '("show links targets" . org-toggle-link-display)

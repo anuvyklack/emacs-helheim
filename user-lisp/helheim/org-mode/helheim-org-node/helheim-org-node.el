@@ -45,7 +45,7 @@
         "C-c n w"  '("refile node" . org-node-refile) ;; "C-c C-w" is `org-refile'
         ;; "C-c n I"  'org-node-insert-include ;; TODO. Not yet a good command.
         ))
-    ;; "C-c i" or ",i"
+    ;; ",i"
     (:keymap helheim-org-insert-map
       (:bind
         "a"  '("add alias" . org-node-add-alias)

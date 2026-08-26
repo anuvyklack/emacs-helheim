@@ -44,25 +44,25 @@ Also see [[https://github.com/anuvyklack/hel-org][hel-org]] documentation for ke
 
 Keys that are worth mentioning (for others see =helheim-org-keys= file):
 
-- =z '= (~org-edit-special~) ::
+- =,,= (~org-edit-special~) ::
   Edit source block, table, or formula at point in a separate buffer.
 
-- =z ,= (~org-insert-structure-template~) ::
-- =z /= (~org-sparse-tree~) ::
-- =g p= (~consult-org-heading~) ::
-- =g x= (~org-open-at-point~) ::
+- =m,= (~org-insert-structure-template~) ::
+- =,/= (~org-sparse-tree~) ::
+- =gp= (~consult-org-heading~) ::
+- =gx= (~org-open-at-point~) ::
 
 - =gn= / =gN= or =[l= / =]l= :: Jump over links
 
 - =SPC t= (=C-c t=) :: common prefix for toggable features
 
-- =, l l= :: Insert link with DWIM ("do what I mean") behavior:
+- =,ll= :: Insert link with DWIM ("do what I mean") behavior:
   - If URL is in clipboard — use it. Automatically fetch the page title
     from its HTML tag and use it as link description.
   - If selection is active — use it as link description.
   - Fallback to ~org-insert-link~.
 
-- =, a= in Dired (~org-attach-dired-to-subtree~) ::
+- =,a= in Dired (~org-attach-dired-to-subtree~) ::
   Attach files marked in the Dired buffer to a org subtree at point in the
   other window.
 
@@ -88,20 +88,19 @@ Keys that are worth mentioning (for others see =helheim-org-keys= file):
 
 | =g n= / =g N= or =[l= / =]l= | jump over links   |
 | =g x=                  | ~org-open-at-point~ |
-| =z RET=                | ~org-ctrl-c-ret~    |
 
 -----------------------------
 
-| =, RET= | ~org-ctrl-c-ret~                                                      |
-| =, ,=   | ~org-insert-structure-template~                                       |
-| =, '=   | Edit source block, table, or formula at point in a separate buffer. |
-| =, /=   | ~org-sparse-tree~                                                     |
-| =, #=   | ~org-update-statistics-cookies~                                       |
-| =, p=   | ~org-paste-special~                                                   |
-| =, a=   | Attachment dispatcher                                               |
-| =, e=   | Expoft dispatcher                                                   |
-| =, t=   | Rotate =TODO= state                                                   |
-| =, y=   | Copy the selection the same as it displayed on the screen.          |
+| =m ,=     | Insert a block structure of the type #+begin_foo/#+end_foo.         |
+| =, ,=     | Edit source block, table, or formula at point in a separate buffer. |
+| =, /=     | ~org-sparse-tree~                                                     |
+| =, #=     | ~org-update-statistics-cookies~                                       |
+| =, p=     | ~org-paste-special~                                                   |
+| =, a=     | Attachment dispatcher                                               |
+| =, e=     | Expoft dispatcher                                                   |
+| =, t=     | Rotate =TODO= state                                                   |
+| =, RET=   | ~org-ctrl-c-ret~                                                      |
+| =SPC y v= | Copy the selection the same as it displayed on the screen.          |
 
 **** Notes (=C-c n=)
 
