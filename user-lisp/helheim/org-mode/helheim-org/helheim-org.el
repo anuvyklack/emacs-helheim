@@ -45,7 +45,12 @@
   (:after-load
     ;; Show target for link at point.
     (if (<= 31 emacs-major-version)
-        (add-hook 'org-mode-hook (lambda () (setq-local eldoc-help-at-pt t)))
+        (add-hook 'org-mode-hook
+                  (defun helheim-org-show-link-target-h ()
+                    "Show the target for link at point in echo area."
+                    ;; See `eldoc-help-at-pt'
+                    (add-hook 'eldoc-documentation-functions
+                              #'eldoc-show-help-at-pt 90 t)))
       ;; Emacs version < 31
       (define-advice org-eldoc-documentation-function (:before-until (&rest _) helheim)
         "Display link target in echo area when cursor/mouse is over it."
