@@ -51,6 +51,7 @@ No trigger key. They fire only inside math, so prose is never touched.
 | =sr=    | ~^{2}~       |
 | =cb=    | ~^{3}~       |
 | =ooo=   | ~\infty~          |
+| =...=   | ~\dots~          |
 | =->=    | ~\to~          |
 | =!==    | ~\neq~          |
 | =>==    | ~\geq~          |
