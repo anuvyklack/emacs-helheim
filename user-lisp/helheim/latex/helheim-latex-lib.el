@@ -215,11 +215,13 @@ this one function."
   "Delimiter characters, and the LaTeX pair each one inserts.")
 
 (defconst +latex--fragment-alist
-  '((?\( "\\( "  . " \\)")
-    (?\) "\\( "  . " \\)")
-    (?\[ "\\[\n" . "\n\\]")
-    (?\] "\\[\n" . "\n\\]"))
-  "Delimiter characters, and the math fragment each one opens.")
+  '((?\) "\\( "  . " \\)")
+    (?\] "\\[ "  . " \\]")
+    (?\( "\\(\n" . "\n\\)")
+    (?\[ "\\[\n" . "\n\\]"))
+  "Delimiter characters, and the math fragment each one opens.
+An opening character gives the block layout, a closing one the one-line
+layout.")
 
 (defun +latex--insert-empty-pair (left right block)
   "Insert an empty LEFT...RIGHT pair and leave point inside it.
@@ -244,7 +246,7 @@ on the empty line between them."
     (insert left right)
     (backward-char (length right))))
 
-(defun +latex--surround-range (beg end left right block)
+(defun +latex--surround-region (beg end left right block)
   "Surround the text between BEG and END with LEFT and RIGHT.
 With BLOCK non-nil each delimiter gets a line of its own and the whole
 block is re-indented."
@@ -268,25 +270,6 @@ block is re-indented."
         (goto-char beg) (insert left)))
     (set-marker beg nil)
     (set-marker end nil)))
-
-(defun +latex--surround-region (left right block)
-  "Surround the active region with LEFT and RIGHT.
-The selection shrinks past the whitespace at its ends first, so the delimiters
-land on the text itself. With BLOCK non-nil each delimiter gets a line of its
-own and the whole block is re-indented."
-  (let ((beg (save-excursion
-               (goto-char (region-beginning))
-               (skip-chars-forward " \t\r\n")
-               (point)))
-        (end (save-excursion
-               (goto-char (region-end))
-               (skip-chars-backward " \t\r\n")
-               (point))))
-    (if (< beg end)
-        (+latex--surround-range beg end left right block)
-      ;; The selection holds nothing but whitespace: there is no text to
-      ;; surround, so leave an empty pair for the user to fill.
-      (+latex--insert-empty-pair left right block))))
 
 ;;;###autoload
 (defun +latex-insert-delimiters ()
@@ -312,45 +295,60 @@ delimiter on a line of its own. A closing character -- ), ], }, >, | --
 keeps the pair on one line, one space away from the text.
 
 Outside math the pair opens a math fragment instead: ( and ) give inline
-math, \\( ... \\), while [ and ] give display math, \\[ ... \\], on lines
-of its own. The layout follows the fragment, so an opening character and
-its closing partner do the same thing there. The other characters have
-no fragment and raise an error.
+math, \\( ... \\), while [ and ] give display math, \\[ ... \\]. The
+invoking key picks the layout the same way. The other characters have no
+fragment and raise an error.
 
-With an active region, surround the region. Inside math with no region,
-surround the TeX object right before point, so x^2 becomes
-\\left( x^2 \\right). With neither, insert an empty pair and leave point
-inside it.
+With an active region, surround the region. The region shrinks past the
+whitespace at its ends first, so the delimiters land on the text itself;
+a region that holds nothing but whitespace gets an empty pair to fill.
+Inside math with no region, surround the TeX object right before point,
+so x^2 becomes \\left( x^2 \\right). With neither, insert an empty pair
+and leave point inside it.
 
 Called any other way than from a key binding, the character is read from
 the minibuffer."
   :multiple-cursors t
   (interactive)
-  (let* ((math (+latex-in-math-p))
-         (table (if math +latex--delimiter-alist +latex--fragment-alist))
-         ;; `+latex--delimiter-alist' holds every character the command is
-         ;; bound to, so it decides whether a key invoked us. TABLE then
-         ;; decides what that key means here.
+  (let* ((math? (+latex-in-math-p))
+         (table (if math?
+                    +latex--delimiter-alist
+                  +latex--fragment-alist))
+         ;; `+latex--delimiter-alist' holds every character the command is bound
+         ;; to, so it decides whether a key invoked us. TABLE then decides what
+         ;; that key means here.
          (char (if (assq last-command-event +latex--delimiter-alist)
                    last-command-event
-                 (read-char (if math "Delimiter: |([{< or )]}>" "Math: ) or ]")))))
+                 (read-char (if math?
+                                "Delimiter: |([{< or )]}>"
+                              "Math: ([ or )]")))))
     (-if-let* (((left . right) (alist-get char table)))
-        (let ((block (or (string-search "\n" left)
-                         (string-search "\n" right)))
-              ;; Outside math the text before point is prose, and the word
-              ;; it ends with is no more a formula than the rest of it.
-              (object-start (if (and math (not (use-region-p)))
-                                (+latex-adjacent-tex-object-start))))
-          (when block
+        (let ((block? (or (string-search "\n" left)
+                          (string-search "\n" right))))
+          (when block?
             (setq left  (string-trim left)
                   right (string-trim right)))
-          (cond ((use-region-p)
-                 (+latex--surround-region left right block))
-                (object-start
-                 (+latex--surround-range object-start (point) left right block))
-                (t
-                 (+latex--insert-empty-pair left right block))))
-      (if math
+          (cond-let*
+            ([_ (use-region-p)]
+             [beg (save-excursion
+                    (goto-char (region-beginning))
+                    (skip-chars-forward " \t\r\n")
+                    (point))]
+             [end (save-excursion
+                    (goto-char (region-end))
+                    (skip-chars-backward " \t\r\n")
+                    (point))]
+             [_ (< beg end)]
+             ;; The selection contains something other than whitespaces --
+             ;; i.e. there is text to surround.
+             (+latex--surround-region beg end left right block?))
+            ([object-start (if (and math?
+                                    (not (use-region-p)))
+                               (+latex-adjacent-tex-object-start))]
+             (+latex--surround-region object-start (point) left right block?))
+            (t
+             (+latex--insert-empty-pair left right block?))))
+      (if math?
           (user-error "No \\left...\\right pair for `%c'" char)
         (user-error "Not inside math, and `%c' opens no fragment" char)))))
 
