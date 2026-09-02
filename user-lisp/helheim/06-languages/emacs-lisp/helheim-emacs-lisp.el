@@ -40,7 +40,7 @@
 ;;; Config
 
 (setup paredit
- (:install paredit))
+  (:install paredit :host github :repo "emacsmirror/paredit"))
 
 (setup hel-paredit
   (:install hel-paredit :host github :repo "helheim-emacs/hel-paredit")
