@@ -22,8 +22,7 @@ syntax, and [[https://github.com/Crandel/tempel-collection][tempel-collection]] 
 
 ** Keybindings
 
-Type =/= where a word begins and the Corfu popup lists every template of
-the current major mode.
+Type =/= to open the popup lists with all snippets of the current major mode.
 
 | =C-c i i= | pick a template by name from a list   |
 | =C-c i c= | complete a template name before point |
