@@ -1,6 +1,8 @@
 * [Unreleased]
 ** Added
 
+- =SPC u= — open undo tree via [[https://github.com/casouri/vundo][vundo]] package
+
 - [[file:user-lisp/helheim/snippets/README.org][helehim-snippets]] module
 
 - [[file:user-lisp/helheim/latex/README.org][helheim-latex]] module
