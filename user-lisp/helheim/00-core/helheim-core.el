@@ -374,6 +374,8 @@ Use `delete-trailing-whitespace' command."
       undo-strong-limit (* 13 240000)
       undo-outer-limit (* 13 24000000))
 
+(setup vundo (:install t))
+
 ;;;; Formatting
 
 (setq-default fill-column 80)

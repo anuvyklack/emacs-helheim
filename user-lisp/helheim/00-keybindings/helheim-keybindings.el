@@ -41,6 +41,7 @@
   "RET"   'dired-jump
   ","     'switch-to-buffer
   "/"     'consult-ripgrep ;; "/" is for search in Hel
+  "u"     'vundo
   ;; Buffer
   "b b"   '("ibuffer" . ibuffer-jump) ;; "<leader> bb"
   "b n"   'switch-to-buffer    ; next key after "b"
