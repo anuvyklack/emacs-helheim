@@ -57,8 +57,6 @@ Must be set before `helheim-core' is loaded!"
 
 ;;; External dependencies
 
-(setup wgrep (:install t))
-
 (setup avy
   (:install t)
   (:setopt avy-keys '( ?a ?s ?d ?f ?g ?h ?j ?k ?l    ; middle layer
@@ -82,8 +80,7 @@ Must be set before `helheim-core' is loaded!"
             :files (:defaults "modes"))
   (hel-collection-init))
 
-(setup compat
-  (:install t))
+(setup compat (:install t))
 
 (setup transient
   (:install t)
@@ -126,6 +123,8 @@ Must be set before `helheim-core' is loaded!"
       (:bind :state normal
         "Z Z" 'edit-indirect-commit
         "Z Q" 'edit-indirect-abort))))
+
+(setup wgrep (:install t))
 
 (elpaca-wait)
 
