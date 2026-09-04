@@ -3,6 +3,7 @@
 
 (eval-when-compile (require 'dash))
 (eval-when-compile (require 'hel-macros))
+(eval-when-compile (require 'cond-let))
 (require 'hel)
 
 (defvar cdlatex-command-alist-comb)

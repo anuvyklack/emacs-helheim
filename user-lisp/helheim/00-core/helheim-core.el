@@ -81,6 +81,7 @@ Must be set before `helheim-core' is loaded!"
   (hel-collection-init))
 
 (setup compat (:install t))
+(setup cond-let (:install t))
 
 (setup transient
   (:install t)
